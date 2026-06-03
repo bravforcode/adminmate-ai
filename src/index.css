@@ -65,17 +65,9 @@
   --font-size-label-md: 12px;
   --font-size-code-sm: 12px;
 
-  --spacing-base: 4px;
-  --spacing-xs: 4px;
-  --spacing-sm: 8px;
-  --spacing-md: 16px;
-  --spacing-lg: 24px;
-  --spacing-xl: 32px;
-  --spacing-2xl: 48px;
-  --spacing-3xl: 64px;
-  --spacing-gutter: 24px;
-  --spacing-margin-mobile: 16px;
-  --spacing-margin-desktop: 32px;
+  --gutter: 24px;
+  --margin-mobile: 16px;
+  --margin-desktop: 32px;
 
   --radius-sm: 0.25rem;
   --radius-lg: 0.5rem;
