@@ -1,0 +1,68 @@
+import { useState, useCallback } from 'react'
+import { useDropzone } from 'react-dropzone'
+import { Upload, FileText, X, CheckCircle } from 'lucide-react'
+import { storageService } from '../../services/storageService'
+import { supabase } from '../../lib/supabase'
+import toast from 'react-hot-toast'
+import { ALLOWED_CV_TYPES, MAX_FILE_SIZE } from '../../utils/constants'
+
+interface CVUploaderProps { candidateId: string; companyId: string }
+
+export function CVUploader({ candidateId, companyId }: CVUploaderProps) {
+  const [uploading, setUploading] = useState(false)
+  const [parsing, setParsing] = useState(false)
+  const [error, setError] = useState('')
+
+  const onDrop = useCallback(async (acceptedFiles: File[]) => {
+    const file = acceptedFiles[0]
+    if (!file) return
+    setError('')
+    try {
+      setUploading(true)
+      const { url, path } = await storageService.uploadCV(candidateId, file)
+      const { data: cvDoc, error: docErr } = await supabase.from('cv_documents').insert({
+        candidate_id: candidateId, company_id: companyId, file_url: url, file_name: file.name,
+        file_size: file.size, file_type: file.type.includes('pdf') ? 'pdf' : 'docx', is_current: true,
+      }).select().single()
+      if (docErr) throw docErr
+
+      await supabase.from('cv_documents').update({ is_current: false }).eq('candidate_id', candidateId).neq('id', cvDoc.id)
+
+      setUploading(false)
+      setParsing(true)
+      await supabase.functions.invoke('parse-resume', { body: { cvDocumentId: cvDoc.id, candidateId, companyId } })
+      setParsing(false)
+      toast.success('CV uploaded and parsed')
+    } catch (err: any) {
+      setError(err.message)
+      setUploading(false)
+      setParsing(false)
+    }
+  }, [candidateId, companyId])
+
+  const { getRootProps, getInputProps, isDragActive } = useDropzone({
+    onDrop, accept: { 'application/pdf': ['.pdf'], 'application/vnd.openxmlformats-officedocument.wordprocessingml.document': ['.docx'] },
+    maxFiles: 1, maxSize: MAX_FILE_SIZE,
+  })
+
+  return (
+    <div>
+      <div {...getRootProps()} className={`border-2 border-dashed rounded-xl p-8 text-center cursor-pointer transition-colors ${isDragActive ? 'border-primary bg-primary-container/10' : 'border-outline-variant hover:border-primary/50'}`}>
+        <input {...getInputProps()} data-testid="cv-upload-input" />
+        {uploading || parsing ? (
+          <div className="space-y-2">
+            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto" />
+            <p className="text-sm text-on-surface-variant">{uploading ? 'Uploading...' : 'Parsing with AI...'}</p>
+          </div>
+        ) : (
+          <div className="space-y-2">
+            <Upload size={32} className="mx-auto text-on-surface-variant" />
+            <p className="text-sm font-medium">Drag & drop CV here, or click to browse</p>
+            <p className="text-xs text-on-surface-variant">PDF or DOCX, max 10MB</p>
+          </div>
+        )}
+      </div>
+      {error && <p className="text-error text-sm mt-2">{error}</p>}
+    </div>
+  )
+}

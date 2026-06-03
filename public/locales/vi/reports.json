@@ -1,0 +1,35 @@
+{
+  "title": "Phân tích & Báo cáo",
+  "subtitle": "การวิเคราะห์และรายงานผลการปฏิบัติงาน HR",
+  "filters": "Bộ lọc",
+  "export_csv": "Xuất CSV",
+  "kpi": {
+    "recruitment_efficiency": "Hiệu suất tuyển dụng",
+    "recruitment_efficiency_sub": "ประสิทธิภาพการสรรหา (Time-to-Hire)",
+    "days": "Ngày",
+    "cost_per_hire": "Chi phí mỗi lần tuyển",
+    "cost_per_hire_sub": "ต้นทุนต่อการจ้างงาน",
+    "avg": "TB",
+    "onboarding_success": "Thành công onboarding",
+    "onboarding_success_sub": "ความสำเร็จในการเริ่มงาน",
+    "completion": "Hoàn thành",
+    "completion_label": "Mức hoàn thành"
+  },
+  "chart": {
+    "pipeline_title": "Phân tích Pipeline Tuyển dụng",
+    "pipeline_subtitle": "วิเคราะห์กระบวนการจ้างงานรายเดือน"
+  },
+  "breakdown": {
+    "title": "Phân tích nguồn",
+    "subtitle": "แหล่งที่มาของผู้สมัคร"
+  },
+  "table": {
+    "title": "Báo cáo đã tạo",
+    "subtitle": "รายงานที่สร้างล่าสุด",
+    "report_name": "Tên báo cáo",
+    "category": "Danh mục",
+    "date": "Ngày",
+    "action": "Hành động"
+  },
+  "view_all": "Xem tất cả"
+}

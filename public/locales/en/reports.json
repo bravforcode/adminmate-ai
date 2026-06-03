@@ -1,0 +1,35 @@
+{
+  "title": "Analytics & Reports",
+  "subtitle": "การวิเคราะห์และรายงานผลการปฏิบัติงาน HR",
+  "filters": "Filters",
+  "export_csv": "Export CSV",
+  "kpi": {
+    "recruitment_efficiency": "Recruitment Efficiency",
+    "recruitment_efficiency_sub": "ประสิทธิภาพการสรรหา (Time-to-Hire)",
+    "days": "Days / วัน",
+    "cost_per_hire": "Cost per Hire",
+    "cost_per_hire_sub": "ต้นทุนต่อการจ้างงาน",
+    "avg": "Avg / เฉลี่ย",
+    "onboarding_success": "Onboarding Success",
+    "onboarding_success_sub": "ความสำเร็จในการเริ่มงาน",
+    "completion": "Completion",
+    "completion_label": "Completion"
+  },
+  "chart": {
+    "pipeline_title": "Hiring Pipeline Analytics",
+    "pipeline_subtitle": "วิเคราะห์กระบวนการจ้างงานรายเดือน"
+  },
+  "breakdown": {
+    "title": "Source Breakdown",
+    "subtitle": "แหล่งที่มาของผู้สมัคร"
+  },
+  "table": {
+    "title": "Generated Reports",
+    "subtitle": "รายงานที่สร้างล่าสุด",
+    "report_name": "Report Name / ชื่อรายงาน",
+    "category": "Category / หมวดหมู่",
+    "date": "Date / วันที่",
+    "action": "Action"
+  },
+  "view_all": "View All"
+}

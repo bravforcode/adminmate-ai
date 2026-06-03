@@ -1,0 +1,21 @@
+CREATE TABLE candidates (
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    company_id UUID NOT NULL REFERENCES companies(id) ON DELETE CASCADE,
+    email VARCHAR(255),
+    phone VARCHAR(50),
+    full_name VARCHAR(255) NOT NULL,
+    full_name_th VARCHAR(255),
+    avatar_url TEXT,
+    location VARCHAR(255),
+    current_position VARCHAR(255),
+    experience_years NUMERIC(4,1),
+    linkedin_url TEXT,
+    portfolio_url TEXT,
+    source VARCHAR(50) DEFAULT 'direct',
+    line_user_id VARCHAR(255),
+    whatsapp_phone VARCHAR(50),
+    preferred_language VARCHAR(5) DEFAULT 'th',
+    notes TEXT,
+    created_at TIMESTAMPTZ DEFAULT NOW(),
+    updated_at TIMESTAMPTZ DEFAULT NOW()
+);

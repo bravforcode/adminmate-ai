@@ -1,0 +1,6 @@
+{
+  "name": "AdminMate AI",
+  "description": "An AI-powered HR and admin copilot for SMEs, supporting recruitment, resume matching, onboarding, and candidate CV building in both Thai and English.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

@@ -1,0 +1,11 @@
+project_id = "adminmate-ai"
+[db]
+port = 54322
+[studio]
+port = 54323
+[api]
+port = 54321
+[auth]
+enable_signup = true
+[edge_runtime]
+enabled = true

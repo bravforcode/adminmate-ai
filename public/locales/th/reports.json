@@ -1,0 +1,35 @@
+{
+  "title": "Analytics & Reports",
+  "subtitle": "การวิเคราะห์และรายงานผลการปฏิบัติงาน HR",
+  "filters": "ตัวกรอง",
+  "export_csv": "ส่งออก CSV",
+  "kpi": {
+    "recruitment_efficiency": "ประสิทธิภาพการสรรหา",
+    "recruitment_efficiency_sub": "ประสิทธิภาพการสรรหา (Time-to-Hire)",
+    "days": "วัน",
+    "cost_per_hire": "ต้นทุนต่อการจ้างงาน",
+    "cost_per_hire_sub": "ต้นทุนต่อการจ้างงาน",
+    "avg": "เฉลี่ย",
+    "onboarding_success": "ความสำเร็จในการปฐมนิเทศ",
+    "onboarding_success_sub": "ความสำเร็จในการเริ่มงาน",
+    "completion": "เสร็จสิ้น",
+    "completion_label": "ความสำเร็จ"
+  },
+  "chart": {
+    "pipeline_title": "การวิเคราะห์กระบวนการจ้างงาน",
+    "pipeline_subtitle": "วิเคราะห์กระบวนการจ้างงานรายเดือน"
+  },
+  "breakdown": {
+    "title": "แหล่งที่มาของผู้สมัคร",
+    "subtitle": "แหล่งที่มาของผู้สมัคร"
+  },
+  "table": {
+    "title": "รายงานที่สร้างล่าสุด",
+    "subtitle": "รายงานที่สร้างล่าสุด",
+    "report_name": "ชื่อรายงาน",
+    "category": "หมวดหมู่",
+    "date": "วันที่",
+    "action": "ดำเนินการ"
+  },
+  "view_all": "ดูทั้งหมด"
+}

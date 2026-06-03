@@ -1,0 +1,140 @@
+import { useState } from 'react'
+import { useTranslation } from 'react-i18next'
+import { useNavigate } from 'react-router-dom'
+import { KanbanBoard } from '../../components/pipeline/KanbanBoard'
+import { useUpdateApplicationStatus } from '../../hooks/useApplications'
+import { Sparkles, ArrowRight, CheckCircle2, XCircle, Brain } from 'lucide-react'
+import toast from 'react-hot-toast'
+
+export function PipelinePage() {
+  const { t } = useTranslation('recruitment')
+  const navigate = useNavigate()
+  const updateStatus = useUpdateApplicationStatus()
+  const [selectedApplication, setSelectedApplication] = useState<any>(null)
+
+  const handleMoveToInterview = async () => {
+    if (!selectedApplication) return
+    try {
+      await updateStatus.mutateAsync({ id: selectedApplication.id, status: 'interviewing' })
+      toast.success('Moved to Interviewing')
+      setSelectedApplication(null)
+    } catch {
+      toast.error('Failed to update status')
+    }
+  }
+
+  return (
+    <div className="flex flex-col h-[calc(100vh-96px)]">
+      {/* Page Header */}
+      <div className="flex justify-between items-end mb-4 shrink-0">
+        <div>
+          <h2 className="text-2xl font-semibold text-on-surface tracking-tight">
+            {t('pipeline.title')} <span className="text-lg font-normal text-on-surface-variant ml-2">/ {t('pipeline.title_th')}</span>
+          </h2>
+          <p className="text-sm text-on-surface-variant mt-1">Senior Frontend Engineer - Bangkok Office</p>
+        </div>
+        <button onClick={() => navigate('/recruitment/jobs')} className="border border-primary text-primary bg-surface-container-lowest px-4 py-2 rounded-lg text-sm font-medium flex items-center gap-2 hover:bg-primary/5 transition-colors shadow-sm">
+          <Sparkles size={16} />
+          {t('pipeline.jd_generation')} / {t('pipeline.jd_generation_th')}
+        </button>
+      </div>
+
+      {/* Kanban + AI Sidebar */}
+      <div className="flex-1 flex gap-6 overflow-hidden">
+        <div className="flex-1 min-w-0">
+          <KanbanBoard onSelectApplication={setSelectedApplication} selectedId={selectedApplication?.id} />
+        </div>
+
+        {/* AI Insights Sidebar */}
+        {selectedApplication && (
+          <aside className="hidden lg:flex w-[360px] bg-surface-container-lowest border-l border-outline-variant shadow-[-8px_0_32px_rgba(0,33,82,0.06)] flex-col z-30 shrink-0">
+            <div className="p-6 border-b border-outline-variant flex justify-between items-center bg-surface-container-lowest">
+              <div className="flex items-center gap-2 text-primary font-bold">
+                <Sparkles size={20} className="bg-primary/10 p-1.5 rounded-lg" />
+                <h3 className="text-lg font-semibold tracking-tight">{t('pipeline.ai_insights')} <span className="font-normal text-on-surface-variant text-sm ml-1">/ {t('pipeline.ai_insights_th')}</span></h3>
+              </div>
+              <button onClick={() => setSelectedApplication(null)} className="text-on-surface-variant hover:text-on-surface hover:bg-surface-container p-1.5 rounded-full transition-colors">
+                ×
+              </button>
+            </div>
+            <div className="p-6 overflow-y-auto flex-1 flex flex-col gap-6">
+              <div className="flex flex-col items-center text-center">
+                <div className="relative mb-3">
+                  <div className="w-24 h-24 rounded-full bg-primary-container text-on-primary-container flex items-center justify-center font-bold text-3xl shadow-md ring-4 ring-surface-container-lowest">
+                    {selectedApplication.candidates?.full_name?.split(' ').map((n: string) => n[0]).join('').slice(0, 2).toUpperCase() || '?'}
+                  </div>
+                  <span className="absolute bottom-0 right-0 bg-primary w-6 h-6 rounded-full border-2 border-surface-container-lowest flex items-center justify-center text-white text-xs">✓</span>
+                </div>
+                <h4 className="text-xl font-bold text-on-surface">{selectedApplication.candidates?.full_name}</h4>
+                <p className="text-sm text-on-surface-variant mt-1">{selectedApplication.candidates?.current_position || 'Candidate'}</p>
+                <div className="mt-4 bg-primary text-on-primary text-xs font-semibold px-4 py-1.5 rounded-full flex items-center gap-1.5 shadow-md">
+                  <Sparkles size={14} /> {selectedApplication.ai_match_score || 0}% {t('pipeline.overall_match')}
+                </div>
+              </div>
+
+              <div className="bg-surface-container-low p-4 rounded-xl border border-outline-variant/50">
+                <h5 className="text-xs font-semibold text-on-surface-variant uppercase tracking-wider mb-4 flex items-center gap-2">
+                  <span className="text-primary">✓</span> {t('pipeline.why_match')} / {t('pipeline.why_match_th')}
+                </h5>
+                {selectedApplication.ai_analysis ? (
+                  <ul className="flex flex-col gap-4">
+                    {selectedApplication.ai_analysis.matched_skills?.length > 0 && (
+                      <li className="flex gap-3 items-start">
+                        <span className="text-tertiary text-lg mt-0.5 flex-shrink-0">✓</span>
+                        <div>
+                          <p className="text-sm font-semibold text-on-surface">Skills Match</p>
+                          <p className="text-xs text-on-surface-variant mt-1 leading-snug">
+                            Matched: {selectedApplication.ai_analysis.matched_skills.join(', ')}
+                          </p>
+                        </div>
+                      </li>
+                    )}
+                    {selectedApplication.ai_analysis.experience_match && (
+                      <li className="flex gap-3 items-start">
+                        <span className="text-tertiary text-lg mt-0.5 flex-shrink-0">✓</span>
+                        <div>
+                          <p className="text-sm font-semibold text-on-surface">Experience Match</p>
+                          <p className="text-xs text-on-surface-variant mt-1 leading-snug">{selectedApplication.ai_analysis.experience_match}</p>
+                        </div>
+                      </li>
+                    )}
+                    {selectedApplication.ai_analysis.education_match && (
+                      <li className="flex gap-3 items-start">
+                        <span className="text-tertiary text-lg mt-0.5 flex-shrink-0">✓</span>
+                        <div>
+                          <p className="text-sm font-semibold text-on-surface">Education Match</p>
+                          <p className="text-xs text-on-surface-variant mt-1 leading-snug">{selectedApplication.ai_analysis.education_match}</p>
+                        </div>
+                      </li>
+                    )}
+                  </ul>
+                ) : (
+                  <div className="flex flex-col items-center gap-2 py-4 text-center">
+                    <Brain size={24} className="text-outline-variant" />
+                    <p className="text-xs text-on-surface-variant leading-relaxed">
+                      AI screening not yet run for this candidate.<br />
+                      Screening runs automatically when a CV is uploaded.
+                    </p>
+                  </div>
+                )}
+              </div>
+
+              <div className="mt-auto pt-6 pb-2">
+                <button
+                  onClick={handleMoveToInterview}
+                  disabled={updateStatus.isPending}
+                  className="w-full bg-primary text-on-primary text-sm font-semibold py-3 rounded-xl hover:bg-on-primary-fixed-variant transition-colors flex items-center justify-center gap-2 shadow-md hover:shadow-lg active:scale-[0.98] transform disabled:opacity-50"
+                >
+                  {updateStatus.isPending ? 'Updating...' : t('pipeline.move_to_interview')}
+                  <ArrowRight size={16} />
+                </button>
+              </div>
+            </div>
+          </aside>
+        )}
+      </div>
+    </div>
+  )
+}
+
+export default PipelinePage

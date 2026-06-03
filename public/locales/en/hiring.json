@@ -1,0 +1,41 @@
+{
+  "title": "Hiring & Documentation",
+  "subtitle": "Automated compliance & document generation for SEA region.",
+  "no_offers": "No offers yet",
+  "create_first_offer": "Create your first offer letter.",
+  "create_offer": "Create Offer",
+  "export_audit": "Export Audit Log",
+  "sent": "Sent",
+  "viewed": "Viewed",
+  "accepted": "Accepted",
+  "rejected": "Rejected",
+  "doc_generation": {
+    "title": "Document Generation Module"
+  },
+  "tracking": {
+    "title": "Accepted Offers & Documents",
+    "pending": "Pending Actions",
+    "candidate": "Candidate",
+    "doc_type": "Document Type",
+    "status": "Status",
+    "auto_remind": "Auto-Remind",
+    "offer_letter": "Offer Letter"
+  },
+  "preview": {
+    "offer_preview": "Offer Preview",
+    "empty_title": "Document Preview",
+    "empty_subtitle": "Select a document to preview",
+    "select_offer": "Select an offer to preview details",
+    "offer_letter": "OFFER LETTER",
+    "employer": "Employer",
+    "employee": "Employee",
+    "position": "Position",
+    "salary": "Salary",
+    "start_date": "Start Date",
+    "disclaimer": "This offer letter is generated automatically by AdminMate AI. Please review all details before sending.",
+    "employer_sig": "Employer Sig.",
+    "employee_sig": "Employee Sig.",
+    "edit_draft": "Edit Draft",
+    "send_for_sig": "Send for Sig"
+  }
+}

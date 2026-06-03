@@ -1,0 +1,35 @@
+{
+  "title": "Analitik & Laporan",
+  "subtitle": "การวิเคราะห์และรายงานผลการปฏิบัติงาน HR",
+  "filters": "Filter",
+  "export_csv": "Ekspor CSV",
+  "kpi": {
+    "recruitment_efficiency": "Efisiensi Rekrutmen",
+    "recruitment_efficiency_sub": "ประสิทธิภาพการสรรหา (Time-to-Hire)",
+    "days": "Hari",
+    "cost_per_hire": "Biaya per Perekrutan",
+    "cost_per_hire_sub": "ต้นทุนต่อการจ้างงาน",
+    "avg": "Rata-rata",
+    "onboarding_success": "Keberhasilan Onboarding",
+    "onboarding_success_sub": "ความสำเร็จในการเริ่มงาน",
+    "completion": "Penyelesaian",
+    "completion_label": "Tingkat Penyelesaian"
+  },
+  "chart": {
+    "pipeline_title": "Analitik Pipeline Perekrutan",
+    "pipeline_subtitle": "วิเคราะห์กระบวนการจ้างงานรายเดือน"
+  },
+  "breakdown": {
+    "title": "Rincian Sumber",
+    "subtitle": "แหล่งที่มาของผู้สมัคร"
+  },
+  "table": {
+    "title": "Laporan yang Dibuat",
+    "subtitle": "รายงานที่สร้างล่าสุด",
+    "report_name": "Nama Laporan",
+    "category": "Kategori",
+    "date": "Tanggal",
+    "action": "Tindakan"
+  },
+  "view_all": "Lihat Semua"
+}

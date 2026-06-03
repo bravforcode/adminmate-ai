@@ -1,0 +1,41 @@
+{
+  "title": "Tuyển dụng & Tài liệu",
+  "subtitle": "Tuân thủ tự động và tạo tài liệu cho khu vực SEA.",
+  "no_offers": "Chưa có đề nghị",
+  "create_first_offer": "Tạo thư mời làm việc đầu tiên của bạn.",
+  "create_offer": "Tạo đề nghị",
+  "export_audit": "Xuất nhật ký kiểm tra",
+  "sent": "Đã gửi",
+  "viewed": "Đã xem",
+  "accepted": "Đã nhận",
+  "rejected": "Đã từ chối",
+  "doc_generation": {
+    "title": "Mô-đun Tạo Tài liệu"
+  },
+  "tracking": {
+    "title": "Đề nghị & Tài liệu Đã Nhận",
+    "pending": "Hành động Đang Chờ",
+    "candidate": "Ứng viên",
+    "doc_type": "Loại Tài liệu",
+    "status": "Trạng thái",
+    "auto_remind": "Nhắc nhở Tự động",
+    "offer_letter": "Thư Mời Làm Việc"
+  },
+  "preview": {
+    "offer_preview": "Xem trước Thư Mời",
+    "empty_title": "Xem trước Tài liệu",
+    "empty_subtitle": "Chọn tài liệu để xem trước",
+    "select_offer": "Chọn đề nghị để xem chi tiết",
+    "offer_letter": "THƯ MỜI LÀM VIỆC",
+    "employer": "Nhà tuyển dụng",
+    "employee": "Nhân viên",
+    "position": "Vị trí",
+    "salary": "Lương",
+    "start_date": "Ngày bắt đầu",
+    "disclaimer": "Thư mời này được tạo tự động bởi AdminMate AI. Vui lòng xem xét kỹ lưỡng trước khi gửi.",
+    "employer_sig": "Chữ ký NTD",
+    "employee_sig": "Chữ ký NV",
+    "edit_draft": "Chỉnh sửa Bản nháp",
+    "send_for_sig": "Gửi để Ký"
+  }
+}
