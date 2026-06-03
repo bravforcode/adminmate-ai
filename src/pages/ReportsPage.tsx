@@ -59,7 +59,14 @@ function KPICard({ title, subtitle, value, unit, icon: Icon, iconBg, iconColor, 
   )
 }
 
-const PERIODS = ['Q3 2023', 'Q2 2023', 'YTD']
+const now = new Date()
+const currentYear = now.getFullYear()
+const currentQuarter = Math.floor(now.getMonth() / 3) + 1
+const PERIODS = [
+  `Q${currentQuarter} ${currentYear}`,
+  `Q${currentQuarter - 1 || 4} ${currentQuarter === 1 ? currentYear - 1 : currentYear}`,
+  'YTD',
+]
 
 const formatNumber = (n: number) => n >= 1000 ? (n / 1000).toFixed(1) + 'k' : String(n)
 
@@ -67,7 +74,7 @@ export function ReportsPage() {
   const { t } = useTranslation(['reports', 'common'])
   const navigate = useNavigate()
   const company = useAuthStore(s => s.company)
-  const [activePeriod, setActivePeriod] = useState('Q3 2023')
+  const [activePeriod, setActivePeriod] = useState(PERIODS[0])
 
   const { data: pipeline } = useQuery({
     queryKey: ['reports', 'pipeline', company?.id],
@@ -88,11 +95,20 @@ export function ReportsPage() {
         supabase.from('onboarding_checklists').select('id', { count: 'exact', head: true }).eq('company_id', company.id),
         supabase.from('onboarding_checklists').select('id', { count: 'exact', head: true }).eq('company_id', company.id).eq('status', 'completed'),
       ])
+      const hired = hiredApps.data || []
+      const avgDays = hired.length > 0
+        ? Math.round(hired.reduce((sum: number, app: any) => {
+            const created = new Date(app.created_at).getTime()
+            const updated = new Date(app.updated_at).getTime()
+            return sum + (updated - created) / (1000 * 60 * 60 * 24)
+          }, 0) / hired.length)
+        : 0
       return {
         hiredCount: hiredApps.count || 0,
         totalApps: totalApps.count || 0,
         totalChecklists: totalChecklists.count || 0,
         completedChecklists: completedChecklists.count || 0,
+        avgDaysToHire: avgDays,
       }
     },
     enabled: !!company?.id,
@@ -123,8 +139,10 @@ export function ReportsPage() {
     value: (pipeline as any)?.[s.id] || 0,
   }))
 
-  const avgDays = kpis?.hiredCount ? Math.round(Math.random() * 14 + 14) : 0
-  const costPerHire = kpis?.hiredCount ? new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0 }).format(Math.round(Math.random() * 2000 + 3000)) : '$0'
+  const avgDays = kpis?.avgDaysToHire || 0
+  const costPerHire = kpis?.hiredCount
+    ? new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0 }).format(Math.round((kpis.totalApps * 150) / Math.max(kpis.hiredCount, 1)))
+    : '$0'
   const completionRate = kpis?.totalChecklists ? Math.round((kpis.completedChecklists / kpis.totalChecklists) * 100) : 0
 
   const sourceBreakdown = candidates?.reduce((acc: Record<string, number>, c: any) => {

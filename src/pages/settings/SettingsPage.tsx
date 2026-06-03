@@ -122,20 +122,11 @@ export function SettingsPage() {
             <div className="absolute -right-12 -top-12 w-48 h-48 bg-primary-fixed-dim rounded-full blur-3xl opacity-20 pointer-events-none" />
             <div className="flex justify-between items-start mb-3">
               <h3 className="text-title-lg font-semibold text-on-surface">{t('settings.current_plan') || 'Current Plan'}</h3>
-              <span className="bg-primary-fixed text-on-primary-fixed-variant px-2 py-0.5 rounded text-xs font-semibold">ENTERPRISE</span>
+              <span className="bg-primary-fixed text-on-primary-fixed-variant px-2 py-0.5 rounded text-xs font-semibold capitalize">{company?.subscription_tier || 'Free'}</span>
             </div>
             <div className="mb-4">
-              <p className="text-3xl font-bold text-primary tracking-tight">$850<span className="text-base text-on-surface-variant font-normal">/mo</span></p>
-              <p className="text-sm text-on-surface-variant">Billed annually. Next invoice: Oct 1, 2024</p>
-            </div>
-            <div className="space-y-2 mb-4">
-              <div className="flex justify-between text-xs text-on-surface">
-                <span>API Calls (Monthly)</span>
-                <span className="font-semibold">45k / 50k</span>
-              </div>
-              <div className="w-full bg-surface-container-high h-2 rounded-full overflow-hidden">
-                <div className="bg-primary h-full w-[90%] rounded-full" />
-              </div>
+              <p className="text-3xl font-bold text-primary tracking-tight">—</p>
+              <p className="text-sm text-on-surface-variant">{t('settings.contact_sales') || 'Contact sales for plan details'}</p>
             </div>
             <button onClick={() => toast('Billing portal will open in a new tab')} className="w-full bg-surface border border-outline-variant text-primary rounded-lg py-2 text-sm font-medium hover:bg-surface-container-low transition-colors">
               {t('settings.manage_billing') || 'Manage Billing'}

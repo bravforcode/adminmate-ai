@@ -98,9 +98,8 @@ export function DocumentsPage() {
                         {doc.reminder_enabled && (
                           <button onClick={() => handleReminder(doc.id)} className="p-1.5 hover:bg-surface-container rounded text-on-surface-variant hover:text-primary" title="Send Reminder"><Bell size={14} /></button>
                         )}
-                        <select value="" onChange={e => { if (!e.target.value) return; updateDoc.mutate({ id: doc.id, data: { status: e.target.value } }) }}
+                        <select value={doc.status || 'draft'} onChange={e => updateDoc.mutate({ id: doc.id, data: { status: e.target.value } })}
                           className="text-xs border border-outline-variant rounded px-2 py-1 bg-surface-container-lowest">
-                          <option value="">Update status</option>
                           <option value="draft">Draft</option>
                           <option value="pending_signature">Pending Signature</option>
                           <option value="signed">Signed</option>

@@ -19,10 +19,8 @@ export function OnboardingMgmtPage() {
   const recalc = useRecalculateProgress()
   const { profile, company } = useAuthStore()
 
-  const [messages, setMessages] = useState([
-    { role: 'bot' as const, text: "Hello! I'm Mate AI. How can I help you with your onboarding or policies today?" },
-    { role: 'user' as const, text: "What are the work hours in the Thailand office?" },
-    { role: 'bot' as const, text: "Standard work hours for the Thailand office are 9:00 AM to 6:00 PM, Monday through Friday, with a 1-hour lunch break." },
+  const [messages, setMessages] = useState<{ role: 'bot' | 'user'; text: string }[]>([
+    { role: 'bot', text: "Hello! I'm Mate AI. How can I help you with your onboarding or policies today?" },
   ])
   const [input, setInput] = useState('')
 
@@ -42,21 +40,20 @@ export function OnboardingMgmtPage() {
     await recalc.mutateAsync(task.checklist_id)
   }
 
-  const handleSendMessage = () => {
+  const handleSendMessage = async () => {
     if (!input.trim()) return
-    const text = input.toLowerCase()
-    let reply = ''
-    if (/hours|time|work|office/.test(text)) {
-      reply = "Standard work hours are 9:00 AM to 6:00 PM, Monday-Friday. Thailand office: 9:00-18:00 ICT. Vietnam office: 8:30-17:30 ICT. Indonesia office: 8:00-17:00 WIB. All include a 1-hour lunch break."
-    } else if (/leave|vacation|holiday/.test(text)) {
-      reply = "Our leave policy includes: 12 annual leave days, 10 sick days, and public holidays per your local country calendar. Unused annual leave carries over up to 5 days. Maternity/paternity leave follows local statutory requirements."
-    } else if (/insurance|health|benefit/.test(text)) {
-      reply = "We offer comprehensive health insurance including inpatient/outpatient coverage, dental, and vision. Benefits are effective from your start date. Dependents can be added. Contact HR for the full benefits booklet."
-    } else {
-      reply = `Great question about "${input}". I'll look into that for you. For now, try asking about work hours, leave policy, or benefits — or check the Quick Resources section on the right.`
-    }
-    setMessages(prev => [...prev, { role: 'user' as const, text: input }, { role: 'bot' as const, text: reply }])
+    const userText = input
     setInput('')
+    setMessages(prev => [...prev, { role: 'user', text: userText }])
+    try {
+      const { supabase } = await import('../lib/supabase')
+      const { data } = await supabase.functions.invoke('mate-ai-chat', {
+        body: { message: userText, companyId: company?.id, context: 'onboarding' },
+      })
+      setMessages(prev => [...prev, { role: 'bot', text: data?.reply || "I'll look into that for you. Try asking about work hours, leave policy, or benefits." }])
+    } catch {
+      setMessages(prev => [...prev, { role: 'bot', text: "Sorry, I couldn't process that. Please try again or check the Quick Resources section." }])
+    }
   }
 
   const myChecklist = checklists?.find((c: any) => c.user_id === profile?.id) || checklists?.[0]

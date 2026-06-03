@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 import { KanbanBoard } from '../../components/pipeline/KanbanBoard'
 import { useUpdateApplicationStatus } from '../../hooks/useApplications'
+import { useJobs } from '../../hooks/useJobs'
 import { Sparkles, ArrowRight, CheckCircle2, XCircle, Brain } from 'lucide-react'
 import toast from 'react-hot-toast'
 
@@ -10,7 +11,10 @@ export function PipelinePage() {
   const { t } = useTranslation('recruitment')
   const navigate = useNavigate()
   const updateStatus = useUpdateApplicationStatus()
+  const { data: jobs } = useJobs()
   const [selectedApplication, setSelectedApplication] = useState<any>(null)
+
+  const currentJob = jobs?.[0]
 
   const handleMoveToInterview = async () => {
     if (!selectedApplication) return
@@ -31,7 +35,7 @@ export function PipelinePage() {
           <h2 className="text-2xl font-semibold text-on-surface tracking-tight">
             {t('pipeline.title')} <span className="text-lg font-normal text-on-surface-variant ml-2">/ {t('pipeline.title_th')}</span>
           </h2>
-          <p className="text-sm text-on-surface-variant mt-1">Senior Frontend Engineer - Bangkok Office</p>
+          <p className="text-sm text-on-surface-variant mt-1">{currentJob?.title || t('pipeline.all_jobs')}</p>
         </div>
         <button onClick={() => navigate('/recruitment/jobs')} className="border border-primary text-primary bg-surface-container-lowest px-4 py-2 rounded-lg text-sm font-medium flex items-center gap-2 hover:bg-primary/5 transition-colors shadow-sm">
           <Sparkles size={16} />

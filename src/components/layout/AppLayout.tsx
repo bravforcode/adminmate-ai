@@ -1,10 +1,18 @@
+import { useEffect } from 'react'
 import { Outlet } from 'react-router-dom'
 import { Sidebar } from './Sidebar'
 import { Header } from './Header'
 import { MobileNav } from './MobileNav'
 import { Toaster } from 'react-hot-toast'
+import { useAuthStore } from '../../stores/authStore'
 
 export function AppLayout() {
+  const initSession = useAuthStore(s => s.initSession)
+
+  useEffect(() => {
+    initSession()
+  }, [initSession])
+
   return (
     <div className="min-h-screen bg-background flex">
       <Sidebar />

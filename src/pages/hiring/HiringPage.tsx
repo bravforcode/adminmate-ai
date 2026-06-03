@@ -54,7 +54,24 @@ export function HiringPage() {
           <p className="text-body-md text-on-surface-variant mt-1">{t('subtitle')}</p>
         </div>
         <div className="flex gap-2">
-          <button className="border border-outline-variant text-primary px-4 py-2 rounded-lg text-sm font-medium hover:bg-surface-container-low transition-colors">
+          <button onClick={() => {
+            if (!offers?.length) { toast('No offers to export'); return }
+            const headers = ['Candidate', 'Position', 'Salary', 'Currency', 'Status', 'Start Date']
+            const rows = offers.map((o: any) => [
+              o.candidates?.full_name || '',
+              o.position_title || '',
+              o.salary_offered || '',
+              o.salary_currency || '',
+              o.status || '',
+              o.start_date || '',
+            ])
+            const csv = [headers.join(','), ...rows.map(r => r.join(','))].join('\n')
+            const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' })
+            const url = URL.createObjectURL(blob)
+            const a = document.createElement('a')
+            a.href = url; a.download = `offer-audit-${new Date().toISOString().split('T')[0]}.csv`
+            a.click(); URL.revokeObjectURL(url)
+          }} className="border border-outline-variant text-primary px-4 py-2 rounded-lg text-sm font-medium hover:bg-surface-container-low transition-colors">
             {t('export_audit')}
           </button>
           <button
@@ -271,7 +288,8 @@ export function HiringPage() {
               <button
                 onClick={() => {
                   if (!selectedOffer) { toast('Please select an offer first'); return }
-                  toast('Editing coming soon')
+                  if (selectedOffer.status !== 'draft') { toast('Only draft offers can be edited'); return }
+                  setShowForm(true)
                 }}
                 className="flex-1 border border-primary text-primary py-2 rounded-lg text-sm font-medium hover:bg-surface-container-low transition-colors"
               >

@@ -1,4 +1,4 @@
-import { Navigate, useLocation, useSearchParams } from 'react-router-dom'
+import { Navigate, useLocation } from 'react-router-dom'
 import { useAuthStore } from '../stores/authStore'
 
 interface AuthGuardProps {
@@ -8,10 +8,6 @@ interface AuthGuardProps {
 }
 
 export function AuthGuard({ children, requiredRoles, requireCompany = true }: AuthGuardProps) {
-  const [searchParams] = useSearchParams()
-  const isDemo = searchParams.get('demo') === '1' || import.meta.env.VITE_DEMO_MODE === 'true'
-  if (isDemo) return <>{children}</>
-
   const { isAuthenticated, isAdminOrHR, hasCompany, isLoading, profile } = useAuthStore()
   const location = useLocation()
 

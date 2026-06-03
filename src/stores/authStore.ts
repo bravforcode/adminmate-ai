@@ -1,6 +1,7 @@
 import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
 import type { User } from '@supabase/supabase-js'
+import { supabase } from '../lib/supabase'
 
 interface UserProfile {
   id: string
@@ -40,6 +41,7 @@ interface AuthState {
   setCompany: (company: Company | null) => void
   setLoading: (isLoading: boolean) => void
   initDemo: () => void
+  initSession: () => Promise<void>
   reset: () => void
   isAuthenticated: () => boolean
   isAdminOrHR: () => boolean
@@ -65,6 +67,35 @@ export const useAuthStore = create<AuthState>()(
         company: { id: 'demo-company-1', name: 'TechNova Solutions Co., Ltd.', country: 'TH', currency: 'THB', locale: 'th-TH' },
         isLoading: false,
       }),
+      initSession: async () => {
+        set({ isLoading: true })
+        try {
+          const { data: { session } } = await supabase.auth.getSession()
+          if (!session?.user) {
+            set({ user: null, profile: null, company: null, isLoading: false })
+            return
+          }
+          set({ user: session.user })
+          const { data: profile } = await supabase
+            .from('user_profiles')
+            .select('*')
+            .eq('id', session.user.id)
+            .single()
+          if (profile) set({ profile })
+          if (profile?.company_id) {
+            const { data: company } = await supabase
+              .from('companies')
+              .select('*')
+              .eq('id', profile.company_id)
+              .single()
+            if (company) set({ company })
+          }
+        } catch {
+          set({ user: null, profile: null, company: null })
+        } finally {
+          set({ isLoading: false })
+        }
+      },
       reset: () => set({ user: null, profile: null, company: null, isLoading: false }),
 
       isAuthenticated: () => !!get().user,
