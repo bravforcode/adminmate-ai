@@ -1,6 +1,4 @@
 import { useState } from 'react'
-import { pdf } from '@react-pdf/renderer'
-import { OfferLetterPDF } from './OfferLetterPDF'
 import { Download } from 'lucide-react'
 import toast from 'react-hot-toast'
 
@@ -12,6 +10,10 @@ export function PDFDownloadButton({ data }: Props) {
   const download = async () => {
     try {
       setGenerating(true)
+      const [{ pdf }, { OfferLetterPDF }] = await Promise.all([
+        import('@react-pdf/renderer'),
+        import('./OfferLetterPDF'),
+      ])
       const blob = await pdf(OfferLetterPDF({ data })).toBlob()
       const url = URL.createObjectURL(blob)
       const a = document.createElement('a')
@@ -20,7 +22,7 @@ export function PDFDownloadButton({ data }: Props) {
       a.click()
       URL.revokeObjectURL(url)
       toast.success('PDF downloaded')
-    } catch (e: any) {
+    } catch {
       toast.error('Failed to generate PDF')
     } finally {
       setGenerating(false)
