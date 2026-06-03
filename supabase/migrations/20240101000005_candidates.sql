@@ -1,5 +1,5 @@
 CREATE TABLE candidates (
-    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     company_id UUID NOT NULL REFERENCES companies(id) ON DELETE CASCADE,
     email VARCHAR(255),
     phone VARCHAR(50),

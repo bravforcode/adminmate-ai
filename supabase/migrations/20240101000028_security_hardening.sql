@@ -1,12 +1,12 @@
 -- Additional indexes for performance
-CREATE INDEX CONCURRENTLY IF NOT EXISTS idx_candidates_line_user_id ON candidates(line_user_id) WHERE line_user_id IS NOT NULL;
-CREATE INDEX CONCURRENTLY IF NOT EXISTS idx_candidates_whatsapp_phone ON candidates(whatsapp_phone) WHERE whatsapp_phone IS NOT NULL;
-CREATE INDEX CONCURRENTLY IF NOT EXISTS idx_offers_company ON offers(company_id);
-CREATE INDEX CONCURRENTLY IF NOT EXISTS idx_offers_candidate ON offers(candidate_id);
-CREATE INDEX CONCURRENTLY IF NOT EXISTS idx_interviews_company ON interviews(company_id);
-CREATE INDEX CONCURRENTLY IF NOT EXISTS idx_chat_connections_active ON chat_platform_connections(platform, is_active) WHERE is_active = true;
-CREATE INDEX CONCURRENTLY IF NOT EXISTS idx_pdpa_consents_subject ON pdpa_consents(company_id, data_subject_email);
-CREATE INDEX CONCURRENTLY IF NOT EXISTS idx_notifications_created ON notifications(user_id, created_at DESC);
+CREATE INDEX IF NOT EXISTS idx_candidates_line_user_id ON candidates(line_user_id) WHERE line_user_id IS NOT NULL;
+CREATE INDEX IF NOT EXISTS idx_candidates_whatsapp_phone ON candidates(whatsapp_phone) WHERE whatsapp_phone IS NOT NULL;
+CREATE INDEX IF NOT EXISTS idx_offers_company ON offers(company_id);
+CREATE INDEX IF NOT EXISTS idx_offers_candidate ON offers(candidate_id);
+CREATE INDEX IF NOT EXISTS idx_interviews_company ON interviews(company_id);
+CREATE INDEX IF NOT EXISTS idx_chat_connections_active ON chat_platform_connections(platform, is_active) WHERE is_active = true;
+CREATE INDEX IF NOT EXISTS idx_pdpa_consents_subject ON pdpa_consents(company_id, data_subject_email);
+CREATE INDEX IF NOT EXISTS idx_notifications_created ON notifications(user_id, created_at DESC);
 
 -- Storage bucket RLS policies (these must run in Supabase SQL Editor, Edge Functions cannot create storage policies)
 -- Note: Run these manually in Supabase Dashboard → Storage → Policies:

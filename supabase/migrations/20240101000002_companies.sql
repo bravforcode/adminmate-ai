@@ -1,5 +1,5 @@
 CREATE TABLE companies (
-    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     name VARCHAR(255) NOT NULL,
     name_th VARCHAR(255),
     tax_id VARCHAR(50),

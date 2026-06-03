@@ -1,5 +1,5 @@
 CREATE TABLE pdpa_consents (
-    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     company_id UUID NOT NULL REFERENCES companies(id),
     candidate_id UUID REFERENCES candidates(id),
     employee_id UUID REFERENCES user_profiles(id),
@@ -16,7 +16,7 @@ CREATE TABLE pdpa_consents (
 );
 
 CREATE TABLE data_deletion_requests (
-    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     company_id UUID NOT NULL REFERENCES companies(id),
     requester_email VARCHAR(255) NOT NULL,
     request_type VARCHAR(20) NOT NULL,

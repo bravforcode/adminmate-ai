@@ -32,5 +32,7 @@ CREATE POLICY "notif_insert" ON notifications FOR INSERT WITH CHECK (
 
 -- Fix chat_platform_connections RLS (was missing)
 ALTER TABLE chat_platform_connections ENABLE ROW LEVEL SECURITY;
+DROP POLICY IF EXISTS "connections_read" ON chat_platform_connections;
 CREATE POLICY "connections_read" ON chat_platform_connections FOR SELECT USING (company_id = get_user_company_id());
+DROP POLICY IF EXISTS "connections_write" ON chat_platform_connections;
 CREATE POLICY "connections_write" ON chat_platform_connections FOR ALL USING (company_id = get_user_company_id() AND is_admin_or_hr());

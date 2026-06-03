@@ -1,5 +1,5 @@
 CREATE TABLE audit_logs (
-    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     company_id UUID REFERENCES companies(id) ON DELETE CASCADE,
     user_id UUID REFERENCES user_profiles(id) ON DELETE SET NULL,
     action VARCHAR(50) NOT NULL,

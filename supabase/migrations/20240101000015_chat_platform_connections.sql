@@ -1,5 +1,5 @@
 CREATE TABLE chat_platform_connections (
-    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     company_id UUID NOT NULL REFERENCES companies(id) ON DELETE CASCADE,
     platform VARCHAR(20) NOT NULL,
     platform_account_id VARCHAR(255),

@@ -1,5 +1,5 @@
 CREATE TABLE onboarding_checklists (
-    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     company_id UUID NOT NULL REFERENCES companies(id) ON DELETE CASCADE,
     employee_id UUID NOT NULL REFERENCES user_profiles(id) ON DELETE CASCADE,
     offer_id UUID REFERENCES offers(id),
@@ -14,7 +14,7 @@ CREATE TABLE onboarding_checklists (
 );
 
 CREATE TABLE onboarding_tasks (
-    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     checklist_id UUID NOT NULL REFERENCES onboarding_checklists(id) ON DELETE CASCADE,
     company_id UUID NOT NULL REFERENCES companies(id) ON DELETE CASCADE,
     task_name VARCHAR(255) NOT NULL,

@@ -1,5 +1,5 @@
 CREATE TABLE documents (
-    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     company_id UUID NOT NULL REFERENCES companies(id) ON DELETE CASCADE,
     candidate_id UUID REFERENCES candidates(id) ON DELETE SET NULL,
     employee_id UUID REFERENCES user_profiles(id) ON DELETE SET NULL,
