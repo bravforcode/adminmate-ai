@@ -55,7 +55,7 @@ export const useAuthStore = create<AuthState>()(
       user: null,
       profile: null,
       company: null,
-      isLoading: false,
+      isLoading: true,
 
       setUser: (user) => set({ user }),
       setProfile: (profile) => set({ profile }),
@@ -73,6 +73,7 @@ export const useAuthStore = create<AuthState>()(
           const { data: { session } } = await supabase.auth.getSession()
           if (!session?.user) {
             set({ user: null, profile: null, company: null, isLoading: false })
+            localStorage.removeItem('adminmate-auth')
             return
           }
           set({ user: session.user })
@@ -81,7 +82,13 @@ export const useAuthStore = create<AuthState>()(
             .select('*')
             .eq('id', session.user.id)
             .single()
-          if (profile) set({ profile })
+          if (profile) {
+            set({ profile })
+          } else {
+            set({ user: null, profile: null, company: null, isLoading: false })
+            localStorage.removeItem('adminmate-auth')
+            return
+          }
           if (profile?.company_id) {
             const { data: company } = await supabase
               .from('companies')
@@ -92,6 +99,7 @@ export const useAuthStore = create<AuthState>()(
           }
         } catch {
           set({ user: null, profile: null, company: null })
+          localStorage.removeItem('adminmate-auth')
         } finally {
           set({ isLoading: false })
         }
@@ -106,9 +114,6 @@ export const useAuthStore = create<AuthState>()(
     {
       name: 'adminmate-auth',
       partialize: (s) => ({ user: s.user, profile: s.profile, company: s.company }),
-      onRehydrateStorage: () => (state) => {
-        if (state) state.isLoading = false
-      },
     }
   )
 )

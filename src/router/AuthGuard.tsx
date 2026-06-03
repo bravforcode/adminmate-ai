@@ -1,3 +1,4 @@
+import { useEffect } from 'react'
 import { Navigate, useLocation } from 'react-router-dom'
 import { useAuthStore } from '../stores/authStore'
 
@@ -8,8 +9,12 @@ interface AuthGuardProps {
 }
 
 export function AuthGuard({ children, requiredRoles, requireCompany = true }: AuthGuardProps) {
-  const { isAuthenticated, isAdminOrHR, hasCompany, isLoading, profile } = useAuthStore()
+  const { isAuthenticated, isAdminOrHR, hasCompany, isLoading, profile, initSession } = useAuthStore()
   const location = useLocation()
+
+  useEffect(() => {
+    initSession()
+  }, [initSession])
 
   if (isLoading) {
     return (
