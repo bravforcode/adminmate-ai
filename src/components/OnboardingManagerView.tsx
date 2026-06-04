@@ -31,8 +31,8 @@ export default function OnboardingManagerView({
       setRemindingDocId(null);
       alert(
         language === 'TH'
-          ? `✓ แจ้งเตือนเสร็จสิ้น! ได้ส่งคำเตือนสเปกสูงทาง LINE & อีเมลพนักงานใหม่เกี่ยวกับเอกสาร "${doc.nameTh}"`
-          : `✓ Communication Dispatched! Employee notified via email & chat regarding: "${doc.nameEn}"`
+          ? `แจ้งเตือนเสร็จสิ้น! ได้ส่งคำเตือนสเปกสูงทาง LINE & อีเมลพนักงานใหม่เกี่ยวกับเอกสาร "${doc.nameTh}"`
+          : `Communication Dispatched! Employee notified via email & chat regarding: "${doc.nameEn}"`
       );
     }, 700);
   };
@@ -161,7 +161,7 @@ export default function OnboardingManagerView({
                 : 'According to industrial employment guidelines, NDA templates should be finalized on the candidate onboarding portal before week one ends to avoid trade secret execution exposures.'}
             </p>
             <div className="p-3.5 rounded-xl bg-purple-50 text-purple-900 text-xs font-medium italic border border-purple-100">
-              {language === 'TH' ? '💡 คลิกสลับในเมนูด้านบนเป็น "กล่องเครื่องมือผู้สมัคร" เพื่อทดสอบเช็กเอกสารในฝั่งพนักงานใหม่ได้ทันทีครับ!' : '💡 Click the "Applicant Toolbox" toggle above to experience the candidate portal tasks instantly!'}
+              {language === 'TH' ? 'คลิกสลับในเมนูด้านบนเป็น "กล่องเครื่องมือผู้สมัคร" เพื่อทดสอบเช็กเอกสารในฝั่งพนักงานใหม่ได้ทันทีครับ!' : 'Click the "Applicant Toolbox" toggle above to experience the candidate portal tasks instantly!'}
             </div>
           </div>
 

@@ -1,35 +1,85 @@
 import { serve } from 'https://deno.land/std@0.168.0/http/server.ts'
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2'
 import { handleIncomingMessage } from '../_shared/messageHandler.ts'
-import { corsHeaders } from '../_shared/utils.ts'
+import { corsHeaders, JSON_HEADERS, logRequest } from '../_shared/utils.ts'
 import { errorResponse } from '../_shared/errorHandler.ts'
 
+const FN = 'whatsapp-webhook'
+const MAX_BODY_BYTES = 1_000_000
+
 serve(async (req) => {
-  if (req.method === 'GET') {
-    const url = new URL(req.url)
-    const mode = url.searchParams.get('hub.mode')
-    const token = url.searchParams.get('hub.verify_token')
-    const challenge = url.searchParams.get('hub.challenge')
-    if (mode === 'subscribe' && token === Deno.env.get('WHATSAPP_VERIFY_TOKEN')) {
-      return new Response(challenge, { status: 200 })
-    }
-    return new Response('Forbidden', { status: 403 })
-  }
+  if (req.method === 'OPTIONS') return new Response('ok', { headers: corsHeaders })
+
+  const start = Date.now()
   try {
-    const body = await req.json()
+    if (req.method === 'GET') {
+      const url = new URL(req.url)
+      const mode = url.searchParams.get('hub.mode')
+      const token = url.searchParams.get('hub.verify_token')
+      const challenge = url.searchParams.get('hub.challenge')
+      const expected = Deno.env.get('WHATSAPP_VERIFY_TOKEN')
+      if (!expected) {
+        return new Response('Webhook not configured', { status: 503 })
+      }
+      if (mode === 'subscribe' && token === expected && challenge) {
+        return new Response(challenge, { status: 200 })
+      }
+      logRequest({ function: FN, durationMs: Date.now() - start, status: 403, error: 'webhook verification failed' })
+      return new Response('Forbidden', { status: 403 })
+    }
+
+    if (req.method !== 'POST') {
+      return new Response(JSON.stringify({ success: false, error: 'Method not allowed' }), { status: 405, headers: JSON_HEADERS })
+    }
+
+    const contentLength = parseInt(req.headers.get('content-length') || '0', 10)
+    if (contentLength > MAX_BODY_BYTES) {
+      return new Response('Payload too large', { status: 413 })
+    }
+
+    const supabase = createClient(Deno.env.get('SUPABASE_URL')!, Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!)
+    const body = await req.json().catch(() => null)
+    if (!body) return new Response('Invalid JSON', { status: 400 })
+
     const entry = body.entry?.[0]
     const change = entry?.changes?.[0]
     const value = change?.value
     const message = value?.messages?.[0]
     if (!message || message.type !== 'text') return new Response('ok')
 
-    const supabase = createClient(Deno.env.get('SUPABASE_URL')!, Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!)
+    const from = message.from
+    const text = message.text?.body
+    if (!from || typeof from !== 'string' || from.length > 32) return new Response('ok')
+    if (!text || typeof text !== 'string' || text.length > 4096) return new Response('ok')
+
     const phoneNumberId = value.metadata?.phone_number_id
-    const { data: conn } = await supabase.from('chat_platform_connections').select('company_id').eq('platform', 'whatsapp').eq('platform_account_id', phoneNumberId).eq('is_active', true).maybeSingle()
-    await handleIncomingMessage({
-      platform: 'whatsapp', platformUserId: message.from, message: message.text?.body || '',
-      companyId: conn?.company_id || Deno.env.get('DEFAULT_COMPANY_ID') || '',
-    }, supabase)
+    if (!phoneNumberId || typeof phoneNumberId !== 'string') {
+      logRequest({ function: FN, durationMs: Date.now() - start, status: 200, error: 'no phone_number_id' })
+      return new Response('ok')
+    }
+
+    const { data: conn } = await supabase
+      .from('chat_platform_connections')
+      .select('company_id')
+      .eq('platform', 'whatsapp')
+      .eq('platform_account_id', phoneNumberId)
+      .eq('is_active', true)
+      .maybeSingle()
+    const companyId = conn?.company_id || Deno.env.get('DEFAULT_COMPANY_ID') || ''
+    if (!companyId) {
+      logRequest({ function: FN, durationMs: Date.now() - start, status: 200, error: 'no company mapping' })
+      return new Response('ok')
+    }
+
+    await handleIncomingMessage(
+      { platform: 'whatsapp', platformUserId: from, message: text, companyId },
+      supabase
+    )
+
+    logRequest({ function: FN, durationMs: Date.now() - start, status: 200 })
     return new Response('ok')
-  } catch (error) { return errorResponse(error, 500, corsHeaders) }
+  } catch (error) {
+    logRequest({ function: FN, durationMs: Date.now() - start, status: 500, error: error instanceof Error ? error.message : String(error) })
+    return errorResponse(error, 500, corsHeaders)
+  }
 })

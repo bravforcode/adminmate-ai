@@ -23,5 +23,9 @@
   "ai_match": "คะแนน AI",
   "status": "สถานะ",
   "action": "การกระทำ",
-  "view_pipeline": "ดู Pipeline"
+  "view_pipeline": "ดูไปป์ไลน์",
+  "needs_signature": "ต้องการลายเซ็น",
+  "slow_onboarding": "การปฐมนิเทศช้า",
+  "all_clear": "ไม่มีงานค้าง",
+  "no_candidates": "ไม่พบผู้สมัคร"
 }

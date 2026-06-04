@@ -13,3 +13,15 @@ test-results/
 stats.html
 
 .vercel
+
+# Agent and temporary files
+.lean-ctx-init
+.playwright-mcp/
+AGENTS.md
+LEAN-CTX.md
+CLAUDE.md
+rg-keys.txt
+rg-out.txt
+rg-pattern.txt
+test-results.txt
+

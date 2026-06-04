@@ -1,4 +1,4 @@
-import { LayoutDashboard, Briefcase, Users, Kanban, FileCheck, UserCheck, MessageSquare, BarChart2, Settings, CalendarCheck } from 'lucide-react'
+import { LayoutDashboard, Briefcase, Users, Kanban, FileCheck, UserCheck, MessageSquare, BarChart2, Settings, CalendarCheck, FileText, Shield } from 'lucide-react'
 
 export interface NavItem {
   path?: string
@@ -21,6 +21,7 @@ export const navItems: NavItem[] = [
   },
   { path: '/hiring', labelKey: 'nav.hiring', icon: FileCheck },
   { path: '/onboarding', labelKey: 'nav.onboarding', icon: UserCheck },
+  { path: '/documents', labelKey: 'nav.documents', icon: FileText },
   { path: '/chat', labelKey: 'nav.ai_assistant', icon: MessageSquare },
   { path: '/reports', labelKey: 'nav.reports', icon: BarChart2 },
   { path: '/settings', labelKey: 'nav.settings', icon: Settings },

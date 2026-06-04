@@ -155,7 +155,7 @@ export default function OnboardingAssistantView({ language }: OnboardingAssistan
                   onClick={() => handlePresetClick(q)}
                   className="p-3 text-left bg-slate-50 hover:bg-indigo-50/50 rounded-xl border border-slate-200/50 text-xs font-semibold text-slate-700 hover:text-indigo-700 transition-colors cursor-pointer"
                 >
-                  💡 {language === 'TH' ? q.th : q.en}
+                  {language === 'TH' ? q.th : q.en}
                 </button>
               ))}
             </div>

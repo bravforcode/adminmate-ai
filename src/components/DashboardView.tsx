@@ -1,18 +1,16 @@
 import React from 'react';
 import { translations } from '../translations';
-import { Language, Page, Job, Candidate } from '../types';
-import { 
-  PlusCircle, 
-  Briefcase, 
-  UserPlus, 
-  CheckCircle2, 
-  FileWarning, 
-  Users2, 
-  ArrowUpRight, 
-  Rocket, 
+import { Language, Page, UserRole, Job, Candidate } from '../types';
+import {
+  PlusCircle,
+  Briefcase,
+  UserPlus,
+  CheckCircle2,
+  FileWarning,
+  Users2,
+  ArrowUpRight,
+  ListTodo,
   AlertCircle,
-  FileCheck2,
-  ListTodo
 } from 'lucide-react';
 
 interface DashboardViewProps {
@@ -22,7 +20,7 @@ interface DashboardViewProps {
   pendingDocsCount: number;
   onboardingInProgressCount: number;
   setActivePage: (page: Page) => void;
-  setUserRole: (role: 'Owner' | 'HR' | 'Admin' | 'Applicant') => void;
+  userRole?: UserRole;
 }
 
 export default function DashboardView({
@@ -32,7 +30,6 @@ export default function DashboardView({
   pendingDocsCount,
   onboardingInProgressCount,
   setActivePage,
-  setUserRole
 }: DashboardViewProps) {
   const t = translations[language];
 
@@ -43,287 +40,325 @@ export default function DashboardView({
 
   const quickActionsList = [
     {
-      titleEn: "Create Job Description",
-      titleTh: "เขียนกติกาคำอธิบายงาน (JD)",
-      descEn: "Define requirements & let AI generate standard English/Thai JD",
-      descTh: "กำหนดหัวข้อเพื่อให้ AI สร้างรายระเอียดใบสมัครงานอัจฉริยะ",
-      color: "from-blue-500 to-indigo-600",
+      titleKey: t.createJdBtn,
+      descEn: "Let AI write a professional job description for any role",
+      descTh: "ให้ AI เขียนรายละเอียดตำแหน่งงานอย่างมืออาชีพ",
       icon: PlusCircle,
       action: () => setActivePage('jd-generator')
     },
     {
-      titleEn: "Screen Uploaded Resume",
-      titleTh: "สแกนคัดกรองเรซูเมผู้สมัคร",
-      descEn: "Upload resume files & calculate AI match score comparison",
-      descTh: "อัปโหลดและประเมินทักษะของผู้สมัครเทียบกับเกณฑ์บริษัท",
-      color: "from-purple-500 to-pink-600",
+      titleKey: t.uploadResumeBtn,
+      descEn: "Upload resume and calculate AI match score instantly",
+      descTh: "อัปโหลดเรซูเมและประเมิน Match Score ทันที",
       icon: UserPlus,
       action: () => setActivePage('resume-upload')
     },
     {
-      titleEn: "Build CV (Test Applicant Side)",
-      titleTh: "เขียนและพัฒนา CV (ทดลองมุมผู้สมัคร)",
-      descEn: "Add target position and skills to export custom formatted PDF",
-      descTh: "สร้างประวัติย่อ ปรับปรุงคำศัพท์ และยื่นจำลองสมัครเข้าบอร์ดบริษัท",
-      color: "from-emerald-500 to-teal-600",
-      icon: Rocket,
-      action: () => {
-        setUserRole('Applicant');
-        setActivePage('cv-builder');
-      }
-    },
-    {
-      titleEn: "Generate Onboarding Checklist",
-      titleTh: "จัดทำแผนเตรียมตัวพนักงานใหม่",
-      descEn: "Inspect document status, contracts, or send urgent email reminders",
-      descTh: "ตรวจสอบคลังเอกสาร สัญญาการจ้างงาน และรับการแจ้งเตือนพนักงาน",
-      color: "from-amber-500 to-orange-600",
+      titleKey: t.generateOnboardingChecklistBtn,
+      descEn: "Inspect document status and send email reminders",
+      descTh: "ตรวจสอบคลังเอกสารและส่งการแจ้งเตือนพนักงาน",
       icon: ListTodo,
       action: () => setActivePage('onboarding-manager')
-    }
+    },
+    {
+      titleKey: t.cvBuilder,
+      descEn: "Build and export a formatted applicant CV",
+      descTh: "สร้างและส่งออก CV ผู้สมัครในรูปแบบที่พร้อมใช้งาน",
+      icon: UserPlus,
+      action: () => setActivePage('cv-builder')
+    },
   ];
 
   return (
-    <div className="space-y-8 animate-in fade-in duration-300 font-sans">
-      
-      {/* Top Welcome Title */}
-      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
-        <div>
-          <h1 className="text-2xl font-black text-slate-950 tracking-tight sm:text-3xl">
-            {language === 'TH' ? 'ระบบภาพรวมผู้ประกอบการ' : 'SME HR Executive Hub'}
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '40px', fontFamily: 'var(--font-sans)' }}>
+      <style>{`
+        .kpi-grid {
+          display: grid;
+          grid-template-columns: 2fr 1fr 1fr 1fr 1fr;
+          gap: 16px;
+        }
+        @media (max-width: 1024px) {
+          .kpi-grid {
+            grid-template-columns: 1.5fr 1fr 1fr;
+          }
+        }
+        @media (max-width: 768px) {
+          .kpi-grid {
+            grid-template-columns: 1fr 1fr;
+          }
+        }
+        @media (max-width: 480px) {
+          .kpi-grid {
+            grid-template-columns: 1fr;
+          }
+        }
+      `}</style>
+
+      {/* Welcome Header — asymmetric 1.3fr / 0.7fr */}
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: '24px', flexWrap: 'wrap' }}>
+        <div style={{ flex: '1 1 300px' }}>
+          <p className="t-label" style={{ marginBottom: '8px' }}>
+            {language === 'TH' ? 'ภาพรวมระบบ' :
+             language === 'VI' ? 'Tong quan he thong' :
+             language === 'ZH' ? '系统概览' : 'System Overview'}
+          </p>
+          <h1
+            style={{
+              fontFamily: 'var(--font-serif)',
+              fontSize: 'clamp(22px, 3vw, 32px)',
+              fontWeight: 400,
+              color: 'var(--color-navy-deep)',
+              letterSpacing: '-0.03em',
+              lineHeight: 1.15,
+              margin: '0 0 8px 0',
+            }}
+          >
+            {language === 'TH' ? 'ภาพรวม HR ของคุณ' :
+             language === 'VI' ? 'Tong quan HR cua ban' :
+             language === 'ZH' ? '您的HR概览' : 'Your HR Overview'}
           </h1>
-          <p className="mt-1 text-sm text-slate-500">
-            {language === 'TH' 
-              ? 'ระบบวิเคราะห์ข้อมูล รับสมัครบุคลากร และแอดมินสำหรับธุรกิจ SME ในระบบเดียว' 
-              : 'AdminMate AI integrated hiring pipeline, CV matcher & onboarding solution for your small business.'}
+          <p style={{ fontSize: '14px', color: 'var(--color-text-secondary)', fontWeight: 300, margin: 0, lineHeight: 1.6 }}>
+            {language === 'TH'
+              ? 'ระบบ AI ช่วยสรรหา คัดกรอง และบริหารพนักงานใหม่ทั้งหมดในที่เดียว'
+              : language === 'VI' ? 'He thong AI ho tro tuyen dung, sang loc va quan ly nhan vien moi'
+              : language === 'ZH' ? 'AI系统助力招聘、筛选和管理新员工'
+              : 'AI-powered hiring, screening, and onboarding in one platform.'}
           </p>
         </div>
-        
-        {/* Date Stamp */}
-        <div className="bg-white px-4 py-2 rounded-xl border border-slate-200/60 shadow-2xs flex items-center gap-2">
-          <span className="h-2 w-2 rounded-full bg-emerald-500 animate-pulse"></span>
-          <span className="text-xs font-mono font-semibold text-slate-600">
-            {new Date().toLocaleDateString(language === 'TH' ? 'th-TH' : 'en-US', {
-              weekday: 'short',
-              year: 'numeric',
-              month: 'short',
-              day: 'numeric',
-            })}
+        {/* Date + status badge — offset slightly */}
+        <div
+          style={{
+            flexShrink: 0,
+            alignSelf: 'flex-start',
+            marginTop: '8px',
+            display: 'flex',
+            alignItems: 'center',
+            gap: '8px',
+            padding: '8px 16px',
+            backgroundColor: 'var(--color-surface)',
+            border: '1px solid var(--color-border)',
+            borderRadius: '8px',
+          }}
+        >
+          <span
+            style={{
+              width: '7px',
+              height: '7px',
+              borderRadius: '50%',
+              backgroundColor: '#1a6b45',
+              flexShrink: 0,
+            }}
+          />
+          <span style={{ fontSize: '12px', fontWeight: 500, color: 'var(--color-text-secondary)', fontFamily: 'monospace' }}>
+            {new Date().toLocaleDateString(
+              language === 'TH' ? 'th-TH' : language === 'ZH' ? 'zh-CN' : language === 'VI' ? 'vi-VN' : 'en-US',
+              { weekday: 'short', year: 'numeric', month: 'short', day: 'numeric' }
+            )}
           </span>
         </div>
       </div>
 
-      {/* KPI Cards Grid */}
-      <div className="grid grid-cols-2 lg:grid-cols-5 gap-4">
-        
-        {/* Card 1: Open jobs */}
-        <div 
-          onClick={() => setActivePage('settings')}
-          className="bg-white p-5 rounded-2xl border border-slate-100 shadow-xs hover:shadow-md hover:border-indigo-200 active:scale-98 cursor-pointer transition-all flex flex-col justify-between"
+      {/* KPI Cards Strip — mixed sizes: first card 2x wide */}
+      <div className="kpi-grid">
+        {/* Card 1: Open Jobs — slightly larger */}
+        <div
+          onClick={() => setActivePage('jd-generator')}
+          className="luxury-card"
+          style={{ padding: '24px', cursor: 'pointer' }}
         >
-          <div className="flex items-center justify-between">
-            <span className="p-2 bg-indigo-50 rounded-xl">
-              <Briefcase className="h-5 w-5 text-indigo-600" />
-            </span>
-            <span className="text-[10px] font-bold text-amber-600 bg-amber-50 px-1.5 py-0.5 rounded-md">
-              LIVE
-            </span>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+            <Briefcase size={18} color="var(--color-navy)" />
+            <span className="badge badge-navy">{language === 'TH' ? 'เปิดรับ' : 'Open'}</span>
           </div>
-          <div className="mt-4">
-            <span className="block text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">{openJobsCount}</span>
-            <span className="text-xs font-medium text-slate-500">{t.openJobs}</span>
+          <div style={{ marginTop: '20px' }}>
+            <span style={{ display: 'block', fontSize: 'clamp(24px, 3vw, 32px)', fontWeight: 700, color: 'var(--color-navy-deep)', lineHeight: 1 }}>{openJobsCount}</span>
+            <span style={{ fontSize: '12px', color: 'var(--color-text-muted)', fontWeight: 400, marginTop: '4px', display: 'block' }}>{t.openJobs}</span>
           </div>
         </div>
 
-        {/* Card 2: New applicants */}
-        <div 
+        {/* Card 2: New Candidates */}
+        <div
           onClick={() => setActivePage('pipeline')}
-          className="bg-white p-5 rounded-2xl border border-slate-100 shadow-xs hover:shadow-md hover:border-purple-200 active:scale-98 cursor-pointer transition-all flex flex-col justify-between"
+          className="luxury-card"
+          style={{ padding: '24px', cursor: 'pointer' }}
         >
-          <div className="flex items-center justify-between">
-            <span className="p-2 bg-purple-50 rounded-xl">
-              <UserPlus className="h-5 w-5 text-purple-600" />
-            </span>
-            <span className="text-[10px] font-bold text-purple-600 bg-purple-50 px-1.5 py-0.5 rounded-md">
-              +NEW
-            </span>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+            <UserPlus size={18} color="var(--color-accent)" />
           </div>
-          <div className="mt-4">
-            <span className="block text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">{newCandidatesCount}</span>
-            <span className="text-xs font-medium text-slate-500">{t.newApplicants}</span>
+          <div style={{ marginTop: '20px' }}>
+            <span style={{ display: 'block', fontSize: 'clamp(24px, 3vw, 32px)', fontWeight: 700, color: 'var(--color-navy-deep)', lineHeight: 1 }}>{newCandidatesCount}</span>
+            <span style={{ fontSize: '12px', color: 'var(--color-text-muted)', fontWeight: 400, marginTop: '4px', display: 'block' }}>{t.newApplicants}</span>
           </div>
         </div>
 
-        {/* Card 3: Shortlisted candidates */}
-        <div 
+        {/* Card 3: Shortlisted */}
+        <div
           onClick={() => setActivePage('pipeline')}
-          className="bg-white p-5 rounded-2xl border border-slate-100 shadow-xs hover:shadow-md hover:border-emerald-250 active:scale-98 cursor-pointer transition-all flex flex-col justify-between col-span-1"
+          className="luxury-card"
+          style={{ padding: '24px', cursor: 'pointer' }}
         >
-          <div className="flex items-center justify-between">
-            <span className="p-2 bg-emerald-50 rounded-xl">
-              <CheckCircle2 className="h-5 w-5 text-emerald-600" />
-            </span>
-            <span className="text-[10px] font-bold text-emerald-600 bg-emerald-50 px-1.5 py-0.5 rounded-md">
-              {language === 'TH' ? 'ผ่านเกณฑ์' : 'Qualified'}
-            </span>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+            <CheckCircle2 size={18} color="var(--color-success)" />
           </div>
-          <div className="mt-4">
-            <span className="block text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">{shortlistedCount}</span>
-            <span className="text-xs font-medium text-slate-500">{t.shortlisted}</span>
+          <div style={{ marginTop: '20px' }}>
+            <span style={{ display: 'block', fontSize: 'clamp(24px, 3vw, 32px)', fontWeight: 700, color: 'var(--color-navy-deep)', lineHeight: 1 }}>{shortlistedCount}</span>
+            <span style={{ fontSize: '12px', color: 'var(--color-text-muted)', fontWeight: 400, marginTop: '4px', display: 'block' }}>{t.shortlisted}</span>
           </div>
         </div>
 
-        {/* Card 4: Pending documents */}
-        <div 
+        {/* Card 4: Pending Docs */}
+        <div
           onClick={() => setActivePage('onboarding-manager')}
-          className="bg-white p-5 rounded-2xl border border-slate-100 shadow-xs hover:shadow-md hover:border-amber-200 active:scale-98 cursor-pointer transition-all flex flex-col justify-between col-span-1"
+          className="luxury-card"
+          style={{ padding: '24px', cursor: 'pointer' }}
         >
-          <div className="flex items-center justify-between">
-            <span className="p-2 bg-amber-50 rounded-xl">
-              <FileWarning className="h-5 w-5 text-amber-600" />
-            </span>
-            {pendingDocsCount > 0 ? (
-              <span className="text-[10px] font-bold text-red-600 bg-red-50 px-1.5 py-0.5 rounded-md animate-pulse">
-                {language === 'TH' ? 'ด่วน' : 'ALERT'}
-              </span>
-            ) : (
-              <span className="text-[10px] font-bold text-emerald-600 bg-emerald-50 px-1.5 py-0.5 rounded-md">
-                OK
-              </span>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+            <FileWarning size={18} color={pendingDocsCount > 0 ? 'var(--color-warning)' : 'var(--color-success)'} />
+            {pendingDocsCount > 0 && (
+              <span className="badge badge-warning">{language === 'TH' ? 'ด่วน' : 'Pending'}</span>
             )}
           </div>
-          <div className="mt-4">
-            <span className="block text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">{pendingDocsCount}</span>
-            <span className="text-xs font-medium text-slate-500">{t.pendingDocs}</span>
+          <div style={{ marginTop: '20px' }}>
+            <span style={{ display: 'block', fontSize: 'clamp(24px, 3vw, 32px)', fontWeight: 700, color: 'var(--color-navy-deep)', lineHeight: 1 }}>{pendingDocsCount}</span>
+            <span style={{ fontSize: '12px', color: 'var(--color-text-muted)', fontWeight: 400, marginTop: '4px', display: 'block' }}>{t.pendingDocs}</span>
           </div>
         </div>
 
-        {/* Card 5: Onboarding in progress */}
-        <div 
+        {/* Card 5: Onboarding */}
+        <div
           onClick={() => setActivePage('onboarding-manager')}
-          className="bg-white p-5 rounded-2xl border border-slate-100 shadow-xs hover:shadow-md hover:border-cyan-200 active:scale-98 cursor-pointer transition-all flex flex-col justify-between col-span-2 lg:col-span-1"
+          className="luxury-card"
+          style={{ padding: '24px', cursor: 'pointer' }}
         >
-          <div className="flex items-center justify-between">
-            <span className="p-2 bg-cyan-50 rounded-xl">
-              <Users2 className="h-5 w-5 text-cyan-600" />
-            </span>
-            <span className="text-[10px] font-bold text-cyan-600 bg-cyan-50 px-1.5 py-0.5 rounded-md">
-              {language === 'TH' ? 'เริ่มงาน' : 'Active'}
-            </span>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+            <Users2 size={18} color="var(--color-accent)" />
           </div>
-          <div className="mt-4">
-            <span className="block text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">{onboardingInProgressCount}</span>
-            <span className="text-xs font-medium text-slate-500">{t.onboardingInProgress}</span>
+          <div style={{ marginTop: '20px' }}>
+            <span style={{ display: 'block', fontSize: 'clamp(24px, 3vw, 32px)', fontWeight: 700, color: 'var(--color-navy-deep)', lineHeight: 1 }}>{onboardingInProgressCount}</span>
+            <span style={{ fontSize: '12px', color: 'var(--color-text-muted)', fontWeight: 400, marginTop: '4px', display: 'block' }}>{t.onboardingInProgress}</span>
           </div>
         </div>
-
       </div>
 
-      {/* BENTO GRID: Quick Actions & Custom Analytics Graphic */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-        
-        {/* Quick Actions Panel */}
-        <div className="lg:col-span-2 space-y-4">
-          <h2 className="text-lg font-bold text-slate-900 flex items-center gap-2">
-            <Rocket className="h-5 w-5 text-indigo-600" />
-            {t.quickActions}
-          </h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+      {/* Quick Actions + Chart — asymmetric 2fr / 1fr */}
+      <div style={{ display: 'grid', gridTemplateColumns: '1.4fr 0.8fr', gap: '28px', alignItems: 'start' }}>
+
+        {/* Quick Actions */}
+        <div>
+          <p className="t-label" style={{ marginBottom: '16px' }}>{t.quickActions}</p>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
             {quickActionsList.map((itm, i) => {
               const ActionIcon = itm.icon;
               return (
                 <button
                   key={i}
                   onClick={itm.action}
-                  className="group relative flex items-start gap-4 p-5 rounded-2xl bg-white border border-slate-100 shadow-2xs hover:shadow-md hover:border-slate-200 transition-all text-left overflow-hidden cursor-pointer"
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '16px',
+                    padding: '16px 20px',
+                    backgroundColor: 'var(--color-surface)',
+                    border: '1px solid var(--color-border-subtle)',
+                    borderRadius: '10px',
+                    cursor: 'pointer',
+                    textAlign: 'left',
+                    transition: 'border-color 0.3s ease-out, box-shadow 0.3s ease-out, transform 0.3s ease-out',
+                    width: '100%',
+                  }}
+                  onMouseEnter={(e) => {
+                    const el = e.currentTarget;
+                    el.style.borderColor = 'var(--color-accent)';
+                    el.style.boxShadow = '0 8px 24px rgba(41, 128, 185, 0.1)';
+                    el.style.transform = 'translateX(3px)';
+                  }}
+                  onMouseLeave={(e) => {
+                    const el = e.currentTarget;
+                    el.style.borderColor = 'var(--color-border-subtle)';
+                    el.style.boxShadow = 'none';
+                    el.style.transform = 'translateX(0)';
+                  }}
                 >
-                  <div className={`p-3 rounded-xl bg-gradient-to-br ${itm.color} text-white shadow-xs group-hover:scale-105 transition-transform`}>
-                    <ActionIcon className="h-5 w-5" />
+                  <div
+                    style={{
+                      width: '36px',
+                      height: '36px',
+                      borderRadius: '8px',
+                      backgroundColor: 'var(--color-accent-light)',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      flexShrink: 0,
+                    }}
+                  >
+                    <ActionIcon size={16} color="var(--color-accent)" />
                   </div>
-                  <div className="flex-1 min-w-0">
-                    <h3 className="text-sm font-bold text-slate-900 group-hover:text-indigo-600 transition-colors flex items-center gap-1">
-                      {language === 'TH' ? itm.titleTh : itm.titleEn}
-                      <ArrowUpRight className="h-3.5 w-3.5 opacity-0 group-hover:opacity-100 transition-all text-indigo-500" />
-                    </h3>
-                    <p className="mt-1 text-xs text-slate-500 leading-normal">
+                  <div style={{ flex: 1, minWidth: 0 }}>
+                    <p style={{ fontSize: '13px', fontWeight: 600, color: 'var(--color-navy-deep)', margin: 0 }}>
+                      {itm.titleKey}
+                    </p>
+                    <p style={{ fontSize: '12px', color: 'var(--color-text-muted)', margin: '2px 0 0 0', fontWeight: 300 }}>
                       {language === 'TH' ? itm.descTh : itm.descEn}
                     </p>
                   </div>
+                  <ArrowUpRight size={14} color="var(--color-text-muted)" style={{ flexShrink: 0 }} />
                 </button>
               );
             })}
           </div>
         </div>
 
-        {/* Custom Visual Analytics Graphic widget */}
-        <div className="bg-white p-6 rounded-2xl border border-slate-100 shadow-xs flex flex-col justify-between">
-          <div>
-            <h3 className="text-sm font-extrabold text-slate-900">
-              {language === 'TH' ? 'คะแนนแมตช์เรซูเมเปรียบเทียบเฉลี่ย' : 'Average AI Match Distribution'}
-            </h3>
-            <p className="text-[11px] text-slate-400 mt-0.5">
-              {language === 'TH' ? 'อัตราความสอดคล้องของผู้สมัครประจำสัปดาห์นี้' : 'Hiring alignment scores evaluated for active roles.'}
-            </p>
-          </div>
-
-          {/* Interactive Custom SVG Bar graph mimicking professional charts */}
-          <div className="my-6 relative h-36 flex items-end justify-between px-1 border-b border-slate-100 pb-1">
-            
-            {/* Guide grid lines */}
-            <div className="absolute inset-x-0 bottom-1/4 border-b border-dashed border-slate-100"></div>
-            <div className="absolute inset-x-0 bottom-2/4 border-b border-dashed border-slate-100"></div>
-            <div className="absolute inset-x-0 bottom-3/4 border-b border-dashed border-slate-100"></div>
-
-            {candidates.map((cand, idx) => {
-              // Map scores from candidates
-              const heightPct = `${Math.max(25, cand.matchScore)}%`;
-              const scoreColor = cand.matchScore >= 85 ? 'bg-indigo-500' : cand.matchScore >= 70 ? 'bg-emerald-500' : 'bg-amber-500';
+        {/* Match Score Chart — offset down slightly */}
+        <div
+          className="luxury-card"
+          style={{ padding: '24px', marginTop: '36px' }}
+        >
+          <p className="t-label" style={{ marginBottom: '6px' }}>
+            {language === 'TH' ? 'คะแนนความเหมาะสม' :
+             language === 'VI' ? 'Diem phu hop' :
+             language === 'ZH' ? '匹配分数' : 'Match Scores'}
+          </p>
+          <p style={{ fontSize: '12px', color: 'var(--color-text-muted)', fontWeight: 300, margin: '0 0 20px 0' }}>
+            {language === 'TH' ? 'ผู้สมัครปัจจุบัน' : 'Active candidates'}
+          </p>
+          <div style={{ position: 'relative', height: '120px', display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', gap: '4px', borderBottom: '1px solid var(--color-border-subtle)', paddingBottom: '4px' }}>
+            {candidates.slice(0, 6).map((cand) => {
+              const h = `${Math.max(20, cand.matchScore)}%`;
+              const barColor = cand.matchScore >= 85 ? 'var(--color-navy)' : cand.matchScore >= 70 ? 'var(--color-accent)' : 'var(--color-text-muted)';
               return (
-                <div key={cand.id} className="flex flex-col items-center flex-1 group relative">
-                  {/* Tooltip on hover */}
-                  <div className="absolute bottom-full mb-1 bg-slate-950 text-white rounded px-1.5 py-0.5 text-[9px] font-mono opacity-0 group-hover:opacity-100 transition-opacity z-10 pointer-events-none whitespace-nowrap">
-                    {cand.name.split(' ')[0]}: {cand.matchScore}%
-                  </div>
-                  {/* Column bar */}
-                  <div 
-                    className={`w-4 sm:w-6 ${scoreColor} rounded-t-xs hover:brightness-105 transition-all shadow-2xs`}
-                    style={{ height: heightPct }}
-                  ></div>
-                  <span className="text-[9px] text-slate-400 font-bold tracking-tight text-center truncate w-12 mt-1">
+                <div key={cand.id} style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '4px' }}>
+                  <div style={{ width: '100%', height: h, backgroundColor: barColor, borderRadius: '3px 3px 0 0', opacity: 0.85 }} />
+                  <span style={{ fontSize: '8px', color: 'var(--color-text-muted)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', maxWidth: '100%' }}>
                     {cand.name.split(' ')[0]}
                   </span>
                 </div>
               );
             })}
           </div>
-
-          <div className="flex justify-between items-center text-xs font-mono">
-            <span className="flex items-center gap-1.5 text-slate-500">
-              <span className="h-2.5 w-2.5 rounded-full bg-indigo-500"></span>
-              {language === 'TH' ? 'ดีเยี่ยม' : 'Excellent (85%+)'}
-            </span>
-            <span className="flex items-center gap-1.5 text-slate-500">
-              <span className="h-2.5 w-2.5 rounded-full bg-emerald-500"></span>
-              {language === 'TH' ? 'ผ่านเกณฑ์' : 'Qualified (70%-84%)'}
-            </span>
-          </div>
         </div>
-
       </div>
 
-      {/* Notice Board Area regarding SME Assistance guidelines */}
-      <div className="p-4 rounded-xl bg-indigo-50/60 border border-indigo-100 flex items-start gap-3">
-        <AlertCircle className="h-5 w-5 text-indigo-600 shrink-0 mt-0.5" />
-        <div className="text-xs">
-          <p className="font-bold text-indigo-900">
-            {language === 'TH' ? 'ข้อตกลงในการสนับสนุนคำตัดสิน (Human-in-the-Loop AI)' : 'Supportive Assistant Framework Statement'}
-          </p>
-          <p className="text-indigo-700 font-medium mt-0.5 leading-relaxed">
-            {language === 'TH' 
-              ? 'ระบบพนักงานปัญญาประดิษฐ์ AdminMate AI ทำหน้าที่ให้ข้อมูลสแกนคัดสรร และประมวลความเหมาะสมเพื่ออํานวยความสะดวกแก่ผู้ประกอบการเท่านั้น โดยระบบจะไม่มีนโยบายปฏิเสธผู้รับเข้าทำงานโดยประมวลผลอัตโนมัติ เพื่อคุ้มครองความหลากหลายในการจ้างงานอย่างเท่าเทียม'
-              : 'AdminMate AI functions purely as a decision-support copilot for screening, analysis, and draft preparation. The platform never rejects candidates automatically; final decisions are always preserved for SME builders.'}
-          </p>
-        </div>
+      {/* AI Policy Notice — text-only with left border accent, no colored box */}
+      <div
+        style={{
+          borderLeft: '3px solid var(--color-navy)',
+          paddingLeft: '20px',
+          paddingTop: '4px',
+          paddingBottom: '4px',
+        }}
+      >
+        <p style={{ fontSize: '12px', fontWeight: 600, color: 'var(--color-navy)', margin: '0 0 4px 0' }}>
+          {language === 'TH' ? 'ข้อตกลงการใช้งาน AI (Human-in-the-Loop)' :
+           language === 'VI' ? 'Thong bao chinh sach AI' :
+           language === 'ZH' ? 'AI使用政策声明' : 'AI Advisory Framework'}
+        </p>
+        <p style={{ fontSize: '12px', color: 'var(--color-text-secondary)', margin: 0, fontWeight: 300, lineHeight: 1.6, maxWidth: '680px' }}>
+          {language === 'TH'
+            ? 'AdminMate AI ทำหน้าที่ให้ข้อมูลเพื่อสนับสนุนการตัดสินใจเท่านั้น ระบบจะไม่ปฏิเสธผู้สมัครโดยอัตโนมัติ การตัดสินใจขั้นสุดท้ายอยู่ที่ผู้ประกอบการเสมอ'
+            : language === 'VI' ? 'AdminMate AI chi ho tro quyet dinh, khong tu dong tu choi ung vien. Quyet dinh cuoi cung thuoc ve nha tuyen dung.'
+            : language === 'ZH' ? 'AdminMate AI仅提供决策支持，不会自动拒绝候选人。最终决定权始终在雇主手中。'
+            : 'AdminMate AI functions as a decision-support tool only. The platform never rejects candidates automatically — final hiring decisions always rest with you.'}
+        </p>
       </div>
 
     </div>

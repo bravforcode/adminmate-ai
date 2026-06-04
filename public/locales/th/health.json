@@ -1,0 +1,31 @@
+{
+  "title": "สุขภาพระบบ",
+  "last_checked": "ตรวจล่าสุด",
+  "refreshing": "กำลังรีเฟรช…",
+  "service_status": "สถานะบริการ",
+  "labels": {
+    "database": "ฐานข้อมูล",
+    "auth": "การยืนยันตัวตน",
+    "edge_functions": "Edge functions",
+    "storage": "พื้นที่จัดเก็บ",
+    "status": "สถานะ",
+    "db_size": "ขนาดฐานข้อมูล",
+    "active_connections": "การเชื่อมต่อที่ใช้งาน",
+    "connected": "เชื่อมต่อแล้ว",
+    "error": "ผิดพลาด",
+    "operational": "ทำงานปกติ",
+    "degraded": "เสื่อมประสิทธิภาพ",
+    "unknown": "ไม่ทราบ"
+  },
+  "system_metrics": "เมตริกระบบ",
+  "metrics": {
+    "total_users": "ผู้ใช้ทั้งหมด",
+    "total_companies": "บริษัททั้งหมด",
+    "total_jobs": "ตำแหน่งงานทั้งหมด",
+    "total_candidates": "ผู้สมัครทั้งหมด",
+    "recent_signups": "สมัครใหม่ (7 วัน)"
+  },
+  "auto_refresh_note": "รีเฟรชอัตโนมัติทุก 30 วินาที เวลาแสดงตามเขตเวลาท้องถิ่น",
+  "error_title": "การตรวจสอบระบบล้มเหลว",
+  "error_description": "ไม่สามารถตรวจสอบสุขภาพระบบได้ กรุณาลองอีกครั้ง"
+}

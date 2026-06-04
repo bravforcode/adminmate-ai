@@ -17,23 +17,15 @@ const STATUS_COLORS: Record<string, string> = {
   expired: 'bg-gray-50 text-gray-500',
 }
 
-const STATUS_LABELS: Record<string, string> = {
-  draft: 'Draft',
-  sent: 'Sent',
-  viewed: 'Viewed',
-  accepted: 'Signed',
-  rejected: 'Rejected',
-  expired: 'Expired',
-}
-
-const DOC_TYPES = [
-  { label: 'P.N.D. 1', sub: 'Thailand Tax Auth', icon: Receipt },
-  { label: 'Labor Contract', sub: 'Vietnam Standard', icon: ScrollText },
-  { label: 'BPJS Enrollment', sub: 'Indonesia Health', icon: Shield },
+const DOC_TYPE_KEYS = [
+  { key: 'pnd1', icon: Receipt },
+  { key: 'labor_contract', icon: ScrollText },
+  { key: 'bpjs', icon: Shield },
 ]
 
 export function HiringPage() {
   const { t } = useTranslation('hiring')
+  const { t: tCommon } = useTranslation('common')
   const { data: offers, isLoading } = useOffers()
   const updateOffer = useUpdateOffer()
   const company = useAuthStore(s => s.company)
@@ -55,7 +47,7 @@ export function HiringPage() {
         </div>
         <div className="flex gap-2">
           <button onClick={() => {
-            if (!offers?.length) { toast('No offers to export'); return }
+            if (!offers?.length) { toast(t('toasts.no_offers_export')); return }
             const headers = ['Candidate', 'Position', 'Salary', 'Currency', 'Status', 'Start Date']
             const rows = offers.map((o: any) => [
               o.candidates?.full_name || '',
@@ -91,20 +83,20 @@ export function HiringPage() {
 
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
         {/* Left Column (8 cols) */}
-        <div className="lg:col-span-8 flex flex-col gap-6">
+        <div className="lg:col-span-8 flex flex-col gap-6 w-full min-w-0">
           {/* Document Generation Module */}
           <section className="bg-surface border border-outline-variant rounded-xl p-6 shadow-sm">
             <h3 className="text-lg font-semibold text-on-surface mb-4">{t('doc_generation.title')}</h3>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              {DOC_TYPES.map(doc => (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+              {DOC_TYPE_KEYS.map(doc => (
                 <button
-                  key={doc.label}
+                  key={doc.key}
                   onClick={() => setShowForm(true)}
                   className="flex flex-col items-start p-4 border border-outline-variant rounded-lg hover:border-primary hover:bg-surface-container-low transition-all text-left group"
                 >
                   <doc.icon size={24} className="text-tertiary mb-3 group-hover:text-primary transition-colors" />
-                  <span className="text-base font-semibold text-on-surface">{doc.label}</span>
-                  <span className="text-xs text-on-surface-variant mt-1">{doc.sub}</span>
+                  <span className="text-base font-semibold text-on-surface">{t(`doc_generation.${doc.key}`)}</span>
+                  <span className="text-xs text-on-surface-variant mt-1">{t(`doc_generation.${doc.key}_sub`)}</span>
                 </button>
               ))}
             </div>
@@ -122,7 +114,7 @@ export function HiringPage() {
               <div className="text-center py-12 text-on-surface-variant">{t('loading', { ns: 'common' })}</div>
             ) : (
               <div className="overflow-x-auto">
-                <table className="w-full text-left border-collapse">
+                <table className="w-full text-left border-collapse min-w-[500px]">
                   <thead>
                     <tr className="border-b border-outline-variant bg-surface-container-lowest">
                       <th className="py-3 px-4 text-xs font-semibold text-on-surface-variant uppercase tracking-wider">
@@ -161,7 +153,7 @@ export function HiringPage() {
                               STATUS_COLORS[offer.status] || ''
                             )}
                           >
-                            {STATUS_LABELS[offer.status] || offer.status}
+                            {t(offer.status) || offer.status}
                           </span>
                         </td>
                         <td className="py-4 px-4 text-center">
@@ -204,7 +196,7 @@ export function HiringPage() {
 
         {/* Right Column (4 cols) */}
         <div className="lg:col-span-4">
-          <aside className="bg-surface border border-outline-variant rounded-xl shadow-[0px_4px_20px_rgba(0,33,82,0.08)] flex flex-col h-[600px] sticky top-6">
+          <aside className="bg-surface border border-outline-variant rounded-xl shadow-[0px_4px_20px_rgba(0,33,82,0.08)] flex flex-col h-auto min-h-[400px] lg:h-[600px] lg:sticky lg:top-6">
             {/* Preview Header */}
             <div className="p-4 border-b border-outline-variant bg-surface-container-low rounded-t-xl flex justify-between items-center">
               <div>
@@ -287,8 +279,8 @@ export function HiringPage() {
             <div className="p-4 border-t border-outline-variant bg-surface flex gap-3 rounded-b-xl">
               <button
                 onClick={() => {
-                  if (!selectedOffer) { toast('Please select an offer first'); return }
-                  if (selectedOffer.status !== 'draft') { toast('Only draft offers can be edited'); return }
+                  if (!selectedOffer) { toast(t('toasts.select_offer_first')); return }
+                  if (selectedOffer.status !== 'draft') { toast(t('toasts.only_draft_editable')); return }
                   setShowForm(true)
                 }}
                 className="flex-1 border border-primary text-primary py-2 rounded-lg text-sm font-medium hover:bg-surface-container-low transition-colors"
@@ -297,7 +289,7 @@ export function HiringPage() {
               </button>
               <button
                 onClick={() => {
-                  if (!selectedOffer) { toast('Please select an offer first'); return }
+                  if (!selectedOffer) { toast(t('toasts.select_offer_first')); return }
                   updateOffer.mutate({ id: selectedOffer.id, data: { status: 'sent' } })
                 }}
                 className="flex-1 bg-primary text-on-primary py-2 rounded-lg text-sm font-medium hover:opacity-90 transition-colors flex justify-center items-center gap-2"

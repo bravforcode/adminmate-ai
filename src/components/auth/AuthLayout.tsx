@@ -1,27 +1,80 @@
-import { useTranslation } from 'react-i18next'
-
 interface AuthLayoutProps {
   children: React.ReactNode
   title: string
   subtitle?: string
 }
 
+// AuthLayout is no longer used for LoginPage (replaced by inline LoginPage design)
+// Kept for ForgotPassword, ResetPassword pages
 export function AuthLayout({ children, title, subtitle }: AuthLayoutProps) {
-  const { t } = useTranslation('common')
-
   return (
-    <div className="min-h-screen flex items-center justify-center bg-app-background p-4">
-      <div className="w-full max-w-md">
-        <div className="text-center mb-8">
-          <div className="w-10 h-10 bg-primary rounded-lg mx-auto mb-4 flex items-center justify-center">
-            <span className="text-on-primary text-xl font-bold">A</span>
+    <div style={{
+      minHeight: '100vh',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      backgroundColor: 'var(--color-bg, #f8fbff)',
+      padding: '24px',
+      fontFamily: 'var(--font-sans, Inter, sans-serif)',
+    }}>
+      <div style={{ width: '100%', maxWidth: '420px' }}>
+
+        {/* Logo */}
+        <div style={{ textAlign: 'center', marginBottom: '40px' }}>
+          <div style={{
+            width: '40px', height: '40px', borderRadius: '10px',
+            backgroundColor: 'var(--color-navy, #1e3a5f)',
+            margin: '0 auto 16px auto',
+            display: 'flex', alignItems: 'center', justifyContent: 'center',
+          }}>
+            <span style={{
+              color: '#fff',
+              fontFamily: 'var(--font-serif, Georgia, serif)',
+              fontSize: '18px',
+            }}>A</span>
           </div>
-          <h1 className="text-headline-md font-bold text-on-surface">{t('app.name')}</h1>
-          <p className="text-body-md text-on-surface-variant mt-1">{t('app.tagline')}</p>
+          <h1 style={{
+            fontFamily: 'var(--font-serif, Georgia, serif)',
+            fontSize: '20px', fontWeight: 400,
+            color: 'var(--color-navy-deep, #0f1c2e)',
+            letterSpacing: '-0.02em', margin: '0 0 4px 0',
+          }}>
+            AdminMate AI
+          </h1>
+          <p style={{
+            fontSize: '12px', color: 'var(--color-text-muted, #8aa0bb)',
+            margin: 0, fontWeight: 400,
+          }}>
+            HR Intelligence for SME
+          </p>
         </div>
-        <div className="bg-surface rounded-xl border border-outline-variant shadow-sm p-8">
-          <h2 className="text-title-lg font-semibold text-on-surface mb-1">{title}</h2>
-          {subtitle && <p className="text-body-md text-on-surface-variant mb-6">{subtitle}</p>}
+
+        {/* Card */}
+        <div style={{
+          backgroundColor: 'var(--color-surface, #ffffff)',
+          border: '1px solid var(--color-border-subtle, #e8f0f8)',
+          borderRadius: '14px',
+          padding: '36px 32px',
+          boxShadow: '0 4px 24px rgba(30, 58, 95, 0.06)',
+        }}>
+          <h2 style={{
+            fontFamily: 'var(--font-serif, Georgia, serif)',
+            fontSize: '24px', fontWeight: 400,
+            color: 'var(--color-navy-deep, #0f1c2e)',
+            letterSpacing: '-0.02em',
+            margin: '0 0 4px 0',
+          }}>
+            {title}
+          </h2>
+          {subtitle && (
+            <p style={{
+              fontSize: '14px', fontWeight: 300,
+              color: 'var(--color-text-secondary, #4a6080)',
+              margin: '0 0 24px 0', lineHeight: 1.6,
+            }}>
+              {subtitle}
+            </p>
+          )}
           {children}
         </div>
       </div>

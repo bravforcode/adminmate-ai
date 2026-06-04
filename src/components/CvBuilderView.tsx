@@ -67,8 +67,8 @@ export default function CvBuilderView({ language, onApplicantSubmit }: CvBuilder
     });
     alert(
       language === 'TH'
-        ? '✓ เขียนพรีเมียม CV ด้วยปัญญาประดิษฐ์จำลองสำเร็จแล้ว! สามารถปรับแก้รายละเอียดต่อในแท็บพรีวิวขวาซ้ายได้เลย'
-        : '✓ Generated optimized developer/consultant CV template!'
+        ? 'เขียนพรีเมียม CV ด้วยปัญญาประดิษฐ์จำลองสำเร็จแล้ว! สามารถปรับแก้รายละเอียดต่อในแท็บพรีวิวขวาซ้ายได้เลย'
+        : 'Generated optimized developer/consultant CV template!'
     );
   };
 
@@ -90,8 +90,8 @@ export default function CvBuilderView({ language, onApplicantSubmit }: CvBuilder
 
       alert(
         language === 'TH'
-          ? '✓ ปรับแต่ง CV ให้สอดคล้องกับพารามิเตอร์คีย์เวิร์ดของบริษัทเรียบร้อย! คะแนนแมตช์ความเหมาะสมเพิ่มขึ้น (+18%)'
-          : '✓ CV aligned structure optimally with open Job Descriptions! Skills updated (+18% match projection).'
+          ? 'ปรับแต่ง CV ให้สอดคล้องกับพารามิเตอร์คีย์เวิร์ดของบริษัทเรียบร้อย! คะแนนแมตช์ความเหมาะสมเพิ่มขึ้น (+18%)'
+          : 'CV aligned structure optimally with open Job Descriptions! Skills updated (+18% match projection).'
       );
       setTimeout(() => setImproveSuccess(false), 3000);
     }, 700);
@@ -101,8 +101,8 @@ export default function CvBuilderView({ language, onApplicantSubmit }: CvBuilder
   const handleCheckSpelling = () => {
     alert(
       language === 'TH'
-        ? '✓ ตรวจทานอักขระอักษร: ตรวจสอบไม่พบคำผิดทั้งในส่วนภาษาไทยและอังกฤษ มีความถูกต้องละเมียดละไมพร้อมยื่นบริษัทข้ามชาติ'
-        : '✓ Spelling Scan Complete: 100% correct spelling & grammar verified in Thai and English!'
+        ? 'ตรวจทานอักขระอักษร: ตรวจสอบไม่พบคำผิดทั้งในส่วนภาษาไทยและอังกฤษ มีความถูกต้องละเมียดละไมพร้อมยื่นบริษัทข้ามชาติ'
+        : 'Spelling Scan Complete: 100% correct spelling & grammar verified in Thai and English!'
     );
   };
 
@@ -129,8 +129,8 @@ export default function CvBuilderView({ language, onApplicantSubmit }: CvBuilder
     onApplicantSubmit(applicantCandidate);
     alert(
       language === 'TH'
-        ? `🎉 ส่งใบสมัคร (CV) สำเร็จแล้ว! ประวัติย่อของคุณได้เข้าไปอยู่ในกระดานรับสมัคร "เส้นทางการรับสมัคร" และระบบสแกนฝั่ง HR เรียบร้อย ทดลองคลิกแถบ "ระบบผู้ประกอบการ SME" ด้านบนเพื่อดูชื่อของคุณได้ทันที!`
-        : `🎉 CV Submitted successfully! Your profile has officially landed in the "Hiring Pipeline" and HR screening desk. Click "SME HR Suite" in the navbar above to inspect your custom card!`
+        ? `ส่งใบสมัคร (CV) สำเร็จแล้ว! ประวัติย่อของคุณได้เข้าไปอยู่ในกระดานรับสมัคร "เส้นทางการรับสมัคร" และระบบสแกนฝั่ง HR เรียบร้อย ทดลองคลิกแถบ "ระบบผู้ประกอบการ SME" ด้านบนเพื่อดูชื่อของคุณได้ทันที!`
+        : `CV Submitted successfully! Your profile has officially landed in the "Hiring Pipeline" and HR screening desk. Click "SME HR Suite" in the navbar above to inspect your custom card!`
     );
   };
 
@@ -238,7 +238,7 @@ export default function CvBuilderView({ language, onApplicantSubmit }: CvBuilder
         {/* Left pane: Inputs form */}
         <div className="bg-white p-6 rounded-2xl border border-slate-100 shadow-xs space-y-6">
           <h3 className="text-xs font-black uppercase tracking-wider text-slate-800 border-b border-slate-100 pb-3">
-            📂 {language === 'TH' ? 'รายละเอียดประกาศเกียรติคุณข้อมูล' : 'Personal Biography Parameters'}
+            {language === 'TH' ? 'รายละเอียดประกาศเกียรติคุณข้อมูล' : 'Personal Biography Parameters'}
           </h3>
 
           <div className="space-y-4">
@@ -464,7 +464,7 @@ export default function CvBuilderView({ language, onApplicantSubmit }: CvBuilder
             <div className="border-b-2 border-slate-950 pb-5">
               <h2 className="text-xl font-black text-slate-900 tracking-tight">{cv.fullName || "Your Full Name"}</h2>
               <span className="font-mono text-xs text-indigo-600 font-extrabold tracking-wide uppercase mt-1 block">
-                🎯 {cv.targetPosition || "Target Job Title"}
+                {cv.targetPosition || "Target Job Title"}
               </span>
 
               {/* Contacts row */}
@@ -549,7 +549,7 @@ export default function CvBuilderView({ language, onApplicantSubmit }: CvBuilder
             {/* Skills tags */}
             <div className="py-5">
               <h4 className="text-xs font-black text-slate-900 uppercase tracking-widest mb-3">
-                🛠️ {language === 'TH' ? 'กล่องทักษะความชำนาญ' : 'Strategic Area of Expertise'}
+                {language === 'TH' ? 'กล่องทักษะความชำนาญ' : 'Strategic Area of Expertise'}
               </h4>
               <div className="flex flex-wrap gap-1.5">
                 {cv.skills.some(s => s) ? (

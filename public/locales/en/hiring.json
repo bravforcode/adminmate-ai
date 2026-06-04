@@ -9,8 +9,18 @@
   "viewed": "Viewed",
   "accepted": "Accepted",
   "rejected": "Rejected",
+  "draft": "Draft",
+  "signed": "Signed",
+  "expired": "Expired",
+  "loading": "Loading...",
   "doc_generation": {
-    "title": "Document Generation Module"
+    "title": "Document Generation Module",
+    "pnd1": "P.N.D. 1",
+    "pnd1_sub": "Thailand Tax Auth",
+    "labor_contract": "Labor Contract",
+    "labor_contract_sub": "Vietnam Standard",
+    "bpjs": "BPJS Enrollment",
+    "bpjs_sub": "Indonesia Health"
   },
   "tracking": {
     "title": "Accepted Offers & Documents",
@@ -37,5 +47,10 @@
     "employee_sig": "Employee Sig.",
     "edit_draft": "Edit Draft",
     "send_for_sig": "Send for Sig"
+  },
+  "toasts": {
+    "no_offers_export": "No offers to export",
+    "select_offer_first": "Please select an offer first",
+    "only_draft_editable": "Only draft offers can be edited"
   }
 }

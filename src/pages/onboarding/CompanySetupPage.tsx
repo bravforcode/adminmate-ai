@@ -24,9 +24,9 @@ const companySchema = z.object({
 type CompanyFormData = z.infer<typeof companySchema>
 
 const COUNTRIES = [
-  { value: 'TH', label: 'Thailand 🇹🇭', flag: '🇹🇭' },
-  { value: 'VN', label: 'Vietnam 🇻🇳', flag: '🇻🇳' },
-  { value: 'ID', label: 'Indonesia 🇮🇩', flag: '🇮🇩' },
+  { value: 'TH', label: 'Thailand' },
+  { value: 'VN', label: 'Vietnam' },
+  { value: 'ID', label: 'Indonesia' },
 ]
 
 export function CompanySetupPage() {
@@ -100,9 +100,8 @@ export function CompanySetupPage() {
               <label className="block text-label-md text-on-surface-variant mb-1">{t('company.country')}</label>
               <div className="grid grid-cols-3 gap-2">
                 {COUNTRIES.map(c => (
-                  <label key={c.value} className={`flex items-center gap-2 p-3 rounded-lg border cursor-pointer transition-colors ${country === c.value ? 'border-primary bg-primary-container/10' : 'border-outline-variant hover:border-primary/50'}`}>
+                  <label key={c.value} className={`flex items-center justify-center gap-2 p-3 rounded-lg border cursor-pointer transition-colors ${country === c.value ? 'border-primary bg-primary-container/10' : 'border-outline-variant hover:border-primary/50'}`}>
                     <input type="radio" {...register('country')} value={c.value} className="sr-only" />
-                    <span className="text-lg">{c.flag}</span>
                     <span className="text-sm font-medium">{c.label}</span>
                   </label>
                 ))}

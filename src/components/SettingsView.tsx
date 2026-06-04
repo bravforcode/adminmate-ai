@@ -51,7 +51,7 @@ export default function SettingsView({
       });
       // Sync global translation scope
       setLanguage(defaultLanguage);
-      alert(language === 'TH' ? '✓ บันทึกการตั้งค่าระบบเรียบร้อย!' : '✓ System settings successfully matching!');
+      alert(language === 'TH' ? 'บันทึกการตั้งค่าระบบเรียบร้อย!' : 'System settings successfully matching!');
     }, 600);
   };
 
@@ -122,7 +122,7 @@ export default function SettingsView({
                     onClick={() => setCompanyLogoUrl(l.url)}
                     className="px-2.5 py-1 text-[10px] font-bold border border-slate-200 hover:border-indigo-400 bg-slate-50 text-slate-600 rounded-lg cursor-pointer transition-all"
                   >
-                    🎨 {l.name}
+                    {l.name}
                   </button>
                 ))}
               </div>

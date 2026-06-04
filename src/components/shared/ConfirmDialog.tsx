@@ -6,8 +6,8 @@ export function ConfirmDialog({ title, message, confirmLabel = 'Confirm', onConf
   const confirmStyle = variant === 'danger' ? 'bg-error hover:bg-error/90' : 'bg-primary hover:opacity-90'
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/30">
-      <div className="bg-surface rounded-xl p-6 w-full max-w-md shadow-lg">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/30 p-4">
+      <div className="bg-surface rounded-xl p-6 w-full max-w-[95vw] sm:max-w-md shadow-lg">
         <div className="flex items-start gap-4">
           <div className={`w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0 ${variant === 'danger' ? 'bg-error-container text-error' : 'bg-yellow-50 text-yellow-600'}`}>
             <AlertTriangle size={20} />

@@ -2,12 +2,14 @@ import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
-import { useAuthStore } from '../../stores/authStore'
+import { useAuthStore, useAuthLoading, useAuthError } from '../../stores/authStore'
 import { companyService } from '../../services/companyService'
-import { Save, Building2, Shield, Gavel, MessageSquare, Phone } from 'lucide-react'
+import { Save, Building2, Shield, Gavel, MessageSquare, Phone, AlertCircle, RefreshCw } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import toast from 'react-hot-toast'
 import { cn } from '../../utils/cn'
+import { LoadingState } from '../../components/shared/LoadingState'
+import { ErrorState } from '../../components/shared/ErrorState'
 
 const companySchema = z.object({ name: z.string().min(1), name_th: z.string().optional(), tax_id: z.string().optional(), phone: z.string().optional(), email: z.string().email().optional().or(z.literal('')), city: z.string().optional(), website_url: z.string().optional(), industry: z.string().optional() })
 
@@ -16,6 +18,8 @@ type FormData = z.infer<typeof companySchema>
 export function SettingsPage() {
   const { t } = useTranslation('common')
   const { profile, company, setCompany } = useAuthStore()
+  const isLoading = useAuthLoading()
+  const authError = useAuthError()
   const [saving, setSaving] = useState(false)
   const { register, handleSubmit, formState: { errors } } = useForm<FormData>({
     resolver: zodResolver(companySchema),
@@ -33,15 +37,44 @@ export function SettingsPage() {
     finally { setSaving(false) }
   }
 
+  if (isLoading && !company) {
+    return (
+      <div className="space-y-6">
+        <div>
+          <div className="h-8 w-48 bg-surface-container-high rounded animate-pulse" />
+          <div className="h-4 w-64 bg-surface-container-high rounded animate-pulse mt-2" />
+        </div>
+        <LoadingState variant="cards" rows={3} />
+      </div>
+    )
+  }
+
+  if (authError) {
+    return (
+      <div className="space-y-6">
+        <div>
+          <h1 className="text-headline-md font-bold text-on-surface">{t('settings.title') || 'Settings'}</h1>
+          <p className="text-body-md text-on-surface-variant mt-1">{t('settings.subtitle') || 'Manage your company and account settings'}</p>
+        </div>
+        <ErrorState
+          title={t('errors.load_failed', { ns: 'common' })}
+          message={authError}
+          onRetry={() => window.location.reload()}
+          retryLabel={t('errors.retry', { ns: 'common' })}
+        />
+      </div>
+    )
+  }
+
   return (
     <div className="space-y-6">
-      <div className="flex justify-between items-end">
+      <div className="flex flex-col sm:flex-row sm:justify-between sm:items-end gap-3">
         <div>
           <h1 className="text-headline-md font-bold text-on-surface">{t('settings.title') || 'Settings'}</h1>
           <p className="text-body-md text-on-surface-variant mt-1">{t('settings.subtitle') || 'Manage your company and account settings'}</p>
         </div>
         <button type="submit" form="settings-form" disabled={saving}
-          className="flex items-center gap-2 px-6 py-2 bg-primary text-on-primary rounded-lg font-medium hover:opacity-90 disabled:opacity-50 shadow-sm">
+          className="flex items-center justify-center gap-2 px-6 py-2 bg-primary text-on-primary rounded-lg font-medium hover:opacity-90 disabled:opacity-50 shadow-sm self-start sm:self-auto">
           <Save size={16} /> {saving ? (t('settings.saving') || 'Saving...') : (t('settings.save_changes') || 'Save Changes')}
         </button>
       </div>
@@ -56,11 +89,11 @@ export function SettingsPage() {
             </div>
             <form id="settings-form" onSubmit={handleSubmit(onSubmit)} className="space-y-4">
               <div className="flex flex-col sm:flex-row gap-6 mb-2">
-                <div className="w-32 h-32 rounded-xl bg-surface-container-low border border-outline-variant flex-shrink-0 flex items-center justify-center text-on-surface-variant">
+                <div className="w-full sm:w-32 h-32 rounded-xl bg-surface-container-low border border-outline-variant flex-shrink-0 flex items-center justify-center text-on-surface-variant">
                   <Building2 size={40} />
                 </div>
-                <div className="flex-1 grid grid-cols-2 gap-4">
-                  <div className="col-span-2">
+                <div className="flex-1 grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div className="sm:col-span-2">
                     <label className="block text-sm font-medium mb-1 text-on-surface-variant">{t('settings.legal_name') || 'Legal Name (English)'} *</label>
                     <input {...register('name')}
                       className="w-full px-3 py-2 rounded-lg border border-outline-variant bg-surface-container-lowest focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all" />
@@ -74,14 +107,20 @@ export function SettingsPage() {
                   <div>
                     <label className="block text-sm font-medium mb-1 text-on-surface-variant">{t('settings.industry') || 'Primary Industry'}</label>
                     <select {...register('industry')} className="w-full px-3 py-2 rounded-lg border border-outline-variant bg-surface-container-lowest focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all">
-                      <option>Information Technology</option>
-                      <option>Finance</option>
-                      <option>Healthcare</option>
+                      <option value="">Select industry...</option>
+                      <option value="Technology">Technology</option>
+                      <option value="Finance">Finance</option>
+                      <option value="Healthcare">Healthcare</option>
+                      <option value="Manufacturing">Manufacturing</option>
+                      <option value="Retail">Retail</option>
+                      <option value="Education">Education</option>
+                      <option value="Logistics">Logistics</option>
+                      <option value="Other">Other</option>
                     </select>
                   </div>
                 </div>
               </div>
-              <div className="grid grid-cols-3 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                 <div>
                   <label className="block text-sm font-medium mb-1 text-on-surface-variant">{t('settings.phone') || 'Phone'}</label>
                   <input {...register('phone')}

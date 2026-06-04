@@ -58,8 +58,8 @@ export default function JdGeneratorView({ language, onAddJob }: JdGeneratorViewP
       setIsLoading(false);
 
       const headerText = outputLanguage === 'EN' 
-        ? `🔥 JOB POSITION: ${jobTitle} (${jobType})\n📍 Department: ${department}\n💼 Experience Required: ${experienceLevel}\n💰 Compensation Budget: ${salaryRange}\n\n=================================\n✨ ABOUT THE ROLE\n=================================\nWe are looking for a talented ${jobTitle} who can join our growing team. The ideal professional fits our entrepreneurial SME culture and displays a results-oriented attitude.\n\n🎯 MAIN KEY RESPONSIBILITIES:\n${responsibilities.split(',').map((r, idx) => `  ${idx + 1}. ${r.trim()}`).join('\n')}\n\n🛠️ CORE SKILLS & QUALIFICATIONS REQUIRED:\n${requiredSkills.split(',').map((s, idx) => `  ▪️ ${s.trim()}`).join('\n')}\n\n📢 WHY WORK WITH US?\n- Agile startup working environment with low bureaucracy\n- Performance-based commissions and flexible hybrid allowances\n- High-velocity learning with modern AI tooling.`
-        : `🔥 ตำแหน่งงาน: ${jobTitle} (${jobType === 'Full-time' ? 'งานประจำ' : 'งานแบบไฮบริด'})\n📍 แผนก: ${department}\n💼 ประสบการณ์ที่ต้องการ: ${experienceLevel}\n💰 อัตราเงินเดือน: ${salaryRange}\n\n=================================\n✨ รายละเอียดเกี่ยวกับงานวิชาชีพ\n=================================\nเรากำลังมองหา ${jobTitle} ที่พร้อมจะเติบโตและลุยไปกับทีมงาน SME ของเรา พนักงานจะได้รับการสนับสนุนระบบเทคโนโลยีเต็มสูบ พร้อมผลประโยชน์ก้าวหน้าตามผลงาน\n\n🎯 หน้าที่ความรับผิดชอบหลัก:\n${responsibilities.split(',').map((r, idx) => `  ${idx + 1}. ${r.trim()}`).join('\n')}\n\n🛠️ คุณสมบัติและทักษะที่จำเป็น:\n${requiredSkills.split(',').map((s, idx) => `  ▪️ ${s.trim()}`).join('\n')}\n\n📢 สิทธิประโยชน์และสวัสดิการ:\n- บรรยากาศการทำงานแบบยืดหยุ่น สูงด้วยนวัตกรรมคล่องตัวสูง\n- โบนัสตามเป้าหมายยอดจ้าง พร้อมกองทุนสนับสนุนพัฒนาทักษะตนเอง\n- มีงบอาหารกลางวัน และสิทธิ์ทำงานกึ่งทางไกลในบางสัปดาห์`;
+        ? `JOB POSITION: ${jobTitle} (${jobType})\nDepartment: ${department}\nExperience Required: ${experienceLevel}\nCompensation Budget: ${salaryRange}\n\n=================================\nABOUT THE ROLE\n=================================\nWe are looking for a talented ${jobTitle} who can join our growing team. The ideal professional fits our entrepreneurial SME culture and displays a results-oriented attitude.\n\nMAIN KEY RESPONSIBILITIES:\n${responsibilities.split(',').map((r, idx) => `  ${idx + 1}. ${r.trim()}`).join('\n')}\n\nCORE SKILLS & QUALIFICATIONS REQUIRED:\n${requiredSkills.split(',').map((s, idx) => `  - ${s.trim()}`).join('\n')}\n\nWHY WORK WITH US?\n- Agile startup working environment with low bureaucracy\n- Performance-based commissions and flexible hybrid allowances\n- High-velocity learning with modern AI tooling.`
+        : `ตำแหน่งงาน: ${jobTitle} (${jobType === 'Full-time' ? 'งานประจำ' : 'งานแบบไฮบริด'})\nแผนก: ${department}\nประสบการณ์ที่ต้องการ: ${experienceLevel}\nอัตราเงินเดือน: ${salaryRange}\n\n=================================\nรายละเอียดเกี่ยวกับงานวิชาชีพ\n=================================\nเรากำลังมองหา ${jobTitle} ที่พร้อมจะเติบโตและลุยไปกับทีมงาน SME ของเรา พนักงานจะได้รับการสนับสนุนระบบเทคโนโลยีเต็มสูบ พร้อมผลประโยชน์ก้าวหน้าตามผลงาน\n\nหน้าที่ความรับผิดชอบหลัก:\n${responsibilities.split(',').map((r, idx) => `  ${idx + 1}. ${r.trim()}`).join('\n')}\n\nคุณสมบัติและทักษะที่จำเป็น:\n${requiredSkills.split(',').map((s, idx) => `  - ${s.trim()}`).join('\n')}\n\nสิทธิประโยชน์และสวัสดิการ:\n- บรรยากาศการทำงานแบบยืดหยุ่น สูงด้วยนวัตกรรมคล่องตัวสูง\n- โบนัสตามเป้าหมายยอดจ้าง พร้อมกองทุนสนับสนุนพัฒนาทักษะตนเอง\n- มีงบอาหารกลางวัน และสิทธิ์ทำงานกึ่งทางไกลในบางสัปดาห์`;
 
       setGeneratedText(headerText);
 
@@ -118,14 +118,14 @@ export default function JdGeneratorView({ language, onAddJob }: JdGeneratorViewP
                 onClick={() => handlePreFill('sales')}
                 className="px-3 py-1.5 text-xs font-bold bg-indigo-50 text-indigo-700 rounded-lg hover:bg-indigo-100 border border-indigo-100 cursor-pointer"
               >
-                💼 Sales Executive (EN)
+                Sales Executive (EN)
               </button>
               <button
                 type="button"
                 onClick={() => handlePreFill('marketing')}
                 className="px-3 py-1.5 text-xs font-bold bg-purple-50 text-purple-700 rounded-lg hover:bg-purple-100 border border-purple-100 cursor-pointer"
               >
-                📱 Marketing Specialist (TH)
+                Marketing Specialist (TH)
               </button>
             </div>
           </div>

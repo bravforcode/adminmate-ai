@@ -1,16 +1,26 @@
 {
-  "title": "Perekrutan & Dokumentasi",
-  "subtitle": "Kepatuhan otomatis & pembuatan dokumen untuk wilayah SEA.",
+  "title": "Perekrutan & Dokumen",
+  "subtitle": "Kepatuhan otomatis & pembuatan dokumen untuk kawasan Asia Tenggara.",
   "no_offers": "Belum ada penawaran",
-  "create_first_offer": "Buat surat penawaran kerja pertama Anda.",
+  "create_first_offer": "Buat surat tawaran pekerjaan pertama Anda.",
   "create_offer": "Buat Penawaran",
   "export_audit": "Ekspor Log Audit",
   "sent": "Terkirim",
   "viewed": "Dilihat",
   "accepted": "Diterima",
   "rejected": "Ditolak",
+  "draft": "Draf",
+  "signed": "Ditandatangani",
+  "expired": "Kedaluwarsa",
+  "loading": "Memuat...",
   "doc_generation": {
-    "title": "Modul Pembuatan Dokumen"
+    "title": "Modul Pembuat Dokumen",
+    "pnd1": "P.N.D. 1",
+    "pnd1_sub": "Otoritas Pajak Thailand",
+    "labor_contract": "Kontrak Kerja",
+    "labor_contract_sub": "Standar Vietnam",
+    "bpjs": "Pendaftaran BPJS",
+    "bpjs_sub": "Asuransi Kesehatan Indonesia"
   },
   "tracking": {
     "title": "Penawaran Diterima & Dokumen",
@@ -19,23 +29,28 @@
     "doc_type": "Jenis Dokumen",
     "status": "Status",
     "auto_remind": "Pengingat Otomatis",
-    "offer_letter": "Surat Penawaran"
+    "offer_letter": "Surat Tawaran"
   },
   "preview": {
-    "offer_preview": "Pratinjau Surat Penawaran",
+    "offer_preview": "Pratinjau Surat Tawaran",
     "empty_title": "Pratinjau Dokumen",
-    "empty_subtitle": "Pilih dokumen untuk pratinjau",
+    "empty_subtitle": "Pilih dokumen untuk dipratinjau",
     "select_offer": "Pilih penawaran untuk melihat detail",
-    "offer_letter": "SURAT PENAWARAN",
+    "offer_letter": "SURAT TAWARAN PEKERJAAN",
     "employer": "Pemberi Kerja",
     "employee": "Karyawan",
     "position": "Posisi",
     "salary": "Gaji",
     "start_date": "Tanggal Mulai",
-    "disclaimer": "Surat penawaran ini dibuat secara otomatis oleh AdminMate AI. Harap tinjau semua detail sebelum mengirim.",
-    "employer_sig": "Ttd Pemberi Kerja",
-    "employee_sig": "Ttd Karyawan",
+    "disclaimer": "Surat tawaran ini dibuat otomatis oleh AdminMate AI. Harap tinjau dengan cermat sebelum mengirim.",
+    "employer_sig": "Tanda Tangan Pemberi Kerja",
+    "employee_sig": "Tanda Tangan Karyawan",
     "edit_draft": "Edit Draf",
-    "send_for_sig": "Kirim untuk Ttd"
+    "send_for_sig": "Kirim untuk Tanda Tangan"
+  },
+  "toasts": {
+    "no_offers_export": "Tidak ada penawaran untuk diekspor",
+    "select_offer_first": "Mohon pilih penawaran dulu",
+    "only_draft_editable": "Hanya penawaran draf yang dapat diedit"
   }
 }

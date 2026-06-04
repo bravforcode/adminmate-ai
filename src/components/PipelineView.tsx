@@ -144,7 +144,7 @@ export default function PipelineView({
                       {/* Sticky Notes Preview Snippet if logs exist */}
                       {cand.notes && (
                         <div className="p-2 bg-slate-50 rounded-lg text-[9px] text-slate-500 leading-normal border border-slate-100 max-h-12 overflow-hidden text-ellipsis line-clamp-2">
-                          💡 {cand.notes}
+                          {cand.notes}
                         </div>
                       )}
 

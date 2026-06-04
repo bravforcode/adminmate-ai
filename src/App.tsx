@@ -40,6 +40,22 @@ export default function App() {
     defaultLanguage: 'TH'
   });
 
+  // Role Guard
+  React.useEffect(() => {
+    if (isLoggedIn) {
+      const isApplicant = userRole === 'Applicant';
+      const hrPages: Page[] = ['dashboard', 'jd-generator', 'resume-upload', 'candidate-matching', 'pipeline', 'onboarding-manager', 'settings'];
+      const applicantPages: Page[] = ['cv-builder', 'onboarding-checklist', 'onboarding-assistant'];
+
+      if (isApplicant && !applicantPages.includes(activePage)) {
+        setActivePage('cv-builder');
+      } else if (!isApplicant && !hrPages.includes(activePage)) {
+        setActivePage('dashboard');
+      }
+    }
+  }, [isLoggedIn, userRole, activePage]);
+
+
   // Handle successful login
   const handleLoginSuccess = (email: string, role: UserRole) => {
     setIsLoggedIn(true);
@@ -127,7 +143,7 @@ export default function App() {
   }
 
   return (
-    <div className="min-h-screen bg-slate-50 flex flex-col justify-between font-sans selection:bg-blue-600 selection:text-white antialiased">
+    <div style={{ minHeight: '100vh', backgroundColor: 'var(--color-bg)', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', fontFamily: 'var(--font-sans)' }}>
       
       {/* Dynamic Header Component */}
       <Header 
@@ -136,13 +152,12 @@ export default function App() {
         activePage={activePage}
         setActivePage={setActivePage}
         userRole={userRole}
-        setUserRole={setUserRole}
         companyName={settings.companyName}
         onLogout={handleLogout}
       />
 
       {/* Primary view viewport layout center */}
-      <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-10">
+      <main style={{ flex: 1, maxWidth: '1320px', width: '100%', margin: '0 auto', padding: '32px 32px' }}>
         
         {activePage === 'dashboard' && (
           <DashboardView 
@@ -152,7 +167,7 @@ export default function App() {
             pendingDocsCount={pendingDocsCount}
             onboardingInProgressCount={onboardingInProgressCount}
             setActivePage={setActivePage}
-            setUserRole={setUserRole}
+            userRole={userRole}
           />
         )}
 
@@ -222,9 +237,13 @@ export default function App() {
       </main>
 
       {/* Universal Footer section */}
-      <footer className="bg-white border-t border-slate-200/60 py-6 text-center select-none font-sans">
-        <p className="text-[11px] text-slate-400 font-bold uppercase tracking-widest">
-          © {new Date().getFullYear()} AdminMate AI • {language === 'TH' ? 'ระบบบริหารจัดการพนักงาน SME คู่ใจคุณ' : 'The Integrated SME Employee Onboarding Copilot'}
+      <footer style={{ backgroundColor: 'var(--color-surface)', borderTop: '1px solid var(--color-border-subtle)', padding: '20px 32px', textAlign: 'center' }}>
+        <p style={{ fontSize: '11px', color: 'var(--color-text-muted)', fontWeight: 400, margin: 0, letterSpacing: '0.02em' }}>
+          &copy; {new Date().getFullYear()} AdminMate AI &nbsp;&mdash;&nbsp;
+          {language === 'TH' ? 'ระบบบริหาร HR สำหรับ SME' :
+           language === 'VI' ? 'He thong HR cho doanh nghiep SME' :
+           language === 'ZH' ? '中小企业人力资源管理系统' :
+           'HR Intelligence for SME'}
         </p>
       </footer>
 

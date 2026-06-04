@@ -1,0 +1,194 @@
+import toast from 'react-hot-toast'
+
+export type ErrorSeverity = 'critical' | 'error' | 'warning' | 'info'
+
+export interface AppErrorPayload {
+  type:
+    | 'unhandled_promise'
+    | 'uncaught_error'
+    | 'manual'
+    | 'react_error'
+    | 'api_error'
+    | 'query'
+    | 'edge_function'
+    | 'page_load'
+    | 'custom'
+  message: string
+  stack?: string
+  source?: string
+  lineno?: number
+  colno?: number
+  reason?: string
+  url: string
+  userAgent: string
+  userId?: string | null
+  companyId?: string | null
+  timestamp: string
+  severity: ErrorSeverity
+}
+
+let initialized = false
+let lastToastAt = 0
+const TOAST_THROTTLE_MS = 4000
+
+function safeStringify(value: unknown): string {
+  try {
+    if (value instanceof Error) {
+      return JSON.stringify({
+        name: value.name,
+        message: value.message,
+        stack: value.stack,
+      })
+    }
+    return JSON.stringify(value)
+  } catch {
+    return String(value)
+  }
+}
+
+function buildPayload(
+  type: AppErrorPayload['type'],
+  raw: unknown,
+  extras: Partial<AppErrorPayload> = {},
+): AppErrorPayload {
+  const message =
+    raw instanceof Error
+      ? raw.message
+      : typeof raw === 'string'
+        ? raw
+        : safeStringify(raw)
+
+  const stack = raw instanceof Error ? raw.stack : undefined
+  const severity: ErrorSeverity = extras.severity ?? 'error'
+
+  return {
+    type,
+    message,
+    stack,
+    url: typeof window !== 'undefined' ? window.location.href : '',
+    userAgent:
+      typeof navigator !== 'undefined' ? navigator.userAgent : 'unknown',
+    timestamp: new Date().toISOString(),
+    severity,
+    ...extras,
+  }
+}
+
+async function sendToEndpoint(payload: AppErrorPayload) {
+  const supabaseUrl = (import.meta as any).env?.VITE_SUPABASE_URL
+  const anonKey = (import.meta as any).env?.VITE_SUPABASE_ANON_KEY
+
+  if (!supabaseUrl) {
+    console.warn('[errorHandler] No VITE_SUPABASE_URL; skipping remote log')
+    return
+  }
+
+  try {
+    await fetch(`${supabaseUrl}/functions/v1/log-client-error`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        ...(anonKey ? { apikey: anonKey, Authorization: `Bearer ${anonKey}` } : {}),
+      },
+      body: JSON.stringify(payload),
+      keepalive: true,
+    })
+  } catch (err) {
+    console.warn('[errorHandler] Failed to send error to endpoint:', err)
+  }
+}
+
+function persistLocally(payload: AppErrorPayload) {
+  if (typeof localStorage === 'undefined') return
+  try {
+    const buf = JSON.parse(localStorage.getItem('adminmate:client-errors') || '[]')
+    buf.push(payload)
+    localStorage.setItem(
+      'adminmate:client-errors',
+      JSON.stringify(buf.slice(-50)),
+    )
+  } catch {
+    void 0
+  }
+}
+
+function shouldShowToast(severity: ErrorSeverity): boolean {
+  if (severity === 'critical') return false
+  const now = Date.now()
+  if (now - lastToastAt < TOAST_THROTTLE_MS) return false
+  lastToastAt = now
+  return true
+}
+
+function handleUncaughtError(event: ErrorEvent) {
+  const payload = buildPayload('uncaught_error', event.error ?? event.message, {
+    source: event.filename,
+    lineno: event.lineno,
+    colno: event.colno,
+  })
+  console.error('[errorHandler] uncaught error', payload)
+  persistLocally(payload)
+  void sendToEndpoint(payload)
+
+  if (shouldShowToast(payload.severity)) {
+    toast.error('Something went wrong. The issue has been reported.', {
+      id: 'uncaught-error',
+    })
+  }
+}
+
+function handleUnhandledRejection(event: PromiseRejectionEvent) {
+  const reason = event.reason
+  const payload = buildPayload('unhandled_promise', reason, {
+    reason: reason instanceof Error ? reason.message : safeStringify(reason),
+  })
+  console.error('[errorHandler] unhandled rejection', payload)
+  persistLocally(payload)
+  void sendToEndpoint(payload)
+
+  if (shouldShowToast(payload.severity)) {
+    toast.error('An async operation failed. Our team has been notified.', {
+      id: 'unhandled-rejection',
+    })
+  }
+}
+
+export function reportError(
+  error: unknown,
+  extras: Partial<AppErrorPayload> = {},
+): AppErrorPayload {
+  const payload = buildPayload('manual', error, extras)
+  console.error('[errorHandler] manual report', payload)
+  persistLocally(payload)
+  void sendToEndpoint(payload)
+  return payload
+}
+
+export function initGlobalErrorHandler() {
+  if (initialized) return
+  if (typeof window === 'undefined') return
+  initialized = true
+
+  window.addEventListener('error', handleUncaughtError)
+  window.addEventListener('unhandledrejection', handleUnhandledRejection)
+
+  console.info('[errorHandler] Global error handlers initialized')
+}
+
+export function getBufferedErrors(): AppErrorPayload[] {
+  if (typeof localStorage === 'undefined') return []
+  try {
+    return JSON.parse(localStorage.getItem('adminmate:client-errors') || '[]')
+  } catch {
+    return []
+  }
+}
+
+export function clearBufferedErrors() {
+  if (typeof localStorage === 'undefined') return
+  try {
+    localStorage.removeItem('adminmate:client-errors')
+  } catch {
+    void 0
+  }
+}

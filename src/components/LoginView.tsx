@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { translations } from '../translations';
-import { Language } from '../types';
-import { ShieldCheck, Mail, Lock, LogIn, Chrome, ArrowRight, Sparkles } from 'lucide-react';
+import { Language, LoginStep } from '../types';
+import { Mail, Lock, ArrowLeft, ArrowRight, Chrome } from 'lucide-react';
 
 interface LoginViewProps {
   language: Language;
@@ -9,7 +9,18 @@ interface LoginViewProps {
   setLanguage: (lang: Language) => void;
 }
 
+type SelectedRole = 'HR' | 'Applicant' | null;
+
+const LANGS: { code: Language; label: string }[] = [
+  { code: 'TH', label: 'TH' },
+  { code: 'EN', label: 'EN' },
+  { code: 'VI', label: 'VI' },
+  { code: 'ZH', label: '中文' },
+];
+
 export default function LoginView({ language, onLoginSuccess, setLanguage }: LoginViewProps) {
+  const [step, setStep] = useState<LoginStep>('role-select');
+  const [selectedRole, setSelectedRole] = useState<SelectedRole>(null);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
@@ -17,222 +28,679 @@ export default function LoginView({ language, onLoginSuccess, setLanguage }: Log
 
   const t = translations[language];
 
-  const handleSub = (e: React.FormEvent) => {
+  const handleRoleSelect = (role: SelectedRole) => {
+    setSelectedRole(role);
+    setStep('login-form');
+    setError('');
+    setEmail('');
+    setPassword('');
+  };
+
+  const handleBack = () => {
+    setStep('role-select');
+    setSelectedRole(null);
+    setError('');
+  };
+
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
 
     if (!email || !password) {
-      setError(language === 'TH' ? 'กรุณากรอกอีเมลและรหัสผ่าน' : 'Please fill in both email and password');
+      setError(
+        language === 'TH' ? 'กรุณากรอกอีเมลและรหัสผ่าน' :
+        language === 'VI' ? 'Vui long nhap email va mat khau' :
+        language === 'ZH' ? '请填写邮箱和密码' :
+        'Please enter your email and password'
+      );
       return;
     }
 
     setLoading(true);
     setTimeout(() => {
       setLoading(false);
-      if (email.trim() === 'demo@adminmate.ai' && password === 'demo123') {
+      if (selectedRole === 'HR') {
         onLoginSuccess(email, 'HR');
-      } else if (email.trim() === 'applicant@adminmate.ai' || email.trim().includes('applicant')) {
-        onLoginSuccess(email, 'Applicant');
       } else {
-        // Let them login with anything for demo purposes, but notify them if they used different email
-        onLoginSuccess(email, 'HR');
+        onLoginSuccess(email, 'Applicant');
       }
-    }, 800);
+    }, 900);
   };
 
-  const handleAutofill = () => {
+  const handleAutofillHR = () => {
     setEmail('demo@adminmate.ai');
     setPassword('demo123');
     setError('');
   };
 
+  const handleAutofillApplicant = () => {
+    setEmail('applicant@adminmate.ai');
+    setPassword('demo123');
+    setError('');
+  };
+
+  const handleGoogleLogin = () => {
+    onLoginSuccess('google@user.com', selectedRole === 'Applicant' ? 'Applicant' : 'HR');
+  };
+
   return (
-    <div className="min-h-screen flex flex-col justify-center py-12 px-4 sm:px-6 lg:px-8 bg-slate-50 relative overflow-hidden font-sans">
-      {/* Decorative Grid Background */}
-      <div className="absolute inset-0 bg-[linear-gradient(to_right,#e2e8f0_1px,transparent_1px),linear-gradient(to_bottom,#e2e8f0_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_50%,#000_70%,transparent_100%)] opacity-60"></div>
-      
-      {/* Absolute Header Language Selector */}
-      <div className="absolute top-4 right-4 z-10 flex items-center gap-2">
-        <button
-          onClick={() => setLanguage('TH')}
-          className={`px-3 py-1.5 text-xs font-semibold rounded-lg transition-all ${
-            language === 'TH'
-              ? 'bg-indigo-600 text-white shadow-sm ring-1 ring-indigo-600'
-              : 'bg-white text-slate-600 hover:bg-slate-100 ring-1 ring-slate-200'
-          }`}
-          id="toggle-lang-th"
-        >
-          TH
-        </button>
-        <button
-          onClick={() => setLanguage('EN')}
-          className={`px-3 py-1.5 text-xs font-semibold rounded-lg transition-all ${
-            language === 'EN'
-              ? 'bg-indigo-600 text-white shadow-sm ring-1 ring-indigo-600'
-              : 'bg-white text-slate-600 hover:bg-slate-100 ring-1 ring-slate-200'
-          }`}
-          id="toggle-lang-en"
-        >
-          EN
-        </button>
-      </div>
-
-      <div className="sm:mx-auto sm:w-full sm:max-w-md relative">
-        <div className="flex justify-center">
-          <div className="h-12 w-12 rounded-xl bg-indigo-600 flex items-center justify-center shadow-lg shadow-indigo-200 border border-indigo-400">
-            <ShieldCheck className="h-7 w-7 text-white" />
+    <div
+      style={{
+        minHeight: '100vh',
+        backgroundColor: 'var(--color-bg)',
+        display: 'flex',
+        flexDirection: 'column',
+        fontFamily: 'var(--font-sans)',
+      }}
+    >
+      {/* Top bar */}
+      <div
+        style={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          padding: '20px 32px',
+          borderBottom: '1px solid var(--color-border-subtle)',
+          backgroundColor: 'var(--color-surface)',
+        }}
+      >
+        {/* Logo */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+          <div
+            style={{
+              width: '34px',
+              height: '34px',
+              borderRadius: '8px',
+              backgroundColor: 'var(--color-navy)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}
+          >
+            <span style={{ color: '#fff', fontSize: '14px', fontFamily: 'var(--font-serif)', fontWeight: 400 }}>A</span>
           </div>
+          <span
+            style={{
+              fontFamily: 'var(--font-serif)',
+              fontSize: '18px',
+              fontWeight: 400,
+              color: 'var(--color-navy-deep)',
+              letterSpacing: '-0.02em',
+            }}
+          >
+            AdminMate
+            <span
+              style={{
+                fontFamily: 'var(--font-sans)',
+                fontSize: '10px',
+                fontWeight: 600,
+                color: 'var(--color-accent)',
+                backgroundColor: 'var(--color-accent-light)',
+                padding: '2px 6px',
+                borderRadius: '4px',
+                marginLeft: '6px',
+                letterSpacing: '0.05em',
+              }}
+            >
+              AI
+            </span>
+          </span>
         </div>
-        <h2 className="mt-6 text-center text-3xl font-extrabold text-slate-950 tracking-tight">
-          AdminMate AI
-        </h2>
-        <p className="mt-2 text-center text-sm text-slate-600">
-          {t.tagline}
-        </p>
+
+        {/* Language Switcher */}
+        <div style={{ display: 'flex', gap: '2px', backgroundColor: 'var(--color-surface-alt)', borderRadius: '8px', padding: '3px' }}>
+          {LANGS.map((l) => (
+            <button
+              key={l.code}
+              onClick={() => setLanguage(l.code)}
+              id={`lang-${l.code.toLowerCase()}`}
+              style={{
+                padding: '5px 12px',
+                borderRadius: '6px',
+                fontSize: '11px',
+                fontWeight: 600,
+                letterSpacing: '0.05em',
+                border: 'none',
+                cursor: 'pointer',
+                transition: 'all 0.25s ease-out',
+                backgroundColor: language === l.code ? 'var(--color-navy)' : 'transparent',
+                color: language === l.code ? '#ffffff' : 'var(--color-text-muted)',
+              }}
+            >
+              {l.label}
+            </button>
+          ))}
+        </div>
       </div>
 
-      <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md relative">
-        <div className="bg-white/80 backdrop-blur-md py-8 px-4 shadow-xl shadow-slate-150 rounded-2xl border border-slate-100 sm:px-10">
-          <form className="space-y-6" onSubmit={handleSub}>
-            <div>
-              <label htmlFor="email" className="block text-sm font-medium text-slate-700">
-                {t.email}
-              </label>
-              <div className="mt-1 relative rounded-md shadow-sm">
-                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400">
-                  <Mail className="h-5 w-5" />
+      {/* Main Content */}
+      <div
+        style={{
+          flex: 1,
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          padding: '48px 24px',
+        }}
+      >
+        {step === 'role-select' ? (
+          /* ── STEP 1: ROLE SELECTION ── */
+          <div style={{ width: '100%', maxWidth: '760px' }}>
+            {/* Headline */}
+            <div style={{ textAlign: 'center', marginBottom: '48px' }}>
+              <p className="t-label" style={{ marginBottom: '12px' }}>
+                {t.tagline}
+              </p>
+              <h1
+                style={{
+                  fontFamily: 'var(--font-serif)',
+                  fontSize: 'clamp(28px, 4vw, 44px)',
+                  fontWeight: 400,
+                  color: 'var(--color-navy-deep)',
+                  letterSpacing: '-0.03em',
+                  lineHeight: 1.15,
+                  margin: '0 0 14px 0',
+                }}
+              >
+                {t.roleSelectTitle}
+              </h1>
+              <p
+                style={{
+                  fontFamily: 'var(--font-sans)',
+                  fontSize: '16px',
+                  fontWeight: 300,
+                  color: 'var(--color-text-secondary)',
+                  lineHeight: 1.6,
+                  margin: 0,
+                }}
+              >
+                {t.roleSelectSubtitle}
+              </p>
+            </div>
+
+            {/* Role Cards — asymmetric: HR card offset up, Applicant offset down */}
+            <div
+              style={{
+                display: 'grid',
+                gridTemplateColumns: '1.15fr 0.95fr',
+                gap: '20px',
+                alignItems: 'start',
+              }}
+            >
+              {/* HR Card */}
+              <div
+                className="role-card"
+                id="role-card-hr"
+                onClick={() => handleRoleSelect('HR')}
+                style={{ transform: 'translateY(-10px)' }}
+                role="button"
+                tabIndex={0}
+                onKeyDown={(e) => e.key === 'Enter' && handleRoleSelect('HR')}
+              >
+                <div style={{ position: 'relative', zIndex: 1 }}>
+                  <div
+                    style={{
+                      width: '40px',
+                      height: '40px',
+                      borderRadius: '10px',
+                      backgroundColor: 'var(--color-navy)',
+                      marginBottom: '20px',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                    }}
+                  >
+                    <svg width="18" height="18" fill="none" stroke="#fff" strokeWidth="1.8" viewBox="0 0 24 24">
+                      <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+                      <circle cx="9" cy="7" r="4" />
+                      <path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75" />
+                    </svg>
+                  </div>
+                  <h2
+                    style={{
+                      fontFamily: 'var(--font-serif)',
+                      fontSize: '22px',
+                      fontWeight: 400,
+                      color: 'var(--color-navy-deep)',
+                      letterSpacing: '-0.02em',
+                      margin: '0 0 6px 0',
+                    }}
+                  >
+                    {t.hrRoleTitle}
+                  </h2>
+                  <p
+                    style={{
+                      fontFamily: 'var(--font-sans)',
+                      fontSize: '13px',
+                      fontWeight: 400,
+                      color: 'var(--color-text-secondary)',
+                      margin: '0 0 24px 0',
+                      lineHeight: 1.5,
+                    }}
+                  >
+                    {t.hrRoleSubtitle}
+                  </p>
+                  <ul style={{ listStyle: 'none', padding: 0, margin: '0 0 28px 0', display: 'flex', flexDirection: 'column', gap: '10px' }}>
+                    {[t.hrFeature1, t.hrFeature2, t.hrFeature3].map((f, i) => (
+                      <li
+                        key={i}
+                        style={{
+                          display: 'flex',
+                          alignItems: 'center',
+                          gap: '10px',
+                          fontSize: '13px',
+                          color: 'var(--color-text-primary)',
+                        }}
+                      >
+                        <span
+                          style={{
+                            width: '5px',
+                            height: '5px',
+                            borderRadius: '50%',
+                            backgroundColor: 'var(--color-accent)',
+                            flexShrink: 0,
+                          }}
+                        />
+                        {f}
+                      </li>
+                    ))}
+                  </ul>
+                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                    <span
+                      style={{
+                        fontSize: '12px',
+                        fontWeight: 600,
+                        color: 'var(--color-navy)',
+                        letterSpacing: '0.04em',
+                        textTransform: 'uppercase',
+                      }}
+                    >
+                      {t.signIn}
+                    </span>
+                    <ArrowRight size={16} color="var(--color-accent)" />
+                  </div>
                 </div>
-                <input
-                  id="email"
-                  name="email"
-                  type="email"
-                  autoComplete="email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  className="block w-full pl-10 pr-3 py-2.5 border border-slate-200 rounded-xl text-slate-900 bg-slate-50/50 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 text-sm transition-all"
-                  placeholder="demo@adminmate.ai"
-                />
+              </div>
+
+              {/* Applicant Card */}
+              <div
+                className="role-card"
+                id="role-card-applicant"
+                onClick={() => handleRoleSelect('Applicant')}
+                style={{ transform: 'translateY(10px)' }}
+                role="button"
+                tabIndex={0}
+                onKeyDown={(e) => e.key === 'Enter' && handleRoleSelect('Applicant')}
+              >
+                <div style={{ position: 'relative', zIndex: 1 }}>
+                  <div
+                    style={{
+                      width: '40px',
+                      height: '40px',
+                      borderRadius: '10px',
+                      backgroundColor: 'var(--color-accent-light)',
+                      border: '1.5px solid var(--color-accent-dim)',
+                      marginBottom: '20px',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                    }}
+                  >
+                    <svg width="18" height="18" fill="none" stroke="var(--color-accent)" strokeWidth="1.8" viewBox="0 0 24 24">
+                      <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+                      <circle cx="12" cy="7" r="4" />
+                    </svg>
+                  </div>
+                  <h2
+                    style={{
+                      fontFamily: 'var(--font-serif)',
+                      fontSize: '22px',
+                      fontWeight: 400,
+                      color: 'var(--color-navy-deep)',
+                      letterSpacing: '-0.02em',
+                      margin: '0 0 6px 0',
+                    }}
+                  >
+                    {t.applicantRoleTitle}
+                  </h2>
+                  <p
+                    style={{
+                      fontFamily: 'var(--font-sans)',
+                      fontSize: '13px',
+                      fontWeight: 400,
+                      color: 'var(--color-text-secondary)',
+                      margin: '0 0 24px 0',
+                      lineHeight: 1.5,
+                    }}
+                  >
+                    {t.applicantRoleSubtitle}
+                  </p>
+                  <ul style={{ listStyle: 'none', padding: 0, margin: '0 0 28px 0', display: 'flex', flexDirection: 'column', gap: '10px' }}>
+                    {[t.applicantFeature1, t.applicantFeature2].map((f, i) => (
+                      <li
+                        key={i}
+                        style={{
+                          display: 'flex',
+                          alignItems: 'center',
+                          gap: '10px',
+                          fontSize: '13px',
+                          color: 'var(--color-text-primary)',
+                        }}
+                      >
+                        <span
+                          style={{
+                            width: '5px',
+                            height: '5px',
+                            borderRadius: '50%',
+                            backgroundColor: 'var(--color-accent)',
+                            flexShrink: 0,
+                          }}
+                        />
+                        {f}
+                      </li>
+                    ))}
+                  </ul>
+                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                    <span
+                      style={{
+                        fontSize: '12px',
+                        fontWeight: 600,
+                        color: 'var(--color-accent)',
+                        letterSpacing: '0.04em',
+                        textTransform: 'uppercase',
+                      }}
+                    >
+                      {t.signIn}
+                    </span>
+                    <ArrowRight size={16} color="var(--color-accent)" />
+                  </div>
+                </div>
               </div>
             </div>
 
-            <div>
-              <div className="flex items-center justify-between">
-                <label htmlFor="password" className="block text-sm font-medium text-slate-700">
-                  {t.password}
+            {/* Bottom note — demo hint */}
+            <p
+              style={{
+                textAlign: 'center',
+                marginTop: '40px',
+                fontSize: '12px',
+                color: 'var(--color-text-muted)',
+                fontWeight: 400,
+              }}
+            >
+              Demo: HR → demo@adminmate.ai / demo123 &nbsp;&nbsp;|&nbsp;&nbsp; Applicant → applicant@adminmate.ai / demo123
+            </p>
+          </div>
+        ) : (
+          /* ── STEP 2: LOGIN FORM ── */
+          <div style={{ width: '100%', maxWidth: '400px' }}>
+            {/* Back button */}
+            <button
+              onClick={handleBack}
+              id="btn-back-role"
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: '6px',
+                background: 'none',
+                border: 'none',
+                cursor: 'pointer',
+                color: 'var(--color-text-secondary)',
+                fontSize: '13px',
+                fontWeight: 500,
+                padding: '0 0 32px 0',
+                transition: 'color 0.25s ease-out',
+              }}
+              onMouseEnter={(e) => ((e.target as HTMLElement).closest('button')!.style.color = 'var(--color-navy)')}
+              onMouseLeave={(e) => ((e.target as HTMLElement).closest('button')!.style.color = 'var(--color-text-secondary)')}
+            >
+              <ArrowLeft size={14} />
+              {t.backToRoleSelect}
+            </button>
+
+            {/* Heading */}
+            <div style={{ marginBottom: '36px' }}>
+              <p className="t-label" style={{ marginBottom: '10px' }}>
+                {t.signingInAs} &mdash; {selectedRole === 'HR' ? t.hrRoleTitle : t.applicantRoleTitle}
+              </p>
+              <h1
+                style={{
+                  fontFamily: 'var(--font-serif)',
+                  fontSize: 'clamp(26px, 3.5vw, 36px)',
+                  fontWeight: 400,
+                  color: 'var(--color-navy-deep)',
+                  letterSpacing: '-0.03em',
+                  lineHeight: 1.15,
+                  margin: 0,
+                }}
+              >
+                {t.signIn}
+              </h1>
+            </div>
+
+            {/* Form */}
+            <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '18px' }}>
+              {/* Email */}
+              <div>
+                <label
+                  htmlFor="login-email"
+                  style={{
+                    display: 'block',
+                    fontSize: '12px',
+                    fontWeight: 600,
+                    color: 'var(--color-text-secondary)',
+                    marginBottom: '7px',
+                    letterSpacing: '0.04em',
+                    textTransform: 'uppercase',
+                  }}
+                >
+                  {t.email}
                 </label>
-                <div className="text-sm">
+                <div style={{ position: 'relative' }}>
+                  <div
+                    style={{
+                      position: 'absolute',
+                      left: '14px',
+                      top: '50%',
+                      transform: 'translateY(-50%)',
+                      color: 'var(--color-text-muted)',
+                      pointerEvents: 'none',
+                    }}
+                  >
+                    <Mail size={15} />
+                  </div>
+                  <input
+                    id="login-email"
+                    type="email"
+                    autoComplete="email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    placeholder={selectedRole === 'HR' ? 'demo@adminmate.ai' : 'applicant@adminmate.ai'}
+                    className="input-luxury"
+                    style={{ paddingLeft: '40px' }}
+                  />
+                </div>
+              </div>
+
+              {/* Password */}
+              <div>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '7px' }}>
+                  <label
+                    htmlFor="login-password"
+                    style={{
+                      fontSize: '12px',
+                      fontWeight: 600,
+                      color: 'var(--color-text-secondary)',
+                      letterSpacing: '0.04em',
+                      textTransform: 'uppercase',
+                    }}
+                  >
+                    {t.password}
+                  </label>
                   <button
                     type="button"
-                    onClick={() => alert(language === 'TH' ? 'ระบบกู้คืนรหัสผ่านเดโมส่งอีเมลแล้ว (จำลอง)' : 'Demo password reset email dispatched!')}
-                    className="font-medium text-indigo-600 hover:text-indigo-500 text-xs"
+                    onClick={() => alert(language === 'TH' ? 'ส่งอีเมลรีเซ็ตรหัสผ่านแล้ว (จำลอง)' : 'Password reset email sent (demo)')}
+                    style={{
+                      background: 'none',
+                      border: 'none',
+                      fontSize: '12px',
+                      color: 'var(--color-accent)',
+                      cursor: 'pointer',
+                      fontWeight: 500,
+                    }}
                   >
                     {t.forgotPassword}
                   </button>
                 </div>
-              </div>
-              <div className="mt-1 relative rounded-md shadow-sm">
-                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400">
-                  <Lock className="h-5 w-5" />
+                <div style={{ position: 'relative' }}>
+                  <div
+                    style={{
+                      position: 'absolute',
+                      left: '14px',
+                      top: '50%',
+                      transform: 'translateY(-50%)',
+                      color: 'var(--color-text-muted)',
+                      pointerEvents: 'none',
+                    }}
+                  >
+                    <Lock size={15} />
+                  </div>
+                  <input
+                    id="login-password"
+                    type="password"
+                    autoComplete="current-password"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    placeholder="••••••••"
+                    className="input-luxury"
+                    style={{ paddingLeft: '40px' }}
+                  />
                 </div>
-                <input
-                  id="password"
-                  name="password"
-                  type="password"
-                  autoComplete="current-password"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  className="block w-full pl-10 pr-3 py-2.5 border border-slate-200 rounded-xl text-slate-900 bg-slate-50/50 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 text-sm transition-all"
-                  placeholder="••••••••"
-                />
               </div>
-            </div>
 
-            {error && (
-              <div className="rounded-lg bg-red-50 p-3 text-xs text-red-600 border border-red-100 font-medium">
-                {error}
-              </div>
-            )}
+              {/* Error */}
+              {error && (
+                <div
+                  style={{
+                    padding: '10px 14px',
+                    backgroundColor: '#fdecea',
+                    border: '1px solid #f0b0a8',
+                    borderRadius: '8px',
+                    fontSize: '13px',
+                    color: 'var(--color-error)',
+                    fontWeight: 400,
+                  }}
+                >
+                  {error}
+                </div>
+              )}
 
-            <div>
+              {/* Submit */}
               <button
                 type="submit"
+                id="btn-login-submit"
                 disabled={loading}
-                className="w-full flex justify-center py-2.5 px-4 border border-transparent rounded-xl shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-colors disabled:opacity-55"
+                className="btn-primary"
+                style={{ marginTop: '6px', width: '100%', padding: '13px 28px' }}
               >
                 {loading ? (
-                  <span className="flex items-center gap-2">
-                    <span className="animate-spin h-4 w-4 border-2 border-white border-t-transparent rounded-full"></span>
-                    {language === 'TH' ? 'กำลังล็อกอิน...' : 'Signing in...'}
+                  <span style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                    <span className="spinner" style={{ width: '16px', height: '16px' }} />
+                    {language === 'TH' ? 'กำลังเข้าสู่ระบบ...' :
+                     language === 'VI' ? 'Dang dang nhap...' :
+                     language === 'ZH' ? '正在登录...' : 'Signing in...'}
                   </span>
                 ) : (
-                  <span className="flex items-center gap-2">
-                    <LogIn className="h-4 w-4" />
-                    {t.signIn}
-                  </span>
+                  t.signIn
                 )}
               </button>
-            </div>
-          </form>
+            </form>
 
-          <div className="mt-6">
-            <div className="relative">
-              <div className="absolute inset-0 flex items-center">
-                <div className="w-full border-t border-slate-100" />
-              </div>
-              <div className="relative flex justify-center text-xs">
-                <span className="px-2 bg-white text-slate-500 uppercase tracking-widest font-semibold scale-90">
-                  {language === 'TH' ? 'หรือเข้าผ่านช่องทางอื่น' : 'Or continue with'}
-                </span>
-              </div>
+            {/* Divider */}
+            <div className="divider-text" style={{ margin: '24px 0' }}>
+              {language === 'TH' ? 'หรือ' : language === 'VI' ? 'hoac' : language === 'ZH' ? '或' : 'or'}
             </div>
 
-            <div className="mt-6">
-              <button
-                type="button"
-                onClick={() => onLoginSuccess('google.user@gmail.com', 'HR')}
-                className="w-full flex items-center justify-center gap-3 py-2.5 px-4 border border-slate-250 rounded-xl shadow-xs bg-white hover:bg-slate-50 text-slate-700 text-sm font-semibold transition-all"
-              >
-                <Chrome className="h-4 w-4 text-red-500" />
-                {t.continueWithGoogle}
-              </button>
-            </div>
-          </div>
-
-          <div className="mt-6 text-center">
+            {/* Google Login */}
             <button
-              onClick={() => alert(language === 'TH' ? 'ระบบสร้างบัญชีเปิดกว้างทดลองใช้ได้ทันทีผ่านเดโมล็อกอินด้านล่างครับ' : 'SME platform accounts are pre-created. Log in directly with the demo badge below!')}
-              className="text-xs font-semibold text-indigo-600 hover:text-indigo-500 transition-colors"
+              type="button"
+              id="btn-google-login"
+              onClick={handleGoogleLogin}
+              className="btn-ghost"
+              style={{ width: '100%' }}
             >
-              {t.createAccount}
+              <Chrome size={15} />
+              {t.continueWithGoogle}
             </button>
-          </div>
-        </div>
 
-        {/* Demo Credentials Box */}
-        <div 
-          onClick={handleAutofill}
-          title="Click to Autofill"
-          className="mt-4 bg-amber-50/70 border border-amber-200/60 rounded-2xl p-4 cursor-pointer hover:bg-amber-50 hover:shadow-md transition-all group relative"
-        >
-          <div className="flex items-start gap-3">
-            <Sparkles className="h-5 w-5 text-amber-500 shrink-0 mt-0.5 group-hover:animate-pulse" />
-            <div>
-              <h4 className="text-xs font-bold text-amber-800 uppercase tracking-wider flex items-center gap-2">
-                {t.demoLogin}
-                <ArrowRight className="h-3.5 w-3.5 text-amber-500 group-hover:translate-x-1 transition-transform" />
-              </h4>
-              <div className="mt-1.5 space-y-1 text-xs font-mono text-amber-900">
-                <p><span className="font-semibold text-amber-700">Email:</span> demo@adminmate.ai</p>
-                <p><span className="font-semibold text-amber-700">Password:</span> demo123</p>
+            {/* Demo Credentials Box */}
+            <div
+              onClick={selectedRole === 'HR' ? handleAutofillHR : handleAutofillApplicant}
+              id="demo-credentials-box"
+              title={language === 'TH' ? 'คลิกเพื่อกรอกอัตโนมัติ' : 'Click to autofill'}
+              style={{
+                marginTop: '24px',
+                padding: '16px 20px',
+                backgroundColor: 'var(--color-surface-alt)',
+                border: '1px solid var(--color-border)',
+                borderRadius: '10px',
+                cursor: 'pointer',
+                transition: 'border-color 0.25s ease-out, box-shadow 0.25s ease-out',
+              }}
+              onMouseEnter={(e) => {
+                const el = e.currentTarget;
+                el.style.borderColor = 'var(--color-accent)';
+                el.style.boxShadow = '0 4px 16px rgba(41, 128, 185, 0.1)';
+              }}
+              onMouseLeave={(e) => {
+                const el = e.currentTarget;
+                el.style.borderColor = 'var(--color-border)';
+                el.style.boxShadow = 'none';
+              }}
+            >
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+                <div>
+                  <p
+                    style={{
+                      fontSize: '11px',
+                      fontWeight: 600,
+                      color: 'var(--color-navy)',
+                      letterSpacing: '0.08em',
+                      textTransform: 'uppercase',
+                      margin: '0 0 8px 0',
+                    }}
+                  >
+                    {t.demoLogin}
+                  </p>
+                  <p style={{ fontSize: '12px', color: 'var(--color-text-secondary)', margin: '0 0 3px 0', fontFamily: 'monospace' }}>
+                    {selectedRole === 'HR' ? 'demo@adminmate.ai' : 'applicant@adminmate.ai'}
+                  </p>
+                  <p style={{ fontSize: '12px', color: 'var(--color-text-secondary)', margin: 0, fontFamily: 'monospace' }}>
+                    demo123
+                  </p>
+                </div>
+                <ArrowRight size={14} color="var(--color-accent)" />
               </div>
-              <p className="mt-2 text-[10px] text-amber-600 italic">
-                {language === 'TH' 
-                  ? '*คลิกกล่องนี้เพื่อกรอกข้อมูลเข้าสู่ระบบแบบผู้ประกอบการอัตโนมัติ' 
-                  : '*Click this box to automatically set email & password to test HR flow.'}
-              </p>
             </div>
           </div>
-        </div>
+        )}
+      </div>
+
+      {/* Footer */}
+      <div
+        style={{
+          padding: '20px 32px',
+          borderTop: '1px solid var(--color-border-subtle)',
+          textAlign: 'center',
+        }}
+      >
+        <p style={{ fontSize: '11px', color: 'var(--color-text-muted)', fontWeight: 400, margin: 0 }}>
+          &copy; {new Date().getFullYear()} AdminMate AI &nbsp;&mdash;&nbsp;
+          {language === 'TH' ? 'ระบบบริหาร HR สำหรับ SME' :
+           language === 'VI' ? 'He thong HR cho doanh nghiep SME' :
+           language === 'ZH' ? '中小企业人力资源管理系统' :
+           'HR Intelligence for SME'}
+        </p>
       </div>
     </div>
   );

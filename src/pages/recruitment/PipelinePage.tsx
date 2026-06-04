@@ -20,26 +20,26 @@ export function PipelinePage() {
     if (!selectedApplication) return
     try {
       await updateStatus.mutateAsync({ id: selectedApplication.id, status: 'interviewing' })
-      toast.success('Moved to Interviewing')
+      toast.success(t('pipeline.moved_to_interviewing'))
       setSelectedApplication(null)
     } catch {
-      toast.error('Failed to update status')
+      toast.error(t('pipeline.failed_to_update'))
     }
   }
 
   return (
     <div className="flex flex-col h-[calc(100vh-96px)]">
       {/* Page Header */}
-      <div className="flex justify-between items-end mb-4 shrink-0">
-        <div>
+      <div className="flex flex-col sm:flex-row sm:justify-between sm:items-end gap-3 mb-4 shrink-0">
+        <div className="min-w-0">
           <h2 className="text-2xl font-semibold text-on-surface tracking-tight">
             {t('pipeline.title')} <span className="text-lg font-normal text-on-surface-variant ml-2">/ {t('pipeline.title_th')}</span>
           </h2>
-          <p className="text-sm text-on-surface-variant mt-1">{currentJob?.title || t('pipeline.all_jobs')}</p>
+          <p className="text-sm text-on-surface-variant mt-1 truncate">{currentJob?.title || t('pipeline.all_jobs')}</p>
         </div>
-        <button onClick={() => navigate('/recruitment/jobs')} className="border border-primary text-primary bg-surface-container-lowest px-4 py-2 rounded-lg text-sm font-medium flex items-center gap-2 hover:bg-primary/5 transition-colors shadow-sm">
+        <button onClick={() => navigate('/recruitment/jobs')} className="border border-primary text-primary bg-surface-container-lowest px-4 py-2 rounded-lg text-sm font-medium flex items-center gap-2 hover:bg-primary/5 transition-colors shadow-sm self-start sm:self-auto">
           <Sparkles size={16} />
-          {t('pipeline.jd_generation')} / {t('pipeline.jd_generation_th')}
+          <span className="truncate">{t('pipeline.jd_generation')} / {t('pipeline.jd_generation_th')}</span>
         </button>
       </div>
 
@@ -69,8 +69,8 @@ export function PipelinePage() {
                   </div>
                   <span className="absolute bottom-0 right-0 bg-primary w-6 h-6 rounded-full border-2 border-surface-container-lowest flex items-center justify-center text-white text-xs">✓</span>
                 </div>
-                <h4 className="text-xl font-bold text-on-surface">{selectedApplication.candidates?.full_name}</h4>
-                <p className="text-sm text-on-surface-variant mt-1">{selectedApplication.candidates?.current_position || 'Candidate'}</p>
+                <h4 className="text-xl font-bold text-on-surface break-words">{selectedApplication.candidates?.full_name}</h4>
+                <p className="text-sm text-on-surface-variant mt-1">{selectedApplication.candidates?.current_position || t('pipeline.candidate')}</p>
                 <div className="mt-4 bg-primary text-on-primary text-xs font-semibold px-4 py-1.5 rounded-full flex items-center gap-1.5 shadow-md">
                   <Sparkles size={14} /> {selectedApplication.ai_match_score || 0}% {t('pipeline.overall_match')}
                 </div>
@@ -86,9 +86,9 @@ export function PipelinePage() {
                       <li className="flex gap-3 items-start">
                         <span className="text-tertiary text-lg mt-0.5 flex-shrink-0">✓</span>
                         <div>
-                          <p className="text-sm font-semibold text-on-surface">Skills Match</p>
+                          <p className="text-sm font-semibold text-on-surface">{t('pipeline.skills_match')}</p>
                           <p className="text-xs text-on-surface-variant mt-1 leading-snug">
-                            Matched: {selectedApplication.ai_analysis.matched_skills.join(', ')}
+                            {t('pipeline.matched')}: {selectedApplication.ai_analysis.matched_skills.join(', ')}
                           </p>
                         </div>
                       </li>
@@ -97,7 +97,7 @@ export function PipelinePage() {
                       <li className="flex gap-3 items-start">
                         <span className="text-tertiary text-lg mt-0.5 flex-shrink-0">✓</span>
                         <div>
-                          <p className="text-sm font-semibold text-on-surface">Experience Match</p>
+                          <p className="text-sm font-semibold text-on-surface">{t('pipeline.experience_match')}</p>
                           <p className="text-xs text-on-surface-variant mt-1 leading-snug">{selectedApplication.ai_analysis.experience_match}</p>
                         </div>
                       </li>
@@ -106,7 +106,7 @@ export function PipelinePage() {
                       <li className="flex gap-3 items-start">
                         <span className="text-tertiary text-lg mt-0.5 flex-shrink-0">✓</span>
                         <div>
-                          <p className="text-sm font-semibold text-on-surface">Education Match</p>
+                          <p className="text-sm font-semibold text-on-surface">{t('pipeline.education_match')}</p>
                           <p className="text-xs text-on-surface-variant mt-1 leading-snug">{selectedApplication.ai_analysis.education_match}</p>
                         </div>
                       </li>
@@ -116,8 +116,8 @@ export function PipelinePage() {
                   <div className="flex flex-col items-center gap-2 py-4 text-center">
                     <Brain size={24} className="text-outline-variant" />
                     <p className="text-xs text-on-surface-variant leading-relaxed">
-                      AI screening not yet run for this candidate.<br />
-                      Screening runs automatically when a CV is uploaded.
+                      {t('pipeline.ai_screening_pending')}<br />
+                      {t('pipeline.ai_screening_pending_desc')}
                     </p>
                   </div>
                 )}
@@ -129,7 +129,7 @@ export function PipelinePage() {
                   disabled={updateStatus.isPending}
                   className="w-full bg-primary text-on-primary text-sm font-semibold py-3 rounded-xl hover:bg-on-primary-fixed-variant transition-colors flex items-center justify-center gap-2 shadow-md hover:shadow-lg active:scale-[0.98] transform disabled:opacity-50"
                 >
-                  {updateStatus.isPending ? 'Updating...' : t('pipeline.move_to_interview')}
+                  {updateStatus.isPending ? t('pipeline.updating') : t('pipeline.move_to_interview')}
                   <ArrowRight size={16} />
                 </button>
               </div>

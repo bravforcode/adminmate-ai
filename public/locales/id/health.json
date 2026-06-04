@@ -1,0 +1,31 @@
+{
+  "title": "Kesehatan Sistem",
+  "last_checked": "Terakhir diperiksa",
+  "refreshing": "Menyegarkan…",
+  "service_status": "Status layanan",
+  "labels": {
+    "database": "Basis data",
+    "auth": "Autentikasi",
+    "edge_functions": "Edge functions",
+    "storage": "Penyimpanan",
+    "status": "Status",
+    "db_size": "Ukuran DB",
+    "active_connections": "Koneksi aktif",
+    "connected": "Terhubung",
+    "error": "Kesalahan",
+    "operational": "Beroperasi",
+    "degraded": "Menurun",
+    "unknown": "Tidak diketahui"
+  },
+  "system_metrics": "Metrik sistem",
+  "metrics": {
+    "total_users": "Total pengguna",
+    "total_companies": "Total perusahaan",
+    "total_jobs": "Total lowongan",
+    "total_candidates": "Total kandidat",
+    "recent_signups": "Pendaftaran baru (7 hari)"
+  },
+  "auto_refresh_note": "Penyegaran otomatis setiap 30 detik. Waktu ditampilkan dalam zona waktu lokal Anda.",
+  "error_title": "Pemeriksaan sistem gagal",
+  "error_description": "Kami tidak dapat memeriksa kesehatan sistem. Silakan coba lagi."
+}

@@ -1,0 +1,24 @@
+{
+  "gemini": {
+    "title": "Penggunaan Gemini AI",
+    "subtitle": "Pantau konsumsi API AI di semua fitur",
+    "today": "Hari ini",
+    "daily_limit": "dari batas {{limit}} harian",
+    "usage": "Penggunaan",
+    "alert": {
+      "label": {
+        "ok": "Normal",
+        "warning": "Pantau",
+        "danger": "Kritis"
+      },
+      "ok": "Penggunaan dalam rentang normal.",
+      "warning": "Penggunaan meningkat. Pantau ketat.",
+      "danger": "Mendekati batas harian! Kurangi panggilan AI."
+    },
+    "today_by_feature": "Hari ini per Fitur",
+    "no_usage_today": "Belum ada penggunaan AI hari ini",
+    "last_7_days": "7 Hari Terakhir",
+    "error_title": "Gagal memuat penggunaan AI",
+    "error_description": "Kami tidak dapat mengambil metrik penggunaan AI. Silakan coba lagi."
+  }
+}

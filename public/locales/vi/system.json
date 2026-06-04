@@ -1,0 +1,24 @@
+{
+  "gemini": {
+    "title": "Sử dụng Gemini AI",
+    "subtitle": "Theo dõi mức tiêu thụ API AI trên tất cả tính năng",
+    "today": "Hôm nay",
+    "daily_limit": "trong giới hạn {{limit}} mỗi ngày",
+    "usage": "Mức sử dụng",
+    "alert": {
+      "label": {
+        "ok": "Bình thường",
+        "warning": "Theo dõi",
+        "danger": "Nguy hiểm"
+      },
+      "ok": "Mức sử dụng trong phạm vi bình thường.",
+      "warning": "Mức sử dụng tăng cao. Hãy theo dõi sát.",
+      "danger": "Sắp chạm giới hạn ngày! Giảm lượt gọi AI."
+    },
+    "today_by_feature": "Hôm nay theo tính năng",
+    "no_usage_today": "Hôm nay chưa có sử dụng AI",
+    "last_7_days": "7 ngày qua",
+    "error_title": "Tải dữ liệu sử dụng AI thất bại",
+    "error_description": "Chúng tôi không thể lấy chỉ số sử dụng AI. Vui lòng thử lại."
+  }
+}

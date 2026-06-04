@@ -6,14 +6,12 @@ import { useTranslation } from 'react-i18next'
 import { LanguageSwitcher } from './LanguageSwitcher'
 import { NotificationBell } from './NotificationBell'
 import { UserMenu } from './UserMenu'
-import { Menu, Search, HelpCircle, X } from 'lucide-react'
+import { Menu, Search, X } from 'lucide-react'
 import { useCandidates } from '../../hooks/useCandidates'
-import { cn } from '../../utils/cn'
 
 export function Header() {
   const { t } = useTranslation('common')
   const { toggleSidebar } = useUIStore()
-  const profile = useAuthStore(s => s.profile)
   const navigate = useNavigate()
   const [searchOpen, setSearchOpen] = useState(false)
   const [search, setSearch] = useState('')
@@ -34,13 +32,66 @@ export function Header() {
   }, [searchOpen])
 
   return (
-    <header className="h-16 fixed top-0 right-0 left-0 md:left-[260px] z-40 bg-surface border-b border-outline-variant flex items-center justify-between px-4 md:px-6">
-      <div className="flex items-center gap-4 flex-1">
-        <button onClick={toggleSidebar} className="md:hidden p-2 hover:bg-surface-container rounded-lg">
-          <Menu size={20} className="text-on-surface-variant" />
+    <header style={{
+      height: '60px',
+      position: 'fixed',
+      top: 0, right: 0, left: 0,
+      marginLeft: '260px',
+      zIndex: 40,
+      backgroundColor: 'var(--color-surface, #ffffff)',
+      borderBottom: '1px solid var(--color-border-subtle, #e8f0f8)',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'space-between',
+      padding: '0 28px',
+      fontFamily: 'var(--font-sans, Inter, sans-serif)',
+    }}
+    className="max-md:ml-0"
+    >
+      {/* Left: hamburger + search */}
+      <div style={{ display: 'flex', alignItems: 'center', gap: '16px', flex: 1 }}>
+        <button
+          onClick={toggleSidebar}
+          className="md:hidden"
+          style={{
+            background: 'none', border: 'none', cursor: 'pointer',
+            color: 'var(--color-navy, #1e3a5f)', padding: '6px',
+            borderRadius: '8px',
+          }}
+        >
+          <Menu size={20} />
         </button>
-        <div className="hidden sm:flex relative flex-1 max-w-md items-center rounded-full border border-outline-variant bg-surface-container-lowest focus-within:border-primary focus-within:ring-2 focus-within:ring-primary/20">
-          <Search size={18} className="absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant pointer-events-none" />
+
+        {/* Search bar — desktop */}
+        <div
+          className="hidden sm:flex"
+          style={{
+            position: 'relative',
+            flex: '1',
+            maxWidth: '380px',
+            alignItems: 'center',
+            borderRadius: '8px',
+            border: '1px solid var(--color-border, #d4e3f0)',
+            backgroundColor: 'var(--color-surface-alt, #f0f6fc)',
+            transition: 'border-color 0.25s ease-out, box-shadow 0.25s ease-out',
+          }}
+          onFocusCapture={e => {
+            const el = e.currentTarget as HTMLDivElement
+            el.style.borderColor = 'var(--color-navy, #1e3a5f)'
+            el.style.boxShadow = '0 0 0 3px rgba(30,58,95,0.08)'
+          }}
+          onBlurCapture={e => {
+            const el = e.currentTarget as HTMLDivElement
+            el.style.borderColor = 'var(--color-border, #d4e3f0)'
+            el.style.boxShadow = 'none'
+          }}
+        >
+          <Search size={15} style={{
+            position: 'absolute', left: '12px', top: '50%',
+            transform: 'translateY(-50%)',
+            color: 'var(--color-text-muted, #8aa0bb)',
+            pointerEvents: 'none',
+          }} />
           <input
             ref={searchRef}
             value={search}
@@ -53,60 +104,151 @@ export function Header() {
                 setSearch(''); setShowResults(false)
               }
             }}
-            className="w-full pl-10 pr-4 py-2 bg-transparent border-none focus:ring-0 text-sm focus:outline-none"
+            style={{
+              width: '100%',
+              paddingLeft: '36px',
+              paddingRight: '16px',
+              paddingTop: '8px',
+              paddingBottom: '8px',
+              background: 'transparent',
+              border: 'none',
+              outline: 'none',
+              fontSize: '13px',
+              color: 'var(--color-text-primary, #0f1c2e)',
+            }}
             placeholder={t('nav.search')}
           />
+
+          {/* Search results dropdown */}
           {showResults && results.length > 0 && (
-            <div className="absolute top-full left-0 right-0 mt-1 bg-surface rounded-xl border border-outline-variant shadow-lg overflow-hidden z-50">
+            <div style={{
+              position: 'absolute',
+              top: 'calc(100% + 6px)',
+              left: 0, right: 0,
+              backgroundColor: 'var(--color-surface, #ffffff)',
+              border: '1px solid var(--color-border, #d4e3f0)',
+              borderRadius: '10px',
+              boxShadow: '0 16px 40px rgba(30, 58, 95, 0.12)',
+              overflow: 'hidden',
+              zIndex: 60,
+            }}>
               {results.map((c: any) => (
                 <button
                   key={c.id}
-                  onMouseDown={() => { navigate(`/recruitment/candidates/${c.id}`); setSearch(''); setShowResults(false) }}
-                  className="w-full flex items-center gap-3 px-4 py-2.5 hover:bg-surface-container-low text-left transition-colors"
+                  onMouseDown={() => {
+                    navigate(`/recruitment/candidates/${c.id}`)
+                    setSearch(''); setShowResults(false)
+                  }}
+                  style={{
+                    width: '100%',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '12px',
+                    padding: '10px 14px',
+                    background: 'none',
+                    border: 'none',
+                    cursor: 'pointer',
+                    textAlign: 'left',
+                    transition: 'background-color 0.2s ease-out',
+                    borderBottom: '1px solid var(--color-border-subtle, #e8f0f8)',
+                  }}
+                  onMouseEnter={e => (e.currentTarget.style.backgroundColor = 'var(--color-accent-light, #e8f4fd)')}
+                  onMouseLeave={e => (e.currentTarget.style.backgroundColor = 'transparent')}
                 >
-                  <div className="w-8 h-8 rounded-full bg-primary-container text-on-primary flex items-center justify-center text-xs font-bold shrink-0">
+                  <div style={{
+                    width: '32px', height: '32px',
+                    borderRadius: '50%',
+                    backgroundColor: 'var(--color-navy, #1e3a5f)',
+                    color: '#fff',
+                    display: 'flex', alignItems: 'center', justifyContent: 'center',
+                    fontSize: '12px', fontWeight: 600,
+                    flexShrink: 0,
+                  }}>
                     {c.full_name?.charAt(0) || '?'}
                   </div>
-                  <div className="min-w-0">
-                    <p className="text-sm font-medium text-on-surface truncate">{c.full_name}</p>
-                    <p className="text-xs text-on-surface-variant truncate">{c.current_position || c.email}</p>
+                  <div style={{ minWidth: 0 }}>
+                    <p style={{
+                      fontSize: '13px', fontWeight: 500,
+                      color: 'var(--color-navy-deep, #0f1c2e)',
+                      margin: 0, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap',
+                    }}>
+                      {c.full_name}
+                    </p>
+                    <p style={{
+                      fontSize: '11px', color: 'var(--color-text-muted, #8aa0bb)',
+                      margin: 0, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap',
+                    }}>
+                      {c.current_position || c.email}
+                    </p>
                   </div>
                 </button>
               ))}
             </div>
           )}
         </div>
-        <button onClick={() => setSearchOpen(!searchOpen)} className="sm:hidden p-2 hover:bg-surface-container rounded-lg">
-          <Search size={20} className="text-on-surface-variant" />
+
+        {/* Mobile search toggle */}
+        <button
+          onClick={() => setSearchOpen(!searchOpen)}
+          className="sm:hidden"
+          style={{
+            background: 'none', border: 'none', cursor: 'pointer',
+            color: 'var(--color-text-secondary, #4a6080)', padding: '6px',
+            borderRadius: '8px',
+          }}
+        >
+          <Search size={19} />
         </button>
+
+        {/* Mobile search overlay */}
         {searchOpen && (
-          <div className="sm:hidden fixed inset-x-0 top-0 z-50 bg-surface p-3 flex items-center gap-2 border-b border-outline-variant">
-            <Search size={18} className="text-on-surface-variant shrink-0" />
+          <div
+            className="sm:hidden"
+            style={{
+              position: 'fixed',
+              inset: '0 0 auto 0',
+              zIndex: 70,
+              backgroundColor: 'var(--color-surface, #ffffff)',
+              borderBottom: '1px solid var(--color-border-subtle, #e8f0f8)',
+              padding: '12px 16px',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '10px',
+            }}
+          >
+            <Search size={16} style={{ color: 'var(--color-text-muted, #8aa0bb)', flexShrink: 0 }} />
             <input
               autoFocus
               value={search}
               onChange={e => setSearch(e.target.value)}
               onKeyDown={e => {
                 if (e.key === 'Enter' && results.length > 0) {
-                  navigate(`/recruitment/candidates/${results[0].id}`); setSearch(''); setSearchOpen(false)
+                  navigate(`/recruitment/candidates/${results[0].id}`)
+                  setSearch(''); setSearchOpen(false)
                 }
               }}
-              className="flex-1 bg-transparent outline-none text-sm"
+              style={{
+                flex: 1, border: 'none', outline: 'none',
+                background: 'transparent', fontSize: '14px',
+                color: 'var(--color-text-primary, #0f1c2e)',
+              }}
               placeholder={t('nav.search')}
             />
-            <button onClick={() => { setSearchOpen(false); setSearch('') }} className="p-1">
-              <X size={18} />
+            <button
+              onClick={() => { setSearchOpen(false); setSearch('') }}
+              style={{ background: 'none', border: 'none', cursor: 'pointer', padding: '4px' }}
+            >
+              <X size={16} style={{ color: 'var(--color-text-muted, #8aa0bb)' }} />
             </button>
           </div>
         )}
       </div>
 
-      <div className="flex items-center gap-3">
+      {/* Right: controls */}
+      <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
         <LanguageSwitcher />
+        <div style={{ width: '1px', height: '20px', backgroundColor: 'var(--color-border-subtle, #e8f0f8)' }} />
         <NotificationBell />
-        <button className="p-2 rounded-full hover:bg-surface-container-high text-on-surface-variant">
-          <HelpCircle size={20} />
-        </button>
         <UserMenu />
       </div>
     </header>

@@ -17,8 +17,9 @@ describe('AuthGuard', () => {
     vi.clearAllMocks()
     ;(useAuthStore as any).mockReturnValue({
       isAuthenticated: () => false, isAdminOrHR: () => false, hasCompany: () => false,
-      isLoading: false, user: null, profile: null, company: null,
-      setUser: vi.fn(), setProfile: vi.fn(), setCompany: vi.fn(), setLoading: vi.fn(), reset: vi.fn(),
+      isLoading: false, user: null, profile: null, company: null, error: null,
+      setUser: vi.fn(), setProfile: vi.fn(), setCompany: vi.fn(), setLoading: vi.fn(), setError: vi.fn(), reset: vi.fn(),
+      initSession: vi.fn(), subscribeAuth: vi.fn(() => () => {}),
     })
   })
 
@@ -40,27 +41,30 @@ describe('AuthGuard', () => {
   })
 
   it('redirects users without company to setup', () => {
-    (useAuthStore as any).mockReturnValue({
+    ;(useAuthStore as any).mockReturnValue({
       isAuthenticated: () => true, isAdminOrHR: () => true, hasCompany: () => false,
       isLoading: false, user: { id: '1' }, profile: { id: '1', role: 'hr', full_name: 'Test', email: 'a@a.com', is_active: true, language_preference: 'th' }, company: null,
+      initSession: vi.fn(), subscribeAuth: vi.fn(() => () => {}),
     })
     renderGuard()
     expect(screen.getByText('Setup Company')).toBeTruthy()
   })
 
   it('shows content for authenticated users with company', () => {
-    (useAuthStore as any).mockReturnValue({
+    ;(useAuthStore as any).mockReturnValue({
       isAuthenticated: () => true, isAdminOrHR: () => true, hasCompany: () => true,
       isLoading: false, user: { id: '1' }, profile: { id: '1', role: 'hr', full_name: 'Test', email: 'a@a.com', is_active: true, language_preference: 'th' },
       company: { id: 'c1', name: 'TestCorp', country: 'TH', currency: 'THB', locale: 'th-TH' },
+      initSession: vi.fn(), subscribeAuth: vi.fn(() => () => {}),
     })
     renderGuard()
     expect(screen.getByText('Dashboard Content')).toBeTruthy()
   })
 
   it('shows loading spinner when isLoading is true', () => {
-    (useAuthStore as any).mockReturnValue({
+    ;(useAuthStore as any).mockReturnValue({
       isAuthenticated: () => false, isLoading: true, user: null, profile: null, company: null,
+      initSession: vi.fn(), subscribeAuth: vi.fn(() => () => {}),
     })
     renderGuard()
     expect(document.querySelector('.animate-spin')).toBeTruthy()

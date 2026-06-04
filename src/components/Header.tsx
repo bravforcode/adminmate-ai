@@ -1,25 +1,21 @@
+import React, { useState } from 'react';
 import { translations } from '../translations';
 import { Language, Page, UserRole } from '../types';
-import { 
-  Building2, 
-  User, 
-  Menu, 
-  X, 
-  LogOut, 
-  LayoutDashboard, 
-  FileText, 
-  Search, 
-  GitMerge, 
-  Network, 
-  FolderLock, 
-  CheckSquare, 
-  MessageSquare, 
-  UserSquare2, 
-  Settings, 
-  Sparkles,
-  Globe
+import {
+  LogOut,
+  LayoutDashboard,
+  FileText,
+  Search,
+  GitMerge,
+  Network,
+  FolderLock,
+  CheckSquare,
+  MessageSquare,
+  UserSquare2,
+  Settings,
+  Menu,
+  X,
 } from 'lucide-react';
-import React, { useState } from 'react';
 
 interface HeaderProps {
   language: Language;
@@ -27,10 +23,17 @@ interface HeaderProps {
   activePage: Page;
   setActivePage: (page: Page) => void;
   userRole: UserRole;
-  setUserRole: (role: UserRole) => void;
+  setUserRole?: (role: UserRole) => void; // optional — no longer used for switching
   companyName: string;
   onLogout: () => void;
 }
+
+const LANGS: { code: Language; label: string }[] = [
+  { code: 'TH', label: 'TH' },
+  { code: 'EN', label: 'EN' },
+  { code: 'VI', label: 'VI' },
+  { code: 'ZH', label: '中' },
+];
 
 export default function Header({
   language,
@@ -38,178 +41,286 @@ export default function Header({
   activePage,
   setActivePage,
   userRole,
-  setUserRole,
   companyName,
-  onLogout
+  onLogout,
 }: HeaderProps) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const t = translations[language];
 
-  // Group pages based on perspective
+  const isApplicant = userRole === 'Applicant';
+
+  // HR tabs
   const hrTabs = [
-    { id: 'dashboard', label: t.dashboard, icon: LayoutDashboard },
-    { id: 'jd-generator', label: t.jdGenerator, icon: FileText },
-    { id: 'resume-upload', label: t.resumeUpload, icon: Search },
-    { id: 'candidate-matching', label: t.candidateMatching, icon: GitMerge },
-    { id: 'pipeline', label: t.candidatePipeline, icon: Network },
-    { id: 'onboarding-manager', label: t.onboardingManager, icon: FolderLock },
-    { id: 'settings', label: t.settings, icon: Settings },
-  ] as const;
+    { id: 'dashboard' as Page, label: t.dashboard, icon: LayoutDashboard },
+    { id: 'jd-generator' as Page, label: t.jdGenerator, icon: FileText },
+    { id: 'resume-upload' as Page, label: t.resumeUpload, icon: Search },
+    { id: 'candidate-matching' as Page, label: t.candidateMatching, icon: GitMerge },
+    { id: 'pipeline' as Page, label: t.candidatePipeline, icon: Network },
+    { id: 'onboarding-manager' as Page, label: t.onboardingManager, icon: FolderLock },
+    { id: 'settings' as Page, label: t.settings, icon: Settings },
+  ];
 
+  // Applicant tabs
   const applicantTabs = [
-    { id: 'cv-builder', label: t.cvBuilder, icon: UserSquare2 },
-    { id: 'onboarding-checklist', label: t.onboardingChecklist, icon: CheckSquare },
-    { id: 'onboarding-assistant', label: t.onboardingAssistant, icon: MessageSquare },
-  ] as const;
+    { id: 'cv-builder' as Page, label: t.cvBuilder, icon: UserSquare2 },
+    { id: 'onboarding-checklist' as Page, label: t.onboardingChecklist, icon: CheckSquare },
+    { id: 'onboarding-assistant' as Page, label: t.onboardingAssistant, icon: MessageSquare },
+  ];
 
-  const handlePageClick = (pageId: Page) => {
+  const currentTabs = isApplicant ? applicantTabs : hrTabs;
+
+  const handleTabClick = (pageId: Page) => {
     setActivePage(pageId);
     setMobileMenuOpen(false);
   };
 
-  const currentTabs = userRole === 'Applicant' ? applicantTabs : hrTabs;
-
   return (
-    <header className="sticky top-0 z-40 bg-white border-b border-slate-100 shadow-xs font-sans">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between h-16">
-          
-          {/* Logo Brand section */}
-          <div className="flex items-center">
-            <div className="flex-shrink-0 flex items-center gap-2">
-              <div className="h-9 w-9 rounded-lg bg-indigo-600 flex items-center justify-center shadow-md shadow-indigo-100">
-                <Building2 className="h-5 w-5 text-white" />
-              </div>
-              <div className="flex flex-col">
-                <span className="font-extrabold text-slate-900 text-lg leading-tight tracking-tight">
-                  AdminMate <span className="text-indigo-600 font-bold text-xs bg-indigo-50 px-1.5 py-0.5 rounded-md ml-1 inline-block align-middle">AI</span>
-                </span>
-                <span className="text-[10px] text-slate-500 font-medium truncate max-w-[150px] sm:max-w-xs">
-                  {userRole === 'Applicant' ? t.navApplicantSuite : companyName}
-                </span>
-              </div>
-            </div>
+    <header
+      style={{
+        position: 'sticky',
+        top: 0,
+        zIndex: 40,
+        backgroundColor: 'var(--color-surface)',
+        borderBottom: '1px solid var(--color-border-subtle)',
+        fontFamily: 'var(--font-sans)',
+      }}
+    >
+      {/* Top strip — Logo + Controls */}
+      <div
+        style={{
+          maxWidth: '1320px',
+          margin: '0 auto',
+          padding: '0 32px',
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          height: '60px',
+        }}
+      >
+        {/* Logo */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: '10px', flexShrink: 0 }}>
+          <div
+            style={{
+              width: '32px',
+              height: '32px',
+              borderRadius: '7px',
+              backgroundColor: 'var(--color-navy)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              flexShrink: 0,
+            }}
+          >
+            <span style={{ color: '#fff', fontSize: '14px', fontFamily: 'var(--font-serif)', fontWeight: 400 }}>A</span>
           </div>
-
-          {/* Perspective/Role Selection Trigger in Center (Responsive) */}
-          <div className="hidden md:flex items-center mx-4 bg-slate-100 p-1 rounded-xl border border-slate-200/50">
-            <button
-              onClick={() => {
-                setUserRole('HR');
-                setActivePage('dashboard');
+          <div>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+              <span
+                style={{
+                  fontFamily: 'var(--font-serif)',
+                  fontSize: '17px',
+                  fontWeight: 400,
+                  color: 'var(--color-navy-deep)',
+                  letterSpacing: '-0.02em',
+                  lineHeight: 1,
+                }}
+              >
+                AdminMate
+              </span>
+              <span
+                style={{
+                  fontFamily: 'var(--font-sans)',
+                  fontSize: '9px',
+                  fontWeight: 600,
+                  color: 'var(--color-accent)',
+                  backgroundColor: 'var(--color-accent-light)',
+                  padding: '2px 5px',
+                  borderRadius: '4px',
+                  letterSpacing: '0.06em',
+                }}
+              >
+                AI
+              </span>
+            </div>
+            <p
+              style={{
+                fontSize: '10px',
+                color: 'var(--color-text-muted)',
+                fontWeight: 400,
+                margin: 0,
+                maxWidth: '200px',
+                overflow: 'hidden',
+                textOverflow: 'ellipsis',
+                whiteSpace: 'nowrap',
               }}
-              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition-all ${
-                userRole !== 'Applicant'
-                  ? 'bg-white text-indigo-700 shadow-xs'
-                  : 'text-slate-600 hover:text-slate-900'
-              }`}
             >
-              <Building2 className="h-3.5 w-3.5" />
-              {t.navSmeSuite}
-            </button>
-            <button
-              onClick={() => {
-                setUserRole('Applicant');
-                setActivePage('cv-builder');
+              {isApplicant ? t.navApplicantSuite : companyName}
+            </p>
+          </div>
+        </div>
+
+        {/* Right side controls */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+          {/* Language switcher — desktop */}
+          <div
+            className="lang-switcher-desktop"
+            style={{
+              display: 'flex',
+              gap: '2px',
+              backgroundColor: 'var(--color-surface-alt)',
+              borderRadius: '8px',
+              padding: '3px',
+            }}
+          >
+            {LANGS.map((l) => (
+              <button
+                key={l.code}
+                onClick={() => setLanguage(l.code)}
+                id={`header-lang-${l.code.toLowerCase()}`}
+                style={{
+                  padding: '4px 9px',
+                  borderRadius: '6px',
+                  fontSize: '10px',
+                  fontWeight: 600,
+                  letterSpacing: '0.05em',
+                  border: 'none',
+                  cursor: 'pointer',
+                  transition: 'all 0.25s ease-out',
+                  backgroundColor: language === l.code ? 'var(--color-navy)' : 'transparent',
+                  color: language === l.code ? '#ffffff' : 'var(--color-text-muted)',
+                }}
+              >
+                {l.label}
+              </button>
+            ))}
+          </div>
+
+          {/* Vertical divider */}
+          <div style={{ width: '1px', height: '24px', backgroundColor: 'var(--color-border)' }} />
+
+          {/* User avatar + role badge */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+            <div
+              style={{
+                width: '32px',
+                height: '32px',
+                borderRadius: '50%',
+                backgroundColor: isApplicant ? 'var(--color-accent-light)' : 'var(--color-navy)',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                fontSize: '11px',
+                fontWeight: 600,
+                color: isApplicant ? 'var(--color-navy)' : '#ffffff',
+                flexShrink: 0,
               }}
-              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition-all ${
-                userRole === 'Applicant'
-                  ? 'bg-white text-indigo-700 shadow-xs'
-                  : 'text-slate-600 hover:text-slate-900'
-              }`}
             >
-              <User className="h-3.5 w-3.5" />
-              {t.navApplicantSuite}
-            </button>
-          </div>
-
-          {/* Right action controls */}
-          <div className="hidden lg:flex items-center gap-4">
-            
-            {/* TH/EN Switcher */}
-            <div className="flex items-center bg-slate-50 p-1 rounded-lg border border-slate-200">
-              <button
-                onClick={() => setLanguage('TH')}
-                className={`px-2 py-1 rounded text-[11px] font-bold transition-all ${
-                  language === 'TH' ? 'bg-white text-indigo-700 font-extrabold shadow-2xs' : 'text-slate-500 hover:text-slate-700'
-                }`}
-              >
-                TH
-              </button>
-              <button
-                onClick={() => setLanguage('EN')}
-                className={`px-2 py-1 rounded text-[11px] font-bold transition-all ${
-                  language === 'EN' ? 'bg-white text-indigo-700 font-extrabold shadow-2xs' : 'text-slate-500 hover:text-slate-700'
-                }`}
-              >
-                EN
-              </button>
+              {isApplicant ? 'AP' : 'HR'}
             </div>
-
-            {/* Logged in avatar info */}
-            <div className="h-8 w-px bg-slate-200"></div>
-
-            <div className="flex items-center gap-2">
-              <div className="h-8 w-8 rounded-full bg-slate-100 border border-slate-200 flex items-center justify-center font-bold text-slate-700 text-xs shadow-2xs">
-                {userRole === 'Applicant' ? 'AP' : 'HR'}
-              </div>
-              <div className="text-left">
-                <p className="text-xs font-semibold text-slate-800">
-                  {userRole === 'Applicant' ? 'Job Candidate' : 'SME Manager'}
-                </p>
-                <p className="text-[10px] text-slate-400 capitalize">{userRole}</p>
-              </div>
-              <button
-                onClick={onLogout}
-                className="ml-2 p-1.5 text-slate-400 hover:text-red-500 hover:bg-red-50 rounded-lg transition-colors"
-                title={t.signOut}
-              >
-                <LogOut className="h-4.5 w-4.5" />
-              </button>
+            <div style={{ display: 'none' }} className="user-info-desktop">
+              <p style={{ fontSize: '12px', fontWeight: 600, color: 'var(--color-text-primary)', margin: 0, lineHeight: 1.3 }}>
+                {isApplicant ? 'Job Applicant' : 'HR Manager'}
+              </p>
+              <p style={{ fontSize: '10px', color: 'var(--color-text-muted)', margin: 0 }}>
+                {userRole}
+              </p>
             </div>
           </div>
 
-          {/* Quick toggle bar tools for medium or small screens */}
-          <div className="flex items-center lg:hidden gap-2">
-            {/* Mobile language switch icon style */}
-            <button
-              onClick={() => setLanguage(language === 'TH' ? 'EN' : 'TH')}
-              className="flex items-center gap-1 p-2 text-slate-600 hover:bg-slate-50 rounded-lg border border-slate-200 text-xs font-bold"
-              title="Toggle Language"
-            >
-              <Globe className="h-3.5 w-3.5 text-slate-500" />
-              <span>{language}</span>
-            </button>
+          {/* Logout button */}
+          <button
+            onClick={onLogout}
+            id="btn-logout"
+            title={t.signOut}
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              width: '32px',
+              height: '32px',
+              borderRadius: '8px',
+              border: '1px solid var(--color-border)',
+              backgroundColor: 'transparent',
+              color: 'var(--color-text-muted)',
+              cursor: 'pointer',
+              transition: 'color 0.25s ease-out, background-color 0.25s ease-out, border-color 0.25s ease-out',
+            }}
+            onMouseEnter={(e) => {
+              const el = e.currentTarget;
+              el.style.color = '#c0392b';
+              el.style.backgroundColor = '#fdecea';
+              el.style.borderColor = '#f0b0a8';
+            }}
+            onMouseLeave={(e) => {
+              const el = e.currentTarget;
+              el.style.color = 'var(--color-text-muted)';
+              el.style.backgroundColor = 'transparent';
+              el.style.borderColor = 'var(--color-border)';
+            }}
+          >
+            <LogOut size={15} />
+          </button>
 
-            {/* Mobile menu icon button */}
-            <button
-              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="p-1.5 rounded-lg text-slate-600 hover:bg-slate-50 border border-slate-200"
-            >
-              {mobileMenuOpen ? <X className="h-5.5 w-5.5" /> : <Menu className="h-5.5 w-5.5" />}
-            </button>
-          </div>
-
+          {/* Mobile hamburger */}
+          <button
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            id="btn-mobile-menu"
+            style={{
+              display: 'none',
+              alignItems: 'center',
+              justifyContent: 'center',
+              width: '32px',
+              height: '32px',
+              borderRadius: '8px',
+              border: '1px solid var(--color-border)',
+              backgroundColor: 'transparent',
+              color: 'var(--color-navy)',
+              cursor: 'pointer',
+            }}
+            className="mobile-menu-btn"
+          >
+            {mobileMenuOpen ? <X size={16} /> : <Menu size={16} />}
+          </button>
         </div>
       </div>
 
-      {/* Primary horizontal tab strip on Desktop */}
-      <div className="hidden lg:block bg-slate-50 border-t border-slate-100">
-        <div className="max-w-7xl mx-auto px-8 flex gap-1">
+      {/* Tab Navigation strip */}
+      <div
+        style={{
+          borderTop: '1px solid var(--color-border-subtle)',
+          backgroundColor: 'var(--color-bg)',
+          overflowX: 'auto',
+        }}
+        className="no-scrollbar"
+      >
+        <div
+          style={{
+            maxWidth: '1320px',
+            margin: '0 auto',
+            padding: '0 32px',
+            display: 'flex',
+            gap: '0',
+          }}
+        >
           {currentTabs.map((tab) => {
             const Icon = tab.icon;
-            const isSel = activePage === tab.id;
+            const isActive = activePage === tab.id;
             return (
               <button
                 key={tab.id}
-                onClick={() => handlePageClick(tab.id as Page)}
-                className={`py-3 px-4 font-semibold text-xs flex items-center gap-2 border-b-2 transition-all cursor-pointer ${
-                  isSel
-                    ? 'border-indigo-600 text-indigo-600 bg-white/50'
-                    : 'border-transparent text-slate-600 hover:text-slate-900 hover:bg-slate-100/50'
-                }`}
+                id={`nav-tab-${tab.id}`}
+                onClick={() => handleTabClick(tab.id)}
+                className="nav-tab"
+                style={{
+                  color: isActive ? 'var(--color-navy)' : 'var(--color-text-secondary)',
+                  borderBottomColor: isActive ? 'var(--color-navy)' : 'transparent',
+                  fontWeight: isActive ? 600 : 500,
+                }}
               >
-                <Icon className={`h-4 w-4 ${isSel ? 'text-indigo-600' : 'text-slate-400'}`} />
+                <Icon
+                  size={14}
+                  style={{ color: isActive ? 'var(--color-navy)' : 'var(--color-text-muted)', flexShrink: 0 }}
+                />
                 {tab.label}
               </button>
             );
@@ -217,83 +328,178 @@ export default function Header({
         </div>
       </div>
 
-      {/* Mobile Collapsible Panel */}
+      {/* Mobile Menu Panel */}
       {mobileMenuOpen && (
-        <div className="lg:hidden absolute left-0 right-0 top-16 bg-white shadow-xl border-b border-slate-200 animate-in fade-in-50 duration-200">
-          <div className="px-3 pt-3 pb-3 space-y-1">
-            
-            {/* Context/Role switcher for smaller widths */}
-            <div className="bg-slate-100 p-1.5 rounded-xl border border-slate-150 grid grid-cols-2 mb-3">
-              <button
-                onClick={() => {
-                  setUserRole('HR');
-                  handlePageClick('dashboard');
+        <div
+          style={{
+            position: 'absolute',
+            left: 0,
+            right: 0,
+            top: '100%',
+            backgroundColor: 'var(--color-surface)',
+            borderBottom: '1px solid var(--color-border)',
+            boxShadow: '0 16px 48px rgba(30, 58, 95, 0.12)',
+            zIndex: 50,
+          }}
+        >
+          <div style={{ padding: '16px 20px' }}>
+            {/* Role badge */}
+            <div
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: '10px',
+                padding: '12px 16px',
+                backgroundColor: 'var(--color-surface-alt)',
+                borderRadius: '10px',
+                marginBottom: '16px',
+              }}
+            >
+              <div
+                style={{
+                  width: '28px',
+                  height: '28px',
+                  borderRadius: '50%',
+                  backgroundColor: isApplicant ? 'var(--color-accent-light)' : 'var(--color-navy)',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  fontSize: '10px',
+                  fontWeight: 700,
+                  color: isApplicant ? 'var(--color-navy)' : '#fff',
                 }}
-                className={`flex items-center justify-center gap-1.5 py-2 px-1.5 rounded-lg text-xs font-bold transition-all ${
-                  userRole !== 'Applicant'
-                    ? 'bg-white text-indigo-700 shadow-2xs'
-                    : 'text-slate-600'
-                }`}
               >
-                <Building2 className="h-4 w-4" />
-                {t.navSmeSuite}
-              </button>
-              <button
-                onClick={() => {
-                  setUserRole('Applicant');
-                  handlePageClick('cv-builder');
-                }}
-                className={`flex items-center justify-center gap-1.5 py-2 px-1.5 rounded-lg text-xs font-bold transition-all ${
-                  userRole === 'Applicant'
-                    ? 'bg-white text-indigo-700 shadow-2xs'
-                    : 'text-slate-600'
-                }`}
-              >
-                <User className="h-4 w-4" />
-                {t.navApplicantSuite}
-              </button>
+                {isApplicant ? 'AP' : 'HR'}
+              </div>
+              <div>
+                <p style={{ fontSize: '13px', fontWeight: 600, color: 'var(--color-text-primary)', margin: 0 }}>
+                  {isApplicant ? t.navApplicantSuite : t.navSmeSuite}
+                </p>
+                <p style={{ fontSize: '11px', color: 'var(--color-text-muted)', margin: 0 }}>
+                  {companyName}
+                </p>
+              </div>
             </div>
 
-            {/* List navigation tabs dynamically */}
-            <p className="text-[10px] font-bold text-slate-400 uppercase px-3 pb-1">
-              {userRole === 'Applicant' ? t.navApplicantSuite : t.navSmeSuite}
-            </p>
+            {/* Language switcher mobile */}
+            <div
+              style={{
+                display: 'flex',
+                gap: '4px',
+                marginBottom: '16px',
+                backgroundColor: 'var(--color-surface-alt)',
+                borderRadius: '8px',
+                padding: '3px',
+              }}
+            >
+              {LANGS.map((l) => (
+                <button
+                  key={l.code}
+                  onClick={() => setLanguage(l.code)}
+                  style={{
+                    flex: 1,
+                    padding: '6px 4px',
+                    borderRadius: '6px',
+                    fontSize: '11px',
+                    fontWeight: 600,
+                    border: 'none',
+                    cursor: 'pointer',
+                    backgroundColor: language === l.code ? 'var(--color-navy)' : 'transparent',
+                    color: language === l.code ? '#fff' : 'var(--color-text-muted)',
+                    transition: 'all 0.2s ease-out',
+                  }}
+                >
+                  {l.label}
+                </button>
+              ))}
+            </div>
 
+            {/* Nav tabs list */}
+            <p
+              style={{
+                fontSize: '10px',
+                fontWeight: 700,
+                color: 'var(--color-text-muted)',
+                letterSpacing: '0.1em',
+                textTransform: 'uppercase',
+                marginBottom: '8px',
+                paddingLeft: '4px',
+              }}
+            >
+              {isApplicant ? t.navApplicantSuite : t.navSmeSuite}
+            </p>
             {currentTabs.map((tab) => {
               const Icon = tab.icon;
-              const isSel = activePage === tab.id;
+              const isActive = activePage === tab.id;
               return (
                 <button
                   key={tab.id}
-                  onClick={() => handlePageClick(tab.id as Page)}
-                  className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs font-semibold tracking-wide transition-all ${
-                    isSel
-                      ? 'bg-indigo-50 text-indigo-700'
-                      : 'text-slate-700 hover:bg-slate-50'
-                  }`}
+                  onClick={() => handleTabClick(tab.id)}
+                  style={{
+                    width: '100%',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '12px',
+                    padding: '11px 12px',
+                    borderRadius: '8px',
+                    border: 'none',
+                    cursor: 'pointer',
+                    backgroundColor: isActive ? 'var(--color-accent-light)' : 'transparent',
+                    color: isActive ? 'var(--color-navy)' : 'var(--color-text-secondary)',
+                    fontSize: '13px',
+                    fontWeight: isActive ? 600 : 500,
+                    textAlign: 'left',
+                    transition: 'background-color 0.2s ease-out',
+                    marginBottom: '2px',
+                  }}
                 >
-                  <Icon className={`h-4.5 w-4.5 ${isSel ? 'text-indigo-600' : 'text-slate-400'}`} />
+                  <Icon size={15} style={{ color: isActive ? 'var(--color-navy)' : 'var(--color-text-muted)', flexShrink: 0 }} />
                   {tab.label}
                 </button>
               );
             })}
 
-            <div className="h-px bg-slate-100 my-2"></div>
+            <div style={{ height: '1px', backgroundColor: 'var(--color-border-subtle)', margin: '12px 0' }} />
 
-            {/* Session logout */}
+            {/* Logout */}
             <button
-              onClick={() => {
-                setMobileMenuOpen(false);
-                onLogout();
+              onClick={() => { setMobileMenuOpen(false); onLogout(); }}
+              style={{
+                width: '100%',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '12px',
+                padding: '11px 12px',
+                borderRadius: '8px',
+                border: 'none',
+                cursor: 'pointer',
+                backgroundColor: 'transparent',
+                color: '#c0392b',
+                fontSize: '13px',
+                fontWeight: 500,
+                textAlign: 'left',
+                transition: 'background-color 0.2s ease-out',
               }}
-              className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs font-semibold text-red-600 hover:bg-red-50 transition-colors"
+              onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = '#fdecea')}
+              onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = 'transparent')}
             >
-              <LogOut className="h-4.5 w-4.5 text-red-500" />
+              <LogOut size={15} style={{ color: '#c0392b', flexShrink: 0 }} />
               {t.signOut}
             </button>
           </div>
         </div>
       )}
+
+      {/* Responsive CSS injection */}
+      <style>{`
+        @media (max-width: 768px) {
+          .lang-switcher-desktop { display: none !important; }
+          .mobile-menu-btn { display: flex !important; }
+        }
+        @media (min-width: 769px) {
+          .user-info-desktop { display: block !important; }
+        }
+      `}</style>
     </header>
   );
 }

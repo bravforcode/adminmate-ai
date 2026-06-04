@@ -1,1 +1,18 @@
-{ "title": "Dokumen", "subtitle": "Lacak dokumen ketenagakerjaan", "no_docs": "Tidak ada dokumen", "pending": "Tertunda", "signed": "Ditandatangani", "overdue": "Terlambat", "reminder_sent": "Pengingat terkirim" }
+{
+  "title": "Dokumen",
+  "subtitle": "Lacak dokumen perekrutan",
+  "no_docs": "Dokumen tidak ditemukan",
+  "pending": "Tertunda",
+  "signed": "Ditandatangani",
+  "overdue": "Terlambat",
+  "reminder_sent": "Pengingat terkirim",
+  "reminder_failed": "Gagal mengirim pengingat",
+  "no_results": "Tidak ada dokumen yang cocok",
+  "empty_title": "Belum ada dokumen",
+  "empty_description": "Dokumen akan muncul di sini setelah dibuat dari penawaran dan kontrak",
+  "total_documents": "Total Dokumen",
+  "pending_action": "Tindakan Tertunda",
+  "overdue": "Terlambat",
+  "search_placeholder": "Cari dokumen...",
+  "all_types": "Semua Jenis"
+}

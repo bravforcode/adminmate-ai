@@ -1,0 +1,31 @@
+{
+  "title": "Tình trạng hệ thống",
+  "last_checked": "Kiểm tra lần cuối",
+  "refreshing": "Đang làm mới…",
+  "service_status": "Trạng thái dịch vụ",
+  "labels": {
+    "database": "Cơ sở dữ liệu",
+    "auth": "Xác thực",
+    "edge_functions": "Edge functions",
+    "storage": "Lưu trữ",
+    "status": "Trạng thái",
+    "db_size": "Dung lượng CSDL",
+    "active_connections": "Kết nối đang hoạt động",
+    "connected": "Đã kết nối",
+    "error": "Lỗi",
+    "operational": "Đang hoạt động",
+    "degraded": "Suy giảm",
+    "unknown": "Không rõ"
+  },
+  "system_metrics": "Chỉ số hệ thống",
+  "metrics": {
+    "total_users": "Tổng người dùng",
+    "total_companies": "Tổng công ty",
+    "total_jobs": "Tổng vị trí",
+    "total_candidates": "Tổng ứng viên",
+    "recent_signups": "Đăng ký gần đây (7 ngày)"
+  },
+  "auto_refresh_note": "Tự động làm mới mỗi 30 giây. Thời gian hiển thị theo múi giờ địa phương.",
+  "error_title": "Kiểm tra hệ thống thất bại",
+  "error_description": "Chúng tôi không thể kiểm tra tình trạng hệ thống. Vui lòng thử lại."
+}

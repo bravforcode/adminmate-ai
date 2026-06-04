@@ -1,1 +1,18 @@
-{ "title": "Documents", "subtitle": "Track employment documents", "no_docs": "No documents found", "pending": "Pending", "signed": "Signed", "overdue": "Overdue", "reminder_sent": "Reminder sent" }
+{
+  "title": "Documents",
+  "subtitle": "Track employment documents",
+  "no_docs": "No documents found",
+  "pending": "Pending",
+  "signed": "Signed",
+  "overdue": "Overdue",
+  "reminder_sent": "Reminder sent",
+  "reminder_failed": "Failed to send reminder",
+  "no_results": "No matching documents found",
+  "empty_title": "No documents yet",
+  "empty_description": "Documents will appear here when generated from offers and contracts.",
+  "total_documents": "Total Documents",
+  "pending_action": "Pending Action",
+  "overdue": "Overdue",
+  "search_placeholder": "Search documents...",
+  "all_types": "All Types"
+}

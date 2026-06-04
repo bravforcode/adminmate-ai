@@ -1,12 +1,13 @@
 import { createBrowserRouter, Navigate } from 'react-router-dom'
 import { lazy, Suspense } from 'react'
-import { AuthGuard } from './AuthGuard'
+import { AuthGuard, CompanySetupGuard } from './AuthGuard'
 import { AppLayout } from '../components/layout/AppLayout'
 import { ErrorBoundary } from '../components/shared/ErrorBoundary'
 
 const LoginPage = lazy(() => import('../pages/auth/LoginPage'))
 const RegisterPage = lazy(() => import('../pages/auth/RegisterPage'))
 const ForgotPasswordPage = lazy(() => import('../pages/auth/ForgotPasswordPage'))
+const ResetPasswordPage = lazy(() => import('../pages/auth/ResetPasswordPage'))
 const CompanySetupPage = lazy(() => import('../pages/onboarding/CompanySetupPage'))
 const CandidatesPage = lazy(() => import('../pages/recruitment/CandidatesPage'))
 const CandidateDetailPage = lazy(() => import('../pages/recruitment/CandidateDetailPage'))
@@ -44,11 +45,15 @@ export const router = createBrowserRouter([
     element: <Suspense fallback={<Loading />}><ForgotPasswordPage /></Suspense>,
   },
   {
+    path: '/reset-password',
+    element: <Suspense fallback={<Loading />}><ResetPasswordPage /></Suspense>,
+  },
+  {
     path: '/setup-company',
     element: <Suspense fallback={<Loading />}>
-      <AuthGuard requireCompany={false}>
+      <CompanySetupGuard>
         <CompanySetupPage />
-      </AuthGuard>
+      </CompanySetupGuard>
     </Suspense>,
   },
   {

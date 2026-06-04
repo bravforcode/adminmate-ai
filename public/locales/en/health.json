@@ -1,0 +1,31 @@
+{
+  "title": "System Health",
+  "last_checked": "Last checked",
+  "refreshing": "Refreshing…",
+  "service_status": "Service status",
+  "labels": {
+    "database": "Database",
+    "auth": "Auth",
+    "edge_functions": "Edge functions",
+    "storage": "Storage",
+    "status": "Status",
+    "db_size": "DB size",
+    "active_connections": "Active connections",
+    "connected": "Connected",
+    "error": "Error",
+    "operational": "Operational",
+    "degraded": "Degraded",
+    "unknown": "Unknown"
+  },
+  "system_metrics": "System metrics",
+  "metrics": {
+    "total_users": "Total users",
+    "total_companies": "Total companies",
+    "total_jobs": "Total jobs",
+    "total_candidates": "Total candidates",
+    "recent_signups": "Recent signups (7d)"
+  },
+  "auto_refresh_note": "Auto-refresh every 30 seconds. Times shown in your local timezone.",
+  "error_title": "Health check failed",
+  "error_description": "We could not check the system health. Please try again."
+}

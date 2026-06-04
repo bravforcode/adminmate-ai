@@ -1,4 +1,4 @@
-import { supabase } from '../lib/supabase'
+import { supabase, getSiteUrl } from '../lib/supabase'
 import type { AuthResponse, SignUpWithPasswordCredentials } from '@supabase/supabase-js'
 
 export const authService = {
@@ -15,7 +15,7 @@ export const authService = {
       password: creds.password,
       options: {
         data: creds.options?.data,
-        emailRedirectTo: `${window.location.origin}/login`,
+        emailRedirectTo: `${getSiteUrl()}/login`,
       },
     })
     if (result.error) throw result.error
@@ -30,14 +30,14 @@ export const authService = {
   signInWithGoogle: async (): Promise<void> => {
     const { error } = await supabase.auth.signInWithOAuth({
       provider: 'google',
-      options: { redirectTo: `${window.location.origin}/dashboard` },
+      options: { redirectTo: `${getSiteUrl()}/dashboard` },
     })
     if (error) throw error
   },
 
   resetPassword: async (email: string): Promise<void> => {
     const { error } = await supabase.auth.resetPasswordForEmail(email, {
-      redirectTo: `${window.location.origin}/reset-password`,
+      redirectTo: `${getSiteUrl()}/reset-password`,
     })
     if (error) throw error
   },

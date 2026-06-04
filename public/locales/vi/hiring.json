@@ -1,29 +1,39 @@
 {
   "title": "Tuyển dụng & Tài liệu",
-  "subtitle": "Tuân thủ tự động và tạo tài liệu cho khu vực SEA.",
+  "subtitle": "Tuân thủ tự động và tạo tài liệu cho khu vực Đông Nam Á.",
   "no_offers": "Chưa có đề nghị",
   "create_first_offer": "Tạo thư mời làm việc đầu tiên của bạn.",
   "create_offer": "Tạo đề nghị",
   "export_audit": "Xuất nhật ký kiểm tra",
   "sent": "Đã gửi",
   "viewed": "Đã xem",
-  "accepted": "Đã nhận",
+  "accepted": "Đã chấp nhận",
   "rejected": "Đã từ chối",
+  "draft": "Bản nháp",
+  "signed": "Đã ký",
+  "expired": "Đã hết hạn",
+  "loading": "Đang tải...",
   "doc_generation": {
-    "title": "Mô-đun Tạo Tài liệu"
+    "title": "Mô-đun tạo tài liệu",
+    "pnd1": "P.N.D. 1",
+    "pnd1_sub": "Cơ quan thuế Thái Lan",
+    "labor_contract": "Hợp đồng lao động",
+    "labor_contract_sub": "Tiêu chuẩn Việt Nam",
+    "bpjs": "Đăng ký BPJS",
+    "bpjs_sub": "Bảo hiểm y tế Indonesia"
   },
   "tracking": {
-    "title": "Đề nghị & Tài liệu Đã Nhận",
-    "pending": "Hành động Đang Chờ",
+    "title": "Đề nghị đã chấp nhận & Tài liệu",
+    "pending": "Hành động đang chờ",
     "candidate": "Ứng viên",
-    "doc_type": "Loại Tài liệu",
+    "doc_type": "Loại tài liệu",
     "status": "Trạng thái",
-    "auto_remind": "Nhắc nhở Tự động",
-    "offer_letter": "Thư Mời Làm Việc"
+    "auto_remind": "Tự động nhắc",
+    "offer_letter": "Thư mời làm việc"
   },
   "preview": {
-    "offer_preview": "Xem trước Thư Mời",
-    "empty_title": "Xem trước Tài liệu",
+    "offer_preview": "Xem trước thư mời",
+    "empty_title": "Xem trước tài liệu",
     "empty_subtitle": "Chọn tài liệu để xem trước",
     "select_offer": "Chọn đề nghị để xem chi tiết",
     "offer_letter": "THƯ MỜI LÀM VIỆC",
@@ -32,10 +42,15 @@
     "position": "Vị trí",
     "salary": "Lương",
     "start_date": "Ngày bắt đầu",
-    "disclaimer": "Thư mời này được tạo tự động bởi AdminMate AI. Vui lòng xem xét kỹ lưỡng trước khi gửi.",
+    "disclaimer": "Thư mời này được tạo tự động bởi AdminMate AI. Vui lòng xem xét kỹ trước khi gửi.",
     "employer_sig": "Chữ ký NTD",
     "employee_sig": "Chữ ký NV",
-    "edit_draft": "Chỉnh sửa Bản nháp",
-    "send_for_sig": "Gửi để Ký"
+    "edit_draft": "Sửa bản nháp",
+    "send_for_sig": "Gửi để ký"
+  },
+  "toasts": {
+    "no_offers_export": "Không có đề nghị để xuất",
+    "select_offer_first": "Vui lòng chọn đề nghị trước",
+    "only_draft_editable": "Chỉ có thể sửa đề nghị ở trạng thái bản nháp"
   }
 }

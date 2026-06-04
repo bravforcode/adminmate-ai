@@ -1,0 +1,24 @@
+{
+  "gemini": {
+    "title": "Gemini AI Usage",
+    "subtitle": "Monitor AI API consumption across all features",
+    "today": "Today",
+    "daily_limit": "of {{limit}} daily limit",
+    "usage": "Usage",
+    "alert": {
+      "label": {
+        "ok": "Normal",
+        "warning": "Monitor",
+        "danger": "Critical"
+      },
+      "ok": "Usage within normal range.",
+      "warning": "Usage is elevated. Monitor closely.",
+      "danger": "Approaching daily limit! Reduce AI calls."
+    },
+    "today_by_feature": "Today by Feature",
+    "no_usage_today": "No AI usage today",
+    "last_7_days": "Last 7 Days",
+    "error_title": "Failed to load AI usage",
+    "error_description": "We could not retrieve AI usage metrics. Please try again."
+  }
+}

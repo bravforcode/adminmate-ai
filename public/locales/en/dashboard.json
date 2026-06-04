@@ -23,5 +23,11 @@
   "ai_match": "AI Match Score",
   "status": "Status",
   "action": "Action",
-  "view_pipeline": "View Pipeline"
+  "view_pipeline": "View Pipeline",
+  "needs_signature": "Needs your signature",
+  "slow_onboarding": "Slow Onboarding Progress",
+  "all_clear": "All clear — no pending tasks",
+  "empty_candidates_title": "No candidates yet",
+  "empty_candidates_description": "Candidates will appear here as they apply to your job postings.",
+  "no_candidates": "No candidates found"
 }

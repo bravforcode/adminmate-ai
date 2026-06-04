@@ -4,7 +4,6 @@ import { useUIStore } from '../../stores/uiStore'
 import { useTranslation } from 'react-i18next'
 import { navItems } from '../../lib/navigation'
 import { Plus, X } from 'lucide-react'
-import { cn } from '../../utils/cn'
 
 export function Sidebar() {
   const { sidebarOpen, toggleSidebar } = useUIStore()
@@ -16,44 +15,170 @@ export function Sidebar() {
   return (
     <>
       {sidebarOpen && (
-        <div className="fixed inset-0 bg-black/20 z-40 md:hidden" onClick={toggleSidebar} />
+        <div
+          style={{
+            position: 'fixed', inset: 0,
+            backgroundColor: 'rgba(15, 28, 46, 0.18)',
+            zIndex: 40,
+          }}
+          className="md:hidden"
+          onClick={toggleSidebar}
+        />
       )}
-      <nav className={cn(
-        'fixed left-0 top-0 h-full w-[260px] bg-surface border-r border-outline-variant z-50 flex flex-col transition-transform duration-200',
-        'max-md:transform max-md:shadow-lg',
-        sidebarOpen ? 'max-md:translate-x-0' : 'max-md:-translate-x-full',
-        'md:translate-x-0'
-      )}>
-        <div className="p-4 border-b border-outline-variant flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 bg-primary rounded-lg flex items-center justify-center">
-              <span className="text-on-primary font-bold text-lg">A</span>
+
+      <nav
+        style={{
+          position: 'fixed',
+          left: 0, top: 0,
+          height: '100%',
+          width: '260px',
+          backgroundColor: 'var(--color-navy-deep, #0f1c2e)',
+          borderRight: 'none',
+          zIndex: 50,
+          display: 'flex',
+          flexDirection: 'column',
+          transition: 'transform 0.2s cubic-bezier(0.4, 0, 0.2, 1)',
+          fontFamily: 'var(--font-sans, Inter, sans-serif)',
+        }}
+        className={`${sidebarOpen ? 'max-md:translate-x-0' : 'max-md:-translate-x-full'} md:translate-x-0`}
+      >
+        {/* Logo strip */}
+        <div style={{
+          padding: '20px 20px 18px 20px',
+          borderBottom: '1px solid rgba(255,255,255,0.08)',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+        }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+            <div style={{
+              width: '32px', height: '32px',
+              borderRadius: '7px',
+              backgroundColor: 'var(--color-accent, #2980b9)',
+              display: 'flex', alignItems: 'center', justifyContent: 'center',
+              flexShrink: 0,
+            }}>
+              <span style={{
+                color: '#fff',
+                fontFamily: 'var(--font-serif, Georgia, serif)',
+                fontSize: '15px', fontWeight: 400,
+              }}>A</span>
             </div>
             <div>
-              <h1 className="font-semibold text-on-surface text-sm">AdminMate AI</h1>
-              <p className="text-xs text-on-surface-variant">{company?.name || t('app.tagline')}</p>
+              <p style={{
+                fontFamily: 'var(--font-serif, Georgia, serif)',
+                fontSize: '15px', fontWeight: 400,
+                color: '#ffffff',
+                letterSpacing: '-0.01em',
+                margin: 0, lineHeight: 1.2,
+              }}>AdminMate</p>
+              <p style={{
+                fontSize: '10px', color: 'rgba(255,255,255,0.45)',
+                margin: 0, fontWeight: 400,
+                maxWidth: '140px',
+                overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap',
+              }}>
+                {company?.name || 'AI Platform'}
+              </p>
             </div>
           </div>
-          <button onClick={toggleSidebar} className="md:hidden p-1 hover:bg-surface-container rounded">
-            <X size={18} className="text-on-surface-variant" />
+          <button
+            onClick={toggleSidebar}
+            className="md:hidden"
+            style={{
+              background: 'none', border: 'none', cursor: 'pointer',
+              color: 'rgba(255,255,255,0.5)', padding: '4px',
+              borderRadius: '6px',
+            }}
+          >
+            <X size={16} />
           </button>
         </div>
 
-        <div className="px-3 py-3">
-          <button className="w-full bg-primary text-on-primary py-2 px-4 rounded-lg text-sm font-semibold hover:opacity-90 flex items-center justify-center gap-2">
-            <Plus size={16} /> {t('nav.new_request')}
+        {/* New Request CTA */}
+        <div style={{ padding: '14px 14px 10px 14px' }}>
+          <button style={{
+            width: '100%',
+            backgroundColor: 'var(--color-accent, #2980b9)',
+            color: '#ffffff',
+            border: 'none',
+            borderRadius: '8px',
+            padding: '9px 16px',
+            fontSize: '13px',
+            fontWeight: 500,
+            cursor: 'pointer',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            gap: '7px',
+            transition: 'opacity 0.2s ease-out',
+            fontFamily: 'var(--font-sans, Inter, sans-serif)',
+          }}
+          onMouseEnter={e => (e.currentTarget.style.opacity = '0.85')}
+          onMouseLeave={e => (e.currentTarget.style.opacity = '1')}
+          >
+            <Plus size={15} />
+            {t('nav.new_request')}
           </button>
         </div>
 
-        <div className="flex-1 overflow-y-auto px-2 space-y-1">
+        {/* Navigation links */}
+        <div style={{
+          flex: 1, overflowY: 'auto',
+          padding: '8px 10px',
+          display: 'flex', flexDirection: 'column', gap: '2px',
+        }}>
           {flatNavItems.map(item => (
-            <NavLink key={item.path} to={item.path!} className={({ isActive }) =>
-              cn('flex items-center gap-3 px-4 py-2.5 text-sm rounded-lg', isActive ? 'border-l-4 border-primary bg-surface-container-low text-primary font-bold' : 'text-on-surface-variant hover:bg-surface-container-high hover:text-primary transition-all duration-200')
-            }>
-              <item.icon size={20} />
+            <NavLink
+              key={item.path}
+              to={item.path!}
+              style={({ isActive }) => ({
+                display: 'flex',
+                alignItems: 'center',
+                gap: '12px',
+                padding: '9px 14px',
+                borderRadius: '8px',
+                fontSize: '13px',
+                fontWeight: isActive ? 600 : 400,
+                color: isActive ? '#ffffff' : 'rgba(255,255,255,0.55)',
+                backgroundColor: isActive ? 'rgba(41, 128, 185, 0.25)' : 'transparent',
+                borderLeft: isActive ? '3px solid var(--color-accent, #2980b9)' : '3px solid transparent',
+                textDecoration: 'none',
+                transition: 'all 0.2s ease-out',
+              })}
+              onMouseEnter={e => {
+                const el = e.currentTarget
+                if (!el.getAttribute('aria-current')) {
+                  el.style.backgroundColor = 'rgba(255,255,255,0.06)'
+                  el.style.color = 'rgba(255,255,255,0.85)'
+                }
+              }}
+              onMouseLeave={e => {
+                const el = e.currentTarget
+                if (!el.getAttribute('aria-current')) {
+                  el.style.backgroundColor = 'transparent'
+                  el.style.color = 'rgba(255,255,255,0.55)'
+                }
+              }}
+            >
+              <item.icon size={17} style={{ flexShrink: 0 }} />
               <span>{t(item.labelKey)}</span>
             </NavLink>
           ))}
+        </div>
+
+        {/* Bottom — version */}
+        <div style={{
+          padding: '16px 20px',
+          borderTop: '1px solid rgba(255,255,255,0.06)',
+        }}>
+          <p style={{
+            fontSize: '10px',
+            color: 'rgba(255,255,255,0.25)',
+            margin: 0, letterSpacing: '0.05em',
+          }}>
+            AdminMate AI &nbsp;&mdash;&nbsp; v2.0
+          </p>
         </div>
       </nav>
     </>

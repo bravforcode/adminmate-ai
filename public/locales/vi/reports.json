@@ -1,31 +1,35 @@
 {
   "title": "Phân tích & Báo cáo",
-  "subtitle": "การวิเคราะห์และรายงานผลการปฏิบัติงาน HR",
+  "subtitle": "Phân tích hiệu suất và báo cáo HR",
   "filters": "Bộ lọc",
   "export_csv": "Xuất CSV",
   "kpi": {
-    "recruitment_efficiency": "Hiệu suất tuyển dụng",
-    "recruitment_efficiency_sub": "ประสิทธิภาพการสรรหา (Time-to-Hire)",
+    "recruitment_efficiency": "Hiệu quả tuyển dụng",
+    "recruitment_efficiency_sub": "Thời gian tuyển dụng trung bình",
     "days": "Ngày",
     "cost_per_hire": "Chi phí mỗi lần tuyển",
-    "cost_per_hire_sub": "ต้นทุนต่อการจ้างงาน",
-    "avg": "TB",
-    "onboarding_success": "Thành công onboarding",
-    "onboarding_success_sub": "ความสำเร็จในการเริ่มงาน",
+    "cost_per_hire_sub": "Chi phí trung bình mỗi lần tuyển thành công",
+    "avg": "Trung bình",
+    "onboarding_success": "Thành công hội nhập",
+    "onboarding_success_sub": "Tỷ lệ hoàn thành hội nhập",
     "completion": "Hoàn thành",
-    "completion_label": "Mức hoàn thành"
+    "completion_label": "Hoàn thành",
+    "hired": "Đã tuyển {{count}}",
+    "no_data": "Không có dữ liệu",
+    "hires": "{{count}} lần tuyển"
   },
   "chart": {
-    "pipeline_title": "Phân tích Pipeline Tuyển dụng",
-    "pipeline_subtitle": "วิเคราะห์กระบวนการจ้างงานรายเดือน"
+    "pipeline_title": "Phân tích quy trình tuyển dụng",
+    "pipeline_subtitle": "Phân tích kênh tuyển dụng hàng tháng"
   },
   "breakdown": {
-    "title": "Phân tích nguồn",
-    "subtitle": "แหล่งที่มาของผู้สมัคร"
+    "title": "Phân tích nguồn ứng viên",
+    "subtitle": "Nguồn ứng viên",
+    "no_data": "Không có dữ liệu nguồn ứng viên"
   },
   "table": {
     "title": "Báo cáo đã tạo",
-    "subtitle": "รายงานที่สร้างล่าสุด",
+    "subtitle": "Báo cáo mới nhất",
     "report_name": "Tên báo cáo",
     "category": "Danh mục",
     "date": "Ngày",

@@ -51,7 +51,7 @@ export default function OnboardingChecklistView({
             <div className="p-4 bg-slate-50 border-b border-slate-100 flex items-center gap-2">
               <CalendarDays className="h-4.5 w-4.5 text-indigo-600" />
               <h3 className="text-xs font-extrabold text-slate-800 uppercase tracking-wider">
-                🌅 {language === 'TH' ? 'รายการเช็กอินวันแรกทำงาน (Day 1 Milestone)' : 'FIRST DAY ONBOARDING CHECKLIST (DAY 1)'}
+                {language === 'TH' ? 'รายการเช็กอินวันแรกทำงาน (Day 1 Milestone)' : 'FIRST DAY ONBOARDING CHECKLIST (DAY 1)'}
               </h3>
             </div>
             
@@ -84,7 +84,7 @@ export default function OnboardingChecklistView({
             <div className="p-4 bg-slate-50 border-b border-slate-100 flex items-center gap-2">
               <CalendarDays className="h-4.5 w-4.5 text-indigo-600" />
               <h3 className="text-xs font-extrabold text-slate-800 uppercase tracking-wider">
-                📅 {language === 'TH' ? 'การตั้งหลักสัปดาห์แรก (Week 1 Milestones)' : 'WIDER FIRST WEEK CORE TASKS (WEEK 1)'}
+                {language === 'TH' ? 'การตั้งหลักสัปดาห์แรก (Week 1 Milestones)' : 'WIDER FIRST WEEK CORE TASKS (WEEK 1)'}
               </h3>
             </div>
             
@@ -147,7 +147,7 @@ export default function OnboardingChecklistView({
 
             {pct === 100 && (
               <div className="p-3 bg-emerald-50 rounded-xl border border-emerald-150 text-xs text-emerald-800 font-semibold animate-pulse">
-                🎉 {language === 'TH' ? 'ยินยอมรับสิทธิรับพนักงานใหม่เสร็จสมบูรณ์ ยอดเยี่ยมมาก!' : 'SME onboarding parameters 100% completed. Welcome officially!'}
+                {language === 'TH' ? 'ยินยอมรับสิทธิรับพนักงานใหม่เสร็จสมบูรณ์ ยอดเยี่ยมมาก!' : 'SME onboarding parameters 100% completed. Welcome officially!'}
               </div>
             )}
           </div>

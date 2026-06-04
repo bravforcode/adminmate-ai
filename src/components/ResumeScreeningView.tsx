@@ -356,7 +356,7 @@ export default function ResumeScreeningView({
                     {/* Skills mapping charts */}
                     <div>
                       <h3 className="text-xs font-bold uppercase tracking-wider text-slate-600 mb-3">
-                        🎯 {language === 'TH' ? 'เกรียงระดับการจับคู่ทักษะ' : 'Core Skill Matrix Integration'}
+                        {language === 'TH' ? 'เกรียงระดับการจับคู่ทักษะ' : 'Core Skill Matrix Integration'}
                       </h3>
                       <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
                         {comparoData.skillMatch.map((skill, i) => (

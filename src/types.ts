@@ -1,4 +1,6 @@
-export type Language = 'TH' | 'EN';
+export type Language = 'TH' | 'EN' | 'VI' | 'ZH';
+
+export type LoginStep = 'role-select' | 'login-form';
 
 export type UserRole = 'Owner' | 'HR' | 'Admin' | 'Applicant';
 

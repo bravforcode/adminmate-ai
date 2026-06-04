@@ -1,1 +1,9 @@
-{ "title": "Tuân thủ", "subtitle": "Bảo vệ dữ liệu và tuân thủ quy định", "consent": "Đồng ý", "deletion": "Yêu cầu xóa", "approved": "Đã duyệt", "rejected": "Từ chối" }
+{
+  "title": "Tuân thủ",
+  "subtitle": "Bảo vệ dữ liệu và tuân thủ quy định",
+  "consent": "Đồng ý",
+  "deletion": "Yêu cầu xóa",
+  "retention": "Lưu giữ dữ liệu",
+  "approved": "Đã duyệt",
+  "rejected": "Đã từ chối"
+}

@@ -31,7 +31,7 @@ export function KanbanColumn({ stage, applications, onSelectApplication, selecte
       </div>
       <div className="flex flex-col gap-3 overflow-y-auto pr-2 pb-2 max-h-[calc(100vh-280px)]">
         {applications.length === 0 ? (
-          <p className="text-xs text-center text-on-surface-variant py-4">No candidates</p>
+          <p className="text-xs text-center text-on-surface-variant py-4">{t('pipeline.no_candidates')}</p>
         ) : (
           applications.map(app => (
             <ApplicationCard

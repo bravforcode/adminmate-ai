@@ -1,13 +1,11 @@
 import { useTranslation } from 'react-i18next'
 import { useUIStore } from '../../stores/uiStore'
-import { cn } from '../../utils/cn'
-import { Globe } from 'lucide-react'
 
 const LANGUAGES = [
-  { code: 'th', label: 'ไทย', flag: '🇹🇭' },
-  { code: 'en', label: 'EN', flag: '🇬🇧' },
-  { code: 'vi', label: 'VI', flag: '🇻🇳' },
-  { code: 'id', label: 'ID', flag: '🇮🇩' },
+  { code: 'th', label: 'TH' },
+  { code: 'en', label: 'EN' },
+  { code: 'vi', label: 'VI' },
+  { code: 'zh', label: '中文' },
 ]
 
 export function LanguageSwitcher() {
@@ -21,14 +19,37 @@ export function LanguageSwitcher() {
   }
 
   return (
-    <div className="flex items-center gap-1 bg-surface-container-low rounded-full p-0.5">
+    <div style={{
+      display: 'flex',
+      gap: '2px',
+      backgroundColor: 'var(--color-surface-alt, #f0f6fc)',
+      borderRadius: '8px',
+      padding: '3px',
+    }}>
       {LANGUAGES.map(lang => (
-        <button key={lang.code} onClick={() => switchLang(lang.code)}
-          className={cn(
-            'px-2.5 py-1 rounded-full text-xs font-medium transition-colors',
-            currentLang === lang.code ? 'bg-primary text-on-primary' : 'text-on-surface-variant'
-          )}>
-          {lang.flag} {lang.label}
+        <button
+          key={lang.code}
+          onClick={() => switchLang(lang.code)}
+          id={`lang-${lang.code}`}
+          style={{
+            padding: '4px 10px',
+            borderRadius: '6px',
+            fontSize: '11px',
+            fontWeight: 600,
+            letterSpacing: '0.04em',
+            border: 'none',
+            cursor: 'pointer',
+            transition: 'all 0.25s ease-out',
+            backgroundColor: currentLang === lang.code
+              ? 'var(--color-navy, #1e3a5f)'
+              : 'transparent',
+            color: currentLang === lang.code
+              ? '#ffffff'
+              : 'var(--color-text-muted, #8aa0bb)',
+            fontFamily: 'var(--font-sans, Inter, sans-serif)',
+          }}
+        >
+          {lang.label}
         </button>
       ))}
     </div>

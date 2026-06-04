@@ -10,14 +10,23 @@ if (!supabaseUrl || !supabaseAnonKey) {
   )
 }
 
+export const SUPABASE_AUTH_OPTIONS = {
+  autoRefreshToken: true,
+  persistSession: true,
+  detectSessionInUrl: true,
+  flowType: 'pkce' as const,
+  storageKey: 'adminmate-auth-token',
+  storage: typeof window !== 'undefined' ? window.localStorage : undefined,
+}
+
 export const supabase = createClient(supabaseUrl, supabaseAnonKey, {
-  auth: {
-    autoRefreshToken: true,
-    persistSession: true,
-    detectSessionInUrl: true,
-    flowType: 'pkce',
-  },
+  auth: SUPABASE_AUTH_OPTIONS,
   realtime: {
     params: { eventsPerSecond: 10 },
   },
 })
+
+export function getSiteUrl(): string {
+  if (typeof window === 'undefined') return ''
+  return window.location.origin
+}

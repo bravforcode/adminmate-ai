@@ -1,31 +1,35 @@
 {
   "title": "Analitik & Laporan",
-  "subtitle": "การวิเคราะห์และรายงานผลการปฏิบัติงาน HR",
+  "subtitle": "Analitik kinerja dan laporan HR",
   "filters": "Filter",
   "export_csv": "Ekspor CSV",
   "kpi": {
     "recruitment_efficiency": "Efisiensi Rekrutmen",
-    "recruitment_efficiency_sub": "ประสิทธิภาพการสรรหา (Time-to-Hire)",
+    "recruitment_efficiency_sub": "Waktu rekrutmen rata-rata",
     "days": "Hari",
-    "cost_per_hire": "Biaya per Perekrutan",
-    "cost_per_hire_sub": "ต้นทุนต่อการจ้างงาน",
+    "cost_per_hire": "Biaya per Rekrutmen",
+    "cost_per_hire_sub": "Biaya rata-rata per rekrutmen sukses",
     "avg": "Rata-rata",
-    "onboarding_success": "Keberhasilan Onboarding",
-    "onboarding_success_sub": "ความสำเร็จในการเริ่มงาน",
+    "onboarding_success": "Sukses Onboarding",
+    "onboarding_success_sub": "Tingkat penyelesaian onboarding",
     "completion": "Penyelesaian",
-    "completion_label": "Tingkat Penyelesaian"
+    "completion_label": "Penyelesaian",
+    "hired": "{{count}} direkrut",
+    "no_data": "Tidak ada data",
+    "hires": "{{count}} rekrutmen"
   },
   "chart": {
-    "pipeline_title": "Analitik Pipeline Perekrutan",
-    "pipeline_subtitle": "วิเคราะห์กระบวนการจ้างงานรายเดือน"
+    "pipeline_title": "Analitik Pipeline Rekrutmen",
+    "pipeline_subtitle": "Analisis funnel rekrutmen bulanan"
   },
   "breakdown": {
-    "title": "Rincian Sumber",
-    "subtitle": "แหล่งที่มาของผู้สมัคร"
+    "title": "Analisis Sumber Kandidat",
+    "subtitle": "Sumber Kandidat",
+    "no_data": "Tidak ada data sumber kandidat"
   },
   "table": {
-    "title": "Laporan yang Dibuat",
-    "subtitle": "รายงานที่สร้างล่าสุด",
+    "title": "Laporan yang Dihasilkan",
+    "subtitle": "Laporan terbaru",
     "report_name": "Nama Laporan",
     "category": "Kategori",
     "date": "Tanggal",

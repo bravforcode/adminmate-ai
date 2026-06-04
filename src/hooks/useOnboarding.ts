@@ -24,6 +24,7 @@ export function useUpdateTask() {
   return useMutation({
     mutationFn: ({ taskId, completed }: { taskId: string; completed: boolean }) => onboardingService.updateTask(taskId, completed, profile?.id),
     onSuccess: () => { qc.invalidateQueries({ queryKey: ['onboarding'] }); toast.success('Task updated') },
+    onError: (e: Error) => toast.error(e.message),
   })
 }
 
@@ -32,5 +33,6 @@ export function useRecalculateProgress() {
   return useMutation({
     mutationFn: (checklistId: string) => onboardingService.updateProgress(checklistId),
     onSuccess: () => qc.invalidateQueries({ queryKey: ['onboarding'] }),
+    onError: (e: Error) => toast.error(e.message),
   })
 }

@@ -1,1 +1,18 @@
-{ "title": "Tài liệu", "subtitle": "Theo dõi tài liệu lao động", "no_docs": "Không tìm thấy tài liệu", "pending": "Đang chờ", "signed": "Đã ký", "overdue": "Quá hạn", "reminder_sent": "Đã gửi nhắc nhở" }
+{
+  "title": "Tài liệu",
+  "subtitle": "Theo dõi tài liệu tuyển dụng",
+  "no_docs": "Không tìm thấy tài liệu",
+  "pending": "Đang chờ",
+  "signed": "Đã ký",
+  "overdue": "Quá hạn",
+  "reminder_sent": "Đã gửi nhắc nhở",
+  "reminder_failed": "Gửi nhắc nhở thất bại",
+  "no_results": "Không tìm thấy tài liệu phù hợp",
+  "empty_title": "Chưa có tài liệu",
+  "empty_description": "Tài liệu sẽ xuất hiện tại đây khi được tạo từ đề nghị và hợp đồng",
+  "total_documents": "Tổng tài liệu",
+  "pending_action": "Đang chờ xử lý",
+  "overdue": "Quá hạn",
+  "search_placeholder": "Tìm kiếm tài liệu...",
+  "all_types": "Tất cả loại"
+}
