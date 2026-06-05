@@ -7,7 +7,6 @@ const mobileItems = [
   { path: '/recruitment/jobs', icon: Briefcase, key: 'nav.recruitment' },
   { path: '/hiring', icon: FileCheck, key: 'nav.hiring' },
   { path: '/onboarding', icon: UserCheck, key: 'nav.onboarding' },
-  { path: '/chat', icon: MessageSquare, key: 'nav.ai_assistant' },
 ]
 
 export function MobileNav() {

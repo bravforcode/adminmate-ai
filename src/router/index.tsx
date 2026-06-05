@@ -18,7 +18,6 @@ const JobDetailPage = lazy(() => import('../pages/recruitment/JobDetailPage'))
 const PipelinePage = lazy(() => import('../pages/recruitment/PipelinePage'))
 const InterviewsPage = lazy(() => import('../pages/recruitment/InterviewsPage'))
 const DocumentsPage = lazy(() => import('../pages/DocumentsPage'))
-const ChatPage = lazy(() => import('../pages/ChatPage'))
 const OnboardingMgmtPage = lazy(() => import('../pages/OnboardingMgmtPage'))
 const DashboardPage = lazy(() => import('../pages/DashboardPage'))
 const ReportsPage = lazy(() => import('../pages/ReportsPage'))
@@ -201,10 +200,6 @@ export const router = createBrowserRouter([
       },
 
       // ── Shared (all roles) ────────────────────────────────────────
-      {
-        path: 'chat',
-        element: <Suspense fallback={<Loading />}><ChatPage /></Suspense>,
-      },
 
       // ── Applicant routes ──────────────────────────────────────────
       {

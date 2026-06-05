@@ -48,7 +48,6 @@ export const navItems: NavItem[] = [
   { path: '/hiring', labelKey: 'nav.hiring', icon: FileCheck, roles: HR_ROLES },
   { path: '/onboarding', labelKey: 'nav.onboarding', icon: UserCheck, roles: HR_ROLES },
   { path: '/documents', labelKey: 'nav.documents', icon: FileText, roles: HR_ROLES },
-  { path: '/chat', labelKey: 'nav.ai_assistant', icon: MessageSquare, roles: HR_ROLES },
   { path: '/reports', labelKey: 'nav.reports', icon: BarChart2, roles: HR_ROLES },
   { path: '/settings', labelKey: 'nav.settings', icon: Settings, roles: HR_ROLES },
 
@@ -63,12 +62,6 @@ export const navItems: NavItem[] = [
     path: '/my-tasks',
     labelKey: 'nav.my_tasks',
     icon: ClipboardList,
-    roles: ['applicant'],
-  },
-  {
-    path: '/chat',
-    labelKey: 'nav.ai_assistant',
-    icon: MessageSquare,
     roles: ['applicant'],
   },
 ]

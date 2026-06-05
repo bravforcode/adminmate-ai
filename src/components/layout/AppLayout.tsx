@@ -2,6 +2,7 @@ import { Outlet } from 'react-router-dom'
 import { Sidebar } from './Sidebar'
 import { Header } from './Header'
 import { MobileNav } from './MobileNav'
+import { ChatWidget } from '../chat/ChatWidget'
 import { Toaster } from 'react-hot-toast'
 
 export function AppLayout() {
@@ -15,6 +16,7 @@ export function AppLayout() {
         </main>
       </div>
       <MobileNav />
+      <ChatWidget />
       <Toaster position="top-right" toastOptions={{
         duration: 4000,
         style: { borderRadius: '12px', background: '#051a3e', color: '#fff', fontSize: '14px' },
