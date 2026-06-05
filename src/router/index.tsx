@@ -9,6 +9,8 @@ const RegisterPage = lazy(() => import('../pages/auth/RegisterPage'))
 const ForgotPasswordPage = lazy(() => import('../pages/auth/ForgotPasswordPage'))
 const ResetPasswordPage = lazy(() => import('../pages/auth/ResetPasswordPage'))
 const CompanySetupPage = lazy(() => import('../pages/onboarding/CompanySetupPage'))
+
+// HR / Admin / Manager pages
 const CandidatesPage = lazy(() => import('../pages/recruitment/CandidatesPage'))
 const CandidateDetailPage = lazy(() => import('../pages/recruitment/CandidateDetailPage'))
 const JobsPage = lazy(() => import('../pages/recruitment/JobsPage'))
@@ -27,8 +29,19 @@ const HealthPage = lazy(() => import('../pages/HealthPage'))
 const GeminiMonitoringPage = lazy(() => import('../pages/GeminiMonitoringPage'))
 const NotFoundPage = lazy(() => import('../pages/NotFoundPage'))
 
+// Applicant pages
+const MyProfilePage = lazy(() => import('../pages/applicant/MyProfilePage'))
+const MyTasksPage = lazy(() => import('../pages/applicant/MyTasksPage'))
+
+const HR_ROLES = ['admin', 'hr', 'manager']
+const APPLICANT_ROLES = ['applicant']
+
 function Loading() {
-  return <div className="flex items-center justify-center h-screen"><div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary" /></div>
+  return (
+    <div className="flex items-center justify-center h-screen">
+      <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary" />
+    </div>
+  )
 }
 
 export const router = createBrowserRouter([
@@ -50,80 +63,165 @@ export const router = createBrowserRouter([
   },
   {
     path: '/setup-company',
-    element: <Suspense fallback={<Loading />}>
-      <CompanySetupGuard>
-        <CompanySetupPage />
-      </CompanySetupGuard>
-    </Suspense>,
+    element: (
+      <Suspense fallback={<Loading />}>
+        <CompanySetupGuard>
+          <CompanySetupPage />
+        </CompanySetupGuard>
+      </Suspense>
+    ),
   },
   {
     path: '/',
     element: <AuthGuard><ErrorBoundary><AppLayout /></ErrorBoundary></AuthGuard>,
     children: [
+      // Default redirect based on role is handled in AuthGuard / LoginForm
       { index: true, element: <Navigate to="/dashboard" replace /> },
+
+      // ── HR / Admin / Manager routes ──────────────────────────────
       {
         path: 'dashboard',
-        element: <Suspense fallback={<Loading />}><DashboardPage /></Suspense>,
+        element: (
+          <AuthGuard requiredRoles={HR_ROLES}>
+            <Suspense fallback={<Loading />}><DashboardPage /></Suspense>
+          </AuthGuard>
+        ),
       },
       {
         path: 'recruitment/candidates',
-        element: <Suspense fallback={<Loading />}><CandidatesPage /></Suspense>,
+        element: (
+          <AuthGuard requiredRoles={HR_ROLES}>
+            <Suspense fallback={<Loading />}><CandidatesPage /></Suspense>
+          </AuthGuard>
+        ),
       },
       {
         path: 'recruitment/candidates/:id',
-        element: <Suspense fallback={<Loading />}><CandidateDetailPage /></Suspense>,
+        element: (
+          <AuthGuard requiredRoles={HR_ROLES}>
+            <Suspense fallback={<Loading />}><CandidateDetailPage /></Suspense>
+          </AuthGuard>
+        ),
       },
       {
         path: 'recruitment/jobs',
-        element: <Suspense fallback={<Loading />}><JobsPage /></Suspense>,
+        element: (
+          <AuthGuard requiredRoles={HR_ROLES}>
+            <Suspense fallback={<Loading />}><JobsPage /></Suspense>
+          </AuthGuard>
+        ),
       },
       {
         path: 'recruitment/jobs/:id',
-        element: <Suspense fallback={<Loading />}><JobDetailPage /></Suspense>,
+        element: (
+          <AuthGuard requiredRoles={HR_ROLES}>
+            <Suspense fallback={<Loading />}><JobDetailPage /></Suspense>
+          </AuthGuard>
+        ),
       },
       {
         path: 'recruitment/pipeline',
-        element: <Suspense fallback={<Loading />}><PipelinePage /></Suspense>,
+        element: (
+          <AuthGuard requiredRoles={HR_ROLES}>
+            <Suspense fallback={<Loading />}><PipelinePage /></Suspense>
+          </AuthGuard>
+        ),
       },
       {
         path: 'recruitment/interviews',
-        element: <Suspense fallback={<Loading />}><InterviewsPage /></Suspense>,
+        element: (
+          <AuthGuard requiredRoles={HR_ROLES}>
+            <Suspense fallback={<Loading />}><InterviewsPage /></Suspense>
+          </AuthGuard>
+        ),
       },
       {
         path: 'documents',
-        element: <Suspense fallback={<Loading />}><DocumentsPage /></Suspense>,
+        element: (
+          <AuthGuard requiredRoles={HR_ROLES}>
+            <Suspense fallback={<Loading />}><DocumentsPage /></Suspense>
+          </AuthGuard>
+        ),
       },
+      {
+        path: 'hiring',
+        element: (
+          <AuthGuard requiredRoles={HR_ROLES}>
+            <Suspense fallback={<Loading />}><HiringPage /></Suspense>
+          </AuthGuard>
+        ),
+      },
+      {
+        path: 'onboarding',
+        element: (
+          <AuthGuard requiredRoles={HR_ROLES}>
+            <Suspense fallback={<Loading />}><OnboardingMgmtPage /></Suspense>
+          </AuthGuard>
+        ),
+      },
+      {
+        path: 'reports',
+        element: (
+          <AuthGuard requiredRoles={HR_ROLES}>
+            <Suspense fallback={<Loading />}><ReportsPage /></Suspense>
+          </AuthGuard>
+        ),
+      },
+      {
+        path: 'health',
+        element: (
+          <AuthGuard requiredRoles={HR_ROLES}>
+            <Suspense fallback={<Loading />}><HealthPage /></Suspense>
+          </AuthGuard>
+        ),
+      },
+      {
+        path: 'monitoring',
+        element: (
+          <AuthGuard requiredRoles={HR_ROLES}>
+            <Suspense fallback={<Loading />}><GeminiMonitoringPage /></Suspense>
+          </AuthGuard>
+        ),
+      },
+      {
+        path: 'settings',
+        element: (
+          <AuthGuard requiredRoles={HR_ROLES}>
+            <Suspense fallback={<Loading />}><SettingsPage /></Suspense>
+          </AuthGuard>
+        ),
+      },
+      {
+        path: 'settings/compliance',
+        element: (
+          <AuthGuard requiredRoles={['admin']}>
+            <Suspense fallback={<Loading />}><CompliancePage /></Suspense>
+          </AuthGuard>
+        ),
+      },
+
+      // ── Shared (all roles) ────────────────────────────────────────
       {
         path: 'chat',
         element: <Suspense fallback={<Loading />}><ChatPage /></Suspense>,
       },
+
+      // ── Applicant routes ──────────────────────────────────────────
       {
-        path: 'hiring',
-        element: <Suspense fallback={<Loading />}><HiringPage /></Suspense>,
+        path: 'my-profile',
+        element: (
+          <AuthGuard requiredRoles={APPLICANT_ROLES}>
+            <Suspense fallback={<Loading />}><MyProfilePage /></Suspense>
+          </AuthGuard>
+        ),
       },
       {
-        path: 'onboarding',
-        element: <Suspense fallback={<Loading />}><OnboardingMgmtPage /></Suspense>,
-      },
-      {
-        path: 'reports',
-        element: <Suspense fallback={<Loading />}><ReportsPage /></Suspense>,
-      },
-      {
-        path: 'health',
-        element: <Suspense fallback={<Loading />}><HealthPage /></Suspense>,
-      },
-      {
-        path: 'monitoring',
-        element: <Suspense fallback={<Loading />}><GeminiMonitoringPage /></Suspense>,
-      },
-      {
-        path: 'settings',
-        element: <Suspense fallback={<Loading />}><SettingsPage /></Suspense>,
-      },
-      {
-        path: 'settings/compliance',
-        element: <Suspense fallback={<Loading />}><CompliancePage /></Suspense>,
+        path: 'my-tasks',
+        element: (
+          <AuthGuard requiredRoles={APPLICANT_ROLES}>
+            <Suspense fallback={<Loading />}><MyTasksPage /></Suspense>
+          </AuthGuard>
+        ),
       },
     ],
   },

@@ -8,9 +8,21 @@ import { Plus, X } from 'lucide-react'
 export function Sidebar() {
   const { sidebarOpen, toggleSidebar } = useUIStore()
   const company = useAuthStore(s => s.company)
+  const profile = useAuthStore(s => s.profile)
   const { t } = useTranslation('common')
 
-  const flatNavItems = navItems.flatMap(item => item.children ? item.children : [item])
+  const userRole = profile?.role ?? 'hr'
+
+  // Filter items by role — items with no `roles` array are shown to all
+  const visibleItems = navItems
+    .filter(item => !item.roles || item.roles.includes(userRole))
+    .flatMap(item => {
+      if (!item.children) return [item]
+      const visibleChildren = item.children.filter(
+        child => !child.roles || child.roles.includes(userRole)
+      )
+      return visibleChildren.length ? visibleChildren : []
+    })
 
   return (
     <>
@@ -128,7 +140,7 @@ export function Sidebar() {
           padding: '8px 10px',
           display: 'flex', flexDirection: 'column', gap: '2px',
         }}>
-          {flatNavItems.map(item => (
+          {visibleItems.map(item => (
             <NavLink
               key={item.path}
               to={item.path!}

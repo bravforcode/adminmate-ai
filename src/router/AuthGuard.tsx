@@ -8,8 +8,14 @@ interface AuthGuardProps {
   requireCompany?: boolean
 }
 
+/** Returns the default landing route for the given role. */
+export function getDefaultRoute(role?: string | null): string {
+  if (role === 'applicant') return '/my-profile'
+  return '/dashboard'
+}
+
 export function AuthGuard({ children, requiredRoles, requireCompany = true }: AuthGuardProps) {
-  const { isAuthenticated, isAdminOrHR, hasCompany, isLoading, profile, initSession } = useAuthStore()
+  const { isAuthenticated, hasCompany, isLoading, profile, initSession } = useAuthStore()
   const location = useLocation()
 
   useEffect(() => {
@@ -38,7 +44,9 @@ export function AuthGuard({ children, requiredRoles, requireCompany = true }: Au
   }
 
   if (requiredRoles && !requiredRoles.includes(profile?.role ?? '')) {
-    return <Navigate to="/dashboard" replace />
+    // Redirect to the correct home for their actual role
+    const fallback = getDefaultRoute(profile?.role)
+    return <Navigate to={fallback} replace />
   }
 
   return <>{children}</>

@@ -8,10 +8,11 @@ const KEYS = {
 
 export function useCandidatesWithApplications() {
   const company = useAuthStore(s => s.company)
+  const isHR = useAuthStore(s => s.isAdminOrHR())
   return useQuery<CandidateWithApplications[]>({
     queryKey: KEYS.allWithApps(company?.id ?? ''),
     queryFn: () => candidateService.getAllWithApplications(company!.id),
-    enabled: !!company?.id,
+    enabled: !!company?.id && isHR,
     staleTime: 30_000,
   })
 }

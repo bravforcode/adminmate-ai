@@ -7,7 +7,8 @@ const KEYS = { all: ['candidates'] as const, list: (id: string) => ['candidates'
 
 export function useCandidates() {
   const company = useAuthStore(s => s.company)
-  return useQuery({ queryKey: KEYS.list(company?.id ?? ''), queryFn: () => candidateService.getAll(company!.id), enabled: !!company?.id })
+  const isHR = useAuthStore(s => s.isAdminOrHR())
+  return useQuery({ queryKey: KEYS.list(company?.id ?? ''), queryFn: () => candidateService.getAll(company!.id), enabled: !!company?.id && isHR })
 }
 
 export function useCandidate(id: string) {

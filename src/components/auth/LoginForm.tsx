@@ -3,7 +3,8 @@ import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
 import { useNavigate, Link, useLocation } from 'react-router-dom'
-import { useAuth } from '../../hooks/useAuth'
+import { useAuth, getDefaultRoute } from '../../hooks/useAuth'
+import { useAuthStore } from '../../stores/authStore'
 import { useTranslation } from 'react-i18next'
 import toast from 'react-hot-toast'
 import { Eye, EyeOff, LogIn } from 'lucide-react'
@@ -26,6 +27,7 @@ function formatSeconds(ms: number): string {
 export function LoginForm() {
   const { t } = useTranslation('common')
   const { login, loginWithGoogle } = useAuth()
+  const profile = useAuthStore(s => s.profile)
   const navigate = useNavigate()
   const location = useLocation() as { state?: { from?: { pathname?: string } } }
   const [showPassword, setShowPassword] = useState(false)
@@ -43,16 +45,22 @@ export function LoginForm() {
     defaultValues,
   })
 
+  const resolveRedirect = (role?: string | null) => {
+    if (location.state?.from?.pathname && location.state.from.pathname !== '/login') {
+      return location.state.from.pathname
+    }
+    return getDefaultRoute(role)
+  }
+
   const onSubmit = async (data: LoginFormData) => {
     try {
       await login(data.email, data.password)
       if (typeof window !== 'undefined') {
         window.localStorage.setItem(REMEMBER_KEY, data.remember ? 'true' : 'false')
       }
-      const redirectTo = location.state?.from?.pathname && location.state.from.pathname !== '/login'
-        ? location.state.from.pathname
-        : '/dashboard'
-      navigate(redirectTo, { replace: true })
+      // Read role from store after login completed
+      const currentProfile = useAuthStore.getState().profile
+      navigate(resolveRedirect(currentProfile?.role), { replace: true })
     } catch (err) {
       toast.error(translateAuthError(err, t))
     }
@@ -61,10 +69,8 @@ export function LoginForm() {
   const handleGoogleLogin = async () => {
     try {
       await loginWithGoogle()
-      const redirectTo = location.state?.from?.pathname && location.state.from.pathname !== '/login'
-        ? location.state.from.pathname
-        : '/dashboard'
-      navigate(redirectTo, { replace: true })
+      const currentProfile = useAuthStore.getState().profile
+      navigate(resolveRedirect(currentProfile?.role), { replace: true })
     } catch (err) {
       toast.error(translateAuthError(err, t))
     }
