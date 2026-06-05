@@ -82,7 +82,7 @@ export const router = createBrowserRouter([
       {
         path: 'dashboard',
         element: (
-          <AuthGuard requiredRoles={HR_ROLES}>
+          <AuthGuard callInitSession={false} requiredRoles={HR_ROLES}>
             <Suspense fallback={<Loading />}><DashboardPage /></Suspense>
           </AuthGuard>
         ),
@@ -90,7 +90,7 @@ export const router = createBrowserRouter([
       {
         path: 'recruitment/candidates',
         element: (
-          <AuthGuard requiredRoles={HR_ROLES}>
+          <AuthGuard callInitSession={false} requiredRoles={HR_ROLES}>
             <Suspense fallback={<Loading />}><CandidatesPage /></Suspense>
           </AuthGuard>
         ),
@@ -98,7 +98,7 @@ export const router = createBrowserRouter([
       {
         path: 'recruitment/candidates/:id',
         element: (
-          <AuthGuard requiredRoles={HR_ROLES}>
+          <AuthGuard callInitSession={false} requiredRoles={HR_ROLES}>
             <Suspense fallback={<Loading />}><CandidateDetailPage /></Suspense>
           </AuthGuard>
         ),
@@ -106,7 +106,7 @@ export const router = createBrowserRouter([
       {
         path: 'recruitment/jobs',
         element: (
-          <AuthGuard requiredRoles={HR_ROLES}>
+          <AuthGuard callInitSession={false} requiredRoles={HR_ROLES}>
             <Suspense fallback={<Loading />}><JobsPage /></Suspense>
           </AuthGuard>
         ),
@@ -114,7 +114,7 @@ export const router = createBrowserRouter([
       {
         path: 'recruitment/jobs/:id',
         element: (
-          <AuthGuard requiredRoles={HR_ROLES}>
+          <AuthGuard callInitSession={false} requiredRoles={HR_ROLES}>
             <Suspense fallback={<Loading />}><JobDetailPage /></Suspense>
           </AuthGuard>
         ),
@@ -122,7 +122,7 @@ export const router = createBrowserRouter([
       {
         path: 'recruitment/pipeline',
         element: (
-          <AuthGuard requiredRoles={HR_ROLES}>
+          <AuthGuard callInitSession={false} requiredRoles={HR_ROLES}>
             <Suspense fallback={<Loading />}><PipelinePage /></Suspense>
           </AuthGuard>
         ),
@@ -130,7 +130,7 @@ export const router = createBrowserRouter([
       {
         path: 'recruitment/interviews',
         element: (
-          <AuthGuard requiredRoles={HR_ROLES}>
+          <AuthGuard callInitSession={false} requiredRoles={HR_ROLES}>
             <Suspense fallback={<Loading />}><InterviewsPage /></Suspense>
           </AuthGuard>
         ),
@@ -138,7 +138,7 @@ export const router = createBrowserRouter([
       {
         path: 'documents',
         element: (
-          <AuthGuard requiredRoles={HR_ROLES}>
+          <AuthGuard callInitSession={false} requiredRoles={HR_ROLES}>
             <Suspense fallback={<Loading />}><DocumentsPage /></Suspense>
           </AuthGuard>
         ),
@@ -146,7 +146,7 @@ export const router = createBrowserRouter([
       {
         path: 'hiring',
         element: (
-          <AuthGuard requiredRoles={HR_ROLES}>
+          <AuthGuard callInitSession={false} requiredRoles={HR_ROLES}>
             <Suspense fallback={<Loading />}><HiringPage /></Suspense>
           </AuthGuard>
         ),
@@ -154,7 +154,7 @@ export const router = createBrowserRouter([
       {
         path: 'onboarding',
         element: (
-          <AuthGuard requiredRoles={HR_ROLES}>
+          <AuthGuard callInitSession={false} requiredRoles={HR_ROLES}>
             <Suspense fallback={<Loading />}><OnboardingMgmtPage /></Suspense>
           </AuthGuard>
         ),
@@ -162,7 +162,7 @@ export const router = createBrowserRouter([
       {
         path: 'reports',
         element: (
-          <AuthGuard requiredRoles={HR_ROLES}>
+          <AuthGuard callInitSession={false} requiredRoles={HR_ROLES}>
             <Suspense fallback={<Loading />}><ReportsPage /></Suspense>
           </AuthGuard>
         ),
@@ -170,7 +170,7 @@ export const router = createBrowserRouter([
       {
         path: 'health',
         element: (
-          <AuthGuard requiredRoles={HR_ROLES}>
+          <AuthGuard callInitSession={false} requiredRoles={HR_ROLES}>
             <Suspense fallback={<Loading />}><HealthPage /></Suspense>
           </AuthGuard>
         ),
@@ -178,7 +178,7 @@ export const router = createBrowserRouter([
       {
         path: 'monitoring',
         element: (
-          <AuthGuard requiredRoles={HR_ROLES}>
+          <AuthGuard callInitSession={false} requiredRoles={HR_ROLES}>
             <Suspense fallback={<Loading />}><GeminiMonitoringPage /></Suspense>
           </AuthGuard>
         ),
@@ -186,7 +186,7 @@ export const router = createBrowserRouter([
       {
         path: 'settings',
         element: (
-          <AuthGuard requiredRoles={HR_ROLES}>
+          <AuthGuard callInitSession={false} requiredRoles={HR_ROLES}>
             <Suspense fallback={<Loading />}><SettingsPage /></Suspense>
           </AuthGuard>
         ),
@@ -194,7 +194,7 @@ export const router = createBrowserRouter([
       {
         path: 'settings/compliance',
         element: (
-          <AuthGuard requiredRoles={['admin']}>
+          <AuthGuard callInitSession={false} requiredRoles={['admin']}>
             <Suspense fallback={<Loading />}><CompliancePage /></Suspense>
           </AuthGuard>
         ),
@@ -210,7 +210,7 @@ export const router = createBrowserRouter([
       {
         path: 'my-profile',
         element: (
-          <AuthGuard requiredRoles={APPLICANT_ROLES}>
+          <AuthGuard callInitSession={false} requiredRoles={APPLICANT_ROLES}>
             <Suspense fallback={<Loading />}><MyProfilePage /></Suspense>
           </AuthGuard>
         ),
@@ -218,7 +218,7 @@ export const router = createBrowserRouter([
       {
         path: 'my-tasks',
         element: (
-          <AuthGuard requiredRoles={APPLICANT_ROLES}>
+          <AuthGuard callInitSession={false} requiredRoles={APPLICANT_ROLES}>
             <Suspense fallback={<Loading />}><MyTasksPage /></Suspense>
           </AuthGuard>
         ),

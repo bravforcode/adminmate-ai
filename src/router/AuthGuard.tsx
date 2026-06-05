@@ -6,6 +6,8 @@ interface AuthGuardProps {
   children: React.ReactNode
   requiredRoles?: string[]
   requireCompany?: boolean
+  /** Set false on nested guards that don't need to re-trigger session init */
+  callInitSession?: boolean
 }
 
 /** Returns the default landing route for the given role. */
@@ -14,13 +16,13 @@ export function getDefaultRoute(role?: string | null): string {
   return '/dashboard'
 }
 
-export function AuthGuard({ children, requiredRoles, requireCompany = true }: AuthGuardProps) {
+export function AuthGuard({ children, requiredRoles, requireCompany = true, callInitSession = true }: AuthGuardProps) {
   const { isAuthenticated, hasCompany, isLoading, profile, initSession } = useAuthStore()
   const location = useLocation()
 
   useEffect(() => {
-    initSession()
-  }, [initSession])
+    if (callInitSession) initSession()
+  }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
   if (isLoading) {
     return (

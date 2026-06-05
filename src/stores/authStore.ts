@@ -53,6 +53,7 @@ interface AuthState {
 }
 
 let authSubscription: { unsubscribe: () => void } | null = null
+let _sessionInitPromise: Promise<void> | null = null
 
 export const useAuthStore = create<AuthState>()(
   persist(
@@ -60,7 +61,7 @@ export const useAuthStore = create<AuthState>()(
       user: null,
       profile: null,
       company: null,
-      isLoading: true,
+      isLoading: false,
       error: null,
 
       setUser: (user) => set({ user }),
@@ -76,37 +77,42 @@ export const useAuthStore = create<AuthState>()(
         error: null,
       }),
       initSession: async () => {
-        set({ isLoading: true, error: null })
-        try {
-          const { data: { session } } = await supabase.auth.getSession()
-          if (!session?.user) {
-            set({ user: null, profile: null, company: null, isLoading: false })
-            return
-          }
-          set({ user: session.user })
-          const { data: profile } = await supabase
-            .from('user_profiles')
-            .select('*')
-            .eq('id', session.user.id)
-            .maybeSingle()
-          if (profile) {
-            set({ profile })
-          } else {
-            set({ profile: null })
-          }
-          if (profile?.company_id) {
-            const { data: company } = await supabase
-              .from('companies')
+        // Prevent concurrent or duplicate calls
+        if (_sessionInitPromise) return _sessionInitPromise
+        _sessionInitPromise = (async () => {
+          set({ isLoading: true, error: null })
+          try {
+            const { data: { session } } = await supabase.auth.getSession()
+            if (!session?.user) {
+              set({ user: null, profile: null, company: null, isLoading: false })
+              return
+            }
+            set({ user: session.user })
+            const { data: profile } = await supabase
+              .from('user_profiles')
               .select('*')
-              .eq('id', profile.company_id)
+              .eq('id', session.user.id)
               .maybeSingle()
-            if (company) set({ company })
+            if (profile) {
+              set({ profile })
+            } else {
+              set({ profile: null })
+            }
+            if (profile?.company_id) {
+              const { data: company } = await supabase
+                .from('companies')
+                .select('*')
+                .eq('id', profile.company_id)
+                .maybeSingle()
+              if (company) set({ company })
+            }
+          } catch (e: any) {
+            set({ user: null, profile: null, company: null, error: e?.message ?? 'init_failed' })
+          } finally {
+            set({ isLoading: false })
           }
-        } catch (e: any) {
-          set({ user: null, profile: null, company: null, error: e?.message ?? 'init_failed' })
-        } finally {
-          set({ isLoading: false })
-        }
+        })()
+        return _sessionInitPromise
       },
       subscribeAuth: () => {
         if (authSubscription) return authSubscription.unsubscribe
@@ -145,7 +151,10 @@ export const useAuthStore = create<AuthState>()(
           authSubscription = null
         }
       },
-      reset: () => set({ user: null, profile: null, company: null, isLoading: false, error: null }),
+      reset: () => {
+        _sessionInitPromise = null
+        set({ user: null, profile: null, company: null, isLoading: false, error: null })
+      },
 
       isAuthenticated: () => !!get().user,
       isAdminOrHR: () => ['admin', 'hr'].includes(get().profile?.role ?? ''),
