@@ -12,7 +12,7 @@ export function AppLayout() {
       <Sidebar />
       <div className="flex-1 md:ml-[260px] flex flex-col min-h-screen">
         <Header />
-        <main className="flex-1 pt-[60px] p-4 md:p-8 pb-20 md:pb-8 max-w-[1440px] mx-auto w-full overflow-y-auto">
+        <main className="flex-1 px-4 md:px-8 pt-[60px] pb-20 md:pb-8 max-w-[1440px] mx-auto w-full overflow-y-auto">
           <Outlet />
         </main>
       </div>
