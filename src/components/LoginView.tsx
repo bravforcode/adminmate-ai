@@ -650,7 +650,7 @@ export default function LoginView({ language, onLoginSuccess, setLanguage }: Log
               onMouseEnter={(e) => {
                 const el = e.currentTarget;
                 el.style.borderColor = 'var(--color-accent)';
-                el.style.boxShadow = '0 4px 16px rgba(41, 128, 185, 0.1)';
+                el.style.boxShadow = '0 4px 16px rgba(37, 99, 235, 0.1)';
               }}
               onMouseLeave={(e) => {
                 const el = e.currentTarget;

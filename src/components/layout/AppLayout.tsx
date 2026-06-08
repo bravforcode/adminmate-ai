@@ -3,6 +3,7 @@ import { Sidebar } from './Sidebar'
 import { Header } from './Header'
 import { MobileNav } from './MobileNav'
 import { ChatWidget } from '../chat/ChatWidget'
+import { OnboardingTour } from '../onboarding/OnboardingTour'
 import { Toaster } from 'react-hot-toast'
 
 export function AppLayout() {
@@ -17,9 +18,10 @@ export function AppLayout() {
       </div>
       <MobileNav />
       <ChatWidget />
+      <OnboardingTour />
       <Toaster position="top-right" toastOptions={{
         duration: 4000,
-        style: { borderRadius: '12px', background: '#051a3e', color: '#fff', fontSize: '14px' },
+        style: { borderRadius: '12px', background: '#1e3a5f', color: '#fff', fontSize: '14px' },
       }} />
     </div>
   )

@@ -7,7 +7,7 @@ import type { SignUpWithPasswordCredentials } from '@supabase/supabase-js'
 
 /** Returns the correct landing route based on user role from DB. */
 export function getDefaultRoute(role?: string | null): string {
-  if (role === 'applicant') return '/my-profile'
+  if (role === 'applicant') return '/applicant/dashboard'
   return '/dashboard'
 }
 
@@ -96,8 +96,7 @@ export function useAuth() {
         .eq('id', data.user!.id)
       store.setCompany(company)
       hasCompany = true
-    } catch (e) {
-    }
+    } catch { /* company link may already exist or DB error */ }
 
     if (data.user) {
       await loadProfile(data.user.id)

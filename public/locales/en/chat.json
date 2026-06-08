@@ -1,0 +1,21 @@
+{
+  "title": "Mate AI Assistant",
+  "status": "Online",
+  "subtitle": "Ask me anything about company policies, benefits, or procedures",
+  "placeholder": "Type a message...",
+  "thinking": "Thinking...",
+  "retry": "Retry",
+  "clearChat": "Clear chat",
+  "error": "Sorry, I couldn't process your request. Please try again.",
+  "timestamps": {
+    "justNow": "Just now",
+    "minutesAgo": "{{count}}m ago"
+  },
+  "suggestions": [
+    "What are the work hours?",
+    "How many annual leave days do I get?",
+    "Tell me about health insurance benefits",
+    "What is the sick leave policy?",
+    "How do I request a day off?"
+  ]
+}

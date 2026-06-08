@@ -19,6 +19,9 @@
     "profile": "Profile",
     "my_profile": "My Profile",
     "my_tasks": "My Tasks",
+    "applicant_dashboard": "My Dashboard",
+    "browse_jobs": "Browse Jobs",
+    "my_applications": "My Applications",
     "new_request": "New Request",
     "search": "Search candidates, skills...",
     "menu": "Menu",
@@ -290,5 +293,78 @@
     "ok": "OK",
     "warning": "Warning",
     "critical": "Critical"
+  },
+  "tour": {
+    "welcome": {
+      "title": "Welcome to AdminMate AI!",
+      "content": "Let us show you around. This quick tour will help you get started."
+    },
+    "sidebar": {
+      "title": "Navigation Menu",
+      "content": "Access all your tools from this sidebar. It's organized by function.",
+      "content.applicant": "Access your profile, tasks, and chat from this sidebar."
+    },
+    "search": {
+      "title": "Smart Search",
+      "content": "Quickly find candidates, jobs, or any information across the platform."
+    },
+    "notifications": {
+      "title": "Notifications",
+      "content": "Stay updated with new applicants, interview reminders, and important alerts."
+    },
+    "language": {
+      "title": "Language Switcher",
+      "content": "Switch between English, Thai, Vietnamese, and Chinese anytime."
+    },
+    "chatbot": {
+      "title": "AI Assistant",
+      "content": "Need help? Our AI assistant can answer questions about policies, jobs, and more."
+    },
+    "skip": "Skip Tour",
+    "next": "Next",
+    "prev": "Back",
+    "finish": "Get Started",
+    "restart": "Restart Tour",
+    "restartDescription": "Replay the onboarding tour to refresh your memory on key features.",
+    "stepOf": "{{current}} of {{total}}"
+  },
+  "applicant": {
+    "dashboard": {
+      "welcome": "Welcome back, {{name}}!",
+      "applications": "Applications",
+      "interviews": "Interviews",
+      "tasks": "Pending Tasks",
+      "quickActions": "Quick Actions",
+      "recentActivity": "Recent Activity",
+      "noActivity": "No activity yet. Start by browsing open positions!",
+      "updateProfile": "Update your information"
+    },
+    "jobs": {
+      "title": "Available Positions",
+      "subtitle": "Find and apply to open positions",
+      "search": "Search jobs...",
+      "apply": "Apply Now",
+      "applied": "Applied",
+      "noJobs": "No open positions at the moment",
+      "noJobsDesc": "Check back later for new opportunities"
+    },
+    "jobDetail": {
+      "description": "Job Description",
+      "requirements": "Requirements",
+      "responsibilities": "Responsibilities"
+    },
+    "status": {
+      "title": "My Applications",
+      "subtitle": "Track the progress of your job applications",
+      "applied": "Applied",
+      "screening": "Screening",
+      "interview": "Interview",
+      "offer": "Offer",
+      "hired": "Hired",
+      "appliedOn": "Applied",
+      "updated": "Updated",
+      "noApplications": "No applications yet",
+      "noApplicationsDesc": "Start by browsing open positions and applying"
+    }
   }
 }

@@ -1,0 +1,31 @@
+{
+  "title": "系统健康",
+  "last_checked": "上次检查",
+  "refreshing": "刷新中...",
+  "service_status": "服务状态",
+  "labels": {
+    "database": "数据库",
+    "auth": "认证",
+    "edge_functions": "边缘函数",
+    "storage": "存储",
+    "status": "状态",
+    "db_size": "数据库大小",
+    "active_connections": "活跃连接",
+    "connected": "已连接",
+    "error": "错误",
+    "operational": "正常运行",
+    "degraded": "性能下降",
+    "unknown": "未知"
+  },
+  "system_metrics": "系统指标",
+  "metrics": {
+    "total_users": "用户总数",
+    "total_companies": "公司总数",
+    "total_jobs": "职位总数",
+    "total_candidates": "候选人总数",
+    "recent_signups": "新注册（7天）"
+  },
+  "auto_refresh_note": "每30秒自动刷新。显示的时间为本地时区。",
+  "error_title": "系统检查失败",
+  "error_description": "无法检查系统健康状态。请重试。"
+}

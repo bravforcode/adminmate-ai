@@ -60,7 +60,7 @@ export default function PipelineView({
   const moveCandidate = (cand: Candidate, dir: 'left' | 'right') => {
     const colSeq: Candidate['status'][] = ['New', 'Shortlisted', 'Interview', 'Offered', 'Rejected'];
     const curIdx = colSeq.indexOf(cand.status);
-    let targetIdx = curIdx + (dir === 'right' ? 1 : -1);
+    const targetIdx = curIdx + (dir === 'right' ? 1 : -1);
     if (targetIdx >= 0 && targetIdx < colSeq.length) {
       onUpdateStatus(cand.id, colSeq[targetIdx]);
     }

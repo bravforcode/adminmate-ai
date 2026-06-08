@@ -1,4 +1,5 @@
 import { NavLink } from 'react-router-dom'
+import { motion } from 'motion/react'
 import { useAuthStore } from '../../stores/authStore'
 import { useUIStore } from '../../stores/uiStore'
 import { useTranslation } from 'react-i18next'
@@ -44,7 +45,7 @@ export function Sidebar() {
           left: 0, top: 0,
           height: '100%',
           width: '260px',
-          backgroundColor: 'var(--color-navy-deep, #0f1c2e)',
+          backgroundColor: 'var(--color-navy-deep, #0f2942)',
           borderRight: 'none',
           zIndex: 50,
           display: 'flex',
@@ -66,7 +67,7 @@ export function Sidebar() {
             <div style={{
               width: '32px', height: '32px',
               borderRadius: '7px',
-              backgroundColor: 'var(--color-accent, #2980b9)',
+              backgroundColor: 'var(--color-accent, #60a5fa)',
               display: 'flex', alignItems: 'center', justifyContent: 'center',
               flexShrink: 0,
             }}>
@@ -111,7 +112,7 @@ export function Sidebar() {
         <div style={{ padding: '14px 14px 10px 14px' }}>
           <button style={{
             width: '100%',
-            backgroundColor: 'var(--color-accent, #2980b9)',
+            backgroundColor: 'var(--color-accent, #60a5fa)',
             color: '#ffffff',
             border: 'none',
             borderRadius: '8px',
@@ -141,41 +142,46 @@ export function Sidebar() {
           display: 'flex', flexDirection: 'column', gap: '2px',
         }}>
           {visibleItems.map(item => (
-            <NavLink
+            <motion.div
               key={item.path}
-              to={item.path!}
-              style={({ isActive }) => ({
-                display: 'flex',
-                alignItems: 'center',
-                gap: '12px',
-                padding: '9px 14px',
-                borderRadius: '8px',
-                fontSize: '13px',
-                fontWeight: isActive ? 600 : 400,
-                color: isActive ? '#ffffff' : 'rgba(255,255,255,0.55)',
-                backgroundColor: isActive ? 'rgba(41, 128, 185, 0.25)' : 'transparent',
-                borderLeft: isActive ? '3px solid var(--color-accent, #2980b9)' : '3px solid transparent',
-                textDecoration: 'none',
-                transition: 'all 0.2s ease-out',
-              })}
-              onMouseEnter={e => {
-                const el = e.currentTarget
-                if (!el.getAttribute('aria-current')) {
-                  el.style.backgroundColor = 'rgba(255,255,255,0.06)'
-                  el.style.color = 'rgba(255,255,255,0.85)'
-                }
-              }}
-              onMouseLeave={e => {
-                const el = e.currentTarget
-                if (!el.getAttribute('aria-current')) {
-                  el.style.backgroundColor = 'transparent'
-                  el.style.color = 'rgba(255,255,255,0.55)'
-                }
-              }}
+              whileHover={{ x: 2 }}
+              transition={{ duration: 0.15, ease: [0.4, 0, 0.2, 1] }}
             >
-              <item.icon size={17} style={{ flexShrink: 0 }} />
-              <span>{t(item.labelKey)}</span>
-            </NavLink>
+              <NavLink
+                to={item.path!}
+                style={({ isActive }) => ({
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '12px',
+                  padding: '9px 14px',
+                  borderRadius: '8px',
+                  fontSize: '13px',
+                  fontWeight: isActive ? 600 : 400,
+                  color: isActive ? '#ffffff' : 'rgba(255,255,255,0.55)',
+                  backgroundColor: isActive ? 'rgba(96, 165, 250, 0.25)' : 'transparent',
+                  borderLeft: isActive ? '3px solid var(--color-accent, #60a5fa)' : '3px solid transparent',
+                  textDecoration: 'none',
+                  transition: 'all 0.2s ease-out',
+                })}
+                onMouseEnter={e => {
+                  const el = e.currentTarget
+                  if (!el.getAttribute('aria-current')) {
+                    el.style.backgroundColor = 'rgba(255,255,255,0.06)'
+                    el.style.color = 'rgba(255,255,255,0.85)'
+                  }
+                }}
+                onMouseLeave={e => {
+                  const el = e.currentTarget
+                  if (!el.getAttribute('aria-current')) {
+                    el.style.backgroundColor = 'transparent'
+                    el.style.color = 'rgba(255,255,255,0.55)'
+                  }
+                }}
+              >
+                <item.icon size={17} style={{ flexShrink: 0 }} />
+                <span>{t(item.labelKey)}</span>
+              </NavLink>
+            </motion.div>
           ))}
         </div>
 

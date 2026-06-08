@@ -1,0 +1,39 @@
+{
+  "title": "分析与报告",
+  "subtitle": "绩效分析和 HR 报告",
+  "filters": "筛选",
+  "export_csv": "导出 CSV",
+  "kpi": {
+    "recruitment_efficiency": "招聘效率",
+    "recruitment_efficiency_sub": "平均招聘周期",
+    "days": "天",
+    "cost_per_hire": "单次招聘成本",
+    "cost_per_hire_sub": "每次成功招聘的平均成本",
+    "avg": "平均",
+    "onboarding_success": "入职成功率",
+    "onboarding_success_sub": "入职完成率",
+    "completion": "完成率",
+    "completion_label": "完成率",
+    "hired": "已录用 {{count}} 人",
+    "no_data": "暂无数据",
+    "hires": "招聘 {{count}} 人"
+  },
+  "chart": {
+    "pipeline_title": "招聘流程分析",
+    "pipeline_subtitle": "月度招聘漏斗分析"
+  },
+  "breakdown": {
+    "title": "候选人来源分析",
+    "subtitle": "候选人来源",
+    "no_data": "暂无候选人来源数据"
+  },
+  "table": {
+    "title": "生成的报告",
+    "subtitle": "最近的报告",
+    "report_name": "报告名称",
+    "category": "类别",
+    "date": "日期",
+    "action": "操作"
+  },
+  "view_all": "查看全部"
+}

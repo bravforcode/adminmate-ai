@@ -33,16 +33,14 @@ function write(key: string, value: LockoutState): void {
   if (typeof window === 'undefined') return
   try {
     window.localStorage.setItem(STORAGE_PREFIX + key, JSON.stringify(value))
-  } catch {
-  }
+  } catch { /* localStorage may be full or unavailable */ }
 }
 
 function clear(key: string): void {
   if (typeof window === 'undefined') return
   try {
     window.localStorage.removeItem(STORAGE_PREFIX + key)
-  } catch {
-  }
+  } catch { /* localStorage may be unavailable */ }
 }
 
 export function getLockoutRemainingMs(key: string): number {

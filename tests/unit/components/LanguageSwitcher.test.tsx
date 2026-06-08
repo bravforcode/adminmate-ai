@@ -8,9 +8,9 @@ vi.mock('../../../src/stores/uiStore', () => ({ useUIStore: vi.fn(() => ({ langu
 describe('LanguageSwitcher', () => {
   it('renders all 4 language buttons', () => {
     render(<LanguageSwitcher />)
-    expect(screen.getByText(/ไทย/)).toBeTruthy()
+    expect(screen.getByText(/TH/)).toBeTruthy()
     expect(screen.getByText(/EN/)).toBeTruthy()
     expect(screen.getByText(/VI/)).toBeTruthy()
-    expect(screen.getByText(/ID/)).toBeTruthy()
+    expect(screen.getByText(/中文/)).toBeTruthy()
   })
 })

@@ -1,0 +1,18 @@
+{
+  "title": "文档",
+  "subtitle": "跟踪招聘文档",
+  "no_docs": "未找到文档",
+  "pending": "待处理",
+  "signed": "已签署",
+  "overdue": "已逾期",
+  "reminder_sent": "提醒已发送",
+  "reminder_failed": "提醒发送失败",
+  "no_results": "未找到匹配的文档",
+  "empty_title": "暂无文档",
+  "empty_description": "文档将在从录用通知和合同创建后显示在此处",
+  "total_documents": "文档总数",
+  "pending_action": "待处理",
+  "overdue": "已逾期",
+  "search_placeholder": "搜索文档...",
+  "all_types": "所有类型"
+}

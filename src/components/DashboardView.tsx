@@ -145,7 +145,7 @@ export default function DashboardView({
               width: '7px',
               height: '7px',
               borderRadius: '50%',
-              backgroundColor: '#1a6b45',
+              backgroundColor: 'var(--color-success, #22c55e)',
               flexShrink: 0,
             }}
           />
@@ -269,7 +269,7 @@ export default function DashboardView({
                   onMouseEnter={(e) => {
                     const el = e.currentTarget;
                     el.style.borderColor = 'var(--color-accent)';
-                    el.style.boxShadow = '0 8px 24px rgba(41, 128, 185, 0.1)';
+                    el.style.boxShadow = '0 8px 24px rgba(37, 99, 235, 0.1)';
                     el.style.transform = 'translateX(3px)';
                   }}
                   onMouseLeave={(e) => {

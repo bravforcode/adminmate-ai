@@ -4,7 +4,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
 import { useAuthStore, useAuthLoading, useAuthError } from '../../stores/authStore'
 import { companyService } from '../../services/companyService'
-import { Save, Building2, Shield, Gavel, MessageSquare, Phone, AlertCircle, RefreshCw } from 'lucide-react'
+import { Save, Building2, Shield, Gavel, MessageSquare, Phone, AlertCircle, RefreshCw, RotateCcw } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import toast from 'react-hot-toast'
 import { cn } from '../../utils/cn'
@@ -238,6 +238,26 @@ export function SettingsPage() {
             ))}
           </div>
         </div>
+      </div>
+      {/* Onboarding Tour */}
+      <div className="bg-surface rounded-xl border border-outline-variant shadow-sm p-6">
+        <div className="flex items-center gap-2 mb-4">
+          <RotateCcw size={20} className="text-primary" />
+          <h3 className="text-title-lg font-semibold text-on-surface">{t('tour.restart') || 'Restart Tour'}</h3>
+        </div>
+        <p className="text-sm text-on-surface-variant mb-4">
+          {t('tour.restartDescription') || 'Replay the onboarding tour to refresh your memory on key features.'}
+        </p>
+        <button
+          onClick={() => {
+            localStorage.removeItem('adminmate_onboarding_tour_completed')
+            window.location.reload()
+          }}
+          className="flex items-center gap-2 px-4 py-2 bg-primary text-on-primary rounded-lg font-medium hover:opacity-90 transition-opacity text-sm"
+        >
+          <RotateCcw size={15} />
+          {t('tour.restart') || 'Restart Tour'}
+        </button>
       </div>
     </div>
   )

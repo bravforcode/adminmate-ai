@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../../hooks/useAuth'
 import { useAuthStore } from '../../stores/authStore'
 import { useTranslation } from 'react-i18next'
-import { LogOut, Settings, User, ClipboardList } from 'lucide-react'
+import { LogOut, Settings, User, ClipboardList, RotateCcw } from 'lucide-react'
 
 export function UserMenu() {
   const { profile, logout } = useAuth()
@@ -80,6 +80,17 @@ export function UserMenu() {
             </>
           )}
 
+          <hr className="my-1 border-outline-variant" />
+          <button
+            onClick={() => {
+              localStorage.removeItem('adminmate_onboarding_tour_completed')
+              window.location.reload()
+              setOpen(false)
+            }}
+            className="w-full flex items-center gap-3 px-4 py-2 text-sm text-on-surface-variant hover:bg-surface-container transition-colors"
+          >
+            <RotateCcw size={16} /> {t('tour.restart')}
+          </button>
           <hr className="my-1 border-outline-variant" />
           <button
             onClick={handleLogout}

@@ -40,7 +40,7 @@ export function Header() {
       marginLeft: '260px',
       zIndex: 40,
       backgroundColor: 'var(--color-surface, #ffffff)',
-      borderBottom: '1px solid var(--color-border-subtle, #e8f0f8)',
+      borderBottom: '1px solid var(--color-border-subtle, #f1f5f9)',
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'space-between',
@@ -56,7 +56,7 @@ export function Header() {
           className="md:hidden"
           style={{
             background: 'none', border: 'none', cursor: 'pointer',
-            color: 'var(--color-navy, #1e3a5f)', padding: '6px',
+            color: 'var(--color-navy, #2563eb)', padding: '6px',
             borderRadius: '8px',
           }}
         >
@@ -73,25 +73,25 @@ export function Header() {
               maxWidth: '380px',
               alignItems: 'center',
               borderRadius: '8px',
-              border: '1px solid var(--color-border, #d4e3f0)',
-              backgroundColor: 'var(--color-surface-alt, #f0f6fc)',
+              border: '1px solid var(--color-border, #e2e8f0)',
+              backgroundColor: 'var(--color-surface-alt, #f1f5f9)',
               transition: 'border-color 0.25s ease-out, box-shadow 0.25s ease-out',
             }}
             onFocusCapture={e => {
               const el = e.currentTarget as HTMLDivElement
-              el.style.borderColor = 'var(--color-navy, #1e3a5f)'
+              el.style.borderColor = 'var(--color-navy, #2563eb)'
               el.style.boxShadow = '0 0 0 3px rgba(30,58,95,0.08)'
             }}
             onBlurCapture={e => {
               const el = e.currentTarget as HTMLDivElement
-              el.style.borderColor = 'var(--color-border, #d4e3f0)'
+              el.style.borderColor = 'var(--color-border, #e2e8f0)'
               el.style.boxShadow = 'none'
             }}
           >
             <Search size={15} style={{
               position: 'absolute', left: '12px', top: '50%',
               transform: 'translateY(-50%)',
-              color: 'var(--color-text-muted, #8aa0bb)',
+              color: 'var(--color-text-muted, #94a3b8)',
               pointerEvents: 'none',
             }} />
             <input
@@ -116,7 +116,7 @@ export function Header() {
                 border: 'none',
                 outline: 'none',
                 fontSize: '13px',
-                color: 'var(--color-text-primary, #0f1c2e)',
+                color: 'var(--color-text-primary, #0f172a)',
               }}
               placeholder={t('nav.search')}
             />
@@ -128,9 +128,9 @@ export function Header() {
                 top: 'calc(100% + 6px)',
                 left: 0, right: 0,
                 backgroundColor: 'var(--color-surface, #ffffff)',
-                border: '1px solid var(--color-border, #d4e3f0)',
+                border: '1px solid var(--color-border, #e2e8f0)',
                 borderRadius: '10px',
-                boxShadow: '0 16px 40px rgba(30, 58, 95, 0.12)',
+                boxShadow: '0 16px 40px rgba(37, 99, 235, 0.12)',
                 overflow: 'hidden',
                 zIndex: 60,
               }}>
@@ -152,15 +152,15 @@ export function Header() {
                       cursor: 'pointer',
                       textAlign: 'left',
                       transition: 'background-color 0.2s ease-out',
-                      borderBottom: '1px solid var(--color-border-subtle, #e8f0f8)',
+                      borderBottom: '1px solid var(--color-border-subtle, #f1f5f9)',
                     }}
-                    onMouseEnter={e => (e.currentTarget.style.backgroundColor = 'var(--color-accent-light, #e8f4fd)')}
+                    onMouseEnter={e => (e.currentTarget.style.backgroundColor = 'var(--color-accent-light, #dbeafe)')}
                     onMouseLeave={e => (e.currentTarget.style.backgroundColor = 'transparent')}
                   >
                     <div style={{
                       width: '32px', height: '32px',
                       borderRadius: '50%',
-                      backgroundColor: 'var(--color-navy, #1e3a5f)',
+                      backgroundColor: 'var(--color-navy, #2563eb)',
                       color: '#fff',
                       display: 'flex', alignItems: 'center', justifyContent: 'center',
                       fontSize: '12px', fontWeight: 600,
@@ -171,13 +171,13 @@ export function Header() {
                     <div style={{ minWidth: 0 }}>
                       <p style={{
                         fontSize: '13px', fontWeight: 500,
-                        color: 'var(--color-navy-deep, #0f1c2e)',
+                        color: 'var(--color-navy-deep, #0f172a)',
                         margin: 0, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap',
                       }}>
                         {c.full_name}
                       </p>
                       <p style={{
-                        fontSize: '11px', color: 'var(--color-text-muted, #8aa0bb)',
+                        fontSize: '11px', color: 'var(--color-text-muted, #94a3b8)',
                         margin: 0, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap',
                       }}>
                         {c.current_position || c.email}
@@ -197,7 +197,7 @@ export function Header() {
             className="sm:hidden"
             style={{
               background: 'none', border: 'none', cursor: 'pointer',
-              color: 'var(--color-text-secondary, #4a6080)', padding: '6px',
+              color: 'var(--color-text-secondary, #475569)', padding: '6px',
               borderRadius: '8px',
             }}
           >
@@ -214,14 +214,14 @@ export function Header() {
               inset: '0 0 auto 0',
               zIndex: 70,
               backgroundColor: 'var(--color-surface, #ffffff)',
-              borderBottom: '1px solid var(--color-border-subtle, #e8f0f8)',
+              borderBottom: '1px solid var(--color-border-subtle, #f1f5f9)',
               padding: '12px 16px',
               display: 'flex',
               alignItems: 'center',
               gap: '10px',
             }}
           >
-            <Search size={16} style={{ color: 'var(--color-text-muted, #8aa0bb)', flexShrink: 0 }} />
+            <Search size={16} style={{ color: 'var(--color-text-muted, #94a3b8)', flexShrink: 0 }} />
             <input
               autoFocus
               value={search}
@@ -235,7 +235,7 @@ export function Header() {
               style={{
                 flex: 1, border: 'none', outline: 'none',
                 background: 'transparent', fontSize: '14px',
-                color: 'var(--color-text-primary, #0f1c2e)',
+                color: 'var(--color-text-primary, #0f172a)',
               }}
               placeholder={t('nav.search')}
             />
@@ -243,7 +243,7 @@ export function Header() {
               onClick={() => { setSearchOpen(false); setSearch('') }}
               style={{ background: 'none', border: 'none', cursor: 'pointer', padding: '4px' }}
             >
-              <X size={16} style={{ color: 'var(--color-text-muted, #8aa0bb)' }} />
+              <X size={16} style={{ color: 'var(--color-text-muted, #94a3b8)' }} />
             </button>
           </div>
         )}
@@ -252,7 +252,7 @@ export function Header() {
       {/* Right: controls */}
       <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
         <LanguageSwitcher />
-        <div style={{ width: '1px', height: '20px', backgroundColor: 'var(--color-border-subtle, #e8f0f8)' }} />
+        <div style={{ width: '1px', height: '20px', backgroundColor: 'var(--color-border-subtle, #f1f5f9)' }} />
         <NotificationBell />
         <UserMenu />
       </div>

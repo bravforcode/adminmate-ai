@@ -12,7 +12,7 @@ interface AuthGuardProps {
 
 /** Returns the default landing route for the given role. */
 export function getDefaultRoute(role?: string | null): string {
-  if (role === 'applicant') return '/my-profile'
+  if (role === 'applicant') return '/applicant/dashboard'
   return '/dashboard'
 }
 
@@ -22,7 +22,7 @@ export function AuthGuard({ children, requiredRoles, requireCompany = true, call
 
   useEffect(() => {
     if (callInitSession) initSession()
-  }, []) // eslint-disable-line react-hooks/exhaustive-deps
+  }, []) // run once on mount
 
   if (isLoading) {
     return (

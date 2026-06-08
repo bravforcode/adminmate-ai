@@ -5,13 +5,13 @@ import {
   Kanban,
   FileCheck,
   UserCheck,
-  MessageSquare,
   BarChart2,
   Settings,
   CalendarCheck,
   FileText,
   UserCircle,
   ClipboardList,
+  ClipboardCheck,
 } from 'lucide-react'
 
 export interface NavItem {
@@ -52,6 +52,24 @@ export const navItems: NavItem[] = [
   { path: '/settings', labelKey: 'nav.settings', icon: Settings, roles: HR_ROLES },
 
   // ── Applicant ─────────────────────────────────────────────────
+  {
+    path: '/applicant/dashboard',
+    labelKey: 'nav.applicant_dashboard',
+    icon: LayoutDashboard,
+    roles: ['applicant'],
+  },
+  {
+    path: '/applicant/jobs',
+    labelKey: 'nav.browse_jobs',
+    icon: Briefcase,
+    roles: ['applicant'],
+  },
+  {
+    path: '/applicant/status',
+    labelKey: 'nav.my_applications',
+    icon: ClipboardCheck,
+    roles: ['applicant'],
+  },
   {
     path: '/my-profile',
     labelKey: 'nav.my_profile',

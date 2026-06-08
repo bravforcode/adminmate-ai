@@ -14,6 +14,11 @@
     "interviews": "Phỏng vấn",
     "documents": "Tài liệu",
     "profile": "Hồ sơ",
+    "my_profile": "Hồ sơ của tôi",
+    "my_tasks": "Công việc của tôi",
+    "applicant_dashboard": "Tổng quan của tôi",
+    "browse_jobs": "Tìm việc",
+    "my_applications": "Đơn ứng tuyển của tôi",
     "new_request": "Yêu cầu mới",
     "search": "Tìm kiếm ứng viên, kỹ năng...",
     "menu": "Menu",
@@ -285,5 +290,78 @@
     "ok": "OK",
     "warning": "Cảnh báo",
     "critical": "Nghiêm trọng"
+  },
+  "tour": {
+    "welcome": {
+      "title": "Chào mừng đến với AdminMate AI!",
+      "content": "Để chúng tôi giới thiệu cho bạn. Chuyến tham quan nhanh này sẽ giúp bạn bắt đầu."
+    },
+    "sidebar": {
+      "title": "Menu điều hướng",
+      "content": "Truy cập tất cả công cụ từ thanh bên này. Được sắp xếp theo chức năng.",
+      "content.applicant": "Truy cập hồ sơ, công việc và trò chuyện từ thanh bên này."
+    },
+    "search": {
+      "title": "Tìm kiếm thông minh",
+      "content": "Tìm kiếm ứng viên, việc làm hoặc bất kỳ thông tin nào trên nền tảng một cách nhanh chóng."
+    },
+    "notifications": {
+      "title": "Thông báo",
+      "content": "Cập nhật ứng viên mới, nhắc lịch phỏng vấn và các thông báo quan trọng."
+    },
+    "language": {
+      "title": "Chuyển đổi ngôn ngữ",
+      "content": "Chuyển đổi giữa tiếng Anh, tiếng Thái, tiếng Việt và tiếng Trung bất cứ lúc nào."
+    },
+    "chatbot": {
+      "title": "Trợ lý AI",
+      "content": "Cần giúp đỡ? Trợ lý AI có thể trả lời câu hỏi về chính sách, việc làm và nhiều hơn nữa."
+    },
+    "skip": "Bỏ qua",
+    "next": "Tiếp theo",
+    "prev": "Quay lại",
+    "finish": "Bắt đầu",
+    "restart": "Xem lại hướng dẫn",
+    "restartDescription": "Chạy lại chuyến tham quan để ôn lại các tính năng chính.",
+    "stepOf": "{{current}} / {{total}}"
+  },
+  "applicant": {
+    "dashboard": {
+      "welcome": "Chào mừng trở lại {{name}}!",
+      "applications": "Đơn ứng tuyển",
+      "interviews": "Phỏng vấn",
+      "tasks": "Nhiệm vụ còn lại",
+      "quickActions": "Hành động nhanh",
+      "recentActivity": "Hoạt động gần đây",
+      "noActivity": "Chưa có hoạt động. Bắt đầu bằng cách duyệt các vị trí trống!",
+      "updateProfile": "Cập nhật thông tin của bạn"
+    },
+    "jobs": {
+      "title": "Vị trí tuyển dụng",
+      "subtitle": "Tìm kiếm và ứng tuyển vào các vị trí trống",
+      "search": "Tìm kiếm việc làm...",
+      "apply": "Ứng tuyển ngay",
+      "applied": "Đã ứng tuyển",
+      "noJobs": "Chưa có vị trí trống",
+      "noJobsDesc": "Quay lại sau để xem các cơ hội mới"
+    },
+    "jobDetail": {
+      "description": "Mô tả công việc",
+      "requirements": "Yêu cầu",
+      "responsibilities": "Trách nhiệm"
+    },
+    "status": {
+      "title": "Đơn ứng tuyển của tôi",
+      "subtitle": "Theo dõi tiến độ đơn ứng tuyển của bạn",
+      "applied": "Đã nộp",
+      "screening": "Đang sàng lọc",
+      "interview": "Phỏng vấn",
+      "offer": "Đề nghị",
+      "hired": "Được tuyển dụng",
+      "appliedOn": "Đã nộp",
+      "updated": "Cập nhật",
+      "noApplications": "Chưa có đơn ứng tuyển",
+      "noApplicationsDesc": "Bắt đầu bằng cách duyệt và ứng tuyển vào vị trí trống"
+    }
   }
 }

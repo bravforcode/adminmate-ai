@@ -1,4 +1,4 @@
-import { useState, useCallback, useRef, useEffect } from 'react'
+import { useState, useCallback } from 'react'
 import { useAuthStore } from '../stores/authStore'
 import { chatService } from '../services/chatService'
 import toast from 'react-hot-toast'
@@ -34,7 +34,7 @@ export function useChat() {
       const aiMsg: ChatMessage = { id: crypto.randomUUID(), session_id: sessionId, sender: 'ai', content: aiText, created_at: new Date().toISOString() }
       setMessages(prev => [...prev, aiMsg])
       await chatService.sendMessage({ user_id: user.id, company_id: company.id, session_id: sessionId, sender: 'ai', content: aiText })
-    } catch (err) {
+    } catch {
       toast.error('Failed to get AI response')
     } finally {
       setIsLoading(false)

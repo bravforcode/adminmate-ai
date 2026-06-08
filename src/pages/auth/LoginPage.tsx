@@ -114,7 +114,7 @@ export function LoginPage() {
   return (
     <div style={{
       minHeight: '100vh',
-      backgroundColor: 'var(--color-bg, #f8fbff)',
+      backgroundColor: 'var(--color-bg, #f8fafc)',
       display: 'flex',
       flexDirection: 'column',
       fontFamily: 'var(--font-sans, Inter, sans-serif)',
@@ -126,14 +126,14 @@ export function LoginPage() {
         justifyContent: 'space-between',
         alignItems: 'center',
         padding: '18px 32px',
-        borderBottom: '1px solid var(--color-border-subtle, #e8f0f8)',
+        borderBottom: '1px solid var(--color-border-subtle, #f1f5f9)',
         backgroundColor: 'var(--color-surface, #ffffff)',
       }}>
         {/* Logo */}
         <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
           <div style={{
             width: '34px', height: '34px', borderRadius: '8px',
-            backgroundColor: 'var(--color-navy, #1e3a5f)',
+            backgroundColor: 'var(--color-navy, #2563eb)',
             display: 'flex', alignItems: 'center', justifyContent: 'center',
           }}>
             <span style={{ color: '#fff', fontFamily: 'var(--font-serif, Georgia, serif)', fontSize: '16px' }}>A</span>
@@ -141,15 +141,15 @@ export function LoginPage() {
           <span style={{
             fontFamily: 'var(--font-serif, Georgia, serif)',
             fontSize: '18px', fontWeight: 400,
-            color: 'var(--color-navy-deep, #0f1c2e)',
+            color: 'var(--color-navy-deep, #0f172a)',
             letterSpacing: '-0.02em',
           }}>
             AdminMate
             <span style={{
               fontFamily: 'var(--font-sans, Inter, sans-serif)',
               fontSize: '10px', fontWeight: 600,
-              color: 'var(--color-accent, #2980b9)',
-              backgroundColor: 'var(--color-accent-light, #e8f4fd)',
+              color: 'var(--color-accent, #60a5fa)',
+              backgroundColor: 'var(--color-accent-light, #dbeafe)',
               padding: '2px 6px', borderRadius: '4px', marginLeft: '6px',
               letterSpacing: '0.05em',
             }}>AI</span>
@@ -159,7 +159,7 @@ export function LoginPage() {
         {/* Language Switcher */}
         <div style={{
           display: 'flex', gap: '2px',
-          backgroundColor: 'var(--color-surface-alt, #f0f6fc)',
+          backgroundColor: 'var(--color-surface-alt, #f1f5f9)',
           borderRadius: '8px', padding: '3px',
         }}>
           {LANGS.map(l => (
@@ -174,8 +174,8 @@ export function LoginPage() {
                 letterSpacing: '0.04em',
                 border: 'none', cursor: 'pointer',
                 transition: 'all 0.25s ease-out',
-                backgroundColor: currentLang === l.code ? 'var(--color-navy, #1e3a5f)' : 'transparent',
-                color: currentLang === l.code ? '#ffffff' : 'var(--color-text-muted, #8aa0bb)',
+                backgroundColor: currentLang === l.code ? 'var(--color-navy, #2563eb)' : 'transparent',
+                color: currentLang === l.code ? '#ffffff' : 'var(--color-text-muted, #94a3b8)',
               }}
             >
               {l.label}
@@ -201,7 +201,7 @@ export function LoginPage() {
             <div style={{ textAlign: 'center', marginBottom: '52px' }}>
               <p style={{
                 fontSize: '11px', fontWeight: 600,
-                color: 'var(--color-text-muted, #8aa0bb)',
+                color: 'var(--color-text-muted, #94a3b8)',
                 letterSpacing: '0.12em', textTransform: 'uppercase',
                 marginBottom: '12px',
               }}>
@@ -211,7 +211,7 @@ export function LoginPage() {
                 fontFamily: 'var(--font-serif, Georgia, serif)',
                 fontSize: 'clamp(28px, 4vw, 44px)',
                 fontWeight: 400,
-                color: 'var(--color-navy-deep, #0f1c2e)',
+                color: 'var(--color-navy-deep, #0f172a)',
                 letterSpacing: '-0.03em',
                 lineHeight: 1.1,
                 margin: '0 0 14px 0',
@@ -220,7 +220,7 @@ export function LoginPage() {
               </h1>
               <p style={{
                 fontSize: '16px', fontWeight: 300,
-                color: 'var(--color-text-secondary, #4a6080)',
+                color: 'var(--color-text-secondary, #475569)',
                 lineHeight: 1.6, margin: 0,
               }}>
                 {c.selectSub}
@@ -244,7 +244,7 @@ export function LoginPage() {
                 onKeyDown={e => e.key === 'Enter' && handleRoleSelect('hr')}
                 style={{
                   backgroundColor: 'var(--color-surface, #ffffff)',
-                  border: '1.5px solid var(--color-border, #d4e3f0)',
+                  border: '1.5px solid var(--color-border, #e2e8f0)',
                   borderRadius: '16px',
                   padding: '36px 32px',
                   cursor: 'pointer',
@@ -255,20 +255,20 @@ export function LoginPage() {
                 }}
                 onMouseEnter={e => {
                   const el = e.currentTarget
-                  el.style.borderColor = 'var(--color-navy, #1e3a5f)'
+                  el.style.borderColor = 'var(--color-navy, #2563eb)'
                   el.style.transform = 'translateY(-18px)'
-                  el.style.boxShadow = '0 24px 56px rgba(30, 58, 95, 0.14)'
+                  el.style.boxShadow = '0 24px 56px rgba(37, 99, 235, 0.14)'
                 }}
                 onMouseLeave={e => {
                   const el = e.currentTarget
-                  el.style.borderColor = 'var(--color-border, #d4e3f0)'
+                  el.style.borderColor = 'var(--color-border, #e2e8f0)'
                   el.style.transform = 'translateY(-12px)'
                   el.style.boxShadow = 'none'
                 }}
               >
                 <div style={{
                   width: '40px', height: '40px', borderRadius: '10px',
-                  backgroundColor: 'var(--color-navy, #1e3a5f)',
+                  backgroundColor: 'var(--color-navy, #2563eb)',
                   marginBottom: '20px',
                   display: 'flex', alignItems: 'center', justifyContent: 'center',
                 }}>
@@ -282,7 +282,7 @@ export function LoginPage() {
                 <h2 style={{
                   fontFamily: 'var(--font-serif, Georgia, serif)',
                   fontSize: '22px', fontWeight: 400,
-                  color: 'var(--color-navy-deep, #0f1c2e)',
+                  color: 'var(--color-navy-deep, #0f172a)',
                   letterSpacing: '-0.02em',
                   margin: '0 0 6px 0',
                 }}>
@@ -290,7 +290,7 @@ export function LoginPage() {
                 </h2>
                 <p style={{
                   fontSize: '13px', fontWeight: 400,
-                  color: 'var(--color-text-secondary, #4a6080)',
+                  color: 'var(--color-text-secondary, #475569)',
                   margin: '0 0 24px 0', lineHeight: 1.55,
                 }}>
                   {c.hrSub}
@@ -303,11 +303,11 @@ export function LoginPage() {
                   {[c.hrF1, c.hrF2, c.hrF3].map((f, i) => (
                     <li key={i} style={{
                       display: 'flex', alignItems: 'center', gap: '10px',
-                      fontSize: '13px', color: 'var(--color-text-primary, #0f1c2e)',
+                      fontSize: '13px', color: 'var(--color-text-primary, #0f172a)',
                     }}>
                       <span style={{
                         width: '5px', height: '5px', borderRadius: '50%',
-                        backgroundColor: 'var(--color-navy, #1e3a5f)', flexShrink: 0,
+                        backgroundColor: 'var(--color-navy, #2563eb)', flexShrink: 0,
                       }} />
                       {f}
                     </li>
@@ -316,12 +316,12 @@ export function LoginPage() {
                 <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
                   <span style={{
                     fontSize: '11px', fontWeight: 700,
-                    color: 'var(--color-navy, #1e3a5f)',
+                    color: 'var(--color-navy, #2563eb)',
                     letterSpacing: '0.08em', textTransform: 'uppercase',
                   }}>
                     Sign In
                   </span>
-                  <ArrowRight size={16} color="var(--color-navy, #1e3a5f)" />
+                  <ArrowRight size={16} color="var(--color-navy, #2563eb)" />
                 </div>
               </div>
 
@@ -334,7 +334,7 @@ export function LoginPage() {
                 onKeyDown={e => e.key === 'Enter' && handleRoleSelect('applicant')}
                 style={{
                   backgroundColor: 'var(--color-surface, #ffffff)',
-                  border: '1.5px solid var(--color-border, #d4e3f0)',
+                  border: '1.5px solid var(--color-border, #e2e8f0)',
                   borderRadius: '16px',
                   padding: '36px 32px',
                   cursor: 'pointer',
@@ -345,25 +345,25 @@ export function LoginPage() {
                 }}
                 onMouseEnter={e => {
                   const el = e.currentTarget
-                  el.style.borderColor = 'var(--color-accent, #2980b9)'
+                  el.style.borderColor = 'var(--color-accent, #60a5fa)'
                   el.style.transform = 'translateY(6px)'
-                  el.style.boxShadow = '0 24px 56px rgba(41, 128, 185, 0.13)'
+                  el.style.boxShadow = '0 24px 56px rgba(96, 165, 250, 0.13)'
                 }}
                 onMouseLeave={e => {
                   const el = e.currentTarget
-                  el.style.borderColor = 'var(--color-border, #d4e3f0)'
+                  el.style.borderColor = 'var(--color-border, #e2e8f0)'
                   el.style.transform = 'translateY(12px)'
                   el.style.boxShadow = 'none'
                 }}
               >
                 <div style={{
                   width: '40px', height: '40px', borderRadius: '10px',
-                  backgroundColor: 'var(--color-accent-light, #e8f4fd)',
-                  border: '1.5px solid var(--color-accent-dim, #a8d4f0)',
+                  backgroundColor: 'var(--color-accent-light, #dbeafe)',
+                  border: '1.5px solid var(--color-accent-dim, #93c5fd)',
                   marginBottom: '20px',
                   display: 'flex', alignItems: 'center', justifyContent: 'center',
                 }}>
-                  <svg width="18" height="18" fill="none" stroke="var(--color-accent, #2980b9)" strokeWidth="1.8" viewBox="0 0 24 24">
+                  <svg width="18" height="18" fill="none" stroke="var(--color-accent, #60a5fa)" strokeWidth="1.8" viewBox="0 0 24 24">
                     <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
                     <circle cx="12" cy="7" r="4" />
                   </svg>
@@ -372,7 +372,7 @@ export function LoginPage() {
                 <h2 style={{
                   fontFamily: 'var(--font-serif, Georgia, serif)',
                   fontSize: '22px', fontWeight: 400,
-                  color: 'var(--color-navy-deep, #0f1c2e)',
+                  color: 'var(--color-navy-deep, #0f172a)',
                   letterSpacing: '-0.02em',
                   margin: '0 0 6px 0',
                 }}>
@@ -380,7 +380,7 @@ export function LoginPage() {
                 </h2>
                 <p style={{
                   fontSize: '13px', fontWeight: 400,
-                  color: 'var(--color-text-secondary, #4a6080)',
+                  color: 'var(--color-text-secondary, #475569)',
                   margin: '0 0 24px 0', lineHeight: 1.55,
                 }}>
                   {c.apSub}
@@ -393,11 +393,11 @@ export function LoginPage() {
                   {[c.apF1, c.apF2].map((f, i) => (
                     <li key={i} style={{
                       display: 'flex', alignItems: 'center', gap: '10px',
-                      fontSize: '13px', color: 'var(--color-text-primary, #0f1c2e)',
+                      fontSize: '13px', color: 'var(--color-text-primary, #0f172a)',
                     }}>
                       <span style={{
                         width: '5px', height: '5px', borderRadius: '50%',
-                        backgroundColor: 'var(--color-accent, #2980b9)', flexShrink: 0,
+                        backgroundColor: 'var(--color-accent, #60a5fa)', flexShrink: 0,
                       }} />
                       {f}
                     </li>
@@ -406,12 +406,12 @@ export function LoginPage() {
                 <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
                   <span style={{
                     fontSize: '11px', fontWeight: 700,
-                    color: 'var(--color-accent, #2980b9)',
+                    color: 'var(--color-accent, #60a5fa)',
                     letterSpacing: '0.08em', textTransform: 'uppercase',
                   }}>
                     Sign In
                   </span>
-                  <ArrowRight size={16} color="var(--color-accent, #2980b9)" />
+                  <ArrowRight size={16} color="var(--color-accent, #60a5fa)" />
                 </div>
               </div>
             </div>
@@ -419,7 +419,7 @@ export function LoginPage() {
             {/* Demo hint */}
             <p style={{
               textAlign: 'center', marginTop: '52px',
-              fontSize: '12px', color: 'var(--color-text-muted, #8aa0bb)',
+              fontSize: '12px', color: 'var(--color-text-muted, #94a3b8)',
             }}>
               Demo access available after selecting a workspace
             </p>
@@ -436,13 +436,13 @@ export function LoginPage() {
               style={{
                 display: 'flex', alignItems: 'center', gap: '6px',
                 background: 'none', border: 'none', cursor: 'pointer',
-                color: 'var(--color-text-secondary, #4a6080)',
+                color: 'var(--color-text-secondary, #475569)',
                 fontSize: '13px', fontWeight: 500,
                 padding: '0 0 32px 0',
                 transition: 'color 0.25s ease-out',
               }}
-              onMouseEnter={e => (e.currentTarget.style.color = 'var(--color-navy, #1e3a5f)')}
-              onMouseLeave={e => (e.currentTarget.style.color = 'var(--color-text-secondary, #4a6080)')}
+              onMouseEnter={e => (e.currentTarget.style.color = 'var(--color-navy, #2563eb)')}
+              onMouseLeave={e => (e.currentTarget.style.color = 'var(--color-text-secondary, #475569)')}
             >
               <ArrowLeft size={14} />
               {c.back}
@@ -452,7 +452,7 @@ export function LoginPage() {
             <div style={{ marginBottom: '32px' }}>
               <p style={{
                 fontSize: '11px', fontWeight: 600,
-                color: 'var(--color-text-muted, #8aa0bb)',
+                color: 'var(--color-text-muted, #94a3b8)',
                 letterSpacing: '0.12em', textTransform: 'uppercase',
                 marginBottom: '10px',
               }}>
@@ -462,7 +462,7 @@ export function LoginPage() {
                 fontFamily: 'var(--font-serif, Georgia, serif)',
                 fontSize: 'clamp(26px, 3.5vw, 36px)',
                 fontWeight: 400,
-                color: 'var(--color-navy-deep, #0f1c2e)',
+                color: 'var(--color-navy-deep, #0f172a)',
                 letterSpacing: '-0.03em',
                 lineHeight: 1.1,
                 margin: 0,
@@ -474,7 +474,7 @@ export function LoginPage() {
             {/* The real auth LoginForm */}
             <div style={{
               backgroundColor: 'var(--color-surface, #ffffff)',
-              border: '1px solid var(--color-border-subtle, #e8f0f8)',
+              border: '1px solid var(--color-border-subtle, #f1f5f9)',
               borderRadius: '14px',
               padding: '32px',
             }}>
@@ -487,11 +487,11 @@ export function LoginPage() {
       {/* Footer */}
       <div style={{
         padding: '18px 32px',
-        borderTop: '1px solid var(--color-border-subtle, #e8f0f8)',
+        borderTop: '1px solid var(--color-border-subtle, #f1f5f9)',
         textAlign: 'center',
       }}>
         <p style={{
-          fontSize: '11px', color: 'var(--color-text-muted, #8aa0bb)',
+          fontSize: '11px', color: 'var(--color-text-muted, #94a3b8)',
           margin: 0, letterSpacing: '0.02em',
         }}>
           &copy; {new Date().getFullYear()} AdminMate AI &mdash; {c.footer}

@@ -37,7 +37,7 @@ export function CandidateDetailPage() {
 
         <div className="mb-6">
           <h3 className="text-sm font-semibold mb-3">Upload CV</h3>
-          <CVUploader candidateId={candidate.id} companyId={company?.id!} />
+          <CVUploader candidateId={candidate.id} companyId={company?.id ?? ''} />
         </div>
 
         {latestCV && (

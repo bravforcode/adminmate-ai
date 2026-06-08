@@ -29,7 +29,7 @@ export function ApplicationCard({ application, isActive, onClick }: ApplicationC
     e.stopPropagation()
     const latestCV = application.cv_documents?.find((cv: any) => cv.is_current)
     if (!latestCV) { toast.error('No CV available for screening'); return }
-    await triggerAI.mutateAsync({ applicationId: application.id, jobId: application.job_id, cvDocumentId: latestCV.id, companyId: company?.id! })
+    await triggerAI.mutateAsync({ applicationId: application.id, jobId: application.job_id, cvDocumentId: latestCV.id, companyId: company?.id ?? '' })
   }
 
   return (

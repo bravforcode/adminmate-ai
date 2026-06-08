@@ -1,0 +1,21 @@
+{
+  "title": "Trợ lý AI Mate",
+  "status": "Trực tuyến",
+  "subtitle": "Hỏi tôi bất cứ điều gì về chính sách, phúc lợi hoặc thủ tục công ty",
+  "placeholder": "Nhập tin nhắn...",
+  "thinking": "Đang suy nghĩ...",
+  "retry": "Thử lại",
+  "clearChat": "Xóa cuộc trò chuyện",
+  "error": "Xin lỗi, tôi không thể xử lý yêu cầu của bạn. Vui lòng thử lại.",
+  "timestamps": {
+    "justNow": "Vừa xong",
+    "minutesAgo": "{{count}} phút trước"
+  },
+  "suggestions": [
+    "Giờ làm việc của công ty là mấy giờ?",
+    "Tôi được nghỉ phép năm bao nhiêu ngày?",
+    "Phúc lợi bảo hiểm sức khỏe là gì?",
+    "Chính sách nghỉ bệnh như thế nào?",
+    "Làm thế nào để xin nghỉ phép?"
+  ]
+}

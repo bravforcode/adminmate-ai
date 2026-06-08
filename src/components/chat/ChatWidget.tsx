@@ -3,76 +3,12 @@ import { useChat } from '../../hooks/useChat'
 import { useTranslation } from 'react-i18next'
 import { Send, Sparkles, Bot, X, MessageSquare } from 'lucide-react'
 
-const LOCALIZATIONS: Record<string, {
-  title: string
-  status: string
-  subtitle: string
-  placeholder: string
-  suggestions: string[]
-}> = {
-  en: {
-    title: "Mate AI Assistant",
-    status: "Online",
-    subtitle: "Ask me anything about company policies, benefits, or procedures",
-    placeholder: "Type a message...",
-    suggestions: [
-      'What are the work hours?',
-      'How many annual leave days do I get?',
-      'Tell me about health insurance benefits',
-      'What is the sick leave policy?',
-      'How do I request a day off?',
-    ]
-  },
-  th: {
-    title: "ผู้ช่วย AI Mate",
-    status: "ออนไลน์",
-    subtitle: "ถามฉันได้ทุกเรื่องเกี่ยวกับนโยบายบริษัท สวัสดิการ หรือการทำงาน",
-    placeholder: "พิมพ์ข้อความ...",
-    suggestions: [
-      'เวลาทำงานของบริษัทคือช่วงกี่โมง?',
-      'ฉันสามารถลาพักร้อนได้กี่วันต่อปี?',
-      'สวัสดิการประกันสุขภาพครอบคลุมอะไรบ้าง?',
-      'นโยบายการลาป่วยเป็นอย่างไร?',
-      'ขั้นตอนการขออนุมัติวันลาต้องทำอย่างไร?',
-    ]
-  },
-  vi: {
-    title: "Trợ lý AI Mate",
-    status: "Trực tuyến",
-    subtitle: "Hỏi tôi bất cứ điều gì về chính sách, phúc lợi hoặc thủ tục công ty",
-    placeholder: "Nhập tin nhắn...",
-    suggestions: [
-      'Giờ làm việc của công ty là mấy giờ?',
-      'Tôi được nghỉ phép năm bao nhiêu ngày?',
-      'Phúc lợi bảo hiểm sức khỏe là gì?',
-      'Chính sách nghỉ bệnh như thế nào?',
-      'Làm thế nào để xin nghỉ phép?'
-    ]
-  },
-  id: {
-    title: "Asisten AI Mate",
-    status: "Online",
-    subtitle: "Tanyakan apa saja tentang kebijakan, manfaat, atau prosedur perusahaan",
-    placeholder: "Ketik pesan...",
-    suggestions: [
-      'Jam berapa jam kerja perusahaan?',
-      'Berapa hari cuti tahunan yang saya dapatkan?',
-      'Apa saja manfaat asuransi kesehatan?',
-      'Bagaimana kebijakan cuti sakit?',
-      'Bagaimana cara mengajukan cuti?'
-    ]
-  }
-}
-
 export function ChatWidget() {
   const [isOpen, setIsOpen] = useState(false)
   const { messages, sendMessage, isLoading } = useChat()
   const [input, setInput] = useState('')
-  const { i18n } = useTranslation()
+  const { t } = useTranslation('chat')
   const bottomRef = useRef<HTMLDivElement>(null)
-
-  const langCode = (i18n.language || 'en').split('-')[0].toLowerCase()
-  const tChat = LOCALIZATIONS[langCode] || LOCALIZATIONS.en
 
   useEffect(() => {
     if (isOpen) {
@@ -97,7 +33,7 @@ export function ChatWidget() {
       {/* Floating Action Button */}
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="fixed bottom-20 md:bottom-6 right-4 md:right-6 z-50 w-14 h-14 rounded-full bg-gradient-to-tr from-navy-mid to-accent text-white flex items-center justify-center shadow-[0_4px_20px_rgba(41,128,185,0.4)] hover:shadow-[0_6px_24px_rgba(41,128,185,0.6)] hover:scale-105 active:scale-95 transition-all duration-300 border border-white/20 cursor-pointer"
+        className="fixed bottom-20 md:bottom-6 right-4 md:right-6 z-50 w-14 h-14 rounded-full bg-gradient-to-tr from-navy-mid to-accent text-white flex items-center justify-center shadow-[0_4px_20px_rgba(37,99,235,0.4)] hover:shadow-[0_6px_24px_rgba(37,99,235,0.6)] hover:scale-105 active:scale-95 transition-all duration-300 border border-white/20 cursor-pointer"
         aria-label="Toggle AI Assistant"
       >
         <div className="relative w-full h-full flex items-center justify-center">
@@ -126,7 +62,7 @@ export function ChatWidget() {
             </div>
             <div>
               <div className="flex items-center gap-1.5">
-                <span className="font-semibold text-white text-sm">{tChat.title}</span>
+                <span className="font-semibold text-white text-sm">{t('title')}</span>
                 <span className="flex h-2 w-2 relative">
                   <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
                   <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
@@ -134,7 +70,7 @@ export function ChatWidget() {
               </div>
               <span className="text-xs text-white/60 flex items-center gap-1">
                 <Sparkles size={10} className="text-accent-dim" />
-                {tChat.status}
+                {t('status')}
               </span>
             </div>
           </div>
@@ -153,12 +89,12 @@ export function ChatWidget() {
               <div className="w-12 h-12 rounded-full bg-accent-light flex items-center justify-center text-accent mb-3">
                 <Bot size={26} />
               </div>
-              <h4 className="font-semibold text-text-primary text-sm mb-1">{tChat.title}</h4>
+              <h4 className="font-semibold text-text-primary text-sm mb-1">{t('title')}</h4>
               <p className="text-xs text-text-secondary mb-6 text-center max-w-[280px]">
-                {tChat.subtitle}
+                {t('subtitle')}
               </p>
               <div className="flex flex-col gap-2 w-full max-w-[300px]">
-                {tChat.suggestions.map((suggestion, idx) => (
+                {(t('suggestions', { returnObjects: true }) as string[]).map((suggestion: string, idx: number) => (
                   <button
                     key={idx}
                     onClick={() => handleSuggestionClick(suggestion)}
@@ -212,13 +148,13 @@ export function ChatWidget() {
             onChange={(e) => setInput(e.target.value)}
             onKeyDown={(e) => e.key === 'Enter' && handleSend()}
             className="flex-1 px-4 py-2.5 rounded-full border border-border bg-bg focus:border-accent focus:ring-1 focus:ring-accent outline-none text-xs text-text-primary placeholder-text-muted transition-all"
-            placeholder={tChat.placeholder}
+            placeholder={t('placeholder')}
             disabled={isLoading}
           />
           <button
             onClick={handleSend}
             disabled={isLoading || !input.trim()}
-            className="w-9 h-9 rounded-full bg-accent text-white flex items-center justify-center hover:opacity-90 active:scale-95 disabled:opacity-40 disabled:scale-100 transition-all cursor-pointer shadow-[0_2px_8px_rgba(41,128,185,0.2)] flex-shrink-0"
+            className="w-9 h-9 rounded-full bg-accent text-white flex items-center justify-center hover:opacity-90 active:scale-95 disabled:opacity-40 disabled:scale-100 transition-all cursor-pointer shadow-[0_2px_8px_rgba(96,165,250,0.2)] flex-shrink-0"
           >
             <Send size={15} />
           </button>

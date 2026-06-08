@@ -18,7 +18,7 @@ export function ApplicationDrawer({ application, onClose }: ApplicationDrawerPro
 
   const handleScreen = async () => {
     if (!latestCV) { toast.error('No CV available for screening'); return }
-    await triggerAI.mutateAsync({ applicationId: application.id, jobId: application.job_id, cvDocumentId: latestCV.id, companyId: company?.id! })
+    await triggerAI.mutateAsync({ applicationId: application.id, jobId: application.job_id, cvDocumentId: latestCV.id, companyId: company?.id ?? '' })
   }
 
   return (

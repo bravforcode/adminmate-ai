@@ -22,7 +22,7 @@ export function LanguageSwitcher() {
     <div style={{
       display: 'flex',
       gap: '2px',
-      backgroundColor: 'var(--color-surface-alt, #f0f6fc)',
+      backgroundColor: 'var(--color-surface-alt, #f1f5f9)',
       borderRadius: '8px',
       padding: '3px',
     }}>
@@ -41,11 +41,11 @@ export function LanguageSwitcher() {
             cursor: 'pointer',
             transition: 'all 0.25s ease-out',
             backgroundColor: currentLang === lang.code
-              ? 'var(--color-navy, #1e3a5f)'
+              ? 'var(--color-navy, #2563eb)'
               : 'transparent',
             color: currentLang === lang.code
               ? '#ffffff'
-              : 'var(--color-text-muted, #8aa0bb)',
+              : 'var(--color-text-muted, #94a3b8)',
             fontFamily: 'var(--font-sans, Inter, sans-serif)',
           }}
         >

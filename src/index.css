@@ -3,49 +3,49 @@
 
 /* ============================================================
    AdminMate AI — Luxury Design System
-   Palette: Navy #1e3a5f · White #f8fbff · Accent #2980b9
+   Palette: Blue #2563eb · White #f8fafc · Accent #60a5fa
    Fonts: DM Serif Display (headlines) · Inter (body)
    ============================================================ */
 
 @theme {
-  /* --- Core Brand Colors --- */
-  --color-navy:        #1e3a5f;
-  --color-navy-deep:   #0f1c2e;
-  --color-navy-mid:    #2d5186;
-  --color-accent:      #2980b9;
-  --color-accent-light:#e8f4fd;
-  --color-accent-dim:  #a8d4f0;
+  /* --- Core Brand Colors (Lighter Blue) --- */
+  --color-navy:        #2563eb;
+  --color-navy-deep:   #1e3a5f;
+  --color-navy-mid:    #3b82f6;
+  --color-accent:      #60a5fa;
+  --color-accent-light:#dbeafe;
+  --color-accent-dim:  #93c5fd;
 
   /* --- Background & Surface --- */
-  --color-bg:          #f8fbff;
+  --color-bg:          #f8fafc;
   --color-surface:     #ffffff;
-  --color-surface-alt: #f0f6fc;
+  --color-surface-alt: #f1f5f9;
 
   /* --- Text --- */
-  --color-text-primary:   #0f1c2e;
-  --color-text-secondary: #4a6080;
-  --color-text-muted:     #8aa0bb;
+  --color-text-primary:   #0f172a;
+  --color-text-secondary: #475569;
+  --color-text-muted:     #94a3b8;
 
   /* --- Borders --- */
-  --color-border:      #d4e3f0;
-  --color-border-subtle: #e8f0f8;
+  --color-border:      #e2e8f0;
+  --color-border-subtle: #f1f5f9;
 
   /* --- Semantic --- */
-  --color-error:       #c0392b;
-  --color-success:     #1a6b45;
-  --color-warning:     #b8791a;
+  --color-error:       #ef4444;
+  --color-success:     #22c55e;
+  --color-warning:     #f59e0b;
 
   /* --- Legacy compat (keep for existing Tailwind classes) --- */
-  --color-primary:            #1e3a5f;
+  --color-primary:            #2563eb;
   --color-on-primary:         #ffffff;
-  --color-primary-container:  #2980b9;
-  --color-background:         #f8fbff;
+  --color-primary-container:  #60a5fa;
+  --color-background:         #f8fafc;
   --color-surface-container-lowest: #ffffff;
-  --color-surface-container-low:    #f0f6fc;
-  --color-surface-container:        #e8f4fd;
-  --color-on-surface:         #0f1c2e;
-  --color-outline:            #d4e3f0;
-  --color-outline-variant:    #e8f0f8;
+  --color-surface-container-low:    #f1f5f9;
+  --color-surface-container:        #dbeafe;
+  --color-on-surface:         #0f172a;
+  --color-outline:            #e2e8f0;
+  --color-outline-variant:    #f1f5f9;
 
   /* --- Typography --- */
   --font-serif: 'DM Serif Display', 'Georgia', serif;
@@ -529,3 +529,32 @@ body {
 .badge-success { background: #e8f5ef; color: var(--color-success); }
 .badge-warning { background: #fef3e2; color: var(--color-warning); }
 .badge-error { background: #fdecea; color: var(--color-error); }
+
+/* ============================================================
+   ANIMATIONS
+   ============================================================ */
+
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+.animate-shimmer {
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 60px;
+}
+
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-fade-in-up {
+  animation: fadeInUp 0.4s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}

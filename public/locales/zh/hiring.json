@@ -1,0 +1,56 @@
+{
+  "title": "录用与文档",
+  "subtitle": "东南亚地区的自动合规和文档生成。",
+  "no_offers": "暂无录用通知",
+  "create_first_offer": "创建您的第一封录用通知。",
+  "create_offer": "创建录用通知",
+  "export_audit": "导出审计日志",
+  "sent": "已发送",
+  "viewed": "已查看",
+  "accepted": "已接受",
+  "rejected": "已拒绝",
+  "draft": "草稿",
+  "signed": "已签署",
+  "expired": "已过期",
+  "loading": "加载中...",
+  "doc_generation": {
+    "title": "文档生成模块",
+    "pnd1": "P.N.D. 1",
+    "pnd1_sub": "泰国税务机关",
+    "labor_contract": "劳动合同",
+    "labor_contract_sub": "越南标准",
+    "bpjs": "BPJS 注册",
+    "bpjs_sub": "印尼健康保险"
+  },
+  "tracking": {
+    "title": "已接受的录用通知与文档",
+    "pending": "待处理",
+    "candidate": "候选人",
+    "doc_type": "文档类型",
+    "status": "状态",
+    "auto_remind": "自动提醒",
+    "offer_letter": "录用通知"
+  },
+  "preview": {
+    "offer_preview": "录用通知预览",
+    "empty_title": "文档预览",
+    "empty_subtitle": "选择文档进行预览",
+    "select_offer": "选择录用通知查看详情",
+    "offer_letter": "录用通知书",
+    "employer": "雇主",
+    "employee": "员工",
+    "position": "职位",
+    "salary": "薪资",
+    "start_date": "入职日期",
+    "disclaimer": "此录用通知由 AdminMate AI 自动生成。请在发送前仔细审核。",
+    "employer_sig": "雇主签名",
+    "employee_sig": "员工签名",
+    "edit_draft": "编辑草稿",
+    "send_for_sig": "发送签署"
+  },
+  "toasts": {
+    "no_offers_export": "没有可导出的录用通知",
+    "select_offer_first": "请先选择录用通知",
+    "only_draft_editable": "只有草稿状态的录用通知可以编辑"
+  }
+}

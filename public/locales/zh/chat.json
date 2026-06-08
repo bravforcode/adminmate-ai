@@ -1,0 +1,21 @@
+{
+  "title": "AI 助手 Mate",
+  "status": "在线",
+  "subtitle": "问我任何关于公司政策、福利或流程的问题",
+  "placeholder": "输入消息...",
+  "thinking": "思考中...",
+  "retry": "重试",
+  "clearChat": "清除对话",
+  "error": "抱歉，无法处理您的请求。请重试。",
+  "timestamps": {
+    "justNow": "刚刚",
+    "minutesAgo": "{{count}}分钟前"
+  },
+  "suggestions": [
+    "公司的工作时间是？",
+    "我每年有多少天年假？",
+    "健康保险福利包括什么？",
+    "病假政策是什么？",
+    "如何申请休假？"
+  ]
+}

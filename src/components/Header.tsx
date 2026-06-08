@@ -247,7 +247,7 @@ export default function Header({
             }}
             onMouseEnter={(e) => {
               const el = e.currentTarget;
-              el.style.color = '#c0392b';
+              el.style.color = '#ef4444';
               el.style.backgroundColor = '#fdecea';
               el.style.borderColor = '#f0b0a8';
             }}
@@ -338,7 +338,7 @@ export default function Header({
             top: '100%',
             backgroundColor: 'var(--color-surface)',
             borderBottom: '1px solid var(--color-border)',
-            boxShadow: '0 16px 48px rgba(30, 58, 95, 0.12)',
+            boxShadow: '0 16px 48px rgba(37, 99, 235, 0.12)',
             zIndex: 50,
           }}
         >
@@ -474,7 +474,7 @@ export default function Header({
                 border: 'none',
                 cursor: 'pointer',
                 backgroundColor: 'transparent',
-                color: '#c0392b',
+                color: '#ef4444',
                 fontSize: '13px',
                 fontWeight: 500,
                 textAlign: 'left',
@@ -483,7 +483,7 @@ export default function Header({
               onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = '#fdecea')}
               onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = 'transparent')}
             >
-              <LogOut size={15} style={{ color: '#c0392b', flexShrink: 0 }} />
+              <LogOut size={15} style={{ color: '#ef4444', flexShrink: 0 }} />
               {t.signOut}
             </button>
           </div>
