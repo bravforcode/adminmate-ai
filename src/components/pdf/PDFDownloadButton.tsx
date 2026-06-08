@@ -2,7 +2,9 @@ import { useState } from 'react'
 import { Download } from 'lucide-react'
 import toast from 'react-hot-toast'
 
-interface Props { data: any }
+import { OfferLetterData } from '../../types/models'
+
+interface Props { data: OfferLetterData }
 
 export function PDFDownloadButton({ data }: Props) {
   const [generating, setGenerating] = useState(false)

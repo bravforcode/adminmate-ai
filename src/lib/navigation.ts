@@ -12,12 +12,13 @@ import {
   UserCircle,
   ClipboardList,
   ClipboardCheck,
+  type LucideIcon,
 } from 'lucide-react'
 
 export interface NavItem {
   path?: string
   labelKey: string
-  icon: any
+  icon: LucideIcon
   /** Roles that can see this item. Omit to show to all authenticated users. */
   roles?: string[]
   children?: NavItem[]

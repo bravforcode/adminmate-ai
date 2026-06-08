@@ -4,7 +4,8 @@ import { useNavigate } from 'react-router-dom'
 import { KanbanBoard } from '../../components/pipeline/KanbanBoard'
 import { useUpdateApplicationStatus } from '../../hooks/useApplications'
 import { useJobs } from '../../hooks/useJobs'
-import { Sparkles, ArrowRight, CheckCircle2, XCircle, Brain } from 'lucide-react'
+import { Application } from '../../types/models'
+import { Sparkles, ArrowRight, Brain } from 'lucide-react'
 import toast from 'react-hot-toast'
 
 export function PipelinePage() {
@@ -12,7 +13,7 @@ export function PipelinePage() {
   const navigate = useNavigate()
   const updateStatus = useUpdateApplicationStatus()
   const { data: jobs } = useJobs()
-  const [selectedApplication, setSelectedApplication] = useState<any>(null)
+  const [selectedApplication, setSelectedApplication] = useState<Application | null>(null)
 
   const currentJob = jobs?.[0]
 

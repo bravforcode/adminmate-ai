@@ -21,7 +21,9 @@ const styles = StyleSheet.create({
   line: { borderTop: '1px solid #000', width: 200, marginTop: 40 },
 })
 
-interface Props { data: any }
+import { OfferLetterData } from '../../types/models'
+
+interface Props { data: OfferLetterData }
 
 export function OfferLetterPDF({ data }: Props) {
   const o = data

@@ -1,8 +1,9 @@
 import { useQuery } from '@tanstack/react-query'
 import { supabase } from '../../lib/supabase'
 import { useAuthStore } from '../../stores/authStore'
-import { Shield, CheckCircle, AlertTriangle, Clock, Trash2, FileDown } from 'lucide-react'
-import { cn } from '../../utils/cn'
+import { Shield, CheckCircle, AlertTriangle, Clock, FileDown } from 'lucide-react'
+import { DataDeletionRequest } from '../../types/models'
+
 import toast from 'react-hot-toast'
 
 const COUNTRY_CHECKS = {
@@ -29,7 +30,7 @@ export function CompliancePage() {
   const country = company?.country || 'TH'
   const checks = COUNTRY_CHECKS[country as keyof typeof COUNTRY_CHECKS] || COUNTRY_CHECKS.TH
 
-  const { data: consents } = useQuery({
+  useQuery({
     queryKey: ['compliance', 'consents', company?.id],
     queryFn: async () => {
       const { data } = await supabase.from('pdpa_consents').select('*', { count: 'exact', head: true }).eq('company_id', company?.id)
@@ -49,7 +50,7 @@ export function CompliancePage() {
 
   const handleDeletion = async (requestId: string, action: 'approved' | 'rejected') => {
     if (action === 'approved') {
-      const req = deletionRequests?.find((r: any) => r.id === requestId)
+      const req = deletionRequests?.find((r: DataDeletionRequest) => r.id === requestId)
       if (req) await supabase.rpc('anonymize_candidate_data', { p_email: req.requester_email, p_company_id: company?.id })
     }
     await supabase.from('data_deletion_requests').update({ status: action === 'approved' ? 'completed' : 'rejected', completed_at: new Date().toISOString() }).eq('id', requestId)
@@ -81,7 +82,7 @@ export function CompliancePage() {
           <p className="text-sm text-on-surface-variant">No pending data subject requests</p>
         ) : (
           <div className="space-y-2">
-            {deletionRequests?.map((req: any) => (
+            {deletionRequests?.map((req: DataDeletionRequest) => (
               <div key={req.id} className="flex items-center justify-between p-3 rounded-lg border border-outline-variant">
                 <div>
                   <p className="text-sm font-medium">{req.requester_email}</p>

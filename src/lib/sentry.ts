@@ -1,4 +1,4 @@
-let Sentry: any = null
+let Sentry: typeof import('@sentry/react') | null = null
 
 if (import.meta.env.VITE_SENTRY_DSN) {
   import('@sentry/react').then(m => {

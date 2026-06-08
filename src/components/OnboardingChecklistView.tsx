@@ -1,7 +1,7 @@
 import React from 'react';
 import { translations } from '../translations';
 import { Language, OnboardingTask } from '../types';
-import { CheckSquare, Sparkles, Trophy, CalendarDays, Info } from 'lucide-react';
+import { CheckSquare, Trophy, CalendarDays, Info } from 'lucide-react';
 
 interface OnboardingChecklistViewProps {
   language: Language;

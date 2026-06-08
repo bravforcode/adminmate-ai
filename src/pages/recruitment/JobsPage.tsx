@@ -26,8 +26,8 @@ export function JobsPage() {
       if (delError) throw delError
       toast.success(t('jobs.deleted'))
       qc.invalidateQueries({ queryKey: ['jobs'] })
-    } catch (e: any) {
-      toast.error(e.message)
+    } catch (e: unknown) {
+      toast.error(e instanceof Error ? e.message : 'Failed to delete job')
     }
     setDeleteJobId(null)
   }

@@ -11,7 +11,7 @@ const SUGGESTIONS = [
 ]
 
 export function ChatInterface() {
-  const { messages, sendMessage, isLoading, sessionId, setSessionId } = useChat()
+  const { messages, sendMessage, isLoading } = useChat()
   const [input, setInput] = useState('')
   const bottomRef = useRef<HTMLDivElement>(null)
 

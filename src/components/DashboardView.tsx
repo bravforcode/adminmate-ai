@@ -9,8 +9,7 @@ import {
   FileWarning,
   Users2,
   ArrowUpRight,
-  ListTodo,
-  AlertCircle,
+  ListTodo
 } from 'lucide-react';
 
 interface DashboardViewProps {

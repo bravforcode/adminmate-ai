@@ -13,12 +13,14 @@ import { EmptyState } from '../components/shared/EmptyState'
 
 const CHART_COLORS = ['#003d9a', '#455e91', '#00418a', '#737685', '#b2c5ff', '#aec6ff', '#dae2ff']
 
+import type { LucideIcon } from 'lucide-react'
+
 interface KPICardProps {
   title: string
   subtitle: string
   value: string
   unit: string
-  icon: any
+  icon: LucideIcon
   iconBg: string
   iconColor: string
   trend: string
@@ -70,8 +72,6 @@ const PERIODS = [
   'YTD',
 ]
 
-const formatNumber = (n: number) => n >= 1000 ? (n / 1000).toFixed(1) + 'k' : String(n)
-
 export function ReportsPage() {
   const { t } = useTranslation(['reports', 'common'])
   const navigate = useNavigate()
@@ -115,7 +115,7 @@ export function ReportsPage() {
       ])
       const hired = hiredApps.data || []
       const avgDays = hired.length > 0
-        ? Math.round(hired.reduce((sum: number, app: any) => {
+        ? Math.round(hired.reduce((sum: number, app: { created_at: string; updated_at: string }) => {
             const created = new Date(app.created_at).getTime()
             const updated = new Date(app.updated_at).getTime()
             return sum + (updated - created) / (1000 * 60 * 60 * 24)
@@ -154,7 +154,7 @@ export function ReportsPage() {
 
   const pipelineData = PIPELINE_STAGES.map(s => ({
     name: t(s.labelKey, { ns: 'recruitment', defaultValue: s.labelKey }),
-    value: (pipeline as any)?.[s.id] || 0,
+    value: (pipeline as Record<string, number>)?.[s.id] || 0,
   }))
 
   const avgDays = kpis?.avgDaysToHire || 0
@@ -163,7 +163,7 @@ export function ReportsPage() {
     : '$0'
   const completionRate = kpis?.totalChecklists ? Math.round((kpis.completedChecklists / kpis.totalChecklists) * 100) : 0
 
-  const sourceBreakdown = candidates?.reduce((acc: Record<string, number>, c: any) => {
+  const sourceBreakdown = candidates?.reduce((acc: Record<string, number>, c: { source?: string }) => {
     const source = c.source || 'Other'
     acc[source] = (acc[source] || 0) + 1
     return acc
@@ -177,7 +177,7 @@ export function ReportsPage() {
 
   const handleExportCSV = () => {
     const headers = ['Stage', 'Count']
-    const rows = pipelineData.map((d: any) => `${d.name},${d.value}`)
+    const rows = pipelineData.map((d: { name: string; value: number }) => `${d.name},${d.value}`)
     const csv = [headers.join(','), ...rows].join('\n')
     const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' })
     const url = URL.createObjectURL(blob)
@@ -358,7 +358,7 @@ export function ReportsPage() {
                   </tr>
                 </thead>
                 <tbody className="text-sm text-on-background">
-                  {documents && documents.length > 0 ? documents.map((doc: any) => (
+                  {documents && documents.length > 0 ? documents.map((doc: { id: string; document_type?: string; created_at?: string; candidates?: { full_name?: string } }) => (
                     <tr key={doc.id} className="border-b border-surface-container hover:bg-surface-container-low transition-colors group cursor-pointer">
                       <td className="py-3 flex items-center gap-2">
                         <ExternalLink size={16} className="text-outline" />

@@ -30,11 +30,11 @@ export default function GeminiMonitoringPage() {
   const alertLevel: 'ok' | 'warning' | 'danger' = usagePct > 90 ? 'danger' : usagePct > 70 ? 'warning' : 'ok'
   const alertStyles = { ok: 'text-green-600 bg-green-50', warning: 'text-yellow-600 bg-yellow-50', danger: 'text-red-600 bg-red-50' }
 
-  const weeklyByDay: Record<string, any> = {}
-  usage?.weekly?.forEach((u: any) => {
+  const weeklyByDay: Record<string, Record<string, string | number>> = {}
+  usage?.weekly?.forEach((u: { feature: string; created_at: string }) => {
     const day = new Date(u.created_at).toISOString().split('T')[0]
     if (!weeklyByDay[day]) weeklyByDay[day] = { date: day }
-    weeklyByDay[day][u.feature] = (weeklyByDay[day][u.feature] || 0) + 1
+      weeklyByDay[day][u.feature] = ((weeklyByDay[day][u.feature] as number) || 0) + 1
   })
   const weeklyData = Object.values(weeklyByDay).slice(-7)
 
@@ -98,7 +98,7 @@ export default function GeminiMonitoringPage() {
               <h3 className="font-semibold mb-4 flex items-center gap-2"><Calendar size={16} /> {t('gemini.today_by_feature')}</h3>
               {usage?.daily?.length ? (
                 <div className="space-y-3">
-                  {usage.daily.map((u: any) => (
+                  {usage.daily.map((u: { feature: string; count: number }) => (
                     <div key={u.feature}>
                       <div className="flex justify-between text-sm mb-1"><span>{u.feature.replace(/_/g, ' ')}</span><span className="font-medium">{u.count}</span></div>
                       <div className="w-full bg-surface-container-high rounded-full h-2">

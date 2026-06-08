@@ -4,10 +4,9 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
 import { useAuthStore } from '../../stores/authStore'
 import { supabase } from '../../lib/supabase'
-import { Save, UserCircle, Mail, Phone, MapPin, Briefcase, LogOut } from 'lucide-react'
-import { useTranslation } from 'react-i18next'
 import toast from 'react-hot-toast'
 import { useNavigate } from 'react-router-dom'
+import { LogOut, UserCircle, Phone, MapPin, Briefcase, Mail, Save } from 'lucide-react'
 
 const profileSchema = z.object({
   full_name: z.string().min(1, 'Name is required'),
@@ -20,7 +19,6 @@ const profileSchema = z.object({
 type ProfileForm = z.infer<typeof profileSchema>
 
 export function MyProfilePage() {
-  const { t } = useTranslation('common')
   const navigate = useNavigate()
   const profile = useAuthStore(s => s.profile)
   const { setProfile, reset } = useAuthStore()
@@ -30,10 +28,10 @@ export function MyProfilePage() {
     resolver: zodResolver(profileSchema),
     values: {
       full_name: profile?.full_name ?? '',
-      full_name_th: (profile as any)?.full_name_th ?? '',
-      phone: (profile as any)?.phone ?? '',
-      location: (profile as any)?.location ?? '',
-      current_position: (profile as any)?.current_position ?? '',
+      full_name_th: (profile as unknown as Record<string, string>)?.full_name_th ?? '',
+      phone: (profile as unknown as Record<string, string>)?.phone ?? '',
+      location: (profile as unknown as Record<string, string>)?.location ?? '',
+      current_position: (profile as unknown as Record<string, string>)?.current_position ?? '',
     },
   })
 
@@ -64,10 +62,10 @@ export function MyProfilePage() {
           .eq('email', profile.email)
       }
 
-      setProfile({ ...profile, full_name: data.full_name } as any)
+      setProfile({ ...profile, full_name: data.full_name } as never)
       toast.success('Profile updated successfully')
-    } catch (e: any) {
-      toast.error(e.message || 'Failed to save')
+    } catch (e: unknown) {
+      toast.error(e instanceof Error ? e.message : 'Failed to save')
     } finally {
       setSaving(false)
     }

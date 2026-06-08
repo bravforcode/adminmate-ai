@@ -33,12 +33,12 @@ export const candidateService = {
     if (error) throw error
     return data
   },
-  create: async (candidate: any) => {
+  create: async (candidate: Record<string, unknown>) => {
     const { data, error } = await supabase.from('candidates').insert(candidate).select().single()
     if (error) throw error
     return data
   },
-  update: async (id: string, updates: any) => {
+  update: async (id: string, updates: Record<string, unknown>) => {
     const { data, error } = await supabase.from('candidates').update(updates).eq('id', id).select().single()
     if (error) throw error
     return data

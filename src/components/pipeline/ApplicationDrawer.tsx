@@ -6,16 +6,16 @@ import { X, Sparkles, MapPin, Mail, Phone, Lightbulb, RefreshCw } from 'lucide-r
 import { cn } from '../../utils/cn'
 import toast from 'react-hot-toast'
 
-interface ApplicationDrawerProps { application: any; onClose: () => void }
+import { Application, CVDocument } from '../../types/models'
+
+interface ApplicationDrawerProps { application: Application; onClose: () => void }
 
 export function ApplicationDrawer({ application, onClose }: ApplicationDrawerProps) {
   const updateStatus = useUpdateApplicationStatus()
   const triggerAI = useTriggerAIScreening()
   const company = useAuthStore(s => s.company)
   const candidate = application.candidates
-  const latestCV = application.cv_documents?.find((cv: any) => cv.is_current)
-  const stageIndex = PIPELINE_STAGES.findIndex(s => s.id === application.status)
-
+  const latestCV = application.cv_documents?.find((cv: CVDocument) => cv.is_current)
   const handleScreen = async () => {
     if (!latestCV) { toast.error('No CV available for screening'); return }
     await triggerAI.mutateAsync({ applicationId: application.id, jobId: application.job_id, cvDocumentId: latestCV.id, companyId: company?.id ?? '' })

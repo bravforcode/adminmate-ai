@@ -3,10 +3,9 @@ import { useNavigate } from 'react-router-dom'
 import { useAuthStore } from '../../stores/authStore'
 import { supabase } from '../../lib/supabase'
 import { useTranslation } from 'react-i18next'
-import { Briefcase, ClipboardList, CheckCircle, AlertCircle, RefreshCw, MessageSquare, UserCircle, ArrowRight } from 'lucide-react'
+import { Briefcase, ClipboardList, CheckCircle, AlertCircle, RefreshCw, UserCircle, ArrowRight } from 'lucide-react'
 import { StatCard } from '../../components/shared/StatCard'
 import { LoadingState } from '../../components/shared/LoadingState'
-import { EmptyState } from '../../components/shared/EmptyState'
 import { cn } from '../../utils/cn'
 
 const statusColors: Record<string, string> = {
@@ -22,7 +21,6 @@ export function ApplicantDashboardPage() {
   const { t } = useTranslation('common')
   const navigate = useNavigate()
   const profile = useAuthStore(s => s.profile)
-  const company = useAuthStore(s => s.company)
 
   const { data: applications, isLoading: appsLoading, isError: appsError, refetch: refetchApps } = useQuery({
     queryKey: ['applicant-applications', profile?.id],
@@ -34,7 +32,7 @@ export function ApplicantDashboardPage() {
         .eq('candidate_email', profile.email)
         .order('created_at', { ascending: false })
       if (error) throw error
-      return data ?? []
+      return (data ?? []) as unknown as Array<{ id: string; status: string; created_at: string; job_id: string; jobs: { title: string; companies: { name: string } } }>
     },
     enabled: !!profile?.id,
   })
@@ -113,7 +111,7 @@ export function ApplicantDashboardPage() {
                       <p className="text-sm text-on-surface-variant">{t('applicant.dashboard.noActivity', 'No activity yet. Start by browsing open positions!')}</p>
                     </div>
                   ) : (
-                    recentActivity.map((app: any) => (
+                    recentActivity.map((app) => (
                       <div key={app.id} className="p-4 hover:bg-surface-container-low transition-colors cursor-pointer" onClick={() => navigate('/applicant/status')}>
                         <div className="flex items-center justify-between">
                           <div>

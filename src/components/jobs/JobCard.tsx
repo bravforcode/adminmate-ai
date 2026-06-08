@@ -2,7 +2,9 @@ import { Link } from 'react-router-dom'
 import { MapPin, Clock, Users } from 'lucide-react'
 import { JobStatusBadge } from './JobStatusBadge'
 
-interface JobCardProps { job: any }
+import { Job } from '../../types/models'
+
+interface JobCardProps { job: Job }
 
 export function JobCard({ job }: JobCardProps) {
   return (

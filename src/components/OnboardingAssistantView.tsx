@@ -3,12 +3,10 @@ import { translations } from '../translations';
 import { Language, ChatMessage } from '../types';
 import { prebuiltAiOnboardingAnswers } from '../mockData';
 import { 
-  MessageSquare, 
   Send, 
   Bot, 
   User, 
   HelpCircle, 
-  Sparkles,
   RefreshCw 
 } from 'lucide-react';
 

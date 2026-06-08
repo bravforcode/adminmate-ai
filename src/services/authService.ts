@@ -9,7 +9,7 @@ export const authService = {
   },
 
   signUp: async (credentials: SignUpWithPasswordCredentials): Promise<AuthResponse> => {
-    const creds = credentials as { email: string; password: string; options?: any }
+    const creds = credentials as { email: string; password: string; options?: { data?: Record<string, unknown> } }
     const result = await supabase.auth.signUp({
       email: creds.email,
       password: creds.password,

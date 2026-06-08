@@ -4,6 +4,7 @@ import { ScheduleInterviewForm } from '../../components/interviews/ScheduleInter
 import { InterviewFeedbackForm } from '../../components/interviews/InterviewFeedbackForm'
 import { EmptyState } from '../../components/shared/EmptyState'
 import { LoadingState } from '../../components/shared/LoadingState'
+import { Interview } from '../../types/models'
 import { Calendar, Clock, MapPin, Video, User, CalendarOff, History, AlertCircle, RefreshCw } from 'lucide-react'
 import { cn } from '../../utils/cn'
 import { useTranslation } from 'react-i18next'
@@ -14,7 +15,7 @@ export function InterviewsPage() {
   const { data: past, isLoading: pastLoading, isError: pastError, error: pastErr, refetch: pastRefetch } = usePastInterviews()
   const [tab, setTab] = useState<'upcoming' | 'past'>('upcoming')
   const [selectedAppId, setSelectedAppId] = useState<string>('')
-  const [feedbackFor, setFeedbackFor] = useState<any>(null)
+  const [feedbackFor, setFeedbackFor] = useState<Interview | null>(null)
 
   return (
     <div className="space-y-6">

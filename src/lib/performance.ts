@@ -67,8 +67,8 @@ export function clearRecentMarks() {
 
 export function initPageLoadMonitoring() {
   if (typeof window === 'undefined') return
-  if ((window as any).__adminmate_perf_init__) return
-  ;(window as any).__adminmate_perf_init__ = true
+  if ((window as unknown as Record<string, unknown>).__adminmate_perf_init__) return
+  ;(window as unknown as Record<string, unknown>).__adminmate_perf_init__ = true
 
   const nav = performance.getEntriesByType('navigation')[0] as
     | PerformanceNavigationTiming

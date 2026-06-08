@@ -4,7 +4,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
 import { useAuthStore, useAuthLoading, useAuthError } from '../../stores/authStore'
 import { companyService } from '../../services/companyService'
-import { Save, Building2, Shield, Gavel, MessageSquare, Phone, AlertCircle, RefreshCw, RotateCcw } from 'lucide-react'
+import { Save, Building2, Shield, Gavel, MessageSquare, Phone, RotateCcw } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import toast from 'react-hot-toast'
 import { cn } from '../../utils/cn'
@@ -33,7 +33,7 @@ export function SettingsPage() {
       const updated = await companyService.update(company.id, data)
       setCompany(updated)
       toast.success(t('settings.saved') || 'Settings saved')
-    } catch (e: any) { toast.error(e.message) }
+    } catch (e: unknown) { toast.error(e instanceof Error ? e.message : 'Failed to save settings') }
     finally { setSaving(false) }
   }
 

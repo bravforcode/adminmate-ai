@@ -20,17 +20,17 @@ const TYPE_MAP: Record<string, Notification['type']> = {
   system: 'system',
 }
 
-function mapRow(row: any): Notification {
+function mapRow(row: Record<string, unknown>): Notification {
   return {
-    id: row.id,
-    user_id: row.user_id,
-    company_id: row.company_id ?? '',
-    type: TYPE_MAP[row.notification_type] ?? TYPE_MAP[row.type] ?? 'system',
-    title: row.title ?? '',
-    message: row.message ?? '',
-    read: row.is_read ?? row.read ?? false,
-    link: row.action_url ?? row.link,
-    created_at: row.created_at,
+    id: row.id as string,
+    user_id: row.user_id as string,
+    company_id: (row.company_id as string) ?? '',
+    type: TYPE_MAP[row.notification_type as string] ?? TYPE_MAP[row.type as string] ?? 'system',
+    title: (row.title as string) ?? '',
+    message: (row.message as string) ?? '',
+    read: (row.is_read as boolean) ?? (row.read as boolean) ?? false,
+    link: (row.action_url as string) ?? (row.link as string),
+    created_at: row.created_at as string,
   }
 }
 

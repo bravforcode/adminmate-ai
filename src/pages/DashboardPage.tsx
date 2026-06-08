@@ -50,7 +50,7 @@ export function DashboardPage() {
     queryFn: async () => {
       if (!company?.id) return []
       const { data } = await supabase.from('documents').select('id, document_type, status, candidates(full_name)').eq('company_id', company.id).in('status', ['draft', 'pending_signature']).order('created_at', { ascending: false }).limit(5)
-      return data || []
+      return (data ?? []) as unknown as Array<{ id: string; document_type: string; status: string; candidates: { full_name: string } }>
     },
     enabled: !!company?.id,
   })
@@ -60,7 +60,7 @@ export function DashboardPage() {
     queryFn: async () => {
       if (!company?.id) return []
       const { data } = await supabase.from('onboarding_checklists').select('id, progress_percentage, user_profiles(full_name)').eq('company_id', company.id).eq('status', 'in_progress').lt('progress_percentage', 50).limit(5)
-      return data || []
+      return (data ?? []) as unknown as Array<{ id: string; progress_percentage: number; user_profiles: { full_name: string } }>
     },
     enabled: !!company?.id,
   })
@@ -121,7 +121,7 @@ export function DashboardPage() {
                   <span className="bg-error-container text-on-error-container text-xs font-semibold px-3 py-1 rounded-full">{t('dashboard:high_priority')}</span>
                 </div>
                 <div className="p-4 flex-1 flex flex-col gap-4">
-                  {pendingDocs?.map((doc: any) => (
+                  {pendingDocs?.map((doc) => (
                     <div key={doc.id} onClick={() => navigate('/documents')} className="flex items-start gap-4 p-4 rounded-lg border border-outline-variant bg-surface hover:border-primary transition-colors cursor-pointer group">
                       <div className="p-2 bg-primary-fixed rounded-full text-on-primary-fixed mt-1">
                         <FileText size={20} />
@@ -133,7 +133,7 @@ export function DashboardPage() {
                       </div>
                     </div>
                   ))}
-                  {overdueChecklists?.map((cl: any) => (
+                  {overdueChecklists?.map((cl) => (
                     <div key={cl.id} onClick={() => navigate('/onboarding')} className="flex items-start gap-4 p-4 rounded-lg border border-outline-variant bg-surface hover:border-error transition-colors cursor-pointer group">
                       <div className="p-2 bg-error-container rounded-full text-on-error-container mt-1">
                         <AlertCircle size={20} />

@@ -70,7 +70,7 @@ export const useAuthStore = create<AuthState>()(
       setLoading: (isLoading) => set({ isLoading }),
       setError: (error) => set({ error }),
       initDemo: () => set({
-        user: { id: 'demo-user-1', email: 'admin@adminmate.ai', created_at: new Date().toISOString() } as any,
+        user: { id: 'demo-user-1', email: 'admin@adminmate.ai', created_at: new Date().toISOString() } as User,
         profile: { id: 'demo-user-1', email: 'admin@adminmate.ai', full_name: 'Sarah Chen', full_name_th: 'ซาร่า เฉิน', role: 'admin', company_id: 'demo-company-1', language_preference: 'th', is_active: true },
         company: { id: 'demo-company-1', name: 'TechNova Solutions Co., Ltd.', country: 'TH', currency: 'THB', locale: 'th-TH' },
         isLoading: false,
@@ -106,8 +106,9 @@ export const useAuthStore = create<AuthState>()(
                 .maybeSingle()
               if (company) set({ company })
             }
-          } catch (e: any) {
-            set({ user: null, profile: null, company: null, error: e?.message ?? 'init_failed' })
+          } catch (e: unknown) {
+            const message = e instanceof Error ? e.message : 'init_failed'
+            set({ user: null, profile: null, company: null, error: message })
           } finally {
             set({ isLoading: false })
           }

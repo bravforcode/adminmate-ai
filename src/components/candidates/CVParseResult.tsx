@@ -1,6 +1,7 @@
-import { FileText, Calendar, Award, Languages } from 'lucide-react'
+import { Calendar, Award, Languages } from 'lucide-react'
+import { CVDocument, CVParsedSkill, CVParsedWorkExperience, CVParsedEducation, CVParsedLanguage } from '../../types/models'
 
-interface CVParseResultProps { cvDocument: any }
+interface CVParseResultProps { cvDocument: CVDocument }
 
 export function CVParseResult({ cvDocument }: CVParseResultProps) {
   if (!cvDocument?.parsed_content) return null
@@ -13,7 +14,7 @@ export function CVParseResult({ cvDocument }: CVParseResultProps) {
         <div data-testid="skills-section">
           <h4 className="text-sm font-semibold mb-2">Skills</h4>
           <div className="flex flex-wrap gap-2">
-            {parsed.skills.map((s: any, i: number) => (
+            {parsed.skills.map((s: CVParsedSkill, i: number) => (
               <span key={i} className="px-3 py-1 bg-primary-container/15 text-primary rounded-full text-xs font-medium">{s.name} {s.level && `(${s.level})`}</span>
             ))}
           </div>
@@ -22,7 +23,7 @@ export function CVParseResult({ cvDocument }: CVParseResultProps) {
       {parsed.work_experience?.length > 0 && (
         <div>
           <h4 className="text-sm font-semibold mb-2 flex items-center gap-2"><Calendar size={14} /> Experience</h4>
-          {parsed.work_experience.map((exp: any, i: number) => (
+          {parsed.work_experience.map((exp: CVParsedWorkExperience, i: number) => (
             <div key={i} className="mb-3 pl-4 border-l-2 border-outline-variant">
               <p className="text-sm font-medium">{exp.title} at {exp.company}</p>
               <p className="text-xs text-on-surface-variant">{exp.start_date} - {exp.end_date || 'Present'}</p>
@@ -34,7 +35,7 @@ export function CVParseResult({ cvDocument }: CVParseResultProps) {
       {parsed.education?.length > 0 && (
         <div>
           <h4 className="text-sm font-semibold mb-2 flex items-center gap-2"><Award size={14} /> Education</h4>
-          {parsed.education.map((edu: any, i: number) => (
+          {parsed.education.map((edu: CVParsedEducation, i: number) => (
             <div key={i} className="text-sm">
               <p className="font-medium">{edu.degree} in {edu.field}</p>
               <p className="text-xs text-on-surface-variant">{edu.institution} ({edu.start_date} - {edu.end_date})</p>
@@ -45,7 +46,7 @@ export function CVParseResult({ cvDocument }: CVParseResultProps) {
       {parsed.languages?.length > 0 && (
         <div>
           <h4 className="text-sm font-semibold mb-2 flex items-center gap-2"><Languages size={14} /> Languages</h4>
-          <div className="flex gap-2">{parsed.languages.map((l: any, i: number) => <span key={i} className="px-2 py-0.5 bg-surface-container-low rounded text-xs">{l.name}: {l.level}</span>)}</div>
+          <div className="flex gap-2">{parsed.languages.map((l: CVParsedLanguage, i: number) => <span key={i} className="px-2 py-0.5 bg-surface-container-low rounded text-xs">{l.name}: {l.level}</span>)}</div>
         </div>
       )}
     </div>

@@ -1,13 +1,12 @@
 import { useState } from 'react'
 import { useDocuments, useUpdateDocument } from '../hooks/useDocuments'
-import { FileText, Search, CheckCircle, AlertCircle, Clock, Bell, RefreshCw, FileX } from 'lucide-react'
+import { FileText, Search, AlertCircle, Bell, RefreshCw, FileX } from 'lucide-react'
 import { cn } from '../utils/cn'
 import toast from 'react-hot-toast'
 import { useTranslation } from 'react-i18next'
 import { LoadingState } from '../components/shared/LoadingState'
 import { EmptyState } from '../components/shared/EmptyState'
 
-const STATUS_ICONS: Record<string, any> = { signed: CheckCircle, rejected: AlertCircle }
 const STATUS_COLORS: Record<string, string> = {
   draft: 'bg-surface-container text-on-surface-variant',
   pending_signature: 'bg-yellow-50 text-yellow-700',

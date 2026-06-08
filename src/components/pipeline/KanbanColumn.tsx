@@ -12,10 +12,12 @@ const COLUMN_COLORS: Record<string, string> = {
   rejected: 'border-t-error',
 }
 
+import { Application } from '../../types/models'
+
 interface KanbanColumnProps {
   stage: { id: string; labelKey: string }
-  applications: any[]
-  onSelectApplication?: (app: any) => void
+  applications: Application[]
+  onSelectApplication?: (app: Application) => void
   selectedId?: string
 }
 

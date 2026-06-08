@@ -68,7 +68,7 @@ export function JobForm({ onClose }: JobFormProps) {
         setValue('salary_min', jd.salary_suggestion?.min || undefined)
         setValue('salary_max', jd.salary_suggestion?.max || undefined)
       }
-    } catch (e: any) { toast.error(e?.message || t('jobs.ai_generation_failed')) }
+    } catch (e: unknown) { toast.error(e instanceof Error ? e.message : t('jobs.ai_generation_failed')) }
     finally { setGenerating(false) }
   }
 

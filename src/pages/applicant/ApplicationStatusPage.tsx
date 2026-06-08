@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import { useAuthStore } from '../../stores/authStore'
 import { supabase } from '../../lib/supabase'
 import { useTranslation } from 'react-i18next'
-import { ClipboardCheck, AlertCircle, RefreshCw, ArrowRight } from 'lucide-react'
+import { ClipboardCheck, AlertCircle, RefreshCw } from 'lucide-react'
 import { EmptyState } from '../../components/shared/EmptyState'
 import { LoadingState } from '../../components/shared/LoadingState'
 import { cn } from '../../utils/cn'
@@ -47,7 +47,7 @@ export function ApplicationStatusPage() {
   const navigate = useNavigate()
   const profile = useAuthStore(s => s.profile)
 
-  const { data: applications, isLoading, isError, error, refetch } = useQuery({
+  const { data: applications, isLoading, isError, refetch } = useQuery({
     queryKey: ['applicant-applications-status', profile?.id],
     queryFn: async () => {
       if (!profile?.id) return []
@@ -57,7 +57,7 @@ export function ApplicationStatusPage() {
         .eq('candidate_email', profile.email)
         .order('created_at', { ascending: false })
       if (error) throw error
-      return data ?? []
+      return (data ?? []) as unknown as Array<{ id: string; status: string; created_at: string; updated_at: string; job_id: string; jobs: { title: string; companies: { name: string } } }>
     },
     enabled: !!profile?.id,
   })
@@ -97,7 +97,7 @@ export function ApplicationStatusPage() {
         />
       ) : (
         <div className="space-y-4">
-          {applications.map((app: any) => {
+          {applications.map((app) => {
             const cfg = statusConfig[app.status] || statusConfig.applied
             return (
               <div

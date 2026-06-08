@@ -1,4 +1,4 @@
-import { AlertTriangle, X } from 'lucide-react'
+import { AlertTriangle } from 'lucide-react'
 
 interface Props { title: string; message: string; confirmLabel?: string; onConfirm: () => void; onCancel: () => void; variant?: 'danger' | 'warning' }
 

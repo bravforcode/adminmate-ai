@@ -2,12 +2,10 @@ import { useParams, Link } from 'react-router-dom'
 import { useJob } from '../../hooks/useJobs'
 import { JobStatusBadge } from '../../components/jobs/JobStatusBadge'
 import { MapPin, Clock, Users, DollarSign, Calendar, ArrowLeft } from 'lucide-react'
-import { useTranslation } from 'react-i18next'
 
 export function JobDetailPage() {
   const { id } = useParams<{ id: string }>()
   const { data: job, isLoading } = useJob(id!)
-  const { t } = useTranslation('recruitment')
 
   if (isLoading) return <div className="p-8 text-center text-on-surface-variant">Loading...</div>
   if (!job) return <div className="p-8 text-center text-on-surface-variant">Job not found</div>

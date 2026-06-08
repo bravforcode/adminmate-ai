@@ -7,7 +7,6 @@ import {
   Save, 
   BellRing, 
   UserSquare2, 
-  FileText, 
   CheckCircle2,
   Image,
   Globe

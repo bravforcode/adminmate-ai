@@ -1,10 +1,10 @@
 import { useState, useCallback } from 'react'
 import { useDropzone } from 'react-dropzone'
-import { Upload, FileText, X, CheckCircle } from 'lucide-react'
+import { Upload } from 'lucide-react'
 import { storageService } from '../../services/storageService'
 import { supabase } from '../../lib/supabase'
 import toast from 'react-hot-toast'
-import { ALLOWED_CV_TYPES, MAX_FILE_SIZE } from '../../utils/constants'
+import { MAX_FILE_SIZE } from '../../utils/constants'
 
 interface CVUploaderProps { candidateId: string; companyId: string }
 
@@ -19,7 +19,7 @@ export function CVUploader({ candidateId, companyId }: CVUploaderProps) {
     setError('')
     try {
       setUploading(true)
-      const { url, path } = await storageService.uploadCV(candidateId, file)
+      const { url } = await storageService.uploadCV(candidateId, file)
       const { data: cvDoc, error: docErr } = await supabase.from('cv_documents').insert({
         candidate_id: candidateId, company_id: companyId, file_url: url, file_name: file.name,
         file_size: file.size, file_type: file.type.includes('pdf') ? 'pdf' : 'docx', is_current: true,
@@ -33,8 +33,8 @@ export function CVUploader({ candidateId, companyId }: CVUploaderProps) {
       await supabase.functions.invoke('parse-resume', { body: { cvDocumentId: cvDoc.id, candidateId, companyId } })
       setParsing(false)
       toast.success('CV uploaded and parsed')
-    } catch (err: any) {
-      setError(err.message)
+    } catch (err: unknown) {
+      setError(err instanceof Error ? err.message : 'Upload failed')
       setUploading(false)
       setParsing(false)
     }

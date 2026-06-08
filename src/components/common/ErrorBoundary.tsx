@@ -31,7 +31,7 @@ export class ErrorBoundary extends Component<Props, State> {
 
     if (typeof window !== 'undefined') {
       try {
-        const supabaseUrl = (import.meta as any).env?.VITE_SUPABASE_URL
+        const supabaseUrl = (import.meta as unknown as Record<string, { VITE_SUPABASE_URL?: string }>).env?.VITE_SUPABASE_URL
         if (supabaseUrl) {
           fetch(`${supabaseUrl}/functions/v1/log-client-error`, {
             method: 'POST',

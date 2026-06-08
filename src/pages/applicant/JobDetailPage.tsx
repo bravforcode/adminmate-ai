@@ -1,4 +1,3 @@
-import { useState } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { useAuthStore } from '../../stores/authStore'
@@ -7,7 +6,6 @@ import { useTranslation } from 'react-i18next'
 import { ArrowLeft, MapPin, Building2, Clock, DollarSign, CheckCircle, AlertCircle, RefreshCw, Send } from 'lucide-react'
 import { LoadingState } from '../../components/shared/LoadingState'
 import toast from 'react-hot-toast'
-import { cn } from '../../utils/cn'
 
 export function ApplicantJobDetailPage() {
   const { id } = useParams<{ id: string }>()
@@ -16,7 +14,7 @@ export function ApplicantJobDetailPage() {
   const profile = useAuthStore(s => s.profile)
   const qc = useQueryClient()
 
-  const { data: job, isLoading, isError, error, refetch } = useQuery({
+  const { data: job, isLoading, isError, refetch } = useQuery({
     queryKey: ['applicant-job-detail', id],
     queryFn: async () => {
       const { data, error } = await supabase
@@ -63,7 +61,7 @@ export function ApplicantJobDetailPage() {
       qc.invalidateQueries({ queryKey: ['applicant-job-applied', id] })
       toast.success(t('applicant.jobs.applied'))
     },
-    onError: (e: any) => {
+    onError: (e: Error) => {
       toast.error(e.message || 'Failed to apply')
     },
   })

@@ -113,8 +113,8 @@ export function useAuth() {
   const loginWithGoogle = useCallback(async () => {
     try {
       await authService.signInWithGoogle()
-    } catch (error: any) {
-      const errorMsg = error?.message || String(error)
+    } catch (error: unknown) {
+      const errorMsg = error instanceof Error ? error.message : String(error)
       if (/unsupported provider/i.test(errorMsg) || /provider is not enabled/i.test(errorMsg)) {
         console.warn('Google Sign-In not enabled on remote Supabase. Falling back to mock/seed login.')
         await login('testlogin99@gmail.com', 'Test123456!')

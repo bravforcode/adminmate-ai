@@ -4,8 +4,6 @@ import { Language, Candidate, CompareMatch } from '../types';
 import { sampleCompareMatch } from '../mockData';
 import { 
   Upload, 
-  FileText, 
-  User, 
   Check, 
   AlertTriangle, 
   Award, 
@@ -13,8 +11,7 @@ import {
   Briefcase, 
   GraduationCap, 
   Sparkles,
-  HelpCircle,
-  FileCheck
+  HelpCircle
 } from 'lucide-react';
 
 interface ResumeScreeningViewProps {

@@ -4,9 +4,11 @@ import { useOffers, useUpdateOffer } from '../../hooks/useOffers'
 import { useAuthStore } from '../../stores/authStore'
 import { OfferForm } from '../../components/offers/OfferForm'
 import { PDFDownloadButton } from '../../components/pdf/PDFDownloadButton'
-import { Plus, FileText, Receipt, ScrollText, Shield, Send, ExternalLink, ListFilter } from 'lucide-react'
+import { Plus, FileText, Receipt, ScrollText, Shield, Send, ExternalLink } from 'lucide-react'
 import { cn } from '../../utils/cn'
 import toast from 'react-hot-toast'
+
+import { Offer } from '../../types/models'
 
 const STATUS_COLORS: Record<string, string> = {
   draft: 'bg-surface-container text-on-surface-variant',
@@ -25,12 +27,11 @@ const DOC_TYPE_KEYS = [
 
 export function HiringPage() {
   const { t } = useTranslation('hiring')
-  const { t: tCommon } = useTranslation('common')
   const { data: offers, isLoading } = useOffers()
   const updateOffer = useUpdateOffer()
   const company = useAuthStore(s => s.company)
   const [showForm, setShowForm] = useState(false)
-  const [selectedOffer, setSelectedOffer] = useState<any>(null)
+  const [selectedOffer, setSelectedOffer] = useState<Offer | null>(null)
   const [reminders, setReminders] = useState<Record<string, boolean>>({})
 
   const toggleReminder = (id: string) => {
@@ -49,7 +50,7 @@ export function HiringPage() {
           <button onClick={() => {
             if (!offers?.length) { toast(t('toasts.no_offers_export')); return }
             const headers = ['Candidate', 'Position', 'Salary', 'Currency', 'Status', 'Start Date']
-            const rows = offers.map((o: any) => [
+            const rows = offers.map((o: Offer) => [
               o.candidates?.full_name || '',
               o.position_title || '',
               o.salary_offered || '',
@@ -107,7 +108,7 @@ export function HiringPage() {
             <div className="p-4 border-b border-outline-variant flex justify-between items-center bg-surface-container-lowest">
               <h3 className="text-lg font-semibold text-on-surface">{t('tracking.title')}</h3>
               <span className="text-xs font-semibold text-on-surface-variant bg-surface-container-high px-2 py-1 rounded">
-                {offers?.filter((o: any) => o.status !== 'accepted').length || 0} {t('tracking.pending')}
+                {offers?.filter((o: Offer) => o.status !== 'accepted').length || 0} {t('tracking.pending')}
               </span>
             </div>
             {isLoading ? (
@@ -132,7 +133,7 @@ export function HiringPage() {
                     </tr>
                   </thead>
                   <tbody className="text-sm text-on-surface">
-                    {offers?.map((offer: any) => (
+                    {offers?.map((offer: Offer) => (
                       <tr
                         key={offer.id}
                         onClick={() => setSelectedOffer(offer)}

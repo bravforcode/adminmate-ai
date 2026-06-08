@@ -75,8 +75,9 @@ function buildPayload(
 }
 
 async function sendToEndpoint(payload: AppErrorPayload) {
-  const supabaseUrl = (import.meta as any).env?.VITE_SUPABASE_URL
-  const anonKey = (import.meta as any).env?.VITE_SUPABASE_ANON_KEY
+  const env = import.meta.env as unknown as Record<string, string>
+  const supabaseUrl = env.VITE_SUPABASE_URL
+  const anonKey = env.VITE_SUPABASE_ANON_KEY
 
   if (!supabaseUrl) {
     console.warn('[errorHandler] No VITE_SUPABASE_URL; skipping remote log')

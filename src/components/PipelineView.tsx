@@ -4,12 +4,10 @@ import { Language, Candidate } from '../types';
 import { 
   ArrowLeft, 
   ArrowRight, 
-  FileEdit, 
   Sparkles, 
   FileText, 
   X, 
   Save, 
-  AlertCircle,
   Network
 } from 'lucide-react';
 

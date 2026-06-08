@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Shield, X, Check } from 'lucide-react'
+import { Shield, Check } from 'lucide-react'
 import { supabase } from '../../lib/supabase'
 import { useAuthStore } from '../../stores/authStore'
 
@@ -8,7 +8,7 @@ interface Props { candidateId?: string; employeeId?: string }
 export function PDPAConsentBanner({ candidateId, employeeId }: Props) {
   const company = useAuthStore(s => s.company)
   const [accepted, setAccepted] = useState(false)
-  const [purposes, setPurposes] = useState<string[]>(['recruitment_processing'])
+  const [purposes] = useState<string[]>(['recruitment_processing'])
 
   const handleAccept = async () => {
     if (!company?.id) return

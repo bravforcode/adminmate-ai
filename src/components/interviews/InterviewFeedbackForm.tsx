@@ -3,7 +3,9 @@ import { useUpdateInterview } from '../../hooks/useInterviews'
 import { Star, ThumbsUp, ThumbsDown, Minus } from 'lucide-react'
 import { cn } from '../../utils/cn'
 
-interface Props { interview: any; onClose: () => void }
+import { Interview } from '../../types/models'
+
+interface Props { interview: Interview; onClose: () => void }
 
 const RECOMMENDATIONS = [
   { value: 'strong_hire', label: 'Strong Hire', icon: ThumbsUp, color: 'text-green-600' },

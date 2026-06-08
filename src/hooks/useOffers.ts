@@ -17,5 +17,5 @@ export function useCreateOffer() {
 export function useUpdateOffer() {
   const qc = useQueryClient()
   const company = useAuthStore(s => s.company)
-  return useMutation({ mutationFn: ({ id, data }: { id: string; data: any }) => offerService.update(id, data), onSuccess: () => { qc.invalidateQueries({ queryKey: ['offers', company?.id] }) }, onError: (e: Error) => toast.error(e.message) })
+  return useMutation({ mutationFn: ({ id, data }: { id: string; data: Record<string, unknown> }) => offerService.update(id, data), onSuccess: () => { qc.invalidateQueries({ queryKey: ['offers', company?.id] }) }, onError: (e: Error) => toast.error(e.message) })
 }

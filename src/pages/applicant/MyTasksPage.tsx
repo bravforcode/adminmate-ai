@@ -30,7 +30,6 @@ interface OnboardingChecklist {
 
 export function MyTasksPage() {
   const profile = useAuthStore(s => s.profile)
-  const company = useAuthStore(s => s.company)
   const qc = useQueryClient()
   const [activeCategory, setActiveCategory] = useState<string | null>(null)
 
@@ -79,7 +78,7 @@ export function MyTasksPage() {
     onSuccess: () => {
       qc.invalidateQueries({ queryKey: ['my-onboarding', profile?.id] })
     },
-    onError: (e: any) => toast.error(e.message || 'Failed to update task'),
+    onError: (e: Error) => toast.error(e.message || 'Failed to update task'),
   })
 
   if (isLoading) {

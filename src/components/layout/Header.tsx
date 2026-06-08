@@ -134,7 +134,7 @@ export function Header() {
                 overflow: 'hidden',
                 zIndex: 60,
               }}>
-                {results.map((c: any) => (
+                {results.map((c: { id: string; full_name?: string; current_position?: string; email?: string }) => (
                   <button
                     key={c.id}
                     onMouseDown={() => {

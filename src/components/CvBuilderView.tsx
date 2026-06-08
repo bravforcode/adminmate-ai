@@ -17,8 +17,7 @@ import {
   Briefcase,
   GraduationCap,
   Link2,
-  Info,
-  CheckCircle2
+  Info
 } from 'lucide-react';
 
 interface CvBuilderViewProps {
@@ -32,7 +31,7 @@ export default function CvBuilderView({ language, onApplicantSubmit }: CvBuilder
   // CV Builder Form State
   const [cv, setCv] = useState<CV>(defaultCvTemplate);
   const [isImproving, setIsImproving] = useState(false);
-  const [improveSuccess, setImproveSuccess] = useState(false);
+  const [, setImproveSuccess] = useState(false);
 
   // Quick autofill template
   const handleGenerateWithAi = () => {

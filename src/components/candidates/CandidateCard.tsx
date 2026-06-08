@@ -1,11 +1,11 @@
 import { Link } from 'react-router-dom'
 import { MapPin, Mail, Phone, Sparkles } from 'lucide-react'
-import { cn } from '../../utils/cn'
+import { Candidate, CVDocument } from '../../types/models'
 
-interface CandidateCardProps { candidate: any }
+interface CandidateCardProps { candidate: Candidate }
 
 export function CandidateCard({ candidate }: CandidateCardProps) {
-  const latestCV = candidate.cv_documents?.find((cv: any) => cv.is_current)
+  const latestCV = candidate.cv_documents?.find((cv: CVDocument) => cv.is_current)
   const matchScore = candidate.applications?.[0]?.ai_match_score
   const initials = candidate.full_name?.split(' ').map((n: string) => n[0]).join('').slice(0, 2).toUpperCase() || '?'
 

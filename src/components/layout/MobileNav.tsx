@@ -1,6 +1,6 @@
 import { NavLink } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
-import { LayoutDashboard, Briefcase, FileCheck, UserCheck, MessageSquare } from 'lucide-react'
+import { LayoutDashboard, Briefcase, FileCheck, UserCheck } from 'lucide-react'
 
 const mobileItems = [
   { path: '/dashboard', icon: LayoutDashboard, key: 'nav.dashboard' },

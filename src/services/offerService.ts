@@ -11,17 +11,17 @@ export const offerService = {
     if (error) throw error
     return data
   },
-  create: async (offer: any) => {
+  create: async (offer: Record<string, unknown>) => {
     const { data, error } = await supabase.from('offers').insert(offer).select().single()
     if (error) throw error
     return data
   },
-  update: async (id: string, updates: any) => {
+  update: async (id: string, updates: Record<string, unknown>) => {
     const { data, error } = await supabase.from('offers').update(updates).eq('id', id).select().single()
     if (error) throw error
     return data
   },
-  generateContent: async (data: any) => {
+  generateContent: async (data: Record<string, unknown>) => {
     const { data: result } = await supabase.functions.invoke('generate-offer-content', { body: data })
     return result
   },

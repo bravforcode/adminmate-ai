@@ -23,5 +23,5 @@ export function useCreateJob() {
 export function useUpdateJob() {
   const qc = useQueryClient()
   const company = useAuthStore(s => s.company)
-  return useMutation({ mutationFn: ({ id, data }: { id: string; data: any }) => jobService.update(id, data), onSuccess: () => { qc.invalidateQueries({ queryKey: KEYS.list(company?.id ?? '') }) }, onError: (e: Error) => toast.error(e.message) })
+  return useMutation({ mutationFn: ({ id, data }: { id: string; data: Record<string, unknown> }) => jobService.update(id, data), onSuccess: () => { qc.invalidateQueries({ queryKey: KEYS.list(company?.id ?? '') }) }, onError: (e: Error) => toast.error(e.message) })
 }

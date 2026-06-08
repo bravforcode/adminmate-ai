@@ -10,6 +10,7 @@ import { cn } from '../utils/cn'
 import toast from 'react-hot-toast'
 import { LoadingState } from '../components/shared/LoadingState'
 import { EmptyState } from '../components/shared/EmptyState'
+import { Offer } from '../types/models'
 
 export function OnboardingMgmtPage() {
   const { t } = useTranslation(['onboarding', 'common'])
@@ -26,23 +27,23 @@ export function OnboardingMgmtPage() {
   ])
   const [input, setInput] = useState('')
 
-  const acceptedOffers = offers?.filter((o: any) => o.status === 'accepted')
+  const acceptedOffers = offers?.filter((o: Offer) => o.status === 'accepted')
 
-  const handleCreateChecklist = async (offer: any) => {
+  const handleCreateChecklist = async (offer: Offer) => {
     try {
       await createChecklist.mutateAsync({ employeeId: offer.candidate_id, offerId: offer.id, country: company?.country || 'TH' })
       toast.success(t('create_success'))
-    } catch (e: any) {
-      toast.error(e?.message || t('create_failed'))
+    } catch (e: unknown) {
+      toast.error(e instanceof Error ? e.message : t('create_failed'))
     }
   }
 
-  const handleToggleTask = async (task: any) => {
+  const handleToggleTask = async (task: { id: string; is_completed?: boolean; checklist_id?: string }) => {
     try {
       await updateTask.mutateAsync({ taskId: task.id, completed: !task.is_completed })
       await recalc.mutateAsync(task.checklist_id)
-    } catch (e: any) {
-      toast.error(e?.message || t('update_failed'))
+    } catch (e: unknown) {
+      toast.error(e instanceof Error ? e.message : t('update_failed'))
     }
   }
 
@@ -62,9 +63,9 @@ export function OnboardingMgmtPage() {
     }
   }
 
-  const myChecklist = checklists?.find((c: any) => c.user_id === profile?.id) || checklists?.[0]
-  const myTasks = myChecklist?.onboarding_tasks?.sort((a: any, b: any) => a.order_index - b.order_index) || []
-  const firstIncompleteIndex = myTasks.findIndex((t: any) => !t.is_completed)
+  const myChecklist = checklists?.find((c: { user_id?: string }) => c.user_id === profile?.id) || checklists?.[0]
+  const myTasks = myChecklist?.onboarding_tasks?.sort((a: { order_index?: number }, b: { order_index?: number }) => (a.order_index ?? 0) - (b.order_index ?? 0)) || []
+  const firstIncompleteIndex = myTasks.findIndex((t: { is_completed?: boolean }) => !t.is_completed)
 
   return (
     <div className="space-y-6">
@@ -89,7 +90,7 @@ export function OnboardingMgmtPage() {
                   </div>
                 </div>
                 <div className="space-y-2">
-                  {myTasks.map((task: any, idx: number) => {
+                  {myTasks.map((task: { id: string; task_name?: string; is_completed?: boolean; assigned_to?: string }, idx: number) => {
                     const isCompleted = task.is_completed
                     const isCurrent = !isCompleted && idx === firstIncompleteIndex
                     const isUpcoming = !isCompleted && idx !== firstIncompleteIndex
@@ -168,7 +169,7 @@ export function OnboardingMgmtPage() {
                       </tr>
                     </thead>
                     <tbody>
-                      {checklists?.map((cl: any) => (
+                      {checklists?.map((cl: { id: string; template_name?: string; progress_percentage?: number; status?: string; user_profiles?: { full_name?: string } }) => (
                         <tr key={cl.id} className="border-b border-surface-container last:border-0">
                           <td className="py-3 px-3 text-sm text-on-surface">{cl.user_profiles?.full_name}</td>
                           <td className="py-3 px-3 text-sm text-on-surface-variant">{cl.template_name}</td>
@@ -285,7 +286,7 @@ export function OnboardingMgmtPage() {
           <div className="bg-surface rounded-xl border border-outline-variant p-6 shadow-sm">
             <h3 className="text-title-lg font-semibold text-on-surface mb-3">{t('onboarding.accepted_offers')}</h3>
             {acceptedOffers && acceptedOffers.length > 0 ? (
-              acceptedOffers.map((offer: any) => (
+              acceptedOffers.map((offer: Offer) => (
                 <div key={offer.id} className="flex items-center justify-between py-2 border-b border-outline-variant last:border-0">
                   <div>
                     <p className="text-sm font-medium">{offer.candidates?.full_name}</p>

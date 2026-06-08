@@ -1,11 +1,13 @@
 import { useState } from 'react'
 import { useUpdateInterview } from '../../hooks/useInterviews'
-import { Calendar, Clock, MapPin, User, Video, Star, Edit3 } from 'lucide-react'
+import { Calendar, Clock, MapPin, User, Star, Edit3 } from 'lucide-react'
 import { cn } from '../../utils/cn'
 
 const STATUS_STYLES: Record<string, string> = { scheduled: 'bg-blue-50 text-blue-700', completed: 'bg-green-50 text-green-700', cancelled: 'bg-red-50 text-red-700', no_show: 'bg-yellow-50 text-yellow-700' }
 
-interface InterviewCardProps { interview: any }
+import { Interview } from '../../types/models'
+
+interface InterviewCardProps { interview: Interview }
 
 export function InterviewCard({ interview }: InterviewCardProps) {
   const updateInterview = useUpdateInterview()

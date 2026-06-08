@@ -1,10 +1,10 @@
 import { useState } from 'react'
 import { ChevronUp, ChevronDown, Search } from 'lucide-react'
 
-interface Column { key: string; label: string; sortable?: boolean; render?: (value: any, row: any) => React.ReactNode }
-interface Props { columns: Column[]; data: any[]; searchable?: boolean; onRowClick?: (row: any) => void }
+interface Column<T = Record<string, unknown>> { key: string; label: string; sortable?: boolean; render?: (value: unknown, row: T) => React.ReactNode }
+interface Props<T = Record<string, unknown>> { columns: Column<T>[]; data: T[]; searchable?: boolean; onRowClick?: (row: T) => void }
 
-export function DataTable({ columns, data, searchable, onRowClick }: Props) {
+export function DataTable<T = Record<string, unknown>>({ columns, data, searchable, onRowClick }: Props<T>) {
   const [sortKey, setSortKey] = useState('')
   const [sortDir, setSortDir] = useState<'asc' | 'desc'>('asc')
   const [search, setSearch] = useState('')

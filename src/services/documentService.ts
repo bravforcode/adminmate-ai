@@ -11,12 +11,12 @@ export const documentService = {
     if (error) throw error
     return data
   },
-  create: async (doc: any) => {
+  create: async (doc: Record<string, unknown>) => {
     const { data, error } = await supabase.from('documents').insert(doc).select().single()
     if (error) throw error
     return data
   },
-  update: async (id: string, updates: any) => {
+  update: async (id: string, updates: Record<string, unknown>) => {
     const { data, error } = await supabase.from('documents').update(updates).eq('id', id).select().single()
     if (error) throw error
     return data

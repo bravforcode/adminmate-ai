@@ -1,7 +1,6 @@
 import { useState, useRef, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../../hooks/useAuth'
-import { useAuthStore } from '../../stores/authStore'
 import { useTranslation } from 'react-i18next'
 import { LogOut, Settings, User, ClipboardList, RotateCcw } from 'lucide-react'
 

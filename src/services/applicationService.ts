@@ -6,13 +6,13 @@ export const applicationService = {
     if (error) throw error
     return data
   },
-  create: async (app: any) => {
+  create: async (app: Record<string, unknown>) => {
     const { data, error } = await supabase.from('applications').insert(app).select().single()
     if (error) throw error
     return data
   },
   updateStatus: async (id: string, status: string, notes?: string) => {
-    const updates: any = { status, updated_at: new Date().toISOString() }
+    const updates: Record<string, unknown> = { status, updated_at: new Date().toISOString() }
     if (notes !== undefined) updates.recruiter_notes = notes
     if (status === 'hired') updates.hired_at = new Date().toISOString()
     if (status === 'rejected') updates.rejected_at = new Date().toISOString()

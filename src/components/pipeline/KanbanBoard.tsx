@@ -6,8 +6,10 @@ import { KanbanColumn } from './KanbanColumn'
 import { PIPELINE_STAGES } from '../../utils/constants'
 import { AlertCircle, RefreshCw, Inbox } from 'lucide-react'
 
+import { Application } from '../../types/models'
+
 interface KanbanBoardProps {
-  onSelectApplication?: (app: any) => void
+  onSelectApplication?: (app: Application) => void
   selectedId?: string
 }
 
@@ -59,7 +61,7 @@ export function KanbanBoard({ onSelectApplication, selectedId }: KanbanBoardProp
             <KanbanColumn
               key={stage.id}
               stage={stage}
-              applications={applications?.filter((a: any) => a.status === stage.id) || []}
+              applications={applications?.filter((a: Application) => a.status === stage.id) || []}
               onSelectApplication={onSelectApplication}
               selectedId={selectedId}
             />

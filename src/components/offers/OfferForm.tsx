@@ -4,8 +4,6 @@ import { z } from 'zod'
 import { useCreateOffer } from '../../hooks/useOffers'
 import { useUpdateApplicationStatus } from '../../hooks/useApplications'
 import { useAuthStore } from '../../stores/authStore'
-import { useJobs } from '../../hooks/useJobs'
-import { useCandidates } from '../../hooks/useCandidates'
 import { Sparkles } from 'lucide-react'
 import toast from 'react-hot-toast'
 
@@ -31,10 +29,10 @@ export function OfferForm({ applicationId, onClose }: Props) {
   const createOffer = useCreateOffer()
   const updateStatus = useUpdateApplicationStatus()
   const company = useAuthStore(s => s.company)
-  const { register, handleSubmit, formState: { errors }, watch } = useForm<FormData>({ resolver: zodResolver(offerSchema), defaultValues: { application_id: applicationId || '', salary_currency: company?.currency || 'THB', employment_type: 'full_time', work_hours: '09:00-18:00' } })
+  const { register, handleSubmit, formState: { errors } } = useForm<FormData>({ resolver: zodResolver(offerSchema), defaultValues: { application_id: applicationId || '', salary_currency: company?.currency || 'THB', employment_type: 'full_time', work_hours: '09:00-18:00' } })
 
   const onSubmit = async (data: FormData) => {
-    const offer = await createOffer.mutateAsync({ ...data, company_id: company?.id, benefits: data.benefits?.split('\n').filter(Boolean), status: 'draft' })
+    await createOffer.mutateAsync({ ...data, company_id: company?.id, benefits: data.benefits?.split('\n').filter(Boolean), status: 'draft' })
     if (applicationId) await updateStatus.mutateAsync({ id: applicationId, status: 'offered' })
     toast.success('Offer created. Click Generate to create PDF.')
     onClose()

@@ -16,12 +16,12 @@ export const interviewService = {
     if (error) throw error
     return data
   },
-  create: async (interview: any) => {
+  create: async (interview: Record<string, unknown>) => {
     const { data, error } = await supabase.from('interviews').insert(interview).select().single()
     if (error) throw error
     return data
   },
-  update: async (id: string, updates: any) => {
+  update: async (id: string, updates: Record<string, unknown>) => {
     const { data, error } = await supabase.from('interviews').update(updates).eq('id', id).select().single()
     if (error) throw error
     return data

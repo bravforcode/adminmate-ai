@@ -11,7 +11,6 @@ import { LoadingState } from '../../components/shared/LoadingState'
 export function BrowseJobsPage() {
   const { t } = useTranslation('common')
   const navigate = useNavigate()
-  const profile = useAuthStore(s => s.profile)
   const company = useAuthStore(s => s.company)
   const [search, setSearch] = useState('')
 

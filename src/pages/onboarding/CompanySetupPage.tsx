@@ -49,8 +49,8 @@ export function CompanySetupPage() {
       setProfile({ ...useAuthStore.getState().profile!, company_id: company.id, role: 'admin' })
       toast.success(t('company.setup_complete'))
       navigate('/dashboard')
-    } catch (err: any) {
-      toast.error(err.message)
+    } catch (err: unknown) {
+      toast.error(err instanceof Error ? err.message : 'Company creation failed')
     }
   }
 

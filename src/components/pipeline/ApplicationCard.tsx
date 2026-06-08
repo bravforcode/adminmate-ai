@@ -7,8 +7,10 @@ import { ApplicationDrawer } from './ApplicationDrawer'
 import { cn } from '../../utils/cn'
 import toast from 'react-hot-toast'
 
+import { Application, CVDocument } from '../../types/models'
+
 interface ApplicationCardProps {
-  application: any
+  application: Application
   isActive?: boolean
   onClick?: () => void
 }
@@ -21,13 +23,13 @@ export function ApplicationCard({ application, isActive, onClick }: ApplicationC
   const [showActions, setShowActions] = useState(false)
 
   const stageIndex = PIPELINE_STAGES.findIndex(s => s.id === application.status)
-  const hasCV = !!application.cv_documents?.some((cv: any) => cv.is_current)
+  const hasCV = !!application.cv_documents?.some((cv: CVDocument) => cv.is_current)
   const initials = application.candidates?.full_name?.split(' ').map((n: string) => n[0]).join('').slice(0, 2).toUpperCase() || '?'
   const matchScore = application.ai_match_score ?? 0
 
   const handleScreen = async (e: React.MouseEvent) => {
     e.stopPropagation()
-    const latestCV = application.cv_documents?.find((cv: any) => cv.is_current)
+    const latestCV = application.cv_documents?.find((cv: CVDocument) => cv.is_current)
     if (!latestCV) { toast.error('No CV available for screening'); return }
     await triggerAI.mutateAsync({ applicationId: application.id, jobId: application.job_id, cvDocumentId: latestCV.id, companyId: company?.id ?? '' })
   }

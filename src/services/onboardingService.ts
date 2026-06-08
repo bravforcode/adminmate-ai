@@ -1,6 +1,14 @@
 import { supabase } from '../lib/supabase'
 
-const COUNTRY_TEMPLATES: Record<string, any[]> = {
+interface OnboardingTask {
+  task_name: string
+  task_name_en: string
+  category: string
+  timeframe: string
+  assigned_to: string
+}
+
+const COUNTRY_TEMPLATES: Record<string, OnboardingTask[]> = {
   TH: [
     { task_name: 'กรอกแบบฟอร์มข้อมูลพนักงาน', task_name_en: 'Fill employee information form', category: 'admin', timeframe: 'day_1', assigned_to: 'HR' },
     { task_name: 'ส่งสำเนาบัตรประชาชน', task_name_en: 'Submit ID card copy', category: 'admin', timeframe: 'day_1', assigned_to: 'HR' },

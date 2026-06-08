@@ -20,14 +20,9 @@ const loginSchema = z.object({
 
 type LoginFormData = z.infer<typeof loginSchema>
 
-function formatSeconds(ms: number): string {
-  return Math.max(1, Math.ceil(ms / 1000)).toString()
-}
-
 export function LoginForm() {
   const { t } = useTranslation('common')
   const { login, loginWithGoogle } = useAuth()
-  const profile = useAuthStore(s => s.profile)
   const navigate = useNavigate()
   const location = useLocation() as { state?: { from?: { pathname?: string } } }
   const [showPassword, setShowPassword] = useState(false)
