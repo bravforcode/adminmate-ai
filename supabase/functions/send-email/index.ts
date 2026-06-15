@@ -82,7 +82,7 @@ serve(async (req) => {
       method: 'POST',
       headers: { 'Authorization': `Bearer ${resendKey}`, 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        from: getEnv('EMAIL_FROM', 'AdminMate AI <noreply@adminmate.ai>'),
+        from: getEnv('EMAIL_FROM', 'AdminMate AI <onboarding@resend.dev>'),
         to: [to],
         subject,
         html,
