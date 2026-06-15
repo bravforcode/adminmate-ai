@@ -43,7 +43,7 @@ test.describe('PIPELINE: Kanban Cards', () => {
     await page.waitForTimeout(2000)
     // Cards may or may not exist — check that the page loaded properly
     const cards = page.locator('[data-testid="kanban-card"]')
-    const emptyState = page.locator('[class*="empty"], text=/no applications/i')
+    const emptyState = page.getByText(/no applications|no data|empty/i)
     const hasCardsOrEmpty = (await cards.count()) > 0 || (await emptyState.count()) > 0 || true // page loaded
     expect(hasCardsOrEmpty).toBe(true)
   })
