@@ -39,19 +39,19 @@ export async function signInAs(page: Page, email: string, password: string) {
 }
 
 export async function signOut(page: Page) {
-  // The UserMenu is a button with the user's initial (rounded avatar button in the header)
-  // It has aria-label with the user's full name
-  const userMenuBtn = page.locator('button[aria-haspopup="true"]').first()
-  if (await userMenuBtn.isVisible({ timeout: 5_000 }).catch(() => false)) {
-    await userMenuBtn.click()
-    await page.waitForTimeout(500)
-  }
-  // Sign out is a menu item button with LogOut icon + "sign out" text
+  // Wait for page to be fully loaded
+  await page.waitForLoadState('networkidle', { timeout: 10_000 }).catch(() => {})
+  // Click the user menu button (has data-testid="user-menu-button")
+  const userMenuBtn = page.locator('[data-testid="user-menu-button"]')
+  await userMenuBtn.waitFor({ state: 'visible', timeout: 10_000 })
+  await userMenuBtn.click()
+  // Wait for dropdown menu to appear
+  await page.waitForTimeout(500)
+  // Click sign out button
   const signOutBtn = page.locator('button').filter({ hasText: /sign out|log out/i }).first()
-  if (await signOutBtn.isVisible({ timeout: 5_000 }).catch(() => false)) {
-    await signOutBtn.click()
-    await page.waitForURL(/\/login/, { timeout: 15_000 })
-  }
+  await signOutBtn.waitFor({ state: 'visible', timeout: 5_000 })
+  await signOutBtn.click()
+  await page.waitForURL(/\/login/, { timeout: 15_000 })
 }
 
 // ─── Navigation Helpers ──────────────────────────────────────────

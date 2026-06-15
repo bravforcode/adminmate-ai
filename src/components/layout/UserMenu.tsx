@@ -35,6 +35,7 @@ export function UserMenu() {
         aria-expanded={open}
         aria-haspopup="true"
         aria-label={profile?.full_name ?? 'User menu'}
+        data-testid="user-menu-button"
         className="w-8 h-8 rounded-full bg-primary-container dark:bg-[#1e40af] text-on-primary-container dark:text-[#93c5fd] flex items-center justify-center text-sm font-semibold hover:opacity-80"
       >
         {profile?.full_name?.charAt(0).toUpperCase() || 'U'}
