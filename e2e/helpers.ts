@@ -39,13 +39,16 @@ export async function signInAs(page: Page, email: string, password: string) {
 }
 
 export async function signOut(page: Page) {
-  const userMenuBtn = page.locator('[data-testid="user-menu-button"], button').filter({ has: page.locator('img, svg, [class*="avatar"]') }).first()
-  if (await userMenuBtn.isVisible({ timeout: 5000 }).catch(() => false)) {
+  // The UserMenu is a button with the user's initial (rounded avatar button in the header)
+  // It has aria-label with the user's full name
+  const userMenuBtn = page.locator('button[aria-haspopup="true"]').first()
+  if (await userMenuBtn.isVisible({ timeout: 5_000 }).catch(() => false)) {
     await userMenuBtn.click()
-    await page.waitForTimeout(300)
+    await page.waitForTimeout(500)
   }
-  const signOutBtn = page.getByRole('button', { name: /sign out|logout|log out/i }).first()
-  if (await signOutBtn.isVisible({ timeout: 5000 }).catch(() => false)) {
+  // Sign out is a menu item button with LogOut icon + "sign out" text
+  const signOutBtn = page.locator('button').filter({ hasText: /sign out|log out/i }).first()
+  if (await signOutBtn.isVisible({ timeout: 5_000 }).catch(() => false)) {
     await signOutBtn.click()
     await page.waitForURL(/\/login/, { timeout: 15_000 })
   }
