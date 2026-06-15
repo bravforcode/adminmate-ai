@@ -1,11 +1,49 @@
 import { test, expect, HR_USER, signInAsHR, signOut, freshEmail, waitForPageReady } from './helpers'
 
 // ═══════════════════════════════════════════════════════════════════
-// AUTH: Login Flow
+// AUTH: Role Selection Page (new!)
+// ═══════════════════════════════════════════════════════════════════
+test.describe('AUTH: Role Selection', () => {
+  test('shows two role cards (HR and Applicant)', async ({ page }) => {
+    await page.goto('/login')
+    await expect(page.locator('#role-card-hr')).toBeVisible({ timeout: 15_000 })
+    await expect(page.locator('#role-card-applicant')).toBeVisible()
+  })
+
+  test('clicking HR card shows login form', async ({ page }) => {
+    await page.goto('/login')
+    await page.locator('#role-card-hr').click()
+    await expect(page.locator('[data-testid="email-input"]')).toBeVisible({ timeout: 10_000 })
+    await expect(page.locator('[data-testid="password-input"]')).toBeVisible()
+    await expect(page.locator('[data-testid="login-button"]')).toBeVisible()
+  })
+
+  test('clicking Applicant card shows login form', async ({ page }) => {
+    await page.goto('/login')
+    await page.locator('#role-card-applicant').click()
+    await expect(page.locator('[data-testid="email-input"]')).toBeVisible({ timeout: 10_000 })
+  })
+
+  test('back button returns to role selection', async ({ page }) => {
+    await page.goto('/login')
+    await page.locator('#role-card-hr').click()
+    await page.locator('[data-testid="email-input"]').waitFor({ state: 'visible', timeout: 10_000 })
+    // Click back button
+    const backBtn = page.locator('#btn-back-role')
+    if (await backBtn.isVisible({ timeout: 5000 }).catch(() => false)) {
+      await backBtn.click()
+      await expect(page.locator('#role-card-hr')).toBeVisible({ timeout: 5_000 })
+    }
+  })
+})
+
+// ═══════════════════════════════════════════════════════════════════
+// AUTH: Login
 // ═══════════════════════════════════════════════════════════════════
 test.describe('AUTH: Login', () => {
   test('shows email, password inputs and login button', async ({ page }) => {
     await page.goto('/login')
+    await page.locator('#role-card-hr').click()
     await expect(page.locator('[data-testid="email-input"]')).toBeVisible()
     await expect(page.locator('[data-testid="password-input"]')).toBeVisible()
     await expect(page.locator('[data-testid="login-button"]')).toBeVisible()
@@ -13,61 +51,70 @@ test.describe('AUTH: Login', () => {
 
   test('email input has correct type', async ({ page }) => {
     await page.goto('/login')
+    await page.locator('#role-card-hr').click()
     const email = page.locator('[data-testid="email-input"]')
+    await expect(email).toBeVisible({ timeout: 10_000 })
     await expect(email).toHaveAttribute('type', 'email')
   })
 
   test('password input starts as type=password', async ({ page }) => {
     await page.goto('/login')
+    await page.locator('#role-card-hr').click()
     const pw = page.locator('[data-testid="password-input"]')
+    await expect(pw).toBeVisible({ timeout: 10_000 })
     await expect(pw).toHaveAttribute('type', 'password')
   })
 
-  test('empty form submission stays on /login', async ({ page }) => {
+  test('empty form submission stays on login', async ({ page }) => {
     await page.goto('/login')
+    await page.locator('#role-card-hr').click()
+    await page.locator('[data-testid="login-button"]').waitFor({ state: 'visible', timeout: 10_000 })
     await page.locator('[data-testid="login-button"]').click()
     await page.waitForTimeout(2000)
+    // Should still be on login page (no redirect)
     expect(page.url()).toContain('/login')
   })
 
   test('wrong password shows error toast or stays on /login', async ({ page }) => {
     await page.goto('/login')
+    await page.locator('#role-card-hr').click()
+    await page.locator('[data-testid="email-input"]').waitFor({ state: 'visible', timeout: 10_000 })
     await page.locator('[data-testid="email-input"]').fill(HR_USER.email)
     await page.locator('[data-testid="password-input"]').fill('WrongPassword!1')
     await page.locator('[data-testid="login-button"]').click()
-    // Should show error toast or remain on login
     await page.waitForTimeout(5000)
     expect(page.url()).toContain('/login')
   })
 
   test('valid login redirects away from /login', async ({ page }) => {
     await signInAsHR(page)
-    // After login, should NOT be on /login
     expect(page.url()).not.toContain('/login')
-    // Should be on a valid app page
     expect(page.url()).toMatch(/\/(dashboard|setup-company|onboarding)/)
   })
 
   test('logged-in user sees sidebar or header', async ({ page }) => {
     await signInAsHR(page)
-    // After redirect, the app shell (sidebar/header) should be visible
     const hasNav = await page.locator('nav, aside, header, [class*="sidebar"]').count()
     expect(hasNav).toBeGreaterThanOrEqual(1)
   })
 
   test('login link to /register exists', async ({ page }) => {
     await page.goto('/login')
+    await page.locator('#role-card-hr').click()
+    await page.locator('[data-testid="email-input"]').waitFor({ state: 'visible', timeout: 10_000 })
     await expect(page.locator('a[href="/register"]')).toBeVisible()
   })
 
   test('login link to /forgot-password exists', async ({ page }) => {
     await page.goto('/login')
+    await page.locator('#role-card-hr').click()
+    await page.locator('[data-testid="email-input"]').waitFor({ state: 'visible', timeout: 10_000 })
     await expect(page.locator('a[href="/forgot-password"]')).toBeVisible()
   })
 })
 
 // ═══════════════════════════════════════════════════════════════════
-// AUTH: Registration Flow
+// AUTH: Registration
 // ═══════════════════════════════════════════════════════════════════
 test.describe('AUTH: Registration', () => {
   test('shows name, email, password, confirm, company fields', async ({ page }) => {
@@ -121,7 +168,6 @@ test.describe('AUTH: Registration', () => {
     await pw.nth(1).fill('Test123456!')
     await page.locator('[data-testid="company-name-input"]').fill('E2E Test Company')
     await page.locator('[data-testid="register-button"]').click()
-    // After registration, should redirect to setup-company or dashboard
     await page.waitForURL(/\/(setup-company|dashboard|onboarding)/, { timeout: 30_000 })
     expect(page.url()).not.toContain('/register')
   })

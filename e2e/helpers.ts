@@ -1,29 +1,37 @@
 import { test as base, expect, type Page } from '@playwright/test'
 
 // ─── Test Credentials ────────────────────────────────────────────
-// Primary test account (pre-existing in Supabase)
 export const HR_USER = {
   email: 'testlogin99@gmail.com',
   password: 'Test123456!',
 }
 
-// Fresh account for registration tests (unique per run)
 export function freshEmail() {
   return `e2e+${Date.now()}${Math.random().toString(36).slice(2, 6)}@test.com`
 }
 
+// ─── Navigate to login form (handles role-select step) ──────────
+async function goToLoginForm(page: Page) {
+  await page.goto('/login')
+  // The login page has a role-select step first — click the HR card to proceed
+  const hrCard = page.locator('#role-card-hr')
+  await hrCard.waitFor({ state: 'visible', timeout: 15_000 })
+  await hrCard.click()
+  // Now the LoginForm should be visible
+  await page.locator('[data-testid="email-input"]').waitFor({ state: 'visible', timeout: 10_000 })
+}
+
 // ─── Auth Helpers ────────────────────────────────────────────────
 export async function signInAsHR(page: Page) {
-  await page.goto('/login')
+  await goToLoginForm(page)
   await page.locator('[data-testid="email-input"]').fill(HR_USER.email)
   await page.locator('[data-testid="password-input"]').fill(HR_USER.password)
   await page.locator('[data-testid="login-button"]').click()
-  // Wait for redirect — user may land on /dashboard, /setup-company, or /onboarding
   await page.waitForURL(/\/(dashboard|setup-company|onboarding)/, { timeout: 30_000 })
 }
 
 export async function signInAs(page: Page, email: string, password: string) {
-  await page.goto('/login')
+  await goToLoginForm(page)
   await page.locator('[data-testid="email-input"]').fill(email)
   await page.locator('[data-testid="password-input"]').fill(password)
   await page.locator('[data-testid="login-button"]').click()
@@ -31,7 +39,6 @@ export async function signInAs(page: Page, email: string, password: string) {
 }
 
 export async function signOut(page: Page) {
-  // Click user menu → sign out
   const userMenuBtn = page.locator('[data-testid="user-menu-button"], button').filter({ has: page.locator('img, svg, [class*="avatar"]') }).first()
   if (await userMenuBtn.isVisible({ timeout: 5000 }).catch(() => false)) {
     await userMenuBtn.click()
@@ -47,7 +54,6 @@ export async function signOut(page: Page) {
 // ─── Navigation Helpers ──────────────────────────────────────────
 export async function waitForPageReady(page: Page) {
   await page.waitForLoadState('networkidle', { timeout: 20_000 }).catch(() => {})
-  // Wait for any loading skeletons to disappear
   await page.locator('[class*="skeleton"], [class*="loading"]').first().waitFor({ state: 'hidden', timeout: 5_000 }).catch(() => {})
 }
 

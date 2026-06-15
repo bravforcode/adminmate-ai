@@ -1,30 +1,20 @@
-import { test, expect, Page } from '@playwright/test'
+import { test, expect, signInAsHR, waitForPageReady } from './helpers'
 
-const TEST_USER = { email: 'testlogin99@gmail.com', password: 'Test123456!' }
-
-async function signIn(page: Page) {
-  await page.goto('/login')
-  await page.locator('[data-testid="email-input"]').fill(TEST_USER.email)
-  await page.locator('[data-testid="password-input"]').fill(TEST_USER.password)
-  await page.locator('[data-testid="login-button"]').click()
-  await page.waitForURL(/\/dashboard|\/setup-company|\/onboarding/i, { timeout: 30_000 }).catch(() => {})
-}
-
-const isSetup = (page: Page) => page.url().includes('/setup-company')
+const isSetup = (page: any) => page.url().includes('/setup-company')
 
 test.describe('JOBS: List Page', () => {
   test('loads with heading', async ({ page }) => {
-    await signIn(page)
+    await signInAsHR(page)
     await page.goto('/recruitment/jobs')
-    await page.waitForLoadState('networkidle', { timeout: 15_000 }).catch(() => {})
+    await waitForPageReady(page)
     if (isSetup(page)) return
     await expect(page.locator('h1, h2').first()).toBeVisible({ timeout: 15_000 })
   })
 
   test('create job button visible or setup redirect', async ({ page }) => {
-    await signIn(page)
+    await signInAsHR(page)
     await page.goto('/recruitment/jobs')
-    await page.waitForLoadState('networkidle', { timeout: 15_000 }).catch(() => {})
+    await waitForPageReady(page)
     if (isSetup(page)) {
       await expect(page.locator('input, select, button').first()).toBeVisible({ timeout: 5_000 })
     } else {
@@ -33,9 +23,9 @@ test.describe('JOBS: List Page', () => {
   })
 
   test('search input exists', async ({ page }) => {
-    await signIn(page)
+    await signInAsHR(page)
     await page.goto('/recruitment/jobs')
-    await page.waitForLoadState('networkidle', { timeout: 15_000 }).catch(() => {})
+    await waitForPageReady(page)
     if (isSetup(page)) return
     const search = page.locator('input[placeholder*="search" i], input[type="search"]').first()
     if (await search.isVisible({ timeout: 5_000 }).catch(() => false)) {
@@ -44,9 +34,9 @@ test.describe('JOBS: List Page', () => {
   })
 
   test('job cards or empty state displayed', async ({ page }) => {
-    await signIn(page)
+    await signInAsHR(page)
     await page.goto('/recruitment/jobs')
-    await page.waitForLoadState('networkidle', { timeout: 15_000 }).catch(() => {})
+    await waitForPageReady(page)
     if (isSetup(page)) return
     const content = await page.locator('[class*="card"], [class*="empty"], [class*="skeleton"]').count()
     expect(content).toBeGreaterThanOrEqual(0)
@@ -55,9 +45,9 @@ test.describe('JOBS: List Page', () => {
 
 test.describe('JOBS: 3-Step Create Wizard', () => {
   test('step 1: basic info form or setup redirect', async ({ page }) => {
-    await signIn(page)
+    await signInAsHR(page)
     await page.goto('/recruitment/jobs')
-    await page.waitForLoadState('networkidle', { timeout: 15_000 }).catch(() => {})
+    await waitForPageReady(page)
     if (isSetup(page)) return
     await page.locator('[data-testid="create-job-button"]').click()
     await expect(page.locator('[data-testid="job-title"]')).toBeVisible({ timeout: 5_000 })
@@ -66,9 +56,9 @@ test.describe('JOBS: 3-Step Create Wizard', () => {
   })
 
   test('step 1 -> step 2: next button works', async ({ page }) => {
-    await signIn(page)
+    await signInAsHR(page)
     await page.goto('/recruitment/jobs')
-    await page.waitForLoadState('networkidle', { timeout: 15_000 }).catch(() => {})
+    await waitForPageReady(page)
     if (isSetup(page)) return
     await page.locator('[data-testid="create-job-button"]').click()
     await page.locator('[data-testid="job-title"]').fill('E2E Test Job')
@@ -77,9 +67,9 @@ test.describe('JOBS: 3-Step Create Wizard', () => {
   })
 
   test('step 2: job description form', async ({ page }) => {
-    await signIn(page)
+    await signInAsHR(page)
     await page.goto('/recruitment/jobs')
-    await page.waitForLoadState('networkidle', { timeout: 15_000 }).catch(() => {})
+    await waitForPageReady(page)
     if (isSetup(page)) return
     await page.locator('[data-testid="create-job-button"]').click()
     await page.locator('[data-testid="job-title"]').fill('E2E Test Job')
@@ -88,9 +78,9 @@ test.describe('JOBS: 3-Step Create Wizard', () => {
   })
 
   test('step 2 -> step 3: next button works', async ({ page }) => {
-    await signIn(page)
+    await signInAsHR(page)
     await page.goto('/recruitment/jobs')
-    await page.waitForLoadState('networkidle', { timeout: 15_000 }).catch(() => {})
+    await waitForPageReady(page)
     if (isSetup(page)) return
     await page.locator('[data-testid="create-job-button"]').click()
     await page.locator('[data-testid="job-title"]').fill('E2E Test Job')
@@ -102,9 +92,9 @@ test.describe('JOBS: 3-Step Create Wizard', () => {
   })
 
   test('step 3: salary and publish', async ({ page }) => {
-    await signIn(page)
+    await signInAsHR(page)
     await page.goto('/recruitment/jobs')
-    await page.waitForLoadState('networkidle', { timeout: 15_000 }).catch(() => {})
+    await waitForPageReady(page)
     if (isSetup(page)) return
     await page.locator('[data-testid="create-job-button"]').click()
     await page.locator('[data-testid="job-title"]').fill('E2E Test Job')
@@ -118,9 +108,9 @@ test.describe('JOBS: 3-Step Create Wizard', () => {
 
   test('publish job end-to-end', async ({ page }) => {
     const title = `E2E Job ${Date.now()}`
-    await signIn(page)
+    await signInAsHR(page)
     await page.goto('/recruitment/jobs')
-    await page.waitForLoadState('networkidle', { timeout: 15_000 }).catch(() => {})
+    await waitForPageReady(page)
     if (isSetup(page)) return
     await page.locator('[data-testid="create-job-button"]').click()
     await page.locator('[data-testid="job-title"]').fill(title)
@@ -136,9 +126,9 @@ test.describe('JOBS: 3-Step Create Wizard', () => {
 
 test.describe('JOBS: Search & Filter', () => {
   test('search filters job list', async ({ page }) => {
-    await signIn(page)
+    await signInAsHR(page)
     await page.goto('/recruitment/jobs')
-    await page.waitForLoadState('networkidle', { timeout: 15_000 }).catch(() => {})
+    await waitForPageReady(page)
     if (isSetup(page)) return
     const search = page.locator('input[placeholder*="search" i]').first()
     if (await search.isVisible({ timeout: 5000 }).catch(() => false)) {
@@ -152,9 +142,9 @@ test.describe('JOBS: Search & Filter', () => {
 
 test.describe('JOBS: Detail Page', () => {
   test('clicking job card navigates to detail', async ({ page }) => {
-    await signIn(page)
+    await signInAsHR(page)
     await page.goto('/recruitment/jobs')
-    await page.waitForLoadState('networkidle', { timeout: 15_000 }).catch(() => {})
+    await waitForPageReady(page)
     if (isSetup(page)) return
     const jobCard = page.locator('[class*="card"]').first()
     if (await jobCard.isVisible({ timeout: 5000 }).catch(() => false)) {
@@ -165,9 +155,9 @@ test.describe('JOBS: Detail Page', () => {
   })
 
   test('detail page shows back link', async ({ page }) => {
-    await signIn(page)
+    await signInAsHR(page)
     await page.goto('/recruitment/jobs')
-    await page.waitForLoadState('networkidle', { timeout: 15_000 }).catch(() => {})
+    await waitForPageReady(page)
     if (isSetup(page)) return
     const jobCard = page.locator('[class*="card"]').first()
     if (await jobCard.isVisible({ timeout: 5000 }).catch(() => false)) {
@@ -183,9 +173,9 @@ test.describe('JOBS: Detail Page', () => {
 
 test.describe('JOBS: Delete', () => {
   test('delete button appears on hover', async ({ page }) => {
-    await signIn(page)
+    await signInAsHR(page)
     await page.goto('/recruitment/jobs')
-    await page.waitForLoadState('networkidle', { timeout: 15_000 }).catch(() => {})
+    await waitForPageReady(page)
     if (isSetup(page)) return
     const jobCard = page.locator('[class*="card"]').first()
     if (await jobCard.isVisible({ timeout: 5000 }).catch(() => false)) {

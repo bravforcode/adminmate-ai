@@ -1,14 +1,4 @@
-import { test, expect, Page } from '@playwright/test'
-
-const TEST_USER = { email: 'testlogin99@gmail.com', password: 'Test123456!' }
-
-async function signIn(page: Page) {
-  await page.goto('/login')
-  await page.locator('[data-testid="email-input"]').fill(TEST_USER.email)
-  await page.locator('[data-testid="password-input"]').fill(TEST_USER.password)
-  await page.locator('[data-testid="login-button"]').click()
-  await page.waitForURL(/\/dashboard|\/setup-company|\/onboarding/i, { timeout: 30_000 }).catch(() => {})
-}
+import { test, expect, signInAsHR, waitForPageReady, HR_USER } from './helpers'
 
 test.describe('Security Headers', () => {
   test('CSP header should be present', async ({ request }) => {
@@ -44,8 +34,8 @@ test.describe('Authentication', () => {
 
   test('should not store JWT in localStorage after login', async ({ page }) => {
     await page.goto('/login')
-    await page.locator('[data-testid="email-input"]').fill(TEST_USER.email)
-    await page.locator('[data-testid="password-input"]').fill(TEST_USER.password)
+    await page.locator('[data-testid="email-input"]').fill(HR_USER.email)
+    await page.locator('[data-testid="password-input"]').fill(HR_USER.password)
     await page.locator('[data-testid="login-button"]').click()
     await page.waitForTimeout(3000)
     const authData = await page.evaluate(() => localStorage.getItem('adminmate-auth'))
@@ -61,9 +51,9 @@ test.describe('Authentication', () => {
 
 test.describe('XSS Prevention', () => {
   test('should sanitize AI chat output', async ({ page }) => {
-    await signIn(page)
+    await signInAsHR(page)
     await page.goto('/chat')
-    await page.waitForLoadState('networkidle', { timeout: 15_000 }).catch(() => {})
+    await waitForPageReady(page)
     const chatArea = page.locator('[class*="chat"], [class*="message"], [class*="Chat"]').first()
     if (await chatArea.isVisible({ timeout: 5000 }).catch(() => false)) {
       const html = await chatArea.innerHTML().catch(() => '')
@@ -83,16 +73,16 @@ test.describe('Rate Limiting', () => {
 
 test.describe('Audit Log', () => {
   test('audit log page loads for admin', async ({ page }) => {
-    await signIn(page)
+    await signInAsHR(page)
     await page.goto('/settings/audit-log')
-    await page.waitForLoadState('networkidle', { timeout: 15_000 }).catch(() => {})
+    await waitForPageReady(page)
     await expect(page.locator('h1, h2').first()).toBeVisible({ timeout: 10_000 })
   })
 
   test('audit log table contains action columns', async ({ page }) => {
-    await signIn(page)
+    await signInAsHR(page)
     await page.goto('/settings/audit-log')
-    await page.waitForLoadState('networkidle', { timeout: 15_000 }).catch(() => {})
+    await waitForPageReady(page)
     const table = page.locator('table')
     if (await table.isVisible({ timeout: 5000 }).catch(() => false)) {
       await expect(table.locator('th')).toHaveCount(await table.locator('th').count())

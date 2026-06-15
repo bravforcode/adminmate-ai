@@ -1,27 +1,17 @@
-import { test, expect, Page } from '@playwright/test'
-
-const TEST_USER = { email: 'testlogin99@gmail.com', password: 'Test123456!' }
-
-async function signIn(page: Page) {
-  await page.goto('/login')
-  await page.locator('[data-testid="email-input"]').fill(TEST_USER.email)
-  await page.locator('[data-testid="password-input"]').fill(TEST_USER.password)
-  await page.locator('[data-testid="login-button"]').click()
-  await page.waitForURL(/\/dashboard|\/setup-company|\/onboarding/i, { timeout: 30_000 }).catch(() => {})
-}
+import { test, expect, signInAsHR, waitForPageReady } from './helpers'
 
 test.describe('CANDIDATES: List Page', () => {
   test('loads with heading', async ({ page }) => {
-    await signIn(page)
+    await signInAsHR(page)
     await page.goto('/recruitment/candidates')
-    await page.waitForLoadState('networkidle', { timeout: 15_000 }).catch(() => {})
+    await waitForPageReady(page)
     await expect(page.locator('h1, h2').first()).toBeVisible({ timeout: 15_000 })
   })
 
   test('add candidate button visible or redirected to setup', async ({ page }) => {
-    await signIn(page)
+    await signInAsHR(page)
     await page.goto('/recruitment/candidates')
-    await page.waitForLoadState('networkidle', { timeout: 15_000 }).catch(() => {})
+    await waitForPageReady(page)
     if (page.url().includes('/setup-company')) {
       await expect(page.locator('input, select, button').first()).toBeVisible({ timeout: 5_000 })
     } else {
@@ -30,9 +20,9 @@ test.describe('CANDIDATES: List Page', () => {
   })
 
   test('search input exists', async ({ page }) => {
-    await signIn(page)
+    await signInAsHR(page)
     await page.goto('/recruitment/candidates')
-    await page.waitForLoadState('networkidle', { timeout: 15_000 }).catch(() => {})
+    await waitForPageReady(page)
     const search = page.locator('input[placeholder*="search" i], input[type="search"]').first()
     if (await search.isVisible({ timeout: 5000 }).catch(() => false)) {
       await expect(search).toBeVisible()
@@ -40,9 +30,9 @@ test.describe('CANDIDATES: List Page', () => {
   })
 
   test('candidate cards or empty state displayed', async ({ page }) => {
-    await signIn(page)
+    await signInAsHR(page)
     await page.goto('/recruitment/candidates')
-    await page.waitForLoadState('networkidle', { timeout: 15_000 }).catch(() => {})
+    await waitForPageReady(page)
     const content = await page.locator('[class*="card"], [class*="empty"], [class*="skeleton"]').count()
     expect(content).toBeGreaterThanOrEqual(0)
   })
@@ -50,9 +40,9 @@ test.describe('CANDIDATES: List Page', () => {
 
 test.describe('CANDIDATES: Create', () => {
   test('add candidate form opens or setup-company redirect', async ({ page }) => {
-    await signIn(page)
+    await signInAsHR(page)
     await page.goto('/recruitment/candidates')
-    await page.waitForLoadState('networkidle', { timeout: 15_000 }).catch(() => {})
+    await waitForPageReady(page)
     if (page.url().includes('/setup-company')) {
       await expect(page.locator('input, select, button').first()).toBeVisible({ timeout: 5_000 })
     } else {
@@ -62,9 +52,9 @@ test.describe('CANDIDATES: Create', () => {
   })
 
   test('form has all fields', async ({ page }) => {
-    await signIn(page)
+    await signInAsHR(page)
     await page.goto('/recruitment/candidates')
-    await page.waitForLoadState('networkidle', { timeout: 15_000 }).catch(() => {})
+    await waitForPageReady(page)
     if (page.url().includes('/setup-company')) return
     await page.locator('[data-testid="add-candidate"]').click()
     await expect(page.locator('[data-testid="candidate-name"]')).toBeVisible({ timeout: 5_000 })
@@ -74,9 +64,9 @@ test.describe('CANDIDATES: Create', () => {
 
   test('create candidate end-to-end', async ({ page }) => {
     const name = `E2E Candidate ${Date.now()}`
-    await signIn(page)
+    await signInAsHR(page)
     await page.goto('/recruitment/candidates')
-    await page.waitForLoadState('networkidle', { timeout: 15_000 }).catch(() => {})
+    await waitForPageReady(page)
     if (page.url().includes('/setup-company')) return
     await page.locator('[data-testid="add-candidate"]').click()
     await page.locator('[data-testid="candidate-name"]').fill(name)
@@ -86,9 +76,9 @@ test.describe('CANDIDATES: Create', () => {
   })
 
   test('empty name shows validation error', async ({ page }) => {
-    await signIn(page)
+    await signInAsHR(page)
     await page.goto('/recruitment/candidates')
-    await page.waitForLoadState('networkidle', { timeout: 15_000 }).catch(() => {})
+    await waitForPageReady(page)
     if (page.url().includes('/setup-company')) return
     await page.locator('[data-testid="add-candidate"]').click()
     await page.locator('[data-testid="save-candidate"]').click()
@@ -96,9 +86,9 @@ test.describe('CANDIDATES: Create', () => {
   })
 
   test('cancel button closes form', async ({ page }) => {
-    await signIn(page)
+    await signInAsHR(page)
     await page.goto('/recruitment/candidates')
-    await page.waitForLoadState('networkidle', { timeout: 15_000 }).catch(() => {})
+    await waitForPageReady(page)
     if (page.url().includes('/setup-company')) return
     await page.locator('[data-testid="add-candidate"]').click()
     await expect(page.locator('[data-testid="candidate-name"]')).toBeVisible({ timeout: 5_000 })
@@ -112,9 +102,9 @@ test.describe('CANDIDATES: Create', () => {
 
 test.describe('CANDIDATES: Search', () => {
   test('search filters candidates', async ({ page }) => {
-    await signIn(page)
+    await signInAsHR(page)
     await page.goto('/recruitment/candidates')
-    await page.waitForLoadState('networkidle', { timeout: 15_000 }).catch(() => {})
+    await waitForPageReady(page)
     const search = page.locator('input[placeholder*="search" i]').first()
     if (await search.isVisible({ timeout: 5000 }).catch(() => false)) {
       await search.fill('NonexistentCandidate12345')
@@ -127,9 +117,9 @@ test.describe('CANDIDATES: Search', () => {
 
 test.describe('CANDIDATES: Detail Page', () => {
   test('clicking candidate navigates to detail', async ({ page }) => {
-    await signIn(page)
+    await signInAsHR(page)
     await page.goto('/recruitment/candidates')
-    await page.waitForLoadState('networkidle', { timeout: 15_000 }).catch(() => {})
+    await waitForPageReady(page)
     const card = page.locator('[class*="card"]').first()
     if (await card.isVisible({ timeout: 5000 }).catch(() => false)) {
       await card.click()
@@ -139,9 +129,9 @@ test.describe('CANDIDATES: Detail Page', () => {
   })
 
   test('detail page shows back link', async ({ page }) => {
-    await signIn(page)
+    await signInAsHR(page)
     await page.goto('/recruitment/candidates')
-    await page.waitForLoadState('networkidle', { timeout: 15_000 }).catch(() => {})
+    await waitForPageReady(page)
     const card = page.locator('[class*="card"]').first()
     if (await card.isVisible({ timeout: 5000 }).catch(() => false)) {
       await card.click()
@@ -154,14 +144,14 @@ test.describe('CANDIDATES: Detail Page', () => {
   })
 
   test('detail page shows CV upload section', async ({ page }) => {
-    await signIn(page)
+    await signInAsHR(page)
     await page.goto('/recruitment/candidates')
-    await page.waitForLoadState('networkidle', { timeout: 15_000 }).catch(() => {})
+    await waitForPageReady(page)
     const card = page.locator('[class*="card"]').first()
     if (await card.isVisible({ timeout: 5000 }).catch(() => false)) {
       await card.click()
       await page.waitForURL(/\/recruitment\/candidates\/[a-f0-9-]+/, { timeout: 15_000 })
-      await page.waitForLoadState('networkidle', { timeout: 15_000 }).catch(() => {})
+      await waitForPageReady(page)
       const hasUpload = await page.locator('[data-testid*="cv"], [class*="upload"], [class*="dropzone"]').count()
       expect(hasUpload).toBeGreaterThanOrEqual(0)
     }
