@@ -166,8 +166,7 @@ describe('MessagingHub', () => {
       expect(count).toBe(0)
     })
 
-    it('should process items and return count', async () => {
-      // 1. process_message_queue returns 1 item
+    it('should process items using vault-decrypted token', async () => {
       mockSupabase.rpc
         .mockResolvedValueOnce({
           data: [
@@ -175,30 +174,60 @@ describe('MessagingHub', () => {
           ],
         })
 
-      // 2. sendViaPlatform → from('chat_platform_connections') for WhatsApp config
-      const connChain = createChainMock({ data: { access_token: 'test-token', platform_account_id: 'test-phone' }, error: null })
+      const connChain = createChainMock({ data: { access_token_vault_id: '00000000-0000-0000-0000-000000000001', platform_account_id: 'test-phone' }, error: null })
       mockSupabase.from.mockReturnValueOnce(connChain)
 
-      // 3. fetch mock for WhatsApp API
+      mockSupabase.rpc.mockResolvedValueOnce({ data: 'decrypted-vault-token' })
+
       const originalFetch = globalThis.fetch
       globalThis.fetch = vi.fn().mockResolvedValue({ ok: true, status: 200, text: () => Promise.resolve('') })
 
-      // 4. mark_queue_sent
       mockSupabase.rpc.mockResolvedValueOnce({ data: null })
 
-      // 5. receiveMessage → rpc get_or_create_conversation
       mockSupabase.rpc.mockResolvedValueOnce({ data: 'thread-1' })
 
-      // 6. receiveMessage → from('messages') for dedup (no platform_message_id, so maybeSingle not called)
       const messagesChain = createChainMock({ data: null, error: null })
       messagesChain.single.mockResolvedValueOnce({ data: { id: 'msg-out-1' } })
       mockSupabase.from.mockReturnValueOnce(messagesChain)
 
-      // 7. receiveMessage → rpc upsert_conversation_thread
       mockSupabase.rpc.mockResolvedValueOnce({ data: 'thread-1' })
 
-      // 8. receiveMessage → from('platform_sync_log') for logSync
       const logChain = createChainMock({ data: { id: 'log-sync' }, error: null })
+      mockSupabase.from.mockReturnValueOnce(logChain)
+
+      const count = await hub.processQueue(1)
+      expect(count).toBe(1)
+
+      expect(mockSupabase.rpc).toHaveBeenCalledWith('get_decrypted_token', { p_secret_id: '00000000-0000-0000-0000-000000000001' })
+
+      globalThis.fetch = originalFetch
+    })
+
+    it('should fallback to env var when vault id is null', async () => {
+      mockSupabase.rpc
+        .mockResolvedValueOnce({
+          data: [
+            { queue_id: 'q2', platform: 'whatsapp', platform_user_id: '+456', content: 'hello', content_type: 'text', company_id: 'c1' },
+          ],
+        })
+
+      const connChain = createChainMock({ data: { access_token_vault_id: null, platform_account_id: 'test-phone' }, error: null })
+      mockSupabase.from.mockReturnValueOnce(connChain)
+
+      const originalFetch = globalThis.fetch
+      globalThis.fetch = vi.fn().mockResolvedValue({ ok: true, status: 200, text: () => Promise.resolve('') })
+
+      mockSupabase.rpc.mockResolvedValueOnce({ data: null })
+
+      mockSupabase.rpc.mockResolvedValueOnce({ data: 'thread-2' })
+
+      const messagesChain = createChainMock({ data: null, error: null })
+      messagesChain.single.mockResolvedValueOnce({ data: { id: 'msg-out-2' } })
+      mockSupabase.from.mockReturnValueOnce(messagesChain)
+
+      mockSupabase.rpc.mockResolvedValueOnce({ data: 'thread-2' })
+
+      const logChain = createChainMock({ data: { id: 'log-sync-2' }, error: null })
       mockSupabase.from.mockReturnValueOnce(logChain)
 
       const count = await hub.processQueue(1)

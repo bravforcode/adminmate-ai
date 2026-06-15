@@ -4,9 +4,14 @@
 
 -- Helper: a safe company_id getter that won't error on missing profile
 CREATE OR REPLACE FUNCTION safe_user_company_id()
-RETURNS UUID AS $$
+RETURNS UUID
+LANGUAGE sql
+SECURITY DEFINER
+SET search_path = public
+STABLE
+AS $$
   SELECT company_id FROM user_profiles WHERE id = auth.uid() LIMIT 1
-$$ LANGUAGE sql SECURITY DEFINER STABLE;
+$$;
 
 -- Drop and recreate all company-scoped read policies to never return 403
 -- when the user is authenticated (even without a company yet).

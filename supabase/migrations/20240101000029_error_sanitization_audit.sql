@@ -13,7 +13,7 @@ BEGIN
   );
   RETURN NEW;
 END;
-$$ LANGUAGE plpgsql SECURITY DEFINER;
+$$ LANGUAGE plpgsql SECURITY DEFINER SET search_path = public;
 
 -- Attach audit trigger to critical tables
 DO $$
@@ -29,19 +29,28 @@ $$;
 
 -- Add Gemini usage summary function
 CREATE OR REPLACE FUNCTION get_gemini_usage_today(p_company_id UUID)
-RETURNS TABLE(feature VARCHAR, count BIGINT) AS $$
+RETURNS TABLE(feature VARCHAR, count BIGINT)
+LANGUAGE sql
+SECURITY DEFINER
+SET search_path = public
+STABLE
+AS $$
   SELECT feature, COUNT(*) FROM ai_usage_log
   WHERE company_id = p_company_id AND created_at::DATE = CURRENT_DATE
   GROUP BY feature ORDER BY COUNT(*) DESC
-$$ LANGUAGE sql SECURITY DEFINER STABLE;
+$$;
 
 -- Health check function
 CREATE OR REPLACE FUNCTION health_check()
-RETURNS JSON AS $$
+RETURNS JSON
+LANGUAGE sql
+SECURITY DEFINER
+SET search_path = public
+AS $$
   SELECT json_build_object(
     'status', 'ok',
     'timestamp', NOW(),
     'db_size_mb', (SELECT ROUND(pg_database_size(current_database()) / 1048576.0, 2)),
     'active_connections', (SELECT COUNT(*) FROM pg_stat_activity WHERE state = 'active')
   )
-$$ LANGUAGE sql SECURITY DEFINER;
+$$;

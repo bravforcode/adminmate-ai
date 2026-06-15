@@ -1,15 +1,20 @@
-import { useState } from 'react'
+import { useState, useMemo, useCallback } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
-import { useQuery } from '@tanstack/react-query'
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { supabase } from '../lib/supabase'
 import { useAuthStore } from '../stores/authStore'
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, Cell } from 'recharts'
-import { FileDown, TrendingUp, TrendingDown, Gauge, DollarSign, UserCheck, ListFilter, ExternalLink, AlertCircle, RefreshCw, FileX } from 'lucide-react'
+import { FileDown, TrendingUp, TrendingDown, Gauge, DollarSign, UserCheck, ListFilter, ExternalLink, FileX, Calendar, Clock, Zap } from 'lucide-react'
 import { PIPELINE_STAGES } from '../utils/constants'
 import { cn } from '../utils/cn'
 import { LoadingState } from '../components/shared/LoadingState'
 import { EmptyState } from '../components/shared/EmptyState'
+import { ErrorState } from '../components/shared/ErrorState'
+import { ReportScheduler, ScheduleList } from '../components/reports/ReportScheduler'
+import { Button } from '../components/ui/Button'
+import { reportService } from '../services/reportService'
+import type { ReportType } from '../utils/reportGenerator'
 
 const CHART_COLORS = ['#003d9a', '#455e91', '#00418a', '#737685', '#b2c5ff', '#aec6ff', '#dae2ff']
 
@@ -32,7 +37,7 @@ interface KPICardProps {
 
 function KPICard({ title, subtitle, value, unit, icon: Icon, iconBg, iconColor, trend, trendUp, trendBg, trendColor, progress }: KPICardProps) {
   return (
-    <div className="bg-surface rounded-xl p-6 border border-outline-variant shadow-sm hover:border-primary transition-colors duration-300">
+    <div className="bg-surface dark:bg-[#1e293b] rounded-xl p-6 border border-outline-variant dark:border-[#334155] shadow-sm hover:border-primary dark:hover:border-[#3b82f6] transition-colors duration-300">
       <div className="flex justify-between items-start mb-4">
         <div className={cn('w-10 h-10 rounded-full flex items-center justify-center', iconBg)}>
           <Icon size={20} className={iconColor} />
@@ -42,19 +47,19 @@ function KPICard({ title, subtitle, value, unit, icon: Icon, iconBg, iconColor, 
           {trend}
         </span>
       </div>
-      <h3 className="text-lg font-semibold text-on-background mb-1">{title}</h3>
-      <p className="text-sm text-on-surface-variant mb-4">{subtitle}</p>
+      <h3 className="text-lg font-semibold text-on-background dark:text-[#f1f5f9] mb-1">{title}</h3>
+      <p className="text-sm text-on-surface-variant dark:text-[#94a3b8] mb-4">{subtitle}</p>
       <div className="flex items-baseline gap-2">
-        <span className="text-3xl font-bold text-primary">{value}</span>
-        <span className="text-sm text-on-surface-variant">{unit}</span>
+        <span className="text-3xl font-bold text-primary dark:text-[#93c5fd]">{value}</span>
+        <span className="text-sm text-on-surface-variant dark:text-[#94a3b8]">{unit}</span>
       </div>
       {typeof progress === 'number' && (
         <>
-          <div className="w-full bg-surface-container-high rounded-full h-2.5 mt-4 mb-2">
+          <div className="w-full bg-surface-container-high dark:bg-[#334155] rounded-full h-2.5 mt-4 mb-2">
             <div className="bg-tertiary h-2.5 rounded-full" style={{ width: `${progress}%` }} />
           </div>
           <div className="flex justify-between text-sm">
-            <span className="text-on-surface-variant">Completion</span>
+            <span className="text-on-surface-variant dark:text-[#94a3b8]">Completion</span>
             <span className="text-tertiary font-bold">{progress}%</span>
           </div>
         </>
@@ -72,11 +77,23 @@ const PERIODS = [
   'YTD',
 ]
 
+const REPORT_TYPE_OPTIONS: { value: ReportType; labelKey: string; icon: LucideIcon }[] = [
+  { value: 'hiring_summary', labelKey: 'scheduling.type_hiring_summary', icon: UserCheck },
+  { value: 'pipeline_analysis', labelKey: 'scheduling.type_pipeline_analysis', icon: Gauge },
+  { value: 'time_to_hire', labelKey: 'scheduling.type_time_to_hire', icon: Clock },
+  { value: 'source_effectiveness', labelKey: 'scheduling.type_source_effectiveness', icon: Zap },
+  { value: 'onboarding_progress', labelKey: 'scheduling.type_onboarding_progress', icon: TrendingUp },
+]
+
 export function ReportsPage() {
   const { t } = useTranslation(['reports', 'common'])
   const navigate = useNavigate()
   const company = useAuthStore(s => s.company)
+  const profile = useAuthStore(s => s.profile)
+  const queryClient = useQueryClient()
   const [activePeriod, setActivePeriod] = useState(PERIODS[0])
+  const [showScheduler, setShowScheduler] = useState(false)
+  const [generatingType, setGeneratingType] = useState<ReportType | null>(null)
 
   const getDateRange = (period: string) => {
     const now = new Date()
@@ -152,10 +169,29 @@ export function ReportsPage() {
     enabled: !!company?.id,
   })
 
-  const pipelineData = PIPELINE_STAGES.map(s => ({
+  const { data: generatedReports = [] } = useQuery({
+    queryKey: ['generatedReports', company?.id],
+    queryFn: () => company?.id ? reportService.getGeneratedReports(company.id, 5) : [],
+    enabled: !!company?.id,
+  })
+
+  const generateNowMutation = useMutation({
+    mutationFn: (reportType: ReportType) => {
+      if (!company?.id) throw new Error('No company')
+      const range = getDateRange(activePeriod)
+      return reportService.generateReport(company.id, reportType, range, profile?.id)
+    },
+    onMutate: (reportType) => setGeneratingType(reportType),
+    onSettled: () => setGeneratingType(null),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['generatedReports'] })
+    },
+  })
+
+  const pipelineData = useMemo(() => PIPELINE_STAGES.map(s => ({
     name: t(s.labelKey, { ns: 'recruitment', defaultValue: s.labelKey }),
     value: (pipeline as Record<string, number>)?.[s.id] || 0,
-  }))
+  })), [pipeline, t])
 
   const avgDays = kpis?.avgDaysToHire || 0
   const costPerHire = kpis?.hiredCount
@@ -163,17 +199,19 @@ export function ReportsPage() {
     : '$0'
   const completionRate = kpis?.totalChecklists ? Math.round((kpis.completedChecklists / kpis.totalChecklists) * 100) : 0
 
-  const sourceBreakdown = candidates?.reduce((acc: Record<string, number>, c: { source?: string }) => {
+  const sourceBreakdown = useMemo(() => candidates?.reduce((acc: Record<string, number>, c: { source?: string }) => {
     const source = c.source || 'Other'
     acc[source] = (acc[source] || 0) + 1
     return acc
-  }, {} as Record<string, number>) || {}
+  }, {} as Record<string, number>) || {}, [candidates])
 
-  const totalSources = Object.values(sourceBreakdown).reduce((a: number, b: number) => a + b, 0)
+  const totalSources = useMemo(() => Object.values(sourceBreakdown).reduce((a: number, b: number) => a + b, 0), [sourceBreakdown])
   const sourceColors = ['bg-primary', 'bg-tertiary', 'bg-secondary', 'bg-outline', 'bg-surface-dim']
-  const sourceEntries = Object.entries(sourceBreakdown)
+  const sourceEntries = useMemo(() => Object.entries(sourceBreakdown)
     .sort(([, a], [, b]) => b - a)
-    .slice(0, 5)
+    .slice(0, 5), [sourceBreakdown])
+
+  const handlePeriodChange = useCallback((period: string) => setActivePeriod(period), [])
 
   const handleExportCSV = () => {
     const headers = ['Stage', 'Count']
@@ -184,6 +222,10 @@ export function ReportsPage() {
     const a = document.createElement('a')
     a.href = url; a.download = `pipeline-report-${activePeriod.replace(/\s/g, '-')}.csv`
     a.click(); URL.revokeObjectURL(url)
+  }
+
+  const handleGenerateNow = (reportType: ReportType) => {
+    generateNowMutation.mutate(reportType)
   }
 
   const isInitialLoading = (pipelineLoading || kpisLoading) && !pipeline && !kpis
@@ -198,47 +240,104 @@ export function ReportsPage() {
             <p className="text-body-md text-on-surface-variant mt-1">{t('subtitle')}</p>
           </div>
         </header>
-        <div className="bg-surface rounded-xl border border-outline-variant p-8 text-center">
-          <AlertCircle size={40} className="mx-auto text-error mb-3" />
-          <h3 className="font-semibold text-on-surface mb-1">{t('common:errors.load_failed')}</h3>
-          <button
-            onClick={() => { refetchPipeline(); refetchKpis() }}
-            className="mt-4 inline-flex items-center gap-2 px-4 py-2 bg-primary text-on-primary rounded-lg text-sm font-medium hover:opacity-90"
-          >
-            <RefreshCw size={14} /> {t('common:errors.retry')}
-          </button>
-        </div>
+        <ErrorState
+          title={t('common:errors.load_failed')}
+          onRetry={() => { refetchPipeline(); refetchKpis() }}
+        />
       </div>
     )
   }
 
   return (
     <div className="space-y-6">
+      {showScheduler && <ReportScheduler onClose={() => setShowScheduler(false)} />}
+
       <header className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
         <div>
-          <h1 className="text-headline-md md:text-headline-lg font-bold text-on-background">{t('title')}</h1>
-          <p className="text-body-md text-on-surface-variant mt-1">{t('subtitle')}</p>
+          <h1 className="text-headline-md md:text-headline-lg font-bold text-on-background dark:text-[#f1f5f9]">{t('title')}</h1>
+          <p className="text-body-md text-on-surface-variant dark:text-[#94a3b8] mt-1">{t('subtitle')}</p>
         </div>
-        <div className="flex items-center gap-2 bg-surface rounded-full p-1 border border-outline-variant shadow-sm">
-          {PERIODS.map(period => (
-            <button
-              key={period}
-              onClick={() => setActivePeriod(period)}
-              className={cn(
-                'px-4 py-2 rounded-full text-xs font-semibold transition-colors',
-                activePeriod === period ? 'bg-surface-container-low text-primary' : 'text-on-surface-variant hover:bg-surface-container-high'
-              )}
-            >
-              {period}
-            </button>
-          ))}
-          <div className="w-px h-4 bg-outline-variant mx-1" />
-          <button className="flex items-center gap-1 px-3 py-2 text-on-surface-variant hover:text-primary transition-colors">
-            <ListFilter size={16} />
-            <span className="text-xs font-semibold hidden md:inline">{t('filters', { ns: 'common' })}</span>
-          </button>
+        <div className="flex items-center gap-2">
+          <Button
+            variant="default"
+            size="sm"
+            onClick={() => setShowScheduler(true)}
+            icon={<Calendar size={16} />}
+          >
+            {t('scheduling.schedule_report')}
+          </Button>
+          <div className="flex items-center gap-1 bg-surface dark:bg-[#1e293b] rounded-full p-1 border border-outline-variant dark:border-[#334155] shadow-sm">
+            {PERIODS.map(period => (
+              <button
+                key={period}
+                onClick={() => handlePeriodChange(period)}
+                className={cn(
+                  'px-4 py-2 rounded-full text-xs font-semibold transition-colors',
+                  activePeriod === period ? 'bg-surface-container-low dark:bg-[#1e3a5f] text-primary dark:text-[#93c5fd]' : 'text-on-surface-variant dark:text-[#94a3b8] hover:bg-surface-container-high dark:hover:bg-[#334155]'
+                )}
+              >
+                {period}
+              </button>
+            ))}
+            <div className="w-px h-4 bg-outline-variant dark:bg-[#334155] mx-1" />
+            <Button variant="ghost" size="sm" icon={<ListFilter size={16} />}>{t('filters', { ns: 'common' })}</Button>
+          </div>
         </div>
       </header>
+
+      <ScheduleList onGenerateNow={handleGenerateNow} generatingType={generatingType} />
+
+      <div className="bg-surface dark:bg-[#1e293b] rounded-xl p-6 border border-outline-variant dark:border-[#334155] shadow-sm">
+        <div className="flex items-center justify-between mb-4">
+          <h3 className="text-lg font-semibold text-on-background dark:text-[#f1f5f9]">{t('scheduling.generate_now_title')}</h3>
+          <p className="text-sm text-on-surface-variant dark:text-[#94a3b8]">{t('scheduling.generate_now_sub')}</p>
+        </div>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+          {REPORT_TYPE_OPTIONS.map(opt => (
+            <button
+              key={opt.value}
+              onClick={() => handleGenerateNow(opt.value)}
+              disabled={generatingType === opt.value}
+              className="flex items-center gap-3 p-4 rounded-xl border border-outline-variant dark:border-[#334155] hover:border-primary dark:hover:border-[#3b82f6] hover:bg-surface-container-low dark:hover:bg-[#1e3a5f] transition-all group disabled:opacity-50"
+            >
+              <div className="w-10 h-10 rounded-full bg-primary-fixed flex items-center justify-center group-hover:bg-primary group-hover:text-on-primary transition-colors">
+                <opt.icon size={18} className="text-primary group-hover:text-on-primary" />
+              </div>
+              <div className="text-left flex-1">
+                <p className="text-sm font-medium text-on-background dark:text-[#f1f5f9]">{t(opt.labelKey)}</p>
+                <p className="text-xs text-on-surface-variant dark:text-[#94a3b8]">
+                  {generatingType === opt.value ? t('scheduling.generating') : t('scheduling.click_to_generate')}
+                </p>
+              </div>
+            </button>
+          ))}
+        </div>
+      </div>
+
+      {generatedReports.length > 0 && (
+        <div className="bg-surface dark:bg-[#1e293b] rounded-xl p-6 border border-outline-variant dark:border-[#334155] shadow-sm">
+          <div className="flex justify-between items-center mb-4">
+            <div>
+              <h3 className="text-lg font-semibold text-on-background dark:text-[#f1f5f9]">{t('scheduling.recent_reports')}</h3>
+              <p className="text-sm text-on-surface-variant dark:text-[#94a3b8]">{t('scheduling.recent_reports_sub')}</p>
+            </div>
+          </div>
+          <div className="space-y-2">
+            {generatedReports.map(r => (
+              <div key={r.id} className="flex items-center justify-between py-2 border-b border-surface-container dark:border-[#334155] last:border-0">
+                <div className="flex items-center gap-3">
+                  <FileDown size={16} className="text-outline dark:text-[#64748b]" />
+                  <div>
+                    <p className="text-sm font-medium text-on-background dark:text-[#f1f5f9]">{r.title}</p>
+                    <p className="text-xs text-on-surface-variant dark:text-[#94a3b8]">{new Date(r.created_at).toLocaleString()}</p>
+                  </div>
+                </div>
+                <Button variant="link" size="xs" onClick={() => reportService.downloadReport(r, 'html')}>{t('scheduling.download')}</Button>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
 
       {isInitialLoading ? (
         <LoadingState variant="cards" rows={3} message={t('common:loading')} />
@@ -288,18 +387,15 @@ export function ReportsPage() {
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
-            <div className="lg:col-span-8 bg-surface rounded-xl p-6 border border-outline-variant shadow-sm">
+            <div className="lg:col-span-8 bg-surface dark:bg-[#1e293b] rounded-xl p-6 border border-outline-variant dark:border-[#334155] shadow-sm">
               <div className="flex justify-between items-center mb-6">
                 <div>
-                  <h3 className="text-lg font-semibold text-on-background">{t('chart.pipeline_title')}</h3>
-                  <p className="text-sm text-on-surface-variant">{t('chart.pipeline_subtitle')}</p>
+                  <h3 className="text-lg font-semibold text-on-background dark:text-[#f1f5f9]">{t('chart.pipeline_title')}</h3>
+                  <p className="text-sm text-on-surface-variant dark:text-[#94a3b8]">{t('chart.pipeline_subtitle')}</p>
                 </div>
-                <button
-                  onClick={handleExportCSV}
-                  className="flex items-center gap-2 px-4 py-2 border border-outline-variant rounded-lg text-sm hover:bg-surface-container-low transition-colors"
-                >
-                  <FileDown size={16} /> {t('export_csv', { ns: 'common', defaultValue: 'Export CSV' })}
-                </button>
+                <Button variant="outline" size="sm" onClick={handleExportCSV} icon={<FileDown size={16} />}>
+                  {t('export_csv', { ns: 'common', defaultValue: 'Export CSV' })}
+                </Button>
               </div>
               <ResponsiveContainer width="100%" height={300}>
                 <BarChart data={pipelineData} layout="vertical">
@@ -315,60 +411,60 @@ export function ReportsPage() {
               </ResponsiveContainer>
             </div>
 
-            <div className="lg:col-span-4 bg-surface rounded-xl p-6 border border-outline-variant shadow-sm flex flex-col">
-              <h3 className="text-lg font-semibold text-on-background mb-1">{t('breakdown.title')}</h3>
-              <p className="text-sm text-on-surface-variant mb-6">{t('breakdown.subtitle')}</p>
+            <div className="lg:col-span-4 bg-surface dark:bg-[#1e293b] rounded-xl p-6 border border-outline-variant dark:border-[#334155] shadow-sm flex flex-col">
+              <h3 className="text-lg font-semibold text-on-background dark:text-[#f1f5f9] mb-1">{t('breakdown.title')}</h3>
+              <p className="text-sm text-on-surface-variant dark:text-[#94a3b8] mb-6">{t('breakdown.subtitle')}</p>
               <div className="flex-1 flex flex-col justify-center gap-5">
                 {totalSources > 0 ? sourceEntries.map(([label, count], i) => (
                   <div key={label}>
                     <div className="flex justify-between items-center mb-1 text-sm">
-                      <span className="text-on-background flex items-center gap-2">
+                      <span className="text-on-background dark:text-[#f1f5f9] flex items-center gap-2">
                         <span className={cn('w-2 h-2 rounded-full', sourceColors[i % sourceColors.length])} />
                         {label}
                       </span>
-                      <span className="font-bold text-on-surface">{Math.round((count / totalSources) * 100)}%</span>
+                      <span className="font-bold text-on-surface dark:text-[#f1f5f9]">{Math.round((count / totalSources) * 100)}%</span>
                     </div>
-                    <div className="w-full bg-surface-container-high rounded-full h-1.5">
+                    <div className="w-full bg-surface-container-high dark:bg-[#334155] rounded-full h-1.5">
                       <div className={cn('h-1.5 rounded-full', sourceColors[i % sourceColors.length])} style={{ width: `${(count / totalSources) * 100}%` }} />
                     </div>
                   </div>
-                )) : (
-                  <p className="text-sm text-on-surface-variant text-center">{t('no_data')}</p>
+                )                ) : (
+                  <p className="text-sm text-on-surface-variant dark:text-[#94a3b8] text-center">{t('no_data')}</p>
                 )}
               </div>
             </div>
           </div>
 
-          <div className="bg-surface rounded-xl p-6 border border-outline-variant shadow-sm">
+          <div className="bg-surface dark:bg-[#1e293b] rounded-xl p-6 border border-outline-variant dark:border-[#334155] shadow-sm">
             <div className="flex justify-between items-center mb-4">
               <div>
-                <h3 className="text-lg font-semibold text-on-background">{t('table.title')}</h3>
-                <p className="text-sm text-on-surface-variant">{t('table.subtitle')}</p>
+                <h3 className="text-lg font-semibold text-on-background dark:text-[#f1f5f9]">{t('table.title')}</h3>
+                <p className="text-sm text-on-surface-variant dark:text-[#94a3b8]">{t('table.subtitle')}</p>
               </div>
-              <button onClick={() => navigate('/documents')} className="text-xs font-semibold text-primary hover:underline">{t('view_all')}</button>
+              <Button variant="link" size="xs" onClick={() => navigate('/documents')}>{t('view_all')}</Button>
             </div>
-            <div className="overflow-x-auto -mx-6 px-6">
-              <table className="w-full text-left border-collapse min-w-[400px]">
+            <div className="table-responsive overflow-x-auto -mx-6 px-6">
+              <table role="table" className="w-full text-left border-collapse min-w-[400px]">
                 <thead>
-                  <tr className="border-b border-outline-variant text-xs font-semibold text-on-surface-variant uppercase tracking-wider">
-                    <th className="pb-3 font-semibold">{t('table.report_name')}</th>
-                    <th className="pb-3 font-semibold">{t('table.category')}</th>
-                    <th className="pb-3 font-semibold">{t('table.date')}</th>
-                    <th className="pb-3 font-semibold text-right">{t('table.action')}</th>
+                  <tr className="bg-surface-container dark:bg-[#334155]/50 border-b border-outline-variant/50 dark:border-[#334155]/50">
+                    <th className="py-3 px-4 text-xs font-semibold uppercase tracking-wider text-on-surface-variant dark:text-[#94a3b8]">{t('table.report_name')}</th>
+                    <th className="py-3 px-4 text-xs font-semibold uppercase tracking-wider text-on-surface-variant dark:text-[#94a3b8]">{t('table.category')}</th>
+                    <th className="py-3 px-4 text-xs font-semibold uppercase tracking-wider text-on-surface-variant dark:text-[#94a3b8]">{t('table.date')}</th>
+                    <th className="py-3 px-4 text-xs font-semibold uppercase tracking-wider text-on-surface-variant dark:text-[#94a3b8] text-right">{t('table.action')}</th>
                   </tr>
                 </thead>
-                <tbody className="text-sm text-on-background">
+                <tbody className="text-sm text-on-surface dark:text-[#f1f5f9]">
                   {documents && documents.length > 0 ? documents.map((doc: { id: string; document_type?: string; created_at?: string; candidates?: { full_name?: string } }) => (
-                    <tr key={doc.id} className="border-b border-surface-container hover:bg-surface-container-low transition-colors group cursor-pointer">
-                      <td className="py-3 flex items-center gap-2">
-                        <ExternalLink size={16} className="text-outline" />
+                    <tr key={doc.id} className="border-b border-outline-variant/50 dark:border-[#334155]/50 hover:bg-surface-container-high/50 dark:hover:bg-[#334155]/30 transition-colors duration-150 group cursor-pointer">
+                      <td className="py-3 px-4 text-sm text-on-surface dark:text-[#f1f5f9] flex items-center gap-2">
+                        <ExternalLink size={16} className="text-outline dark:text-[#64748b]" />
                         {doc.candidates?.full_name || 'Document'} — {doc.document_type?.replace(/_/g, ' ')}
                       </td>
-                      <td className="py-3">
-                        <span className="bg-surface-container px-2 py-1 rounded text-xs">{doc.document_type?.split('_')[0] || 'General'}</span>
+                      <td className="py-3 px-4 text-sm text-on-surface dark:text-[#f1f5f9]">
+                        <span className="bg-surface-container dark:bg-[#1e3a5f] px-2 py-1 rounded text-xs dark:text-[#f1f5f9]">{doc.document_type?.split('_')[0] || 'General'}</span>
                       </td>
-                      <td className="py-3 text-on-surface-variant">{doc.created_at ? new Date(doc.created_at).toLocaleDateString() : '-'}</td>
-                      <td className="py-3 text-right">
+                      <td className="py-3 px-4 text-sm text-on-surface dark:text-[#f1f5f9] text-on-surface-variant">{doc.created_at ? new Date(doc.created_at).toLocaleDateString() : '-'}</td>
+                      <td className="py-3 px-4 text-sm text-on-surface dark:text-[#f1f5f9] text-right">
                         <ExternalLink size={16} className="text-primary opacity-0 group-hover:opacity-100 transition-opacity inline-block" />
                       </td>
                     </tr>

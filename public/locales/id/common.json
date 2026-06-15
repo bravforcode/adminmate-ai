@@ -8,6 +8,11 @@
     "ai_assistant": "Asisten AI",
     "reports": "Laporan",
     "settings": "Pengaturan",
+    "security": "Keamanan",
+    "notifications": "Notifikasi",
+    "audit_log": "Log Audit",
+    "import_export": "Impor / Ekspor",
+    "privacy_data": "Privasi & Data",
     "jobs": "Lowongan",
     "candidates": "Kandidat",
     "pipeline": "Pipeline",
@@ -173,7 +178,10 @@
     "vietnam_decree": "Vietnam (Decree 13)",
     "vietnam_decree_desc": "Penilaian transfer lintas batas aktif.",
     "indonesia_pdp": "Indonesia (UU PDP)",
-    "indonesia_pdp_desc": "Menunggu verifikasi penunjukan DPO."
+    "indonesia_pdp_desc": "Menunggu verifikasi penunjukan DPO.",
+    "audit_log": "Log Audit",
+    "audit_log_desc": "Lacak semua aktivitas sistem, tindakan pengguna, dan peristiwa keamanan.",
+    "view_audit_log": "Lihat Log Audit"
   },
   "ai": {
     "hr_assistant": "Asisten Pengetahuan HR",
@@ -285,5 +293,210 @@
     "ok": "OK",
     "warning": "Peringatan",
     "critical": "Kritis"
+  },
+  "pdpa": {
+    "title": "Persetujuan Privasi Data",
+    "description": "Kami mengumpulkan dan memproses data pribadi Anda untuk tujuan perekrutan berdasarkan undang-undang perlindungan data yang berlaku (PDPA Thailand / Peraturan Pemerintah 13 Vietnam / UU PDP Indonesia). Data Anda akan disimpan selama 2 tahun atau hingga persetujuan dicabut.",
+    "consent_button": "Saya Setuju",
+    "page_title": "Privasi & Data",
+    "page_subtitle": "Kelola data pribadi, ekspor, dan riwayat persetujuan sesuai PDPA / GDPR.",
+    "short_title": "Privasi & Data",
+    "settings_desc": "Ekspor atau hapus data pribadi. Lihat riwayat persetujuan.",
+    "manage": "Kelola Privasi",
+    "export_title": "Ekspor Data Saya",
+    "export_desc": "Unduh salinan lengkap data pribadi Anda dalam format JSON. Termasuk profil, lamaran, dokumen, dan catatan persetujuan.",
+    "export_button": "Ekspor Data Saya",
+    "exporting": "Mengekspor...",
+    "export_success": "Data berhasil diekspor",
+    "delete_title": "Hapus Akun Saya",
+    "delete_desc": "Anonimkan data pribadi Anda. Kolom PII akan diganti dengan nilai anonim. Catatan bisnis non-PII (riwayat lamaran, log audit) akan disimpan untuk kelanjutan operasional.",
+    "delete_warning": "Tindakan ini tidak dapat dibatalkan. Nama, email, telepon, dan pengenal pribadi lainnya akan dianonimkan secara permanen.",
+    "delete_button": "Hapus Akun Saya",
+    "delete_confirm_title": "Hapus Data Akun?",
+    "delete_confirm_message": "Ini akan secara permanen anonimkan data pribadi Anda. Nama, email, telepon dan PII lainnya akan diganti dengan nilai anonim. Tindakan ini tidak dapat dibatalkan.",
+    "delete_confirm_button": "Ya, Hapus Data Saya",
+    "delete_success": "Data akun telah dianonimkan",
+    "categories_title": "Kategori Data",
+    "categories_desc": "Ikhtisar kategori data yang disimpan tentang Anda.",
+    "consent_history_title": "Riwayat Persetujuan",
+    "consent_history_desc": "Garis waktu catatan persetujuan Anda. Unduh tanda terima untuk catatan Anda.",
+    "download_receipt": "Tanda Terima",
+    "no_consents": "Tidak ditemukan catatan persetujuan."
+  },
+  "tour": {
+    "welcome": {
+      "title": "Selamat Datang di AdminMate AI!",
+      "content": "Izinkan kami memandu Anda. Tur singkat ini akan membantu Anda memulai."
+    },
+    "sidebar": {
+      "title": "Menu Navigasi",
+      "content": "Akses semua alat Anda dari bilah sisi ini. Diorganisir berdasarkan fungsi.",
+      "content.applicant": "Akses profil, tugas, dan chat dari bilah sisi ini."
+    },
+    "search": {
+      "title": "Pencarian Cerdas",
+      "content": "Temukan kandidat, pekerjaan, atau informasi apa pun di platform dengan cepat."
+    },
+    "notifications": {
+      "title": "Notifikasi",
+      "content": "Dapatkan pembaruan pelamar baru, pengingat wawancara, dan pemberitahuan penting."
+    },
+    "language": {
+      "title": "Pengalih Bahasa",
+      "content": "Beralih antara bahasa Inggris, Thailand, Vietnam, dan Mandarin kapan saja."
+    },
+    "chatbot": {
+      "title": "Asisten AI",
+      "content": "Butuh bantuan? Asisten AI dapat menjawab pertanyaan tentang kebijakan, pekerjaan, dan lainnya."
+    },
+    "skip": "Lewati Tur",
+    "next": "Selanjutnya",
+    "prev": "Kembali",
+    "finish": "Mulai",
+    "restart": "Mulai Ulang Tur",
+    "restartDescription": "Putar kembali tur orientasi untuk menyegarkan ingatan Anda tentang fitur utama.",
+    "stepOf": "{{current}} dari {{total}}"
+  },
+  "applicant": {
+    "dashboard": {
+      "welcome": "Selamat datang kembali, {{name}}!",
+      "applications": "Lamaran",
+      "interviews": "Wawancara",
+      "tasks": "Tugas Tertunda",
+      "quickActions": "Aksi Cepat",
+      "recentActivity": "Aktivitas Terbaru",
+      "noActivity": "Belum ada aktivitas. Mulai dengan melihat posisi yang terbuka!",
+      "updateProfile": "Perbarui informasi Anda"
+    },
+    "jobs": {
+      "title": "Posisi Tersedia",
+      "subtitle": "Temukan dan lamar posisi yang terbuka",
+      "search": "Cari pekerjaan...",
+      "apply": "Lamar Sekarang",
+      "applied": "Sudah Dilamar",
+      "noJobs": "Belum ada posisi terbuka",
+      "noJobsDesc": "Periksa kembali nanti untuk peluang baru"
+    },
+    "jobDetail": {
+      "description": "Deskripsi Pekerjaan",
+      "requirements": "Persyaratan",
+      "responsibilities": "Tanggung Jawab"
+    },
+    "status": {
+      "title": "Lamaran Saya",
+      "subtitle": "Lacak perkembangan lamaran pekerjaan Anda",
+      "applied": "Melamar",
+      "screening": "Seleksi",
+      "interview": "Wawancara",
+      "offer": "Penawaran",
+      "hired": "Diterima",
+      "appliedOn": "Tanggal Melamar",
+      "updated": "Diperbarui",
+      "noApplications": "Belum ada lamaran",
+      "noApplicationsDesc": "Mulai dengan melihat posisi yang terbuka dan melamar"
+    }
+  },
+  "mfa": {
+    "title": "Keamanan",
+    "subtitle": "Kelola autentikasi dua faktor dan keamanan akun",
+    "two_factor_auth": "Autentikasi Dua Faktor",
+    "status_enabled": "Autentikasi dua faktor diaktifkan",
+    "status_disabled": "Autentikasi dua faktor dinonaktifkan",
+    "enabled_on": "Diaktifkan pada {{date}}",
+    "enable_description": "Tambahkan lapisan keamanan ekstra ke akun Anda dengan meminta kode verifikasi dari aplikasi autentikator saat masuk.",
+    "enable_button": "Aktifkan 2FA",
+    "scan_qr": "Pindai Kode QR dengan Aplikasi Autentikator",
+    "scan_instructions": "Gunakan aplikasi autentikator seperti Google Authenticator, Authy, atau Microsoft Authenticator untuk memindai kode QR ini.",
+    "step_1": "Buka aplikasi autentikator Anda",
+    "step_2": "Pindai kode QR atau masukkan kunci rahasia secara manual",
+    "step_3": "Masukkan kode 6 digit dari aplikasi di bawah ini",
+    "enter_code": "Masukkan kode verifikasi",
+    "verify_button": "Verifikasi",
+    "verifying": "Memverifikasi...",
+    "invalid_code": "Kode verifikasi tidak valid. Silakan coba lagi.",
+    "setup_error": "Gagal menyiapkan MFA. Silakan coba lagi.",
+    "verify_error": "Gagal memverifikasi kode. Silakan coba lagi.",
+    "enabled_success": "Autentikasi dua faktor berhasil diaktifkan!",
+    "backup_codes_title": "Simpan Kode Cadangan Anda",
+    "backup_codes_warning": "Simpan kode-kode ini di tempat yang aman. Anda dapat menggunakan setiap kode sekali untuk masuk jika kehilangan akses ke aplikasi autentikator.",
+    "copied": "Disalin!",
+    "copy_codes": "Salin semua kode",
+    "disable_button": "Nonaktifkan Autentikasi Dua Faktor",
+    "disable_confirm_message": "Apakah Anda yakin ingin menonaktifkan autentikasi dua faktor? Ini akan membuat akun Anda kurang aman.",
+    "confirm_disable": "Ya, nonaktifkan 2FA",
+    "disable_error": "Gagal menonaktifkan MFA. Silakan coba lagi.",
+    "disabled_success": "Autentikasi dua faktor berhasil dinonaktifkan.",
+    "challenge_title": "Autentikasi Dua Faktor",
+    "challenge_subtitle": "Masukkan kode dari aplikasi autentikator Anda",
+    "backup_code_label": "Masukkan kode cadangan",
+    "use_backup_code": "Gunakan kode cadangan",
+    "use_authenticator": "Gunakan aplikasi autentikator sebagai gantinya"
+  },
+  "notifications_prefs": {
+    "title": "Preferensi Notifikasi",
+    "subtitle": "Pilih bagaimana Anda ingin diberitahu",
+    "channels": "Saluran Notifikasi",
+    "type": "Jenis",
+    "email": "Email",
+    "in_app": "Di Aplikasi",
+    "settings_desc": "Pilih bagaimana Anda ingin menerima notifikasi untuk berbagai acara.",
+    "manage": "Kelola Preferensi",
+    "saved": "Preferensi tersimpan",
+    "types": {
+      "application_received": "Lamaran Diterima",
+      "application_received_desc": "Ketika kandidat mengirim lamaran baru",
+      "interview_scheduled": "Wawancara Dijadwalkan",
+      "interview_scheduled_desc": "Ketika wawancara dijadwalkan atau diperbarui",
+      "offer_sent": "Penawaran Dikirim",
+      "offer_sent_desc": "Ketika surat penawaran dikirim ke kandidat",
+      "document_reminder": "Pengingat Dokumen",
+      "document_reminder_desc": "Ketika dokumen memerlukan tindakan atau sudah lewat deadline",
+      "onboarding_update": "Pembaruan Onboarding",
+      "onboarding_update_desc": "Ketika tugas onboarding selesai atau diperbarui",
+      "chatbot_message": "Pesan Chatbot",
+      "chatbot_message_desc": "Ketika chatbot AI mengirim pesan kepada Anda",
+      "system_alert": "Alert Sistem",
+      "system_alert_desc": "Pengumuman dan pembaruan sistem penting"
+    }
+  },
+  "audit_log": {
+    "title": "Log Audit",
+    "subtitle": "Lacak semua aktivitas dan perubahan sistem",
+    "total_events": "Total Peristiwa",
+    "today": "Hari Ini",
+    "unique_users": "Pengguna Unik",
+    "clear_filters": "Hapus filter",
+    "action": "Tindakan",
+    "date_from": "Dari",
+    "date_to": "Sampai",
+    "user": "Pengguna",
+    "filter_by_user": "Filter berdasarkan ID pengguna...",
+    "no_logs": "Log audit tidak ditemukan",
+    "timestamp": "Waktu",
+    "resource": "Sumber Daya",
+    "details": "Detail",
+    "ip_address": "Alamat IP",
+    "showing": "Menampilkan {{from}}–{{to}} dari {{total}}"
+  },
+  "notifications": {
+    "title": "Notifikasi",
+    "markAllRead": "Tandai Semua Dibaca",
+    "empty": "Belum ada notifikasi",
+    "justNow": "Baru saja",
+    "minutesAgo": "{{count}} menit yang lalu"
+  },
+  "search": {
+    "title": "Pencarian Global",
+    "placeholder": "Cari kandidat, lowongan, lamaran...",
+    "tip": "Cari di semua data Anda — kandidat, lowongan, lamaran, dan wawancara.",
+    "recent": "Pencarian Terbaru",
+    "no_results": "Tidak ada hasil ditemukan",
+    "results_found": "hasil ditemukan",
+    "to_close": "untuk menutup",
+    "search_hint": "Ketik untuk mencari semua data",
+    "candidates": "Kandidat",
+    "jobs": "Lowongan",
+    "applications": "Lamaran",
+    "interviews": "Wawancara"
   }
 }

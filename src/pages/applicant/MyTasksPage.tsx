@@ -2,7 +2,9 @@ import { useState } from 'react'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { useAuthStore } from '../../stores/authStore'
 import { supabase } from '../../lib/supabase'
-import { CheckCircle, Circle, ClipboardList, AlertCircle, RefreshCw } from 'lucide-react'
+import { CheckCircle, Circle, ClipboardList } from 'lucide-react'
+import { EmptyState } from '../../components/shared/EmptyState'
+import { ErrorState } from '../../components/shared/ErrorState'
 import { cn } from '../../utils/cn'
 import toast from 'react-hot-toast'
 
@@ -83,11 +85,11 @@ export function MyTasksPage() {
 
   if (isLoading) {
     return (
-      <div className="space-y-4">
+      <div className="space-y-4 skeleton-stagger">
         {[0, 1, 2, 3].map(i => (
-          <div key={i} className="bg-surface rounded-xl border border-outline-variant p-5 animate-pulse">
-            <div className="h-4 w-48 bg-surface-container-high rounded mb-3" />
-            <div className="h-3 w-32 bg-surface-container-high rounded" />
+          <div key={i} className="bg-surface rounded-xl border border-outline-variant p-5">
+            <div className="h-4 w-48 bg-surface-container-high rounded-lg animate-shimmer mb-3" />
+            <div className="h-3 w-32 bg-surface-container-high rounded-lg animate-shimmer" />
           </div>
         ))}
       </div>
@@ -96,16 +98,11 @@ export function MyTasksPage() {
 
   if (isError) {
     return (
-      <div className="bg-surface rounded-xl border border-outline-variant p-8 text-center">
-        <AlertCircle size={40} className="mx-auto text-error mb-3" />
-        <h3 className="font-semibold text-on-surface mb-1">Failed to load tasks</h3>
-        <button
-          onClick={() => refetch()}
-          className="mt-4 inline-flex items-center gap-2 px-4 py-2 bg-primary text-on-primary rounded-lg text-sm font-medium hover:opacity-90"
-        >
-          <RefreshCw size={14} /> Retry
-        </button>
-      </div>
+      <ErrorState
+        title="Failed to load tasks"
+        message="We could not load your onboarding tasks."
+        onRetry={() => refetch()}
+      />
     )
   }
 
@@ -130,13 +127,11 @@ export function MyTasksPage() {
       </div>
 
       {checklists?.length === 0 ? (
-        <div className="bg-surface rounded-xl border border-outline-variant p-12 text-center">
-          <ClipboardList size={48} className="mx-auto text-on-surface-variant opacity-30 mb-4" />
-          <h3 className="text-lg font-semibold text-on-surface mb-2">No tasks assigned yet</h3>
-          <p className="text-sm text-on-surface-variant">
-            Your HR team will assign onboarding tasks once your offer is accepted.
-          </p>
-        </div>
+        <EmptyState
+          icon={ClipboardList}
+          title="No tasks assigned yet"
+          description="Your HR team will assign onboarding tasks once your offer is accepted."
+        />
       ) : (
         <>
           {/* Progress bar */}

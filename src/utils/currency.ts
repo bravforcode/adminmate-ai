@@ -16,6 +16,7 @@ export function formatCurrency(amount: number, currency: string = 'THB', locale?
       maximumFractionDigits: 0,
     }).format(amount)
   } catch {
+    // Intl.NumberFormat failed (unsupported currency/locale) — fall back to basic formatting
     return `${currency} ${amount.toLocaleString()}`
   }
 }

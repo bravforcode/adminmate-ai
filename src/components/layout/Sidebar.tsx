@@ -34,12 +34,14 @@ export function Sidebar() {
             backgroundColor: 'rgba(15, 28, 46, 0.18)',
             zIndex: 40,
           }}
-          className="md:hidden"
+          className="md:hidden animate-backdrop"
           onClick={toggleSidebar}
         />
       )}
 
       <nav
+        role="navigation"
+        aria-label="Main navigation"
         style={{
           position: 'fixed',
           left: 0, top: 0,
@@ -50,13 +52,13 @@ export function Sidebar() {
           zIndex: 50,
           display: 'flex',
           flexDirection: 'column',
-          transition: 'transform 0.2s cubic-bezier(0.4, 0, 0.2, 1)',
+          transition: 'transform 0.2s cubic-bezier(0.4, 0, 0.2, 1), width 0.2s cubic-bezier(0.4, 0, 0.2, 1)',
           fontFamily: 'var(--font-sans, Inter, sans-serif)',
         }}
         className={`${sidebarOpen ? 'max-md:translate-x-0' : 'max-md:-translate-x-full'} md:translate-x-0`}
       >
         {/* Logo strip */}
-        <div style={{
+        <div className="sidebar-logo" style={{
           padding: '20px 20px 18px 20px',
           borderBottom: '1px solid rgba(255,255,255,0.08)',
           display: 'flex',
@@ -77,15 +79,15 @@ export function Sidebar() {
                 fontSize: '15px', fontWeight: 400,
               }}>A</span>
             </div>
-            <div>
-              <p style={{
+            <div className="sidebar-logo-text">
+          <p className="sidebar-version-text" style={{
                 fontFamily: 'var(--font-serif, Georgia, serif)',
                 fontSize: '15px', fontWeight: 400,
                 color: '#ffffff',
                 letterSpacing: '-0.01em',
                 margin: 0, lineHeight: 1.2,
               }}>AdminMate</p>
-              <p style={{
+              <p className="sidebar-company-name" style={{
                 fontSize: '10px', color: 'rgba(255,255,255,0.45)',
                 margin: 0, fontWeight: 400,
                 maxWidth: '140px',
@@ -98,6 +100,7 @@ export function Sidebar() {
           <button
             onClick={toggleSidebar}
             className="md:hidden"
+            aria-label="Close sidebar"
             style={{
               background: 'none', border: 'none', cursor: 'pointer',
               color: 'rgba(255,255,255,0.5)', padding: '4px',
@@ -109,7 +112,7 @@ export function Sidebar() {
         </div>
 
         {/* New Request CTA */}
-        <div style={{ padding: '14px 14px 10px 14px' }}>
+        <div className="sidebar-cta" style={{ padding: '14px 14px 10px 14px' }}>
           <button style={{
             width: '100%',
             backgroundColor: 'var(--color-accent, #60a5fa)',
@@ -136,8 +139,8 @@ export function Sidebar() {
         </div>
 
         {/* Navigation links */}
-        <div style={{
-          flex: 1, overflowY: 'auto',
+        <div className="sidebar-scroll" style={{
+          flex: 1,
           padding: '8px 10px',
           display: 'flex', flexDirection: 'column', gap: '2px',
         }}>
@@ -149,6 +152,7 @@ export function Sidebar() {
             >
               <NavLink
                 to={item.path!}
+                className="sidebar-nav-link"
                 style={({ isActive }) => ({
                   display: 'flex',
                   alignItems: 'center',
@@ -179,7 +183,7 @@ export function Sidebar() {
                 }}
               >
                 <item.icon size={17} style={{ flexShrink: 0 }} />
-                <span>{t(item.labelKey)}</span>
+                <span className="sidebar-label">{t(item.labelKey)}</span>
               </NavLink>
             </motion.div>
           ))}

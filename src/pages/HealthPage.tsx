@@ -28,6 +28,7 @@ function formatTime(iso?: string) {
   try {
     return new Date(iso).toLocaleTimeString()
   } catch {
+    // Invalid date string — fall back to raw value
     return iso
   }
 }
@@ -86,6 +87,7 @@ async function checkAuth(): Promise<CheckState> {
     if (error) return 'error'
     return 'ok'
   } catch {
+    // Auth check failure treated as error state — no logging needed for health probe
     return 'error'
   }
 }

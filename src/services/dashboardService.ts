@@ -33,7 +33,7 @@ export const dashboardService = {
   getStats: async (companyId: string): Promise<DashboardStats | null> => {
     const { data, error } = await supabase.rpc('get_dashboard_stats', { p_company_id: companyId })
     if (error) {
-      console.warn('get_dashboard_stats RPC failed, falling back to direct queries:', error.message)
+      if (import.meta.env.DEV) console.warn('get_dashboard_stats RPC failed, falling back to direct queries:', error.message)
       return null
     }
     return (data as DashboardStats) ?? null

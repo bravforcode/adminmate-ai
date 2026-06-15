@@ -8,6 +8,7 @@ CREATE OR REPLACE FUNCTION safe_user_company_id()
 RETURNS UUID
 LANGUAGE sql
 SECURITY DEFINER
+SET search_path = public
 STABLE
 AS $$
   SELECT company_id FROM user_profiles WHERE id = auth.uid() LIMIT 1
@@ -17,6 +18,7 @@ CREATE OR REPLACE FUNCTION safe_user_role()
 RETURNS TEXT
 LANGUAGE sql
 SECURITY DEFINER
+SET search_path = public
 STABLE
 AS $$
   SELECT COALESCE(role, 'member') FROM user_profiles WHERE id = auth.uid() LIMIT 1

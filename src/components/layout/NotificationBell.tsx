@@ -7,7 +7,8 @@ export function NotificationBell() {
 
   return (
     <motion.button
-      className="relative p-2 hover:text-primary hover:bg-surface-container rounded-lg transition-colors"
+      aria-label={`Notifications${count > 0 ? ` (${count} unread)` : ''}`}
+      className="relative p-2 hover:text-primary dark:hover:text-[#93c5fd] hover:bg-surface-container dark:hover:bg-[#1e3a5f] rounded-lg transition-colors"
       whileTap={{ scale: 0.95 }}
       transition={{ duration: 0.1 }}
     >
@@ -15,7 +16,7 @@ export function NotificationBell() {
         animate={count > 0 ? { rotate: [0, -12, 12, -8, 8, 0] } : {}}
         transition={{ duration: 0.6, ease: 'easeInOut' }}
       >
-        <Bell size={20} className="text-on-surface-variant" />
+        <Bell size={20} className="text-on-surface-variant dark:text-[#94a3b8]" />
       </motion.div>
       {count > 0 && (
         <motion.span

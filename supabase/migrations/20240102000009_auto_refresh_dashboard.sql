@@ -7,7 +7,7 @@ BEGIN
   REFRESH MATERIALIZED VIEW CONCURRENTLY dashboard_stats;
   RETURN NULL;
 END;
-$$ LANGUAGE plpgsql SECURITY DEFINER;
+$$ LANGUAGE plpgsql SECURITY DEFINER SET search_path = public;
 
 DROP TRIGGER IF EXISTS refresh_dashboard_stats ON jobs;
 CREATE TRIGGER refresh_dashboard_stats

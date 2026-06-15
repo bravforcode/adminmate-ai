@@ -5,7 +5,8 @@ import { KanbanBoard } from '../../components/pipeline/KanbanBoard'
 import { useUpdateApplicationStatus } from '../../hooks/useApplications'
 import { useJobs } from '../../hooks/useJobs'
 import { Application } from '../../types/models'
-import { Sparkles, ArrowRight, Brain } from 'lucide-react'
+import { Button } from '../../components/ui/Button'
+import { Sparkles, ArrowRight, Brain, Check, CheckCircle2 } from 'lucide-react'
 import toast from 'react-hot-toast'
 
 export function PipelinePage() {
@@ -23,7 +24,8 @@ export function PipelinePage() {
       await updateStatus.mutateAsync({ id: selectedApplication.id, status: 'interviewing' })
       toast.success(t('pipeline.moved_to_interviewing'))
       setSelectedApplication(null)
-    } catch {
+    } catch (err) {
+      if (import.meta.env.DEV) console.error('[PipelinePage] Status update failed:', err)
       toast.error(t('pipeline.failed_to_update'))
     }
   }
@@ -38,10 +40,9 @@ export function PipelinePage() {
           </h2>
           <p className="text-sm text-on-surface-variant mt-1 truncate">{currentJob?.title || t('pipeline.all_jobs')}</p>
         </div>
-        <button onClick={() => navigate('/recruitment/jobs')} className="border border-primary text-primary bg-surface-container-lowest px-4 py-2 rounded-lg text-sm font-medium flex items-center gap-2 hover:bg-primary/5 transition-colors shadow-sm self-start sm:self-auto">
-          <Sparkles size={16} />
-          <span className="truncate">{t('pipeline.jd_generation')} / {t('pipeline.jd_generation_th')}</span>
-        </button>
+        <Button variant="outline" size="sm" onClick={() => navigate('/recruitment/jobs')} icon={<Sparkles size={16} />}>
+          {t('pipeline.jd_generation')} / {t('pipeline.jd_generation_th')}
+        </Button>
       </div>
 
       {/* Kanban + AI Sidebar */}
@@ -58,9 +59,7 @@ export function PipelinePage() {
                 <Sparkles size={20} className="bg-primary/10 p-1.5 rounded-lg" />
                 <h3 className="text-lg font-semibold tracking-tight">{t('pipeline.ai_insights')} <span className="font-normal text-on-surface-variant text-sm ml-1">/ {t('pipeline.ai_insights_th')}</span></h3>
               </div>
-              <button onClick={() => setSelectedApplication(null)} className="text-on-surface-variant hover:text-on-surface hover:bg-surface-container p-1.5 rounded-full transition-colors">
-                ×
-              </button>
+              <Button variant="ghost" size="icon_md" onClick={() => setSelectedApplication(null)}>×</Button>
             </div>
             <div className="p-6 overflow-y-auto flex-1 flex flex-col gap-6">
               <div className="flex flex-col items-center text-center">
@@ -68,7 +67,7 @@ export function PipelinePage() {
                   <div className="w-24 h-24 rounded-full bg-primary-container text-on-primary-container flex items-center justify-center font-bold text-3xl shadow-md ring-4 ring-surface-container-lowest">
                     {selectedApplication.candidates?.full_name?.split(' ').map((n: string) => n[0]).join('').slice(0, 2).toUpperCase() || '?'}
                   </div>
-                  <span className="absolute bottom-0 right-0 bg-primary w-6 h-6 rounded-full border-2 border-surface-container-lowest flex items-center justify-center text-white text-xs">✓</span>
+                  <span className="absolute bottom-0 right-0 bg-primary w-6 h-6 rounded-full border-2 border-surface-container-lowest flex items-center justify-center text-white"><Check size={14} strokeWidth={3} /></span>
                 </div>
                 <h4 className="text-xl font-bold text-on-surface break-words">{selectedApplication.candidates?.full_name}</h4>
                 <p className="text-sm text-on-surface-variant mt-1">{selectedApplication.candidates?.current_position || t('pipeline.candidate')}</p>
@@ -79,13 +78,13 @@ export function PipelinePage() {
 
               <div className="bg-surface-container-low p-4 rounded-xl border border-outline-variant/50">
                 <h5 className="text-xs font-semibold text-on-surface-variant uppercase tracking-wider mb-4 flex items-center gap-2">
-                  <span className="text-primary">✓</span> {t('pipeline.why_match')} / {t('pipeline.why_match_th')}
+                  <CheckCircle2 size={16} className="text-primary" /> {t('pipeline.why_match')} / {t('pipeline.why_match_th')}
                 </h5>
                 {selectedApplication.ai_analysis ? (
                   <ul className="flex flex-col gap-4">
-                    {selectedApplication.ai_analysis.matched_skills?.length > 0 && (
+                    {selectedApplication.ai_analysis.matched_skills && selectedApplication.ai_analysis.matched_skills.length > 0 && (
                       <li className="flex gap-3 items-start">
-                        <span className="text-tertiary text-lg mt-0.5 flex-shrink-0">✓</span>
+                        <Check size={18} className="text-primary mt-0.5 flex-shrink-0" />
                         <div>
                           <p className="text-sm font-semibold text-on-surface">{t('pipeline.skills_match')}</p>
                           <p className="text-xs text-on-surface-variant mt-1 leading-snug">
@@ -96,7 +95,7 @@ export function PipelinePage() {
                     )}
                     {selectedApplication.ai_analysis.experience_match && (
                       <li className="flex gap-3 items-start">
-                        <span className="text-tertiary text-lg mt-0.5 flex-shrink-0">✓</span>
+                        <Check size={18} className="text-primary mt-0.5 flex-shrink-0" />
                         <div>
                           <p className="text-sm font-semibold text-on-surface">{t('pipeline.experience_match')}</p>
                           <p className="text-xs text-on-surface-variant mt-1 leading-snug">{selectedApplication.ai_analysis.experience_match}</p>
@@ -105,7 +104,7 @@ export function PipelinePage() {
                     )}
                     {selectedApplication.ai_analysis.education_match && (
                       <li className="flex gap-3 items-start">
-                        <span className="text-tertiary text-lg mt-0.5 flex-shrink-0">✓</span>
+                        <Check size={18} className="text-primary mt-0.5 flex-shrink-0" />
                         <div>
                           <p className="text-sm font-semibold text-on-surface">{t('pipeline.education_match')}</p>
                           <p className="text-xs text-on-surface-variant mt-1 leading-snug">{selectedApplication.ai_analysis.education_match}</p>
@@ -125,14 +124,16 @@ export function PipelinePage() {
               </div>
 
               <div className="mt-auto pt-6 pb-2">
-                <button
+                <Button
+                  variant="default"
+                  fullWidth
                   onClick={handleMoveToInterview}
                   disabled={updateStatus.isPending}
-                  className="w-full bg-primary text-on-primary text-sm font-semibold py-3 rounded-xl hover:bg-on-primary-fixed-variant transition-colors flex items-center justify-center gap-2 shadow-md hover:shadow-lg active:scale-[0.98] transform disabled:opacity-50"
+                  icon={<ArrowRight size={16} />}
+                  iconPosition="right"
                 >
                   {updateStatus.isPending ? t('pipeline.updating') : t('pipeline.move_to_interview')}
-                  <ArrowRight size={16} />
-                </button>
+                </Button>
               </div>
             </div>
           </aside>

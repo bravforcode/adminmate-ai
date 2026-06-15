@@ -29,7 +29,7 @@ export interface SignUpResult {
 async function loadProfile(userId: string) {
   const { data: profile } = await supabase
     .from('user_profiles')
-    .select('*')
+    .select('id, email, full_name, full_name_th, avatar_url, role, company_id, language_preference, is_active')
     .eq('id', userId)
     .maybeSingle()
   if (profile) {
@@ -37,7 +37,7 @@ async function loadProfile(userId: string) {
     if (profile.company_id) {
       const { data: company } = await supabase
         .from('companies')
-        .select('*')
+        .select('id, name, name_th, tax_id, phone, email, city, website_url, industry, country, currency, locale, subscription_tier')
         .eq('id', profile.company_id)
         .maybeSingle()
       if (company) useAuthStore.getState().setCompany(company)
@@ -96,7 +96,9 @@ export function useAuth() {
         .eq('id', data.user!.id)
       store.setCompany(company)
       hasCompany = true
-    } catch { /* company link may already exist or DB error */ }
+    } catch (err) {
+      if (import.meta.env.DEV) console.warn('[useAuth] Company link failed (may already exist):', err)
+    }
 
     if (data.user) {
       await loadProfile(data.user.id)
@@ -116,13 +118,11 @@ export function useAuth() {
     } catch (error: unknown) {
       const errorMsg = error instanceof Error ? error.message : String(error)
       if (/unsupported provider/i.test(errorMsg) || /provider is not enabled/i.test(errorMsg)) {
-        console.warn('Google Sign-In not enabled on remote Supabase. Falling back to mock/seed login.')
-        await login('testlogin99@gmail.com', 'Test123456!')
-        return
+        throw new Error('Google Sign-In is not enabled. Please use email/password login.')
       }
       throw error
     }
-  }, [login])
+  }, [])
 
   return {
     user: store.user,

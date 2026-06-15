@@ -17,6 +17,33 @@ export interface CandidateWithApplications {
   has_cv: boolean
 }
 
+export interface CreateCandidateInput {
+  full_name?: string
+  current_position?: string
+  email?: string
+  phone?: string
+  location?: string
+  linkedin_url?: string
+  portfolio_url?: string
+  years_experience?: number
+  primary_skill?: string
+  source?: string
+  company_id: string
+}
+
+export interface UpdateCandidateInput {
+  full_name?: string
+  current_position?: string
+  email?: string
+  phone?: string
+  location?: string
+  linkedin_url?: string
+  portfolio_url?: string
+  years_experience?: number
+  primary_skill?: string
+  source?: string
+}
+
 export const candidateService = {
   getAll: async (companyId: string) => {
     const { data, error } = await supabase.from('candidates').select('*, cv_documents(*), applications(status)').eq('company_id', companyId).order('created_at', { ascending: false })
@@ -28,19 +55,19 @@ export const candidateService = {
     if (error) throw error
     return (data as CandidateWithApplications[]) ?? []
   },
-  getById: async (id: string) => {
-    const { data, error } = await supabase.from('candidates').select('*, cv_documents(*), applications(*, jobs(title))').eq('id', id).single()
+  getById: async (id: string, companyId: string) => {
+    const { data, error } = await supabase.from('candidates').select('*, cv_documents(*), applications(*, jobs(title))').eq('id', id).eq('company_id', companyId).single()
     if (error) throw error
     return data
   },
-  create: async (candidate: Record<string, unknown>) => {
-    const { data, error } = await supabase.from('candidates').insert(candidate).select().single()
+  create: async (input: CreateCandidateInput) => {
+    const { data, error } = await supabase.from('candidates').insert(input).select().single()
     if (error) throw error
     return data
   },
-  update: async (id: string, updates: Record<string, unknown>) => {
-    const { data, error } = await supabase.from('candidates').update(updates).eq('id', id).select().single()
+  update: async (id: string, data: UpdateCandidateInput) => {
+    const { data: result, error } = await supabase.from('candidates').update(data).eq('id', id).select().single()
     if (error) throw error
-    return data
+    return result
   },
 }

@@ -2,6 +2,7 @@ import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
 import type { User } from '@supabase/supabase-js'
 import { supabase } from '../lib/supabase'
+import { fetchSessionStatus } from '../lib/sessionApi'
 
 interface UserProfile {
   id: string
@@ -37,12 +38,12 @@ interface AuthState {
   company: Company | null
   isLoading: boolean
   error: string | null
+  _langPref: string
   setUser: (user: User | null) => void
   setProfile: (profile: UserProfile | null) => void
   setCompany: (company: Company | null) => void
   setLoading: (isLoading: boolean) => void
   setError: (error: string | null) => void
-  initDemo: () => void
   initSession: () => Promise<void>
   subscribeAuth: () => () => void
   reset: () => void
@@ -63,45 +64,61 @@ export const useAuthStore = create<AuthState>()(
       company: null,
       isLoading: false,
       error: null,
+      _langPref: 'en',
 
       setUser: (user) => set({ user }),
       setProfile: (profile) => set({ profile }),
       setCompany: (company) => set({ company }),
       setLoading: (isLoading) => set({ isLoading }),
       setError: (error) => set({ error }),
-      initDemo: () => set({
-        user: { id: 'demo-user-1', email: 'admin@adminmate.ai', created_at: new Date().toISOString() } as User,
-        profile: { id: 'demo-user-1', email: 'admin@adminmate.ai', full_name: 'Sarah Chen', full_name_th: 'ซาร่า เฉิน', role: 'admin', company_id: 'demo-company-1', language_preference: 'th', is_active: true },
-        company: { id: 'demo-company-1', name: 'TechNova Solutions Co., Ltd.', country: 'TH', currency: 'THB', locale: 'th-TH' },
-        isLoading: false,
-        error: null,
-      }),
       initSession: async () => {
-        // Prevent concurrent or duplicate calls
         if (_sessionInitPromise) return _sessionInitPromise
         _sessionInitPromise = (async () => {
           set({ isLoading: true, error: null })
           try {
-            const { data: { session } } = await supabase.auth.getSession()
-            if (!session?.user) {
+            let user: User | null = null
+
+            // Try Edge Function session restore (httpOnly cookie)
+            const status = await fetchSessionStatus()
+            if (status.valid && status.access_token) {
+              const { error: sessionError } = await supabase.auth.setSession({
+                access_token: status.access_token,
+                refresh_token: '',
+                user: status.user,
+                token_type: 'bearer',
+                expires_in: 3600,
+                expires_at: Math.floor(Date.now() / 1000) + 3600,
+              } as never)
+              if (!sessionError && status.user) {
+                user = { ...status.user, id: status.user.id } as User
+              }
+            }
+
+            // Fall back to standard getSession()
+            if (!user) {
+              const { data: { session } } = await supabase.auth.getSession()
+              user = session?.user ?? null
+            }
+
+            if (!user) {
               set({ user: null, profile: null, company: null, isLoading: false })
               return
             }
-            set({ user: session.user })
+            set({ user })
             const { data: profile } = await supabase
               .from('user_profiles')
-              .select('*')
-              .eq('id', session.user.id)
+              .select('id, email, full_name, full_name_th, avatar_url, role, company_id, language_preference, is_active')
+              .eq('id', user.id)
               .maybeSingle()
             if (profile) {
-              set({ profile })
+              set({ profile, _langPref: profile.language_preference ?? 'en' })
             } else {
               set({ profile: null })
             }
             if (profile?.company_id) {
               const { data: company } = await supabase
                 .from('companies')
-                .select('*')
+                .select('id, name, name_th, tax_id, phone, email, city, website_url, industry, country, currency, locale, subscription_tier')
                 .eq('id', profile.company_id)
                 .maybeSingle()
               if (company) set({ company })
@@ -130,15 +147,15 @@ export const useAuthStore = create<AuthState>()(
             set({ user: session.user })
             const { data: profile } = await supabase
               .from('user_profiles')
-              .select('*')
+              .select('id, email, full_name, full_name_th, avatar_url, role, company_id, language_preference, is_active')
               .eq('id', session.user.id)
               .maybeSingle()
             if (profile) {
-              set({ profile })
+              set({ profile, _langPref: profile.language_preference ?? 'en' })
               if (profile.company_id) {
                 const { data: company } = await supabase
                   .from('companies')
-                  .select('*')
+                  .select('id, name, name_th, tax_id, phone, email, city, website_url, industry, country, currency, locale, subscription_tier')
                   .eq('id', profile.company_id)
                   .maybeSingle()
                 if (company) set({ company })
@@ -154,17 +171,17 @@ export const useAuthStore = create<AuthState>()(
       },
       reset: () => {
         _sessionInitPromise = null
-        set({ user: null, profile: null, company: null, isLoading: false, error: null })
+        set({ user: null, profile: null, company: null, _langPref: 'en', isLoading: false, error: null })
       },
 
       isAuthenticated: () => !!get().user,
       isAdminOrHR: () => ['admin', 'hr'].includes(get().profile?.role ?? ''),
       hasCompany: () => !!get().company,
-      userLanguage: () => get().profile?.language_preference ?? get().company?.locale?.split('-')[0] ?? 'en',
+      userLanguage: () => get()._langPref || get().profile?.language_preference || get().company?.locale?.split('-')[0] || 'en',
     }),
     {
       name: 'adminmate-auth',
-      partialize: (s) => ({ user: s.user, profile: s.profile, company: s.company }),
+      partialize: (s) => ({ _langPref: s._langPref ?? 'en' }),
     }
   )
 )

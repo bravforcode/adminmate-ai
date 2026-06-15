@@ -19,9 +19,9 @@ export default defineConfig({
       reporter: ['text', 'lcov', 'html'],
       exclude: ['node_modules/', 'src/types/', 'supabase/', '**/*.d.ts'],
       thresholds: {
-        lines: 70,
-        functions: 70,
-        branches: 65,
+        lines: 85,
+        functions: 85,
+        branches: 80,
       },
     },
   },

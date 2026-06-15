@@ -136,5 +136,29 @@
     "senior": "Senior",
     "lead": "Lead",
     "executive": "Executive"
+  },
+  "bulk_import": {
+    "title": "Import / Export Data",
+    "subtitle": "Bulk import candidates or jobs from CSV files",
+    "import_type": "Import Type",
+    "type_candidates": "Candidates",
+    "type_jobs": "Jobs",
+    "download_template": "Download Template",
+    "drag_drop": "Drag & drop a CSV file here",
+    "or_click": "or click to browse",
+    "preview": "Preview",
+    "rows": "rows",
+    "showing_first": "Showing first {{count}} of {{total}} rows",
+    "validate": "Validate",
+    "validating": "Validating...",
+    "import": "Import",
+    "importing": "Importing...",
+    "validation_errors": "Validation Errors",
+    "results": "Import Results",
+    "results_summary": "{{success}} of {{total}} records imported successfully",
+    "failed_rows": "Failed Rows",
+    "import_another": "Import Another File",
+    "no_data": "No data to import",
+    "export_success": "Data exported successfully"
   }
 }

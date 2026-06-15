@@ -15,11 +15,12 @@ i18n
       th: ['en'],
       vi: ['en'],
       zh: ['en'],
+      id: ['en'],
     },
-    supportedLngs: ['th', 'en', 'vi', 'zh'],
+    supportedLngs: ['th', 'en', 'vi', 'zh', 'id'],
     load: 'languageOnly',
     nonExplicitSupportedLngs: true,
-    ns: ['common', 'chat', 'recruitment', 'hiring', 'onboarding', 'documents', 'compliance', 'reports', 'dashboard', 'health', 'system'],
+    ns: ['common', 'chat', 'recruitment', 'hiring', 'onboarding', 'documents', 'compliance', 'reports', 'dashboard', 'health', 'system', 'calendar'],
     defaultNS: 'common',
     backend: {
       loadPath: '/locales/{{lng}}/{{ns}}.json',
@@ -39,7 +40,7 @@ i18n
 
 if (typeof window !== 'undefined') {
   const cached = window.localStorage.getItem(STORAGE_KEY)
-  if (cached && ['th', 'en', 'vi', 'zh'].includes(cached)) {
+  if (cached && ['th', 'en', 'vi', 'zh', 'id'].includes(cached)) {
     i18n.changeLanguage(cached)
   }
 }

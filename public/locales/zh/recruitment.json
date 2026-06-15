@@ -134,5 +134,29 @@
     "senior": "高级",
     "lead": "主管级",
     "executive": "高管级"
+  },
+  "bulk_import": {
+    "title": "导入 / 导出数据",
+    "subtitle": "从CSV文件批量导入候选人或职位",
+    "import_type": "导入类型",
+    "type_candidates": "候选人",
+    "type_jobs": "职位",
+    "download_template": "下载模板",
+    "drag_drop": "拖放CSV文件到此处",
+    "or_click": "或点击浏览文件",
+    "preview": "预览",
+    "rows": "行",
+    "showing_first": "显示前 {{count}} 行，共 {{total}} 行",
+    "validate": "验证",
+    "validating": "验证中...",
+    "import": "导入",
+    "importing": "导入中...",
+    "validation_errors": "验证错误",
+    "results": "导入结果",
+    "results_summary": "成功导入 {{success}}/{{total}} 条记录",
+    "failed_rows": "失败行",
+    "import_another": "导入其他文件",
+    "no_data": "没有可导入的数据",
+    "export_success": "数据导出成功"
   }
 }

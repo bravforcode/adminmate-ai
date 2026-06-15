@@ -134,5 +134,29 @@
     "senior": "ซีเนียร์",
     "lead": "หัวหน้าทีม",
     "executive": "ผู้บริหาร"
+  },
+  "bulk_import": {
+    "title": "นำเข้า / ส่งออกข้อมูล",
+    "subtitle": "นำเข้าผู้สมัครหรือตำแหน่งงานจำนวนมากจากไฟล์ CSV",
+    "import_type": "ประเภทการนำเข้า",
+    "type_candidates": "ผู้สมัคร",
+    "type_jobs": "ตำแหน่งงาน",
+    "download_template": "ดาวน์โหลดเทมเพลต",
+    "drag_drop": "ลากและวางไฟล์ CSV ที่นี่",
+    "or_click": "หรือคลิกเพื่อเลือกไฟล์",
+    "preview": "ตัวอย่าง",
+    "rows": "แถว",
+    "showing_first": "แสดง {{count}} จาก {{total}} แถว",
+    "validate": "ตรวจสอบ",
+    "validating": "กำลังตรวจสอบ...",
+    "import": "นำเข้า",
+    "importing": "กำลังนำเข้า...",
+    "validation_errors": "ข้อผิดพลาดในการตรวจสอบ",
+    "results": "ผลลัพธ์การนำเข้า",
+    "results_summary": "นำเข้าสำเร็จ {{success}} จาก {{total}} รายการ",
+    "failed_rows": "แถวที่ล้มเหลว",
+    "import_another": "นำเข้าไฟล์อื่น",
+    "no_data": "ไม่มีข้อมูลให้นำเข้า",
+    "export_success": "ส่งออกข้อมูลสำเร็จ"
   }
 }

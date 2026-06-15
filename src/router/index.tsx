@@ -2,7 +2,7 @@ import { createBrowserRouter, Navigate, useLocation } from 'react-router-dom'
 import { lazy } from 'react'
 import { AuthGuard, CompanySetupGuard, getDefaultRoute } from './AuthGuard'
 import { AppLayout } from '../components/layout/AppLayout'
-import { ErrorBoundary } from '../components/shared/ErrorBoundary'
+import { ErrorBoundary } from '../components/common/ErrorBoundary'
 import { AnimatedPage } from '../components/shared/AnimatedPage'
 import { useAuthStore } from '../stores/authStore'
 
@@ -20,11 +20,17 @@ const JobDetailPage = lazy(() => import('../pages/recruitment/JobDetailPage'))
 const PipelinePage = lazy(() => import('../pages/recruitment/PipelinePage'))
 const InterviewsPage = lazy(() => import('../pages/recruitment/InterviewsPage'))
 const DocumentsPage = lazy(() => import('../pages/DocumentsPage'))
+const DocumentSigningPage = lazy(() => import('../pages/documents/DocumentSigningPage'))
 const OnboardingMgmtPage = lazy(() => import('../pages/OnboardingMgmtPage'))
 const DashboardPage = lazy(() => import('../pages/DashboardPage'))
 const ReportsPage = lazy(() => import('../pages/ReportsPage'))
 const SettingsPage = lazy(() => import('../pages/settings/SettingsPage'))
+const SecurityPage = lazy(() => import('../pages/settings/SecurityPage'))
 const CompliancePage = lazy(() => import('../pages/settings/CompliancePage'))
+const AuditLogPage = lazy(() => import('../pages/settings/AuditLogPage'))
+const NotificationPreferencesPage = lazy(() => import('../pages/settings/NotificationPreferencesPage'))
+const BulkImportPage = lazy(() => import('../pages/settings/BulkImportPage'))
+const PDPAPage = lazy(() => import('../pages/settings/PDPAPage'))
 const HiringPage = lazy(() => import('../pages/hiring/HiringPage'))
 const HealthPage = lazy(() => import('../pages/HealthPage'))
 const GeminiMonitoringPage = lazy(() => import('../pages/GeminiMonitoringPage'))
@@ -150,6 +156,10 @@ export const router = createBrowserRouter([
         ),
       },
       {
+        path: 'documents/sign/:id',
+        element: <AnimatedPage><DocumentSigningPage /></AnimatedPage>,
+      },
+      {
         path: 'hiring',
         element: (
           <AuthGuard callInitSession={false} requiredRoles={HR_ROLES}>
@@ -198,10 +208,50 @@ export const router = createBrowserRouter([
         ),
       },
       {
+        path: 'settings/security',
+        element: (
+          <AuthGuard callInitSession={false} requiredRoles={HR_ROLES}>
+            <AnimatedPage><SecurityPage /></AnimatedPage>
+          </AuthGuard>
+        ),
+      },
+      {
         path: 'settings/compliance',
         element: (
           <AuthGuard callInitSession={false} requiredRoles={['admin']}>
             <AnimatedPage><CompliancePage /></AnimatedPage>
+          </AuthGuard>
+        ),
+      },
+      {
+        path: 'settings/notifications',
+        element: (
+          <AuthGuard callInitSession={false} requiredRoles={HR_ROLES}>
+            <AnimatedPage><NotificationPreferencesPage /></AnimatedPage>
+          </AuthGuard>
+        ),
+      },
+      {
+        path: 'settings/audit-log',
+        element: (
+          <AuthGuard callInitSession={false} requiredRoles={['admin', 'hr']}>
+            <AnimatedPage><AuditLogPage /></AnimatedPage>
+          </AuthGuard>
+        ),
+      },
+      {
+        path: 'settings/import',
+        element: (
+          <AuthGuard callInitSession={false} requiredRoles={HR_ROLES}>
+            <AnimatedPage><BulkImportPage /></AnimatedPage>
+          </AuthGuard>
+        ),
+      },
+      {
+        path: 'settings/pdpa',
+        element: (
+          <AuthGuard callInitSession={false} requiredRoles={HR_ROLES}>
+            <AnimatedPage><PDPAPage /></AnimatedPage>
           </AuthGuard>
         ),
       },

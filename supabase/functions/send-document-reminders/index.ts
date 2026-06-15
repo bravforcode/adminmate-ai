@@ -1,8 +1,8 @@
 import { serve } from 'https://deno.land/std@0.168.0/http/server.ts'
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2'
 import {
-  corsHeaders,
-  JSON_HEADERS,
+  getCorsHeaders,
+  getJsonHeaders,
   handleCorsPreflight,
   verifyAuth,
   enforceRateLimit,
@@ -21,7 +21,7 @@ serve(async (req) => {
   let userId: string | undefined
   try {
     if (req.method !== 'POST') {
-      return new Response(JSON.stringify({ success: false, error: 'Method not allowed' }), { status: 405, headers: JSON_HEADERS })
+      return new Response(JSON.stringify({ success: false, error: 'Method not allowed' }), { status: 405, headers: getJsonHeaders(req) })
     }
 
     const supabase = createClient(Deno.env.get('SUPABASE_URL')!, Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!)
@@ -40,7 +40,7 @@ serve(async (req) => {
       }
     }
     if (!authorized) {
-      return new Response(JSON.stringify({ success: false, error: 'Unauthorized' }), { status: 401, headers: JSON_HEADERS })
+      return new Response(JSON.stringify({ success: false, error: 'Unauthorized' }), { status: 401, headers: getJsonHeaders(req) })
     }
 
     if (!cronSecret) {
@@ -53,7 +53,7 @@ serve(async (req) => {
 
     const { docId } = body
     if (docId !== undefined && (typeof docId !== 'string' || docId.length > 128)) {
-      return new Response(JSON.stringify({ success: false, error: 'docId must be a string' }), { status: 400, headers: JSON_HEADERS })
+      return new Response(JSON.stringify({ success: false, error: 'docId must be a string' }), { status: 400, headers: getJsonHeaders(req) })
     }
 
     let processed = 0
@@ -62,7 +62,7 @@ serve(async (req) => {
     if (docId) {
       const { data: doc } = await supabase.from('documents').select('*').eq('id', docId).single()
       if (!doc) {
-        return new Response(JSON.stringify({ success: false, error: 'Document not found' }), { status: 404, headers: JSON_HEADERS })
+        return new Response(JSON.stringify({ success: false, error: 'Document not found' }), { status: 404, headers: getJsonHeaders(req) })
       }
       await supabase
         .from('documents')
@@ -111,9 +111,9 @@ serve(async (req) => {
     }
 
     logRequest({ function: FN, userId, durationMs: Date.now() - start, status: 200 })
-    return new Response(JSON.stringify({ success: true, processed }), { headers: JSON_HEADERS })
+    return new Response(JSON.stringify({ success: true, processed }), { headers: getJsonHeaders(req) })
   } catch (error: any) {
     logRequest({ function: FN, userId, durationMs: Date.now() - start, status: 500, error: error?.message })
-    return errorResponse(error, 500, corsHeaders)
+    return errorResponse(error, 500, getCorsHeaders(req))
   }
 })

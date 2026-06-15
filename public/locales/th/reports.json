@@ -35,5 +35,36 @@
     "date": "วันที่",
     "action": "การดำเนินการ"
   },
-  "view_all": "ดูทั้งหมด"
+  "view_all": "ดูทั้งหมด",
+  "scheduling": {
+    "schedule_report": "ตั้งเวลาสร้างรายงาน",
+    "title": "ตั้งเวลาสร้างรายงาน",
+    "subtitle": "ตั้งค่าการสร้างรายงานอัตโนมัติ",
+    "report_type": "ประเภทรายงาน",
+    "frequency": "ความถี่",
+    "recipients_label": "ผู้รับ",
+    "create": "สร้างตาราง",
+    "creating": "กำลังสร้าง...",
+    "error": "ไม่สามารถสร้างตารางได้ กรุณาลองใหม่",
+    "type_hiring_summary": "สรุปการจ้างงาน",
+    "type_pipeline_analysis": "วิเคราะห์ไปป์ไลน์",
+    "type_time_to_hire": "ระยะเวลาจ้างงาน",
+    "type_source_effectiveness": "ประสิทธิภาพแหล่งที่มา",
+    "type_onboarding_progress": "ความคืบหน้าการปฐมนิเทศ",
+    "freq_daily": "รายวัน",
+    "freq_weekly": "รายสัปดาห์",
+    "freq_monthly": "รายเดือน",
+    "next_run": "รันครั้งถัดไป",
+    "generate_now": "สร้างตอนนี้",
+    "generate_now_title": "สร้างรายงานตอนนี้",
+    "generate_now_sub": "เลือกประเภทรายงานเพื่อสร้างทันที",
+    "click_to_generate": "คลิกเพื่อสร้าง",
+    "generating": "กำลังสร้าง...",
+    "recent_reports": "รายงานล่าสุด",
+    "recent_reports_sub": "รายงานที่สร้างล่าสุดของคุณ",
+    "download": "ดาวน์โหลด",
+    "toggle_enable": "เปิดใช้งาน",
+    "toggle_disable": "ปิดใช้งาน",
+    "delete": "ลบ"
+  }
 }

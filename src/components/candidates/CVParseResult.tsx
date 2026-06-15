@@ -10,7 +10,7 @@ export function CVParseResult({ cvDocument }: CVParseResultProps) {
   return (
     <div className="space-y-4" data-testid="cv-parsed-badge">
       {parsed.summary && <div><h4 className="text-sm font-semibold mb-1">Summary</h4><p className="text-sm text-on-surface-variant">{parsed.summary}</p></div>}
-      {parsed.skills?.length > 0 && (
+      {parsed.skills && parsed.skills.length > 0 && (
         <div data-testid="skills-section">
           <h4 className="text-sm font-semibold mb-2">Skills</h4>
           <div className="flex flex-wrap gap-2">
@@ -20,7 +20,7 @@ export function CVParseResult({ cvDocument }: CVParseResultProps) {
           </div>
         </div>
       )}
-      {parsed.work_experience?.length > 0 && (
+      {parsed.work_experience && parsed.work_experience.length > 0 && (
         <div>
           <h4 className="text-sm font-semibold mb-2 flex items-center gap-2"><Calendar size={14} /> Experience</h4>
           {parsed.work_experience.map((exp: CVParsedWorkExperience, i: number) => (
@@ -32,7 +32,7 @@ export function CVParseResult({ cvDocument }: CVParseResultProps) {
           ))}
         </div>
       )}
-      {parsed.education?.length > 0 && (
+      {parsed.education && parsed.education.length > 0 && (
         <div>
           <h4 className="text-sm font-semibold mb-2 flex items-center gap-2"><Award size={14} /> Education</h4>
           {parsed.education.map((edu: CVParsedEducation, i: number) => (
@@ -43,7 +43,7 @@ export function CVParseResult({ cvDocument }: CVParseResultProps) {
           ))}
         </div>
       )}
-      {parsed.languages?.length > 0 && (
+      {parsed.languages && parsed.languages.length > 0 && (
         <div>
           <h4 className="text-sm font-semibold mb-2 flex items-center gap-2"><Languages size={14} /> Languages</h4>
           <div className="flex gap-2">{parsed.languages.map((l: CVParsedLanguage, i: number) => <span key={i} className="px-2 py-0.5 bg-surface-container-low rounded text-xs">{l.name}: {l.level}</span>)}</div>

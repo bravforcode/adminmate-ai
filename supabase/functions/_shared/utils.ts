@@ -1,16 +1,35 @@
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2'
 
-export const corsHeaders = {
-  'Access-Control-Allow-Origin': '*',
-  'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type, x-cron-secret, x-line-signature',
-  'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
-  'Access-Control-Max-Age': '86400',
+const ALLOWED_ORIGINS = [
+  'http://localhost:5173',
+  'http://localhost:3000',
+  'https://adminmate.ai',
+  'https://www.adminmate.ai',
+]
+
+function getAllowedOrigin(req: Request): string {
+  const origin = req.headers.get('Origin')
+  if (origin && ALLOWED_ORIGINS.includes(origin)) return origin
+  return ALLOWED_ORIGINS[0]
 }
 
-export const JSON_HEADERS = { ...corsHeaders, 'Content-Type': 'application/json' }
+export function getCorsHeaders(req: Request): Record<string, string> {
+  return {
+    'Access-Control-Allow-Origin': getAllowedOrigin(req),
+    'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type, x-cron-secret, x-line-signature',
+    'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
+    'Access-Control-Max-Age': '86400',
+  }
+}
+
+export function getJsonHeaders(req: Request): Record<string, string> {
+  return { ...getCorsHeaders(req), 'Content-Type': 'application/json' }
+}
+
+
 
 export function handleCorsPreflight(req: Request): Response | null {
-  if (req.method === 'OPTIONS') return new Response('ok', { headers: corsHeaders })
+  if (req.method === 'OPTIONS') return new Response('ok', { headers: getCorsHeaders(req) })
   return null
 }
 
@@ -71,8 +90,8 @@ export async function checkRateLimit(
     p_window_seconds: windowSeconds,
   })
   if (error) {
-    console.error('Rate limit check failed, failing open:', error)
-    return true
+    console.error('Rate limit check failed, denying request:', error)
+    return false
   }
   const row = Array.isArray(data) ? data[0] : data
   if (row && row.allowed === false) {
@@ -86,7 +105,8 @@ export async function enforceRateLimit(
   userId: string,
   action: string,
   limit: number,
-  windowSeconds: number = 60
+  windowSeconds: number = 60,
+  req?: Request
 ): Promise<Response | null> {
   const { data, error } = await supabase.rpc('check_rate_limit', {
     p_user_id: userId,
@@ -95,14 +115,18 @@ export async function enforceRateLimit(
     p_window_seconds: windowSeconds,
   })
   if (error) {
-    console.error('Rate limit check failed, failing open:', error)
-    return null
+    console.error('Rate limit check failed, denying request:', error)
+    return new Response(
+      JSON.stringify({ success: false, error: 'Rate limit check failed' }),
+      { status: 500, headers: { 'Content-Type': 'application/json' } }
+    )
   }
   const row = Array.isArray(data) ? data[0] : data
   if (row && row.allowed === false) {
+    const h = req ? getJsonHeaders(req) : getJsonHeaders(new Request('http://localhost'))
     return new Response(
       JSON.stringify({ success: false, error: 'Rate limit exceeded. Please try again later.', reset_at: row.reset_at }),
-      { status: 429, headers: { ...JSON_HEADERS, 'Retry-After': String(windowSeconds) } }
+      { status: 429, headers: { ...h, 'Retry-After': String(windowSeconds) } }
     )
   }
   return null
@@ -145,10 +169,11 @@ export function getEnv(name: string, fallback: string = ''): string {
   return Deno.env.get(name) || fallback
 }
 
-export function successResponse(data: unknown, status: number = 200, extraHeaders: Record<string, string> = {}) {
+export function successResponse(data: unknown, status: number = 200, extraHeaders: Record<string, string> = {}, req?: Request) {
+  const base = req ? getJsonHeaders(req) : getJsonHeaders(new Request('http://localhost'))
   return new Response(
     JSON.stringify({ success: true, data }),
-    { status, headers: { ...JSON_HEADERS, ...extraHeaders } }
+    { status, headers: { ...base, ...extraHeaders } }
   )
 }
 

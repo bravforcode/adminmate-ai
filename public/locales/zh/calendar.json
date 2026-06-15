@@ -1,0 +1,16 @@
+{
+  "add_to_calendar": "添加到日历",
+  "download_ics": "下载 .ics",
+  "google_calendar": "Google Calendar",
+  "outlook": "Outlook",
+  "export_all": "导出所有面试",
+  "export_interviews": "导出面试",
+  "no_interviews": "没有即将到来的面试可导出",
+  "settings_title": "日历设置",
+  "reminder_time": "默认提醒时间",
+  "reminder_time_desc": "选择面试前提醒时间。",
+  "default_format": "默认日历格式",
+  "default_format_desc": "选择下载时使用的日历格式。",
+  "save_settings": "保存设置",
+  "settings_saved": "日历设置已保存"
+}

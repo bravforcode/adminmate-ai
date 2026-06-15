@@ -1,0 +1,16 @@
+{
+  "add_to_calendar": "เพิ่มลงปฏิทิน",
+  "download_ics": "ดาวน์โหลด .ics",
+  "google_calendar": "Google Calendar",
+  "outlook": "Outlook",
+  "export_all": "ส่งออกการสัมภาษณ์ทั้งหมด",
+  "export_interviews": "ส่งออกการสัมภาษณ์",
+  "no_interviews": "ไม่มีการสัมภาษณ์ที่กำลังจะมาถึงให้ส่งออก",
+  "settings_title": "การตั้งค่าปฏิทิน",
+  "reminder_time": "เวลาเตือนเริ่มต้น",
+  "reminder_time_desc": "เลือกว่าจะได้รับการแจ้งเตือนก่อนการสัมภาษณ์เมื่อใด",
+  "default_format": "รูปแบบปฏิทินเริ่มต้น",
+  "default_format_desc": "เลือกรูปแบบปฏิทินที่ต้องการสำหรับการดาวน์โหลด",
+  "save_settings": "บันทึกการตั้งค่า",
+  "settings_saved": "บันทึกการตั้งค่าปฏิทินแล้ว"
+}

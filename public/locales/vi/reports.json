@@ -35,5 +35,36 @@
     "date": "Ngày",
     "action": "Hành động"
   },
-  "view_all": "Xem tất cả"
+  "view_all": "Xem tất cả",
+  "scheduling": {
+    "schedule_report": "Lên lịch báo cáo",
+    "title": "Lên lịch báo cáo",
+    "subtitle": "Thiết lập tạo báo cáo tự động",
+    "report_type": "Loại báo cáo",
+    "frequency": "Tần suất",
+    "recipients_label": "Người nhận",
+    "create": "Tạo lịch trình",
+    "creating": "Đang tạo...",
+    "error": "Không thể tạo lịch trình. Vui lòng thử lại.",
+    "type_hiring_summary": "Tóm tắt tuyển dụng",
+    "type_pipeline_analysis": "Phân tích quy trình",
+    "type_time_to_hire": "Thời gian tuyển dụng",
+    "type_source_effectiveness": "Hiệu quả nguồn",
+    "type_onboarding_progress": "Tiến độ hội nhập",
+    "freq_daily": "Hàng ngày",
+    "freq_weekly": "Hàng tuần",
+    "freq_monthly": "Hàng tháng",
+    "next_run": "Chạy tiếp theo",
+    "generate_now": "Tạo ngay",
+    "generate_now_title": "Tạo báo cáo ngay",
+    "generate_now_sub": "Chọn loại báo cáo để tạo ngay lập tức",
+    "click_to_generate": "Nhấp để tạo",
+    "generating": "Đang tạo...",
+    "recent_reports": "Báo cáo gần đây",
+    "recent_reports_sub": "Báo cáo đã tạo gần đây của bạn",
+    "download": "Tải xuống",
+    "toggle_enable": "Bật",
+    "toggle_disable": "Tắt",
+    "delete": "Xóa"
+  }
 }

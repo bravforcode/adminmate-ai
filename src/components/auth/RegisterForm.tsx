@@ -6,6 +6,7 @@ import { useNavigate, Link } from 'react-router-dom'
 import { useAuth } from '../../hooks/useAuth'
 import { useTranslation } from 'react-i18next'
 import toast from 'react-hot-toast'
+import { Button } from '../ui/Button'
 import { Eye, EyeOff, UserPlus, Building2, Check } from 'lucide-react'
 import { translateAuthError } from '../../utils/authErrors'
 import { evaluatePassword } from '../../utils/passwordStrength'
@@ -19,7 +20,8 @@ const registerSchema = z
       .string()
       .min(8, 'Password must be at least 8 characters')
       .regex(/[A-Z]/, 'Add an uppercase letter')
-      .regex(/[0-9]/, 'Add a number'),
+      .regex(/[0-9]/, 'Add a number')
+      .regex(/[^a-zA-Z0-9]/, 'Add a special character'),
     confirmPassword: z.string(),
     country: z.enum(['TH', 'VN', 'ID']),
     industry: z.string().min(1, 'Industry required'),
@@ -114,10 +116,13 @@ export function RegisterForm() {
           type="text"
           autoComplete="name"
           data-testid="name-input"
-          className="w-full px-3 py-2 rounded-lg border border-outline-variant bg-surface-container-lowest focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all"
+          aria-required="true"
+          aria-invalid={!!errors.fullName}
+          aria-describedby={errors.fullName ? 'fullName-error' : undefined}
+          className="w-full px-3 py-2 rounded-lg border border-outline-variant dark:border-[#334155] bg-surface-container-lowest dark:bg-[#0f172a] focus:border-primary dark:focus:border-[#3b82f6] focus:ring-2 focus:ring-primary/20 outline-none transition-all dark:text-[#f1f5f9]"
           placeholder="Somchai Jaidee"
         />
-        {errors.fullName && <p className="text-error text-sm mt-1">{t('auth.error_name_required')}</p>}
+        {errors.fullName && <p id="fullName-error" role="alert" className="text-error text-sm mt-1">{t('auth.error_name_required')}</p>}
       </div>
 
       <div>
@@ -131,11 +136,14 @@ export function RegisterForm() {
           {...register('companyName')}
           type="text"
           data-testid="company-name-input"
-          className="w-full px-3 py-2 rounded-lg border border-outline-variant bg-surface-container-lowest focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all"
+          aria-required="true"
+          aria-invalid={!!errors.companyName}
+          aria-describedby={errors.companyName ? 'companyName-error' : undefined}
+          className="w-full px-3 py-2 rounded-lg border border-outline-variant dark:border-[#334155] bg-surface-container-lowest dark:bg-[#0f172a] focus:border-primary dark:focus:border-[#3b82f6] focus:ring-2 focus:ring-primary/20 outline-none transition-all dark:text-[#f1f5f9]"
           placeholder="TechNova Solutions Co., Ltd."
         />
         {errors.companyName && (
-          <p className="text-error text-sm mt-1">{t('auth.error_company_required')}</p>
+          <p id="companyName-error" role="alert" className="text-error text-sm mt-1">{t('auth.error_company_required')}</p>
         )}
       </div>
 
@@ -147,7 +155,7 @@ export function RegisterForm() {
           <select
             id="country"
             {...register('country')}
-            className="w-full px-3 py-2 rounded-lg border border-outline-variant bg-surface-container-lowest focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none"
+            className="w-full px-3 py-2 rounded-lg border border-outline-variant dark:border-[#334155] bg-surface-container-lowest dark:bg-[#0f172a] focus:border-primary dark:focus:border-[#3b82f6] focus:ring-2 focus:ring-primary/20 outline-none dark:text-[#f1f5f9]"
           >
             {COUNTRIES.map((c) => (
               <option key={c.value} value={c.value}>
@@ -160,22 +168,25 @@ export function RegisterForm() {
           <label htmlFor="industry" className="block text-label-md text-on-surface-variant mb-1">
             {t('company.industry')}
           </label>
-          <select
-            id="industry"
-            {...register('industry')}
-            data-testid="industry-input"
-            className="w-full px-3 py-2 rounded-lg border border-outline-variant bg-surface-container-lowest focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none"
-          >
-            <option value="">{t('common.select')}...</option>
-            {INDUSTRIES.map((i) => (
-              <option key={i} value={i}>
-                {i}
-              </option>
-            ))}
-          </select>
-          {errors.industry && (
-            <p className="text-error text-sm mt-1">{t('auth.error_industry_required')}</p>
-          )}
+        <select
+          id="industry"
+          {...register('industry')}
+          data-testid="industry-input"
+          aria-required="true"
+          aria-invalid={!!errors.industry}
+          aria-describedby={errors.industry ? 'industry-error' : undefined}
+          className="w-full px-3 py-2 rounded-lg border border-outline-variant dark:border-[#334155] bg-surface-container-lowest dark:bg-[#0f172a] focus:border-primary dark:focus:border-[#3b82f6] focus:ring-2 focus:ring-primary/20 outline-none dark:text-[#f1f5f9]"
+        >
+          <option value="">{t('common.select')}...</option>
+          {INDUSTRIES.map((i) => (
+            <option key={i} value={i}>
+              {i}
+            </option>
+          ))}
+        </select>
+        {errors.industry && (
+          <p id="industry-error" role="alert" className="text-error text-sm mt-1">{t('auth.error_industry_required')}</p>
+        )}
         </div>
       </div>
 
@@ -189,10 +200,13 @@ export function RegisterForm() {
           type="email"
           autoComplete="email"
           inputMode="email"
-          className="w-full px-3 py-2 rounded-lg border border-outline-variant bg-surface-container-lowest focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all"
+          aria-required="true"
+          aria-invalid={!!errors.email}
+          aria-describedby={errors.email ? 'reg-email-error' : undefined}
+          className="w-full px-3 py-2 rounded-lg border border-outline-variant dark:border-[#334155] bg-surface-container-lowest dark:bg-[#0f172a] focus:border-primary dark:focus:border-[#3b82f6] focus:ring-2 focus:ring-primary/20 outline-none transition-all dark:text-[#f1f5f9]"
           placeholder="you@company.com"
         />
-        {errors.email && <p className="text-error text-sm mt-1">{t('auth.error_invalid_email')}</p>}
+        {errors.email && <p id="reg-email-error" role="alert" className="text-error text-sm mt-1">{t('auth.error_invalid_email')}</p>}
       </div>
 
       <div>
@@ -206,6 +220,9 @@ export function RegisterForm() {
             type={showPassword ? 'text' : 'password'}
             autoComplete="new-password"
             data-testid="password-input"
+            aria-required="true"
+            aria-invalid={!!errors.password}
+            aria-describedby={errors.password ? 'password-error' : undefined}
             className="w-full px-3 py-2 rounded-lg border border-outline-variant bg-surface-container-lowest focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all pr-10"
             placeholder="••••••••"
           />
@@ -221,7 +238,7 @@ export function RegisterForm() {
         </div>
         {passwordValue && (
           <div className="mt-2" data-testid="password-strength">
-            <div className="h-1.5 w-full rounded-full bg-outline-variant overflow-hidden">
+            <div className="h-1.5 w-full rounded-full bg-outline-variant dark:bg-[#334155] overflow-hidden">
               <div
                 className={`h-full ${strength.color} transition-all`}
                 style={{ width: `${strength.percent}%` }}
@@ -240,7 +257,7 @@ export function RegisterForm() {
           </div>
         )}
         {errors.password && (
-          <p className="text-error text-sm mt-1">{errors.password.message}</p>
+          <p id="password-error" role="alert" className="text-error text-sm mt-1">{errors.password.message}</p>
         )}
       </div>
 
@@ -253,32 +270,37 @@ export function RegisterForm() {
           {...register('confirmPassword')}
           type={showPassword ? 'text' : 'password'}
           autoComplete="new-password"
-          className="w-full px-3 py-2 rounded-lg border border-outline-variant bg-surface-container-lowest focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all"
+          aria-required="true"
+          aria-invalid={!!errors.confirmPassword}
+          aria-describedby={errors.confirmPassword ? 'confirmPassword-error' : undefined}
+          className="w-full px-3 py-2 rounded-lg border border-outline-variant dark:border-[#334155] bg-surface-container-lowest dark:bg-[#0f172a] focus:border-primary dark:focus:border-[#3b82f6] focus:ring-2 focus:ring-primary/20 outline-none transition-all dark:text-[#f1f5f9]"
           placeholder="••••••••"
         />
         {errors.confirmPassword && (
-          <p className="text-error text-sm mt-1">{errors.confirmPassword.message}</p>
+          <p id="confirmPassword-error" role="alert" className="text-error text-sm mt-1">{errors.confirmPassword.message}</p>
         )}
       </div>
 
       {submitError && (
         <div
           role="alert"
-          className="rounded-lg border border-error/40 bg-error-container/40 text-error px-3 py-2 text-sm"
+          className="rounded-lg border border-error/40 bg-error-container/40 dark:bg-[#450a0a]/30 text-error dark:text-[#f87171] px-3 py-2 text-sm"
         >
           {submitError}
         </div>
       )}
 
-      <button
+      <Button
         type="submit"
-        disabled={isSubmitting}
+        variant="default"
+        size="xl"
+        loading={isSubmitting}
         data-testid="register-button"
-        className="w-full bg-primary text-on-primary py-2.5 rounded-lg font-label-md hover:opacity-90 transition-opacity disabled:opacity-50 flex items-center justify-center gap-2"
+        icon={<UserPlus size={18} />}
+        fullWidth
       >
-        <UserPlus size={18} />{' '}
         {isSubmitting ? t('auth.registering') : t('auth.create_account')}
-      </button>
+      </Button>
 
       <p className="text-center text-sm text-on-surface-variant mt-4">
         {t('auth.already_have_account')}{' '}

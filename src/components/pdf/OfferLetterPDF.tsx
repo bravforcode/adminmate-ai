@@ -53,10 +53,10 @@ export function OfferLetterPDF({ data }: Props) {
 
         <View style={styles.section}>
           <Text style={styles.label}>COMPENSATION</Text>
-          <Text>Monthly Salary: {new Intl.NumberFormat('en-US', { style: 'currency', currency: o.salary_currency || 'THB' }).format(o.salary_offered)}</Text>
+          <Text>Monthly Salary: {new Intl.NumberFormat('en-US', { style: 'currency', currency: o.salary_currency || 'THB' }).format(o.salary_offered ?? 0)}</Text>
         </View>
 
-        {o.benefits?.length > 0 && (
+        {o.benefits && o.benefits.length > 0 && (
           <View style={styles.section}>
             <Text style={styles.label}>BENEFITS</Text>
             {o.benefits.map((b: string, i: number) => <Text key={i}>• {b}</Text>)}

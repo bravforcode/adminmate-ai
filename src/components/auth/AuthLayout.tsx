@@ -1,3 +1,5 @@
+import { Logo } from '../brand/Logo'
+
 interface AuthLayoutProps {
   children: React.ReactNode
   title: string
@@ -21,17 +23,8 @@ export function AuthLayout({ children, title, subtitle }: AuthLayoutProps) {
 
         {/* Logo */}
         <div style={{ textAlign: 'center', marginBottom: '40px' }}>
-          <div style={{
-            width: '40px', height: '40px', borderRadius: '10px',
-            backgroundColor: 'var(--color-navy, #2563eb)',
-            margin: '0 auto 16px auto',
-            display: 'flex', alignItems: 'center', justifyContent: 'center',
-          }}>
-            <span style={{
-              color: '#fff',
-              fontFamily: 'var(--font-serif, Georgia, serif)',
-              fontSize: '18px',
-            }}>A</span>
+          <div style={{ display: 'inline-block', marginBottom: '16px' }}>
+            <Logo size={40} showText={false} />
           </div>
           <h1 style={{
             fontFamily: 'var(--font-serif, Georgia, serif)',

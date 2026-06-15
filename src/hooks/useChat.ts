@@ -1,7 +1,6 @@
 import { useState, useCallback } from 'react'
 import { useAuthStore } from '../stores/authStore'
 import { chatService } from '../services/chatService'
-import toast from 'react-hot-toast'
 
 interface ChatMessage {
   id: string
@@ -34,8 +33,19 @@ export function useChat() {
       const aiMsg: ChatMessage = { id: crypto.randomUUID(), session_id: sessionId, sender: 'ai', content: aiText, created_at: new Date().toISOString() }
       setMessages(prev => [...prev, aiMsg])
       await chatService.sendMessage({ user_id: user.id, company_id: company.id, session_id: sessionId, sender: 'ai', content: aiText })
-    } catch {
-      toast.error('Failed to get AI response')
+    } catch (err) {
+      const errorMsg = err instanceof Error ? err.message : String(err)
+      if (import.meta.env.DEV) console.error('[useChat] AI response failed:', err)
+      const errorAiMsg: ChatMessage = {
+        id: crypto.randomUUID(), session_id: sessionId, sender: 'ai',
+        content: errorMsg.includes('companyId is required')
+          ? 'Please refresh the page and try again.'
+          : errorMsg.includes('exceeded')
+            ? 'AI rate limit reached. Please wait a moment.'
+            : 'ขออภัย ไม่สามารถตอบคำถามได้ในขณะนี้',
+        created_at: new Date().toISOString()
+      }
+      setMessages(prev => [...prev, errorAiMsg])
     } finally {
       setIsLoading(false)
     }

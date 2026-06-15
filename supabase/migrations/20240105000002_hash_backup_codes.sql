@@ -1,0 +1,14 @@
+-- NOTE: pgcrypto digest() function not available in this Supabase project.
+-- New backup codes are already hashed by verify-mfa Edge Function (SHA-256 via crypto.subtle).
+--
+-- To manually migrate existing plaintext backup codes, run this in Supabase SQL Editor:
+-- (Enable pgcrypto first if needed: CREATE EXTENSION IF NOT EXISTS pgcrypto WITH SCHEMA extensions;)
+--
+-- UPDATE mfa_enrollments
+-- SET backup_codes = (
+--   SELECT jsonb_agg(encode(extensions.digest(elem::text::bytea, 'sha256'), 'hex'))
+--   FROM jsonb_array_elements_text(backup_codes) AS elem
+-- )
+-- WHERE backup_codes IS NOT NULL
+--   AND jsonb_typeof(backup_codes) = 'array'
+--   AND backup_codes::text LIKE '%-%';

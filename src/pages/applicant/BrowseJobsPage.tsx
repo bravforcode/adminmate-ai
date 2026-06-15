@@ -1,18 +1,25 @@
-import { useState } from 'react'
+import { useState, useEffect, useMemo } from 'react'
 import { useQuery } from '@tanstack/react-query'
 import { useNavigate } from 'react-router-dom'
 import { supabase } from '../../lib/supabase'
 import { useAuthStore } from '../../stores/authStore'
 import { useTranslation } from 'react-i18next'
-import { Search, Briefcase, MapPin, Building2, AlertCircle, RefreshCw, DollarSign } from 'lucide-react'
+import { Search, Briefcase, MapPin, Building2, DollarSign } from 'lucide-react'
 import { EmptyState } from '../../components/shared/EmptyState'
+import { ErrorState } from '../../components/shared/ErrorState'
 import { LoadingState } from '../../components/shared/LoadingState'
 
 export function BrowseJobsPage() {
   const { t } = useTranslation('common')
   const navigate = useNavigate()
   const company = useAuthStore(s => s.company)
+  const [searchInput, setSearchInput] = useState('')
   const [search, setSearch] = useState('')
+
+  useEffect(() => {
+    const timer = setTimeout(() => setSearch(searchInput), 300)
+    return () => clearTimeout(timer)
+  }, [searchInput])
 
   const { data: jobs, isLoading, isError, error, refetch } = useQuery({
     queryKey: ['applicant-jobs', company?.id],
@@ -28,12 +35,12 @@ export function BrowseJobsPage() {
     enabled: true,
   })
 
-  const filtered = jobs?.filter(j =>
+  const filtered = useMemo(() => jobs?.filter(j =>
     !search ||
     j.title?.toLowerCase().includes(search.toLowerCase()) ||
     j.department?.toLowerCase().includes(search.toLowerCase()) ||
     j.location?.toLowerCase().includes(search.toLowerCase())
-  )
+  ), [jobs, search])
 
   return (
     <div className="space-y-6">
@@ -43,27 +50,21 @@ export function BrowseJobsPage() {
       </div>
 
       <div className="relative max-w-md">
-        <Search size={18} className="absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant" />
+        <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant dark:text-[#94a3b8] size-4" />
         <input
-          value={search}
-          onChange={e => setSearch(e.target.value)}
-          className="w-full pl-10 pr-4 py-2 rounded-lg border border-outline-variant bg-surface-container-lowest focus:border-primary outline-none text-sm"
+          value={searchInput}
+          onChange={e => setSearchInput(e.target.value)}
+          className="w-full pl-10 pr-4 py-3 rounded-xl border border-outline-variant dark:border-[#334155] bg-surface-container-lowest dark:bg-[#0f172a] text-on-surface dark:text-[#f1f5f9] focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all duration-200 outline-none text-sm placeholder:text-on-surface-variant/50"
           placeholder={t('applicant.jobs.search')}
         />
       </div>
 
       {isError ? (
-        <div className="bg-surface rounded-xl border border-outline-variant p-8 text-center">
-          <AlertCircle size={40} className="mx-auto text-error mb-3" />
-          <h3 className="font-semibold text-on-surface mb-1">{t('errors.load_failed')}</h3>
-          <p className="text-sm text-on-surface-variant mb-4">{(error as Error)?.message || ''}</p>
-          <button
-            onClick={() => refetch()}
-            className="inline-flex items-center gap-2 px-4 py-2 bg-primary text-on-primary rounded-lg text-sm font-medium hover:opacity-90"
-          >
-            <RefreshCw size={14} /> {t('errors.retry')}
-          </button>
-        </div>
+        <ErrorState
+          title={t('errors.load_failed')}
+          message={(error as Error)?.message || ''}
+          onRetry={() => refetch()}
+        />
       ) : isLoading ? (
         <LoadingState variant="cards" rows={4} message={t('common.loading')} />
       ) : filtered && filtered.length === 0 ? (

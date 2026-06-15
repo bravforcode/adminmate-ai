@@ -6,4 +6,4 @@ BEGIN
     phone = NULL, line_user_id = NULL, whatsapp_phone = NULL, notes = 'Data anonymized per PDPA request'
   WHERE email = p_email AND company_id = p_company_id;
 END;
-$$ LANGUAGE plpgsql SECURITY DEFINER;
+$$ LANGUAGE plpgsql SECURITY DEFINER SET search_path = public;

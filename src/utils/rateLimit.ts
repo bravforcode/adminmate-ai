@@ -25,6 +25,7 @@ function read(key: string): LockoutState {
     }
     return parsed
   } catch {
+    // Corrupted rate-limit state in localStorage — reset to safe defaults
     return { attempts: 0, lockedUntil: null, firstAttemptAt: 0 }
   }
 }

@@ -1,4 +1,5 @@
 import { createClient } from '@supabase/supabase-js'
+import { authStorage } from './authStorage'
 
 const supabaseUrl = import.meta.env.VITE_SUPABASE_URL
 const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY
@@ -11,12 +12,12 @@ if (!supabaseUrl || !supabaseAnonKey) {
 }
 
 export const SUPABASE_AUTH_OPTIONS = {
-  autoRefreshToken: true,
+  autoRefreshToken: false,
   persistSession: true,
   detectSessionInUrl: true,
   flowType: 'pkce' as const,
   storageKey: 'adminmate-auth-token',
-  storage: typeof window !== 'undefined' ? window.localStorage : undefined,
+  storage: typeof window !== 'undefined' ? authStorage : undefined,
 }
 
 export const supabase = createClient(supabaseUrl, supabaseAnonKey, {

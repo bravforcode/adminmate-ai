@@ -1,0 +1,16 @@
+{
+  "add_to_calendar": "Tambah ke Kalender",
+  "download_ics": "Unduh .ics",
+  "google_calendar": "Google Calendar",
+  "outlook": "Outlook",
+  "export_all": "Ekspor Semua Wawancara",
+  "export_interviews": "Ekspor Wawancara",
+  "no_interviews": "Tidak ada wawancara mendatang untuk diekspor",
+  "settings_title": "Pengaturan Kalender",
+  "reminder_time": "Waktu Pengingat Default",
+  "reminder_time_desc": "Pilih kapan menerima pengingat sebelum wawancara.",
+  "default_format": "Format Kalender Default",
+  "default_format_desc": "Pilih format kalender yang disukai untuk diunduh.",
+  "save_settings": "Simpan Pengaturan",
+  "settings_saved": "Pengaturan kalender disimpan"
+}

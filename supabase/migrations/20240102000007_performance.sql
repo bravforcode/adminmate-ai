@@ -160,7 +160,12 @@ REFRESH MATERIALIZED VIEW dashboard_stats;
 
 -- Single-call replacement for 4 dashboard count queries (and the pendingDocs/overdueChecklists lookups)
 CREATE OR REPLACE FUNCTION get_dashboard_stats(p_company_id UUID)
-RETURNS JSON AS $$
+RETURNS JSON
+LANGUAGE sql
+SECURITY DEFINER
+SET search_path = public
+STABLE
+AS $$
   SELECT json_build_object(
     'active_jobs', COALESCE(active_jobs, 0),
     'closed_jobs', COALESCE(closed_jobs, 0),
@@ -182,7 +187,7 @@ RETURNS JSON AS $$
   )
   FROM dashboard_stats
   WHERE company_id = p_company_id
-$$ LANGUAGE sql SECURITY DEFINER STABLE;
+$$;
 
 -- Combined activity feed: applications + jobs + candidates, in one query
 CREATE OR REPLACE FUNCTION get_recent_activity(
@@ -196,7 +201,12 @@ RETURNS TABLE(
   subtitle TEXT,
   status TEXT,
   created_at TIMESTAMPTZ
-) AS $$
+)
+LANGUAGE sql
+SECURITY DEFINER
+SET search_path = public
+STABLE
+AS $$
   SELECT * FROM (
     SELECT a.id,
            'application'::TEXT AS type,
@@ -229,7 +239,7 @@ RETURNS TABLE(
   ) AS activity
   ORDER BY created_at DESC
   LIMIT GREATEST(p_limit, 1)
-$$ LANGUAGE sql SECURITY DEFINER STABLE;
+$$;
 
 -- Single-query candidates listing with application count, latest status, match score, CV presence
 -- Replaces candidateService.getAll's 3-table PostgREST embedding with one round-trip
@@ -249,7 +259,12 @@ RETURNS TABLE(
   latest_application_status TEXT,
   latest_ai_match_score NUMERIC,
   has_cv BOOLEAN
-) AS $$
+)
+LANGUAGE sql
+SECURITY DEFINER
+SET search_path = public
+STABLE
+AS $$
   SELECT
     c.id,
     c.full_name,
@@ -286,14 +301,18 @@ RETURNS TABLE(
   ) cv ON true
   WHERE c.company_id = p_company_id
   ORDER BY c.created_at DESC
-$$ LANGUAGE sql SECURITY DEFINER STABLE;
+$$;
 
 -- Convenience: refresh dashboard_stats; call after writes that affect counts
 -- (also run via pg_cron in production for periodic refresh)
 CREATE OR REPLACE FUNCTION refresh_dashboard_stats()
-RETURNS VOID AS $$
+RETURNS VOID
+LANGUAGE sql
+SECURITY DEFINER
+SET search_path = public
+AS $$
   REFRESH MATERIALIZED VIEW CONCURRENTLY dashboard_stats
-$$ LANGUAGE sql SECURITY DEFINER;
+$$;
 
 -- ====================== GRANTS ======================
 

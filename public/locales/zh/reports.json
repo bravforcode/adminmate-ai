@@ -35,5 +35,36 @@
     "date": "日期",
     "action": "操作"
   },
-  "view_all": "查看全部"
+  "view_all": "查看全部",
+  "scheduling": {
+    "schedule_report": "安排报告",
+    "title": "安排报告",
+    "subtitle": "设置自动报告生成",
+    "report_type": "报告类型",
+    "frequency": "频率",
+    "recipients_label": "收件人",
+    "create": "创建计划",
+    "creating": "创建中...",
+    "error": "创建计划失败，请重试。",
+    "type_hiring_summary": "招聘摘要",
+    "type_pipeline_analysis": "流程分析",
+    "type_time_to_hire": "招聘周期",
+    "type_source_effectiveness": "渠道效果",
+    "type_onboarding_progress": "入职进度",
+    "freq_daily": "每天",
+    "freq_weekly": "每周",
+    "freq_monthly": "每月",
+    "next_run": "下次运行",
+    "generate_now": "立即生成",
+    "generate_now_title": "立即生成报告",
+    "generate_now_sub": "选择报告类型立即生成",
+    "click_to_generate": "点击生成",
+    "generating": "生成中...",
+    "recent_reports": "最近报告",
+    "recent_reports_sub": "最近生成的报告",
+    "download": "下载",
+    "toggle_enable": "启用",
+    "toggle_disable": "禁用",
+    "delete": "删除"
+  }
 }

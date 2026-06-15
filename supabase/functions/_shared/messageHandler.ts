@@ -93,8 +93,13 @@ function formatStatusResponse(apps: any[], lang: string): string {
 }
 
 async function sendLineReply(replyToken: string, text: string, companyId: string, supabase: ReturnType<typeof createClient>) {
-  const { data: conn } = await supabase.from('chat_platform_connections').select('access_token').eq('company_id', companyId).eq('platform', 'line').eq('is_active', true).single()
-  const token = conn?.access_token || Deno.env.get('LINE_CHANNEL_ACCESS_TOKEN')
+  const { data: conn } = await supabase.from('chat_platform_connections').select('access_token_vault_id').eq('company_id', companyId).eq('platform', 'line').eq('is_active', true).single()
+  let token: string | undefined
+  if (conn?.access_token_vault_id) {
+    const { data: decrypted } = await supabase.rpc('get_decrypted_token', { p_secret_id: conn.access_token_vault_id })
+    token = decrypted as string
+  }
+  token = token || Deno.env.get('LINE_CHANNEL_ACCESS_TOKEN')
   if (!token) return
   await fetch('https://api.line.me/v2/bot/message/reply', {
     method: 'POST',
@@ -104,8 +109,13 @@ async function sendLineReply(replyToken: string, text: string, companyId: string
 }
 
 async function sendWhatsAppReply(to: string, text: string, companyId: string, supabase: ReturnType<typeof createClient>) {
-  const { data: conn } = await supabase.from('chat_platform_connections').select('access_token, platform_account_id').eq('company_id', companyId).eq('platform', 'whatsapp').eq('is_active', true).single()
-  const token = conn?.access_token || Deno.env.get('WHATSAPP_API_TOKEN')
+  const { data: conn } = await supabase.from('chat_platform_connections').select('access_token_vault_id, platform_account_id').eq('company_id', companyId).eq('platform', 'whatsapp').eq('is_active', true).single()
+  let token: string | undefined
+  if (conn?.access_token_vault_id) {
+    const { data: decrypted } = await supabase.rpc('get_decrypted_token', { p_secret_id: conn.access_token_vault_id })
+    token = decrypted as string
+  }
+  token = token || Deno.env.get('WHATSAPP_API_TOKEN')
   const phoneId = conn?.platform_account_id || Deno.env.get('WHATSAPP_PHONE_NUMBER_ID')
   if (!token || !phoneId) return
   await fetch(`https://graph.facebook.com/v22.0/${phoneId}/messages`, {

@@ -1,69 +1,100 @@
-import { useState } from 'react'
-import { Plus, Search, Users, AlertCircle, RefreshCw } from 'lucide-react'
+import { useState, useMemo, useCallback, useEffect } from 'react'
+import { Plus, Search, Users, Download } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import { useCandidates } from '../../hooks/useCandidates'
 import { CandidateCard } from '../../components/candidates/CandidateCard'
 import { CandidateForm } from '../../components/candidates/CandidateForm'
+import { Button } from '../../components/ui/Button'
 import { EmptyState } from '../../components/shared/EmptyState'
+import { ErrorState } from '../../components/shared/ErrorState'
 import { LoadingState } from '../../components/shared/LoadingState'
+import { toCSV, downloadCSV } from '../../utils/csvParser'
 
 export function CandidatesPage() {
   const { t } = useTranslation(['recruitment', 'common'])
   const { data: candidates, isLoading, isError, error, refetch } = useCandidates()
   const [showForm, setShowForm] = useState(false)
+  const [searchInput, setSearchInput] = useState('')
   const [search, setSearch] = useState('')
 
-  const filtered = candidates?.filter(c =>
+  useEffect(() => {
+    const timer = setTimeout(() => setSearch(searchInput), 300)
+    return () => clearTimeout(timer)
+  }, [searchInput])
+
+  const filtered = useMemo(() => candidates?.filter(c =>
     !search ||
     c.full_name?.toLowerCase().includes(search.toLowerCase()) ||
     c.email?.toLowerCase().includes(search.toLowerCase()) ||
     c.current_position?.toLowerCase().includes(search.toLowerCase())
-  )
+  ), [candidates, search])
+
+  const handleSearchChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => setSearchInput(e.target.value), [])
+
+  const handleExportCSV = useCallback(() => {
+    if (!filtered || filtered.length === 0) return
+    const exportData = filtered.map(c => ({
+      full_name: c.full_name ?? '',
+      email: c.email ?? '',
+      phone: c.phone ?? '',
+      location: c.location ?? '',
+      current_position: c.current_position ?? '',
+      source: c.source ?? '',
+    }))
+    downloadCSV(toCSV(exportData), 'candidates.csv')
+  }, [filtered])
 
   return (
     <div className="space-y-6">
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
-          <h1 className="text-headline-md font-bold text-on-surface">{t('candidates.title')}</h1>
-          <p className="text-body-md text-on-surface-variant mt-1">Manage your candidate database</p>
+          <h1 className="text-headline-md font-bold text-on-surface dark:text-[#f1f5f9]">{t('candidates.title')}</h1>
+          <p className="text-body-md text-on-surface-variant dark:text-[#94a3b8] mt-1">Manage your candidate database</p>
         </div>
-        <button
-          onClick={() => setShowForm(true)}
-          data-testid="add-candidate"
-          className="flex items-center gap-2 px-4 py-2.5 bg-primary text-on-primary rounded-lg font-medium hover:opacity-90 transition-opacity"
-        >
-          <Plus size={18} /> {t('candidates.add')}
-        </button>
+        <div className="flex gap-2">
+          <Button
+            variant="outline"
+            size="md"
+            onClick={handleExportCSV}
+            disabled={!filtered || filtered.length === 0}
+            icon={<Download size={16} />}
+          >
+            {t('common:export_csv')}
+          </Button>
+          <Button
+            variant="default"
+            size="lg"
+            onClick={() => setShowForm(true)}
+            data-testid="add-candidate"
+            icon={<Plus size={18} />}
+          >
+            {t('candidates.add')}
+          </Button>
+        </div>
       </div>
 
       <div className="relative max-w-sm">
-        <Search size={18} className="absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant" />
+        <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant dark:text-[#94a3b8] size-4" />
         <input
-          value={search}
-          onChange={e => setSearch(e.target.value)}
-          className="w-full pl-10 pr-4 py-2 rounded-lg border border-outline-variant bg-surface-container-lowest focus:border-primary outline-none text-sm"
+          value={searchInput}
+          onChange={handleSearchChange}
+          className="w-full pl-10 pr-4 py-3 rounded-xl border border-outline-variant dark:border-[#334155] bg-surface-container-lowest dark:bg-[#0f172a] text-on-surface dark:text-[#f1f5f9] focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all duration-200 outline-none text-sm placeholder:text-on-surface-variant/50"
           placeholder={t('candidates.search_placeholder')}
         />
       </div>
 
       {showForm && (
-        <div className="bg-surface rounded-xl border border-outline-variant p-6">
+        <div className="bg-surface dark:bg-[#1e293b] rounded-xl border border-outline-variant dark:border-[#334155] p-6">
           <CandidateForm onClose={() => setShowForm(false)} />
         </div>
       )}
 
       {isError ? (
-        <div className="bg-surface rounded-xl border border-outline-variant p-8 text-center">
-          <AlertCircle size={40} className="mx-auto text-error mb-3" />
-          <h3 className="font-semibold text-on-surface mb-1">{t('common:errors.load_failed')}</h3>
-          <p className="text-sm text-on-surface-variant mb-4">{(error as Error)?.message || ''}</p>
-          <button
-            onClick={() => refetch()}
-            className="inline-flex items-center gap-2 px-4 py-2 bg-primary text-on-primary rounded-lg text-sm font-medium hover:opacity-90"
-          >
-            <RefreshCw size={14} /> {t('common:errors.retry')}
-          </button>
-        </div>
+        <ErrorState
+          title={t('common:errors.load_failed')}
+          message={(error as Error)?.message || ''}
+          onRetry={() => refetch()}
+        />
       ) : isLoading ? (
         <LoadingState variant="cards" rows={4} message={t('common:loading')} />
       ) : filtered && filtered.length === 0 ? (

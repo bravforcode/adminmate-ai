@@ -35,5 +35,36 @@
     "date": "Tanggal",
     "action": "Tindakan"
   },
-  "view_all": "Lihat Semua"
+  "view_all": "Lihat Semua",
+  "scheduling": {
+    "schedule_report": "Jadwalkan Laporan",
+    "title": "Jadwalkan Laporan",
+    "subtitle": "Siapkan pembuatan laporan otomatis",
+    "report_type": "Jenis Laporan",
+    "frequency": "Frekuensi",
+    "recipients_label": "Penerima",
+    "create": "Buat Jadwal",
+    "creating": "Membuat...",
+    "error": "Gagal membuat jadwal. Silakan coba lagi.",
+    "type_hiring_summary": "Ringkasan Rekrutmen",
+    "type_pipeline_analysis": "Analisis Pipeline",
+    "type_time_to_hire": "Waktu Rekrutmen",
+    "type_source_effectiveness": "Efektivitas Sumber",
+    "type_onboarding_progress": "Progres Onboarding",
+    "freq_daily": "Harian",
+    "freq_weekly": "Mingguan",
+    "freq_monthly": "Bulanan",
+    "next_run": "Jalankan berikutnya",
+    "generate_now": "Buat Sekarang",
+    "generate_now_title": "Buat Laporan Sekarang",
+    "generate_now_sub": "Pilih jenis laporan untuk dibuat langsung",
+    "click_to_generate": "Klik untuk membuat",
+    "generating": "Membuat...",
+    "recent_reports": "Laporan Terbaru",
+    "recent_reports_sub": "Laporan yang baru dibuat",
+    "download": "Unduh",
+    "toggle_enable": "Aktifkan",
+    "toggle_disable": "Nonaktifkan",
+    "delete": "Hapus"
+  }
 }

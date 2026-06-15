@@ -13,6 +13,10 @@ import './index.css'
 initGlobalErrorHandler()
 initPageLoadMonitoring()
 
+if (import.meta.env.VITE_SENTRY_DSN) {
+  import('./lib/sentry').then(m => m.initSentry())
+}
+
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
     <ErrorBoundary>

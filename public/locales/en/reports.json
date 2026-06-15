@@ -35,5 +35,36 @@
     "date": "Date",
     "action": "Action"
   },
-  "view_all": "View All"
+  "view_all": "View All",
+  "scheduling": {
+    "schedule_report": "Schedule Report",
+    "title": "Schedule Report",
+    "subtitle": "Set up automatic report generation",
+    "report_type": "Report Type",
+    "frequency": "Frequency",
+    "recipients_label": "Recipients",
+    "create": "Create Schedule",
+    "creating": "Creating...",
+    "error": "Failed to create schedule. Please try again.",
+    "type_hiring_summary": "Hiring Summary",
+    "type_pipeline_analysis": "Pipeline Analysis",
+    "type_time_to_hire": "Time to Hire",
+    "type_source_effectiveness": "Source Effectiveness",
+    "type_onboarding_progress": "Onboarding Progress",
+    "freq_daily": "Daily",
+    "freq_weekly": "Weekly",
+    "freq_monthly": "Monthly",
+    "next_run": "Next run",
+    "generate_now": "Generate Now",
+    "generate_now_title": "Generate Report Now",
+    "generate_now_sub": "Select a report type to generate instantly",
+    "click_to_generate": "Click to generate",
+    "generating": "Generating...",
+    "recent_reports": "Recent Reports",
+    "recent_reports_sub": "Your recently generated reports",
+    "download": "Download",
+    "toggle_enable": "Enable",
+    "toggle_disable": "Disable",
+    "delete": "Delete"
+  }
 }

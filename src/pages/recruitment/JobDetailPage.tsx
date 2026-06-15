@@ -1,13 +1,14 @@
 import { useParams, Link } from 'react-router-dom'
 import { useJob } from '../../hooks/useJobs'
 import { JobStatusBadge } from '../../components/jobs/JobStatusBadge'
+import { LoadingState } from '../../components/shared/LoadingState'
 import { MapPin, Clock, Users, DollarSign, Calendar, ArrowLeft } from 'lucide-react'
 
 export function JobDetailPage() {
   const { id } = useParams<{ id: string }>()
   const { data: job, isLoading } = useJob(id!)
 
-  if (isLoading) return <div className="p-8 text-center text-on-surface-variant">Loading...</div>
+  if (isLoading) return <LoadingState variant="detail" />
   if (!job) return <div className="p-8 text-center text-on-surface-variant">Job not found</div>
 
   return (

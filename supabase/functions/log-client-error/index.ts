@@ -1,8 +1,7 @@
 import { serve } from 'https://deno.land/std@0.168.0/http/server.ts'
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2'
 import {
-  corsHeaders,
-  JSON_HEADERS,
+  getJsonHeaders,
   handleCorsPreflight,
   verifyAuth,
   enforceRateLimit,
@@ -49,12 +48,12 @@ serve(async (req) => {
   let userId: string | undefined
   try {
     if (req.method !== 'POST') {
-      return new Response(JSON.stringify({ success: false, error: 'Method not allowed' }), { status: 405, headers: JSON_HEADERS })
+      return new Response(JSON.stringify({ success: false, error: 'Method not allowed' }), { status: 405, headers: getJsonHeaders(req) })
     }
 
     const contentLength = parseInt(req.headers.get('content-length') || '0', 10)
     if (contentLength > MAX_BODY_BYTES) {
-      return new Response(JSON.stringify({ success: false, error: 'Payload too large' }), { status: 413, headers: JSON_HEADERS })
+      return new Response(JSON.stringify({ success: false, error: 'Payload too large' }), { status: 413, headers: getJsonHeaders(req) })
     }
 
     const supabase = createClient(
@@ -85,11 +84,11 @@ serve(async (req) => {
     try {
       const text = await req.text()
       if (text.length > MAX_BODY_BYTES) {
-        return new Response(JSON.stringify({ success: false, error: 'Payload too large' }), { status: 413, headers: JSON_HEADERS })
+        return new Response(JSON.stringify({ success: false, error: 'Payload too large' }), { status: 413, headers: getJsonHeaders(req) })
       }
       payload = text ? (JSON.parse(text) as ClientErrorPayload) : {}
     } catch {
-      return new Response(JSON.stringify({ success: false, error: 'Invalid JSON body' }), { status: 400, headers: JSON_HEADERS })
+      return new Response(JSON.stringify({ success: false, error: 'Invalid JSON body' }), { status: 400, headers: getJsonHeaders(req) })
     }
 
     const row = {
@@ -120,13 +119,13 @@ serve(async (req) => {
     if (error) {
       console.error('[log-client-error] insert failed:', error)
       logRequest({ function: FN, userId, durationMs: Date.now() - start, status: 500, error: 'insert failed' })
-      return new Response(JSON.stringify({ success: false, error: 'Failed to record error' }), { status: 500, headers: JSON_HEADERS })
+      return new Response(JSON.stringify({ success: false, error: 'Failed to record error' }), { status: 500, headers: getJsonHeaders(req) })
     }
 
     logRequest({ function: FN, userId, durationMs: Date.now() - start, status: 200 })
-    return new Response(JSON.stringify({ success: true }), { status: 200, headers: JSON_HEADERS })
+    return new Response(JSON.stringify({ success: true }), { status: 200, headers: getJsonHeaders(req) })
   } catch (error: any) {
     logRequest({ function: FN, userId, durationMs: Date.now() - start, status: 500, error: error?.message })
-    return new Response(JSON.stringify({ success: false, error: 'Internal error' }), { status: 500, headers: JSON_HEADERS })
+    return new Response(JSON.stringify({ success: false, error: 'Internal error' }), { status: 500, headers: getJsonHeaders(req) })
   }
 })

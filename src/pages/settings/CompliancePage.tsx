@@ -86,7 +86,7 @@ export function CompliancePage() {
               <div key={req.id} className="flex items-center justify-between p-3 rounded-lg border border-outline-variant">
                 <div>
                   <p className="text-sm font-medium">{req.requester_email}</p>
-                  <p className="text-xs text-on-surface-variant">{req.request_type} · {new Date(req.created_at).toLocaleDateString()}</p>
+                  <p className="text-xs text-on-surface-variant">{req.request_type} · {req.created_at ? new Date(req.created_at).toLocaleDateString() : ''}</p>
                 </div>
                 <div className="flex gap-2">
                   <button onClick={() => handleDeletion(req.id, 'approved')} className="px-3 py-1 bg-green-50 text-green-700 rounded text-xs font-medium hover:bg-green-100">Approve</button>

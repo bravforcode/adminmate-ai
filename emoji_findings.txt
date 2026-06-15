@@ -1,0 +1,6 @@
+src\pages\recruitment\InterviewsPage.tsx:178: EM(0x2605,0x2606)
+src\pages\recruitment\PipelinePage.tsx:70: EM(0x2713)
+src\pages\recruitment\PipelinePage.tsx:81: EM(0x2713)
+src\pages\recruitment\PipelinePage.tsx:87: EM(0x2713)
+src\pages\recruitment\PipelinePage.tsx:98: EM(0x2713)
+src\pages\recruitment\PipelinePage.tsx:107: EM(0x2713)

@@ -12,7 +12,8 @@ export function useCandidates() {
 }
 
 export function useCandidate(id: string) {
-  return useQuery({ queryKey: KEYS.detail(id), queryFn: () => candidateService.getById(id), enabled: !!id })
+  const company = useAuthStore(s => s.company)
+  return useQuery({ queryKey: KEYS.detail(id), queryFn: () => candidateService.getById(id, company!.id), enabled: !!id && !!company?.id })
 }
 
 export function useCreateCandidate() {

@@ -24,7 +24,8 @@ export function PDFDownloadButton({ data }: Props) {
       a.click()
       URL.revokeObjectURL(url)
       toast.success('PDF downloaded')
-    } catch {
+    } catch (err) {
+      if (import.meta.env.DEV) console.error('[PDFDownloadButton] PDF generation failed:', err)
       toast.error('Failed to generate PDF')
     } finally {
       setGenerating(false)

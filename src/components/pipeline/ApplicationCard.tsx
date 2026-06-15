@@ -1,6 +1,7 @@
-import { useState } from 'react'
+import { memo, useState } from 'react'
 import { useUpdateApplicationStatus, useTriggerAIScreening } from '../../hooks/useApplications'
 import { useAuthStore } from '../../stores/authStore'
+import { Button } from '../ui/Button'
 import { Sparkles, ArrowRight, ArrowLeft, Eye, MessageSquare } from 'lucide-react'
 import { PIPELINE_STAGES } from '../../utils/constants'
 import { ApplicationDrawer } from './ApplicationDrawer'
@@ -13,9 +14,10 @@ interface ApplicationCardProps {
   application: Application
   isActive?: boolean
   onClick?: () => void
+  role?: string
 }
 
-export function ApplicationCard({ application, isActive, onClick }: ApplicationCardProps) {
+export const ApplicationCard = memo(function ApplicationCard({ application, isActive, onClick, role }: ApplicationCardProps) {
   const updateStatus = useUpdateApplicationStatus()
   const triggerAI = useTriggerAIScreening()
   const company = useAuthStore(s => s.company)
@@ -31,14 +33,17 @@ export function ApplicationCard({ application, isActive, onClick }: ApplicationC
     e.stopPropagation()
     const latestCV = application.cv_documents?.find((cv: CVDocument) => cv.is_current)
     if (!latestCV) { toast.error('No CV available for screening'); return }
-    await triggerAI.mutateAsync({ applicationId: application.id, jobId: application.job_id, cvDocumentId: latestCV.id, companyId: company?.id ?? '' })
+    await triggerAI.mutateAsync({ applicationId: application.id, jobId: application.job_id ?? '', cvDocumentId: latestCV.id, companyId: company?.id ?? '' })
   }
 
   return (
     <>
       <div
+        role={role}
+        aria-grabbed="false"
+        aria-dropeffect="move"
         className={cn(
-          'bg-surface-container-lowest p-4 rounded-xl border shadow-sm hover:shadow-md transition-all cursor-pointer relative overflow-hidden',
+          'bg-surface-container-lowest dark:bg-[#1e293b] p-4 rounded-xl border shadow-sm hover:shadow-md transition-all cursor-pointer relative overflow-hidden card-hover',
           isActive ? 'border-primary shadow-md' : 'border-outline-variant'
         )}
         data-testid="kanban-card"
@@ -95,20 +100,20 @@ export function ApplicationCard({ application, isActive, onClick }: ApplicationC
           </div>
 
           <div className="flex items-center gap-1">
-            <button
+            <Button
+              variant="ghost"
+              size="icon_sm"
               onClick={e => { e.stopPropagation(); setShowDrawer(true) }}
-              className="text-on-surface-variant hover:text-primary hover:bg-primary-fixed/50 p-1.5 rounded-full transition-colors"
-              title="View details"
-            >
-              <Eye size={16} />
-            </button>
-            <button
+              aria-label={`View details for ${application.candidates?.full_name || 'candidate'}`}
+              icon={<Eye size={16} />}
+            />
+            <Button
+              variant="ghost"
+              size="icon_sm"
               onClick={e => { e.stopPropagation(); toast.success('Chat opened') }}
-              className="text-on-surface-variant hover:text-primary hover:bg-primary-fixed/50 p-1.5 rounded-full transition-colors"
-              title="Chat"
-            >
-              <MessageSquare size={16} />
-            </button>
+              aria-label={`Chat with ${application.candidates?.full_name || 'candidate'}`}
+              icon={<MessageSquare size={16} />}
+            />
           </div>
         </div>
 
@@ -116,36 +121,45 @@ export function ApplicationCard({ application, isActive, onClick }: ApplicationC
         {(showActions || showDrawer) && (
           <div className="flex gap-2 mt-3 pt-3 border-t border-outline-variant/50">
             {stageIndex > 0 && (
-              <button
+              <Button
+                variant="outline"
+                size="xs"
                 onClick={e => { e.stopPropagation(); updateStatus.mutate({ id: application.id, status: PIPELINE_STAGES[stageIndex - 1].id }) }}
-                className="flex-1 px-2 py-1.5 rounded-lg text-xs font-medium border border-outline-variant text-on-surface-variant hover:border-primary hover:text-primary transition-colors flex items-center justify-center gap-1"
+                icon={<ArrowLeft size={12} />}
               >
-                <ArrowLeft size={12} /> Back
-              </button>
+                Back
+              </Button>
             )}
             {stageIndex < PIPELINE_STAGES.length - 2 && (
-              <button
+              <Button
+                variant="outline"
+                size="xs"
                 onClick={e => { e.stopPropagation(); updateStatus.mutate({ id: application.id, status: PIPELINE_STAGES[stageIndex + 1].id }) }}
-                className="flex-1 px-2 py-1.5 rounded-lg text-xs font-medium border border-outline-variant text-on-surface-variant hover:border-primary hover:text-primary transition-colors flex items-center justify-center gap-1"
+                icon={<ArrowRight size={12} />}
+                iconPosition="right"
               >
-                Forward <ArrowRight size={12} />
-              </button>
+                Forward
+              </Button>
             )}
             {hasCV && application.status === 'applied' && (
-              <button
+              <Button
+                variant="default"
+                size="xs"
                 onClick={handleScreen}
                 disabled={triggerAI.isPending}
-                className="flex-1 px-2 py-1.5 rounded-lg text-xs font-medium bg-primary text-on-primary hover:opacity-90 disabled:opacity-50 flex items-center justify-center gap-1"
+                loading={triggerAI.isPending}
+                icon={<Sparkles size={12} />}
               >
-                <Sparkles size={12} className={triggerAI.isPending ? 'animate-spin' : ''} />
                 {triggerAI.isPending ? 'Screening...' : 'Screen'}
-              </button>
+              </Button>
             )}
           </div>
         )}
       </div>
 
-      {showDrawer && <ApplicationDrawer application={application} onClose={() => setShowDrawer(false)} />}
+      <ApplicationDrawer application={application} onClose={() => setShowDrawer(false)} open={showDrawer} />
     </>
   )
-}
+})
+
+export default ApplicationCard

@@ -1,10 +1,91 @@
 import { supabase, getSiteUrl } from '../lib/supabase'
 import type { AuthResponse, SignUpWithPasswordCredentials } from '@supabase/supabase-js'
 
+const LOGIN_RATE_LIMIT = {
+  maxAttempts: 5,
+  windowMs: 15 * 60 * 1000,
+  lockoutMs: 30 * 60 * 1000,
+}
+
+const STORAGE_PREFIX = 'adminmate-login-rl:'
+
+interface LoginRateLimitState {
+  attempts: number
+  lockedUntil: number | null
+  firstAttemptAt: number
+}
+
+function readRateLimit(email: string): LoginRateLimitState {
+  if (typeof window === 'undefined') {
+    return { attempts: 0, lockedUntil: null, firstAttemptAt: 0 }
+  }
+  try {
+    const raw = window.localStorage.getItem(STORAGE_PREFIX + email)
+    if (!raw) return { attempts: 0, lockedUntil: null, firstAttemptAt: 0 }
+    const parsed = JSON.parse(raw) as LoginRateLimitState
+    if (parsed.lockedUntil && parsed.lockedUntil < Date.now()) {
+      return { attempts: 0, lockedUntil: null, firstAttemptAt: 0 }
+    }
+    if (parsed.firstAttemptAt && Date.now() - parsed.firstAttemptAt > LOGIN_RATE_LIMIT.windowMs) {
+      return { attempts: 0, lockedUntil: null, firstAttemptAt: 0 }
+    }
+    return parsed
+  } catch {
+    return { attempts: 0, lockedUntil: null, firstAttemptAt: 0 }
+  }
+}
+
+function writeRateLimit(email: string, state: LoginRateLimitState): void {
+  if (typeof window === 'undefined') return
+  try {
+    window.localStorage.setItem(STORAGE_PREFIX + email, JSON.stringify(state))
+  } catch { /* localStorage may be full or unavailable */ }
+}
+
+function clearRateLimit(email: string): void {
+  if (typeof window === 'undefined') return
+  try {
+    window.localStorage.removeItem(STORAGE_PREFIX + email)
+  } catch { /* localStorage may be unavailable */ }
+}
+
+function checkLoginRateLimit(email: string): void {
+  const state = readRateLimit(email)
+  if (state.lockedUntil && state.lockedUntil > Date.now()) {
+    const remaining = Math.ceil((state.lockedUntil - Date.now()) / 1000)
+    throw new Error(`Too many login attempts. Please try again in ${remaining} seconds.`)
+  }
+  if (state.attempts > 0) {
+    const delay = Math.min(Math.pow(2, state.attempts) * 100, 3200)
+    const start = Date.now()
+    while (Date.now() - start < delay) { /* progressive delay */ }
+  }
+}
+
+function recordLoginAttempt(email: string): void {
+  const state = readRateLimit(email)
+  const next: LoginRateLimitState = {
+    attempts: state.attempts + 1,
+    lockedUntil: null,
+    firstAttemptAt: state.firstAttemptAt || Date.now(),
+  }
+  if (next.attempts >= LOGIN_RATE_LIMIT.maxAttempts) {
+    next.lockedUntil = Date.now() + LOGIN_RATE_LIMIT.lockoutMs
+    next.attempts = 0
+    next.firstAttemptAt = 0
+  }
+  writeRateLimit(email, next)
+}
+
 export const authService = {
   signIn: async (email: string, password: string): Promise<AuthResponse> => {
+    checkLoginRateLimit(email)
     const result = await supabase.auth.signInWithPassword({ email, password })
-    if (result.error) throw result.error
+    if (result.error) {
+      recordLoginAttempt(email)
+      throw result.error
+    }
+    clearRateLimit(email)
     return result
   },
 

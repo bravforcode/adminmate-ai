@@ -20,5 +20,6 @@ export function useScheduleInterview() {
 
 export function useUpdateInterview() {
   const qc = useQueryClient()
-  return useMutation({ mutationFn: ({ id, data }: { id: string; data: Record<string, unknown> }) => interviewService.update(id, data), onSuccess: () => { qc.invalidateQueries({ queryKey: ['interviews'] }); toast.success('Interview updated') }, onError: (e: Error) => toast.error(e.message) })
+  const company = useAuthStore(s => s.company)
+  return useMutation({ mutationFn: ({ id, data }: { id: string; data: import('../services/interviewService').UpdateInterviewInput }) => interviewService.update(id, data, company!.id), onSuccess: () => { qc.invalidateQueries({ queryKey: ['interviews'] }); toast.success('Interview updated') }, onError: (e: Error) => toast.error(e.message) })
 }

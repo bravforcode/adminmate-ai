@@ -2,8 +2,8 @@ import { serve } from 'https://deno.land/std@0.168.0/http/server.ts'
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2'
 import { MessagingHub } from '../_shared/messagingHub.ts'
 import {
-  corsHeaders,
-  JSON_HEADERS,
+  getCorsHeaders,
+  getJsonHeaders,
   handleCorsPreflight,
   verifyAuth,
   enforceRateLimit,
@@ -24,7 +24,7 @@ serve(async (req) => {
     if (req.method !== 'POST' && req.method !== 'GET') {
       return new Response(
         JSON.stringify({ success: false, error: 'Method not allowed' }),
-        { status: 405, headers: JSON_HEADERS }
+        { status: 405, headers: getJsonHeaders(req) }
       )
     }
 
@@ -36,7 +36,7 @@ serve(async (req) => {
     if (!user) {
       return new Response(
         JSON.stringify({ success: false, error: 'Unauthorized' }),
-        { status: 401, headers: JSON_HEADERS }
+        { status: 401, headers: getJsonHeaders(req) }
       )
     }
     userId = user.id
@@ -60,7 +60,7 @@ serve(async (req) => {
         if (!profile?.company_id) {
           return new Response(
             JSON.stringify({ success: false, error: 'No company associated' }),
-            { status: 403, headers: JSON_HEADERS }
+            { status: 403, headers: getJsonHeaders(req) }
           )
         }
 
@@ -68,7 +68,7 @@ serve(async (req) => {
         logRequest({ function: FN, userId, durationMs: Date.now() - start, status: 200, action: 'get_conversations' })
         return new Response(
           JSON.stringify({ success: true, data: conversations }),
-          { headers: JSON_HEADERS }
+          { headers: getJsonHeaders(req) }
         )
       }
 
@@ -80,7 +80,7 @@ serve(async (req) => {
         if (!platform || !platformUserId) {
           return new Response(
             JSON.stringify({ success: false, error: 'platform and platform_user_id required' }),
-            { status: 400, headers: JSON_HEADERS }
+            { status: 400, headers: getJsonHeaders(req) }
           )
         }
 
@@ -93,7 +93,7 @@ serve(async (req) => {
         if (!profile?.company_id) {
           return new Response(
             JSON.stringify({ success: false, error: 'No company associated' }),
-            { status: 403, headers: JSON_HEADERS }
+            { status: 403, headers: getJsonHeaders(req) }
           )
         }
 
@@ -107,7 +107,7 @@ serve(async (req) => {
         logRequest({ function: FN, userId, durationMs: Date.now() - start, status: 200, action: 'get_history' })
         return new Response(
           JSON.stringify({ success: true, data: history }),
-          { headers: JSON_HEADERS }
+          { headers: getJsonHeaders(req) }
         )
       }
 
@@ -118,7 +118,7 @@ serve(async (req) => {
         } catch {
           return new Response(
             JSON.stringify({ success: false, error: 'Invalid JSON body' }),
-            { status: 400, headers: JSON_HEADERS }
+            { status: 400, headers: getJsonHeaders(req) }
           )
         }
 
@@ -126,7 +126,7 @@ serve(async (req) => {
         if (!platform || !platform_user_id || !content) {
           return new Response(
             JSON.stringify({ success: false, error: 'platform, platform_user_id, and content required' }),
-            { status: 400, headers: JSON_HEADERS }
+            { status: 400, headers: getJsonHeaders(req) }
           )
         }
 
@@ -139,7 +139,7 @@ serve(async (req) => {
         if (!profile?.company_id) {
           return new Response(
             JSON.stringify({ success: false, error: 'No company associated' }),
-            { status: 403, headers: JSON_HEADERS }
+            { status: 403, headers: getJsonHeaders(req) }
           )
         }
 
@@ -157,7 +157,7 @@ serve(async (req) => {
         logRequest({ function: FN, userId, durationMs: Date.now() - start, status: 200, action: 'send_message' })
         return new Response(
           JSON.stringify({ success: true, data: result }),
-          { headers: JSON_HEADERS }
+          { headers: getJsonHeaders(req) }
         )
       }
 
@@ -166,14 +166,14 @@ serve(async (req) => {
         logRequest({ function: FN, userId, durationMs: Date.now() - start, status: 200, action: 'health' })
         return new Response(
           JSON.stringify({ success: true, data: health }),
-          { headers: JSON_HEADERS }
+          { headers: getJsonHeaders(req) }
         )
       }
 
       default:
         return new Response(
           JSON.stringify({ success: false, error: 'Unknown action' }),
-          { status: 400, headers: JSON_HEADERS }
+          { status: 400, headers: getJsonHeaders(req) }
         )
     }
   } catch (error: any) {
@@ -184,6 +184,6 @@ serve(async (req) => {
       status: 500,
       error: error?.message,
     })
-    return errorResponse(error, 500, corsHeaders)
+    return errorResponse(error, 500, getCorsHeaders(req))
   }
 })

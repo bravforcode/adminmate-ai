@@ -14,13 +14,13 @@ export interface CreateCompanyData {
 
 export const companyService = {
   getAll: async () => {
-    const { data, error } = await supabase.from('companies').select('*')
+    const { data, error } = await supabase.from('companies').select('id, name, name_th, tax_id, phone, email, address, city, website_url, industry, country, currency, locale, timezone, subscription_tier')
     if (error) throw error
     return data
   },
 
   getById: async (id: string) => {
-    const { data, error } = await supabase.from('companies').select('*').eq('id', id).single()
+    const { data, error } = await supabase.from('companies').select('id, name, name_th, tax_id, phone, email, address, city, website_url, industry, country, currency, locale, timezone, subscription_tier').eq('id', id).single()
     if (error) throw error
     return data
   },

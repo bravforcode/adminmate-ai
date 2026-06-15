@@ -3,9 +3,10 @@ import { useNavigate } from 'react-router-dom'
 import { useAuthStore } from '../../stores/authStore'
 import { supabase } from '../../lib/supabase'
 import { useTranslation } from 'react-i18next'
-import { Briefcase, ClipboardList, CheckCircle, AlertCircle, RefreshCw, UserCircle, ArrowRight } from 'lucide-react'
+import { Briefcase, ClipboardList, CheckCircle, UserCircle, ArrowRight } from 'lucide-react'
 import { StatCard } from '../../components/shared/StatCard'
 import { LoadingState } from '../../components/shared/LoadingState'
+import { ErrorState } from '../../components/shared/ErrorState'
 import { cn } from '../../utils/cn'
 
 const statusColors: Record<string, string> = {
@@ -69,23 +70,17 @@ export function ApplicantDashboardPage() {
       </div>
 
       {hasError ? (
-        <div className="bg-surface rounded-xl border border-outline-variant p-8 text-center">
-          <AlertCircle size={40} className="mx-auto text-error mb-3" />
-          <h3 className="font-semibold text-on-surface mb-1">{t('errors.load_failed')}</h3>
-          <button
-            onClick={() => refetchApps()}
-            className="mt-4 inline-flex items-center gap-2 px-4 py-2 bg-primary text-on-primary rounded-lg text-sm font-medium hover:opacity-90"
-          >
-            <RefreshCw size={14} /> {t('errors.retry')}
-          </button>
-        </div>
+        <ErrorState
+          title={t('errors.load_failed')}
+          onRetry={() => refetchApps()}
+        />
       ) : isLoading ? (
         <>
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 skeleton-stagger">
             {[0, 1, 2].map(i => (
               <div key={i} className="bg-surface rounded-xl p-6 border border-surface-container-high shadow-sm">
-                <div className="h-3 w-20 bg-surface-container-high rounded animate-pulse mb-3" />
-                <div className="h-8 w-16 bg-surface-container-high rounded animate-pulse" />
+                <div className="h-3 w-20 bg-surface-container-high rounded-lg animate-shimmer mb-3" />
+                <div className="h-8 w-16 bg-surface-container-high rounded-lg animate-shimmer" />
               </div>
             ))}
           </div>
@@ -137,7 +132,7 @@ export function ApplicantDashboardPage() {
                 <div className="space-y-3">
                   <button
                     onClick={() => navigate('/applicant/jobs')}
-                    className="w-full flex items-center gap-3 p-3 rounded-lg border border-outline-variant hover:border-primary hover:bg-primary/5 transition-all text-left"
+                    className="w-full flex items-center gap-3 p-3 rounded-lg border border-outline-variant hover:border-primary hover:bg-primary/5 transition-all text-left card-hover"
                   >
                     <div className="p-2 bg-primary/10 rounded-lg">
                       <Briefcase size={18} className="text-primary" />
@@ -150,7 +145,7 @@ export function ApplicantDashboardPage() {
                   </button>
                   <button
                     onClick={() => navigate('/my-profile')}
-                    className="w-full flex items-center gap-3 p-3 rounded-lg border border-outline-variant hover:border-primary hover:bg-primary/5 transition-all text-left"
+                    className="w-full flex items-center gap-3 p-3 rounded-lg border border-outline-variant hover:border-primary hover:bg-primary/5 transition-all text-left card-hover"
                   >
                     <div className="p-2 bg-secondary/10 rounded-lg">
                       <UserCircle size={18} className="text-secondary" />
@@ -163,7 +158,7 @@ export function ApplicantDashboardPage() {
                   </button>
                   <button
                     onClick={() => navigate('/applicant/status')}
-                    className="w-full flex items-center gap-3 p-3 rounded-lg border border-outline-variant hover:border-primary hover:bg-primary/5 transition-all text-left"
+                    className="w-full flex items-center gap-3 p-3 rounded-lg border border-outline-variant hover:border-primary hover:bg-primary/5 transition-all text-left card-hover"
                   >
                     <div className="p-2 bg-tertiary/10 rounded-lg">
                       <ClipboardList size={18} className="text-tertiary" />

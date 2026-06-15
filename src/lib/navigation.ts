@@ -12,6 +12,11 @@ import {
   UserCircle,
   ClipboardList,
   ClipboardCheck,
+  Shield,
+  ScrollText,
+  Bell,
+  ArrowDownToLine,
+  Lock,
   type LucideIcon,
 } from 'lucide-react'
 
@@ -51,6 +56,11 @@ export const navItems: NavItem[] = [
   { path: '/documents', labelKey: 'nav.documents', icon: FileText, roles: HR_ROLES },
   { path: '/reports', labelKey: 'nav.reports', icon: BarChart2, roles: HR_ROLES },
   { path: '/settings', labelKey: 'nav.settings', icon: Settings, roles: HR_ROLES },
+  { path: '/settings/notifications', labelKey: 'nav.notifications', icon: Bell, roles: HR_ROLES },
+  { path: '/settings/security', labelKey: 'nav.security', icon: Shield, roles: HR_ROLES },
+  { path: '/settings/audit-log', labelKey: 'nav.audit_log', icon: ScrollText, roles: ['admin', 'hr'] },
+  { path: '/settings/import', labelKey: 'nav.import_export', icon: ArrowDownToLine, roles: HR_ROLES },
+  { path: '/settings/pdpa', labelKey: 'nav.privacy_data', icon: Lock, roles: HR_ROLES },
 
   // ── Applicant ─────────────────────────────────────────────────
   {

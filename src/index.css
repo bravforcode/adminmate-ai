@@ -1,6 +1,8 @@
 @import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Inter:wght@300;400;500;600&family=Noto+Sans+Thai:wght@300;400;500;600&display=swap');
 @import "tailwindcss";
 
+@custom-variant dark (&:is(.dark *));
+
 /* ============================================================
    AdminMate AI — Luxury Design System
    Palette: Blue #2563eb · White #f8fafc · Accent #60a5fa
@@ -78,16 +80,130 @@
 }
 
 /* ============================================================
+   DARK MODE — Override all CSS custom properties
+   ============================================================ */
+.dark {
+  --color-navy:        #3b82f6;
+  --color-navy-deep:   #0f172a;
+  --color-navy-mid:    #60a5fa;
+  --color-accent:      #93c5fd;
+  --color-accent-light:#1e3a5f;
+  --color-accent-dim:  #60a5fa;
+
+  --color-bg:          #0f172a;
+  --color-surface:     #1e293b;
+  --color-surface-alt: #1e293b;
+
+  --color-text-primary:   #f1f5f9;
+  --color-text-secondary: #94a3b8;
+  --color-text-muted:     #64748b;
+
+  --color-border:      #334155;
+  --color-border-subtle: #1e293b;
+
+  --color-error:       #f87171;
+  --color-success:     #4ade80;
+  --color-warning:     #fbbf24;
+
+  --color-primary:            #3b82f6;
+  --color-on-primary:         #ffffff;
+  --color-primary-container:  #1e40af;
+  --color-background:         #0f172a;
+  --color-surface-container-lowest: #0f172a;
+  --color-surface-container-low:    #1e293b;
+  --color-surface-container:        #1e3a5f;
+  --color-on-surface:         #f1f5f9;
+  --color-outline:            #334155;
+  --color-outline-variant:    #1e293b;
+}
+
+.dark body {
+  background-color: var(--color-bg);
+  color: var(--color-text-primary);
+}
+
+.dark .glass {
+  background: rgba(15, 23, 42, 0.88);
+}
+
+.dark .luxury-card:hover {
+  box-shadow: 0 20px 48px rgba(0, 0, 0, 0.3);
+}
+
+.dark .role-card::before {
+  background: linear-gradient(135deg, rgba(30, 58, 95, 0.4) 0%, transparent 60%);
+}
+
+.dark .role-card:hover {
+  box-shadow: 0 24px 56px rgba(59, 130, 246, 0.2);
+}
+
+.dark .badge-navy { background: #1e3a5f; color: #93c5fd; }
+.dark .badge-success { background: #052e16; color: #4ade80; }
+.dark .badge-warning { background: #451a03; color: #fbbf24; }
+.dark .badge-error { background: #450a0a; color: #f87171; }
+
+.dark .btn-primary:hover {
+  box-shadow: 0 8px 24px rgba(59, 130, 246, 0.3);
+}
+
+.dark .btn-ghost:hover {
+  background-color: rgba(30, 58, 95, 0.4);
+}
+
+.dark .input-luxury:focus {
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+}
+
+.dark .animate-shimmer {
+  background: linear-gradient(90deg, transparent, rgba(30, 41, 59, 0.4), transparent);
+}
+
+.dark .dark-toast {
+  background: #1e293b;
+  color: #f1f5f9;
+}
+
+.dark [data-sonner-toaster] {
+  --normal-bg: #1e293b;
+  --normal-border: #334155;
+  --normal-text: #f1f5f9;
+}
+
+@media (prefers-color-scheme: dark) {
+  html:not(.dark) {
+    color-scheme: dark;
+  }
+}
+
+/* ============================================================
    BASE RESET
    ============================================================ */
 *, *::before, *::after {
   box-sizing: border-box;
 }
 
+/* Focus-visible: unified accessible focus ring */
+:focus-visible {
+  outline: 2px solid var(--color-primary, #2563eb);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* Remove default outline from inputs/buttons that use custom focus styles */
+.input-luxury:focus-visible,
+.btn-primary:focus-visible,
+.btn-ghost:focus-visible {
+  outline: none;
+}
+
 html {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
+  scroll-behavior: smooth;
+  scroll-padding-top: 60px;
+  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
 body {
@@ -534,27 +650,629 @@ body {
    ANIMATIONS
    ============================================================ */
 
+@keyframes ripple {
+  from { transform: scale(0); opacity: 0.5; }
+  to { transform: scale(2.5); opacity: 0; }
+}
+.animate-ripple {
+  animation: ripple 0.6s ease-out;
+}
+
 @keyframes shimmer {
   0% { background-position: -200% 0; }
   100% { background-position: 200% 0; }
 }
 
 .animate-shimmer {
-  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+  background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.08) 50%, transparent 100%);
   background-size: 200% 100%;
-  animation: shimmer 1.5s infinite;
+  animation: shimmer 1.5s ease-in-out infinite;
 }
 
-html {
-  scroll-behavior: smooth;
-  scroll-padding-top: 60px;
+/* ============================================================
+   LOGIN PAGE — NEW ANIMATIONS
+   ============================================================ */
+
+@keyframes gradientShift {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+
+@keyframes float1 {
+  0%, 100% { transform: translateY(0px) translateX(0px); }
+  50% { transform: translateY(-30px) translateX(20px); }
+}
+
+@keyframes float2 {
+  0%, 100% { transform: translateY(0px) translateX(0px); }
+  50% { transform: translateY(20px) translateX(-30px); }
 }
 
 @keyframes fadeInUp {
-  from { opacity: 0; transform: translateY(12px); }
+  from { opacity: 0; transform: translateY(24px); }
   to { opacity: 1; transform: translateY(0); }
 }
 
+@keyframes slideInRight {
+  from { opacity: 0; transform: translateX(30px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes slideOutLeft {
+  from { opacity: 0; transform: translateX(-30px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes pulse-subtle {
+  0%, 100% { opacity: 0.04; }
+  50% { opacity: 0.08; }
+}
+
+.animate-gradient {
+  background-size: 200% 200%;
+  animation: gradientShift 10s ease infinite;
+}
+
+.animate-float1 {
+  animation: float1 8s ease-in-out infinite;
+}
+
+.animate-float2 {
+  animation: float2 10s ease-in-out infinite;
+}
+
+.animate-pulse-subtle {
+  animation: pulse-subtle 4s ease-in-out infinite;
+}
+
 .animate-fade-in-up {
-  animation: fadeInUp 0.4s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+  animation: fadeInUp 0.6s ease-out forwards;
+}
+
+.animate-slide-in-right {
+  animation: slideInRight 0.4s ease-out forwards;
+}
+
+.animate-slide-out-left {
+  animation: slideOutLeft 0.4s ease-out forwards;
+}
+
+.stagger-1 { animation-delay: 0.1s; }
+.stagger-2 { animation-delay: 0.2s; }
+.stagger-3 { animation-delay: 0.3s; }
+.stagger-4 { animation-delay: 0.4s; }
+
+.animate-fade-in-up {
+  animation: fadeInUp 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+/* ============================================================
+   CUSTOM SCROLLBAR
+   ============================================================ */
+
+.custom-scrollbar::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: var(--color-surface-alt);
+  border-radius: 3px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: var(--color-border);
+  border-radius: 3px;
+  transition: background 0.2s ease;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: var(--color-text-muted);
+}
+
+.custom-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-border) var(--color-surface-alt);
+}
+
+.custom-scrollbar-thin::-webkit-scrollbar {
+  width: 4px;
+  height: 4px;
+}
+
+.custom-scrollbar-thin::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.custom-scrollbar-thin::-webkit-scrollbar-thumb {
+  background: var(--color-border);
+  border-radius: 2px;
+}
+
+.custom-scrollbar-thin::-webkit-scrollbar-thumb:hover {
+  background: var(--color-text-muted);
+}
+
+.custom-scrollbar-thin {
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-border) transparent;
+}
+
+/* ============================================================
+   OVERSCROLL CONTAINMENT
+   ============================================================ */
+
+.scroll-contain {
+  overscroll-behavior: contain;
+}
+
+/* ============================================================
+   SKELETON STAGGER ANIMATION
+   ============================================================ */
+
+@keyframes skeleton-wave {
+  0% { opacity: 0.5; }
+  50% { opacity: 0.8; }
+  100% { opacity: 0.5; }
+}
+
+.skeleton-stagger > *:nth-child(1) { animation-delay: 0ms; }
+.skeleton-stagger > *:nth-child(2) { animation-delay: 75ms; }
+.skeleton-stagger > *:nth-child(3) { animation-delay: 150ms; }
+.skeleton-stagger > *:nth-child(4) { animation-delay: 225ms; }
+.skeleton-stagger > *:nth-child(5) { animation-delay: 300ms; }
+
+/* ============================================================
+   CARD HOVER LIFT
+   ============================================================ */
+
+.card-hover {
+  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+.card-hover:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px -5px rgba(0, 0, 0, 0.1), 0 4px 10px -5px rgba(0, 0, 0, 0.04);
+}
+
+/* ============================================================
+   MODAL / DRAWER ANIMATIONS
+   ============================================================ */
+
+@keyframes modal-enter {
+  from { opacity: 0; transform: scale(0.95) translateY(10px); }
+  to { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+@keyframes modal-exit {
+  from { opacity: 1; transform: scale(1) translateY(0); }
+  to { opacity: 0; transform: scale(0.95) translateY(10px); }
+}
+
+@keyframes backdrop-enter {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slide-in-right {
+  from { transform: translateX(100%); }
+  to { transform: translateX(0); }
+}
+
+@keyframes slide-out-right {
+  from { transform: translateX(0); }
+  to { transform: translateX(100%); }
+}
+
+.animate-modal-enter { animation: modal-enter 0.2s ease-out; }
+.animate-modal-exit { animation: modal-exit 0.15s ease-in; }
+.animate-backdrop { animation: backdrop-enter 0.2s ease-out; }
+.animate-slide-in { animation: slide-in-right 0.3s ease-out; }
+.animate-slide-out { animation: slide-out-right 0.2s ease-in; }
+
+/* ============================================================
+   TOAST ANIMATION
+   ============================================================ */
+
+@keyframes toast-enter {
+  from { opacity: 0; transform: translateY(-100%) scale(0.9); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+/* ============================================================
+   PAGE TRANSITION
+   ============================================================ */
+
+@keyframes page-enter {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-page-enter {
+  animation: page-enter 0.3s ease-out;
+}
+
+/* ============================================================
+   INPUT FOCUS ENHANCEMENT
+   ============================================================ */
+
+.input-focus {
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.input-focus:focus {
+  border-color: var(--color-primary, #2563eb);
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+  outline: none;
+}
+
+/* ============================================================
+   SMOOTH ICON TRANSITIONS
+   ============================================================ */
+
+.icon-transition {
+  transition: transform 0.2s ease, color 0.2s ease;
+}
+
+.icon-transition:hover {
+  transform: scale(1.05);
+}
+
+/* ============================================================
+   RESPONSIVE DESIGN — Tablet & Mobile
+   ============================================================ */
+
+/* --- Sidebar: Tablet (768px – 1023px) icon-only mode --- */
+@media (min-width: 768px) and (max-width: 1023px) {
+  nav[role="navigation"] {
+    width: 72px !important;
+  }
+
+  nav[role="navigation"] .sidebar-label,
+  nav[role="navigation"] .sidebar-logo-text,
+  nav[role="navigation"] .sidebar-company-name,
+  nav[role="navigation"] .sidebar-btn-text,
+  nav[role="navigation"] .sidebar-version-text {
+    display: none !important;
+  }
+
+  nav[role="navigation"] .sidebar-logo {
+    justify-content: center;
+    padding-left: 0;
+    padding-right: 0;
+  }
+
+  nav[role="navigation"] .sidebar-cta {
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+
+  nav[role="navigation"] .sidebar-cta button {
+    padding-left: 0;
+    padding-right: 0;
+    justify-content: center;
+    width: auto;
+    min-width: 48px;
+    min-height: 48px;
+  }
+
+  nav[role="navigation"] .sidebar-nav-link {
+    justify-content: center;
+    padding-left: 0;
+    padding-right: 0;
+    min-height: 44px;
+  }
+
+  nav[role="navigation"] .sidebar-nav-link span {
+    display: none;
+  }
+
+  nav[role="navigation"] .sidebar-nav-link svg:first-child {
+    margin: 0;
+  }
+}
+
+/* --- Header: Adjust left margin for tablet sidebar --- */
+@media (min-width: 768px) and (max-width: 1023px) {
+  header[role="banner"] {
+    margin-left: 72px !important;
+  }
+}
+
+/* --- Sidebar: Mobile (< 768px) — full overlay --- */
+@media (max-width: 767px) {
+  nav[role="navigation"] {
+    width: 280px !important;
+  }
+
+  nav[role="navigation"].max-md\:translate-x-0 {
+    animation: slide-in-left 0.25s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+  }
+}
+
+@keyframes slide-in-left {
+  from { transform: translateX(-100%); }
+  to   { transform: translateX(0); }
+}
+
+/* --- Kanban: Mobile columns stack vertically --- */
+@media (max-width: 640px) {
+  .kanban-board {
+    flex-direction: column !important;
+    overflow-x: visible !important;
+    gap: 24px !important;
+  }
+
+  .kanban-board .kanban-column {
+    width: 100% !important;
+    min-width: 0 !important;
+    flex-shrink: 0 !important;
+  }
+
+  .kanban-board .kanban-column .kanban-column-list {
+    max-height: 300px !important;
+  }
+}
+
+/* --- Kanban: Tablet horizontal scroll with snap --- */
+@media (min-width: 641px) and (max-width: 1023px) {
+  .kanban-board {
+    scroll-snap-type: x mandatory;
+    scroll-padding: 0 16px;
+  }
+
+  .kanban-board .kanban-column {
+    scroll-snap-align: start;
+  }
+}
+
+/* --- Table responsive wrapper --- */
+.table-responsive {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: thin;
+}
+
+.table-responsive::-webkit-scrollbar {
+  height: 6px;
+}
+
+.table-responsive::-webkit-scrollbar-thumb {
+  background: var(--color-border);
+  border-radius: 3px;
+}
+
+/* --- Mobile table card layout --- */
+@media (max-width: 640px) {
+  .table-card-mobile thead {
+    display: none;
+  }
+
+  .table-card-mobile tbody tr {
+    display: flex;
+    flex-direction: column;
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--color-border);
+    gap: 6px;
+  }
+
+  .table-card-mobile tbody td {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 4px 0;
+    border: none;
+    font-size: 13px;
+  }
+
+  .table-card-mobile tbody td::before {
+    content: attr(data-label);
+    font-weight: 600;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--color-text-muted);
+  }
+}
+
+/* --- Chat widget: Full screen on mobile --- */
+@media (max-width: 640px) {
+  .chat-panel {
+    position: fixed !important;
+    inset: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    max-width: none !important;
+    max-height: none !important;
+    border-radius: 0 !important;
+    bottom: 0 !important;
+    right: 0 !important;
+  }
+
+  .chat-fab {
+    bottom: 80px !important;
+    right: 16px !important;
+  }
+}
+
+/* --- Forms: Full-width buttons on mobile --- */
+@media (max-width: 640px) {
+  .form-actions {
+    flex-direction: column-reverse !important;
+    gap: 8px !important;
+  }
+
+  .form-actions button {
+    width: 100% !important;
+    justify-content: center !important;
+    min-height: 44px;
+  }
+
+  .form-grid-2 {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+/* --- Touch-friendly targets --- */
+@media (pointer: coarse) {
+  button, a, [role="button"] {
+    min-height: 44px;
+    min-width: 44px;
+  }
+
+  input, select, textarea {
+    min-height: 44px;
+  }
+}
+
+/* ============================================================
+   PREMIUM CUSTOM SCROLLBAR — Inspired by shadcn/ui + Radix UI
+   50+ website research: Linear, Vercel, Stripe, Notion, Slack,
+   GitHub, Figma, Apple, shadcn, Aceternity, HyperUI, Radix
+   ============================================================ */
+
+/* WebKit scrollbar (Chrome, Safari, Edge) */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: hsl(215 14% 85%);
+  border-radius: 3px;
+  transition: background 0.2s ease;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: hsl(215 14% 70%);
+}
+
+::-webkit-scrollbar-thumb:active {
+  background: hsl(215 14% 60%);
+}
+
+/* Dark mode scrollbar */
+.dark ::-webkit-scrollbar-thumb {
+  background: hsl(215 20% 30%);
+}
+
+.dark ::-webkit-scrollbar-thumb:hover {
+  background: hsl(215 20% 40%);
+}
+
+.dark ::-webkit-scrollbar-thumb:active {
+  background: hsl(215 20% 50%);
+}
+
+/* Firefox scrollbar */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: hsl(215 14% 85%) transparent;
+}
+
+.dark * {
+  scrollbar-color: hsl(215 20% 30%) transparent;
+}
+
+/* ============================================================
+   SCROLL CONTAINER — For scrollable areas (sidebar, chat, tables)
+   ============================================================ */
+.scroll-premium {
+  overflow-y: auto;
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+}
+
+.scroll-premium-x {
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Hide scrollbar but keep functionality */
+.scroll-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.scroll-hide::-webkit-scrollbar {
+  display: none;
+}
+
+/* Smooth snap scrolling */
+.scroll-snap-x {
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* ============================================================
+   SMOOTH SCROLLBAR FOR SIDEBAR
+   ============================================================ */
+.sidebar-scroll {
+  overflow-y: auto;
+  overflow-x: hidden;
+  scrollbar-gutter: stable;
+}
+
+.sidebar-scroll::-webkit-scrollbar {
+  width: 4px;
+}
+
+.sidebar-scroll::-webkit-scrollbar-thumb {
+  background: transparent;
+}
+
+.sidebar-scroll:hover::-webkit-scrollbar-thumb {
+  background: hsl(215 14% 80%);
+}
+
+.dark .sidebar-scroll:hover::-webkit-scrollbar-thumb {
+  background: hsl(215 20% 30%);
+}
+
+/* ============================================================
+   TABLE SCROLL — Premium horizontal table scroll
+   ============================================================ */
+.table-scroll {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scroll-behavior: smooth;
+}
+
+.table-scroll::-webkit-scrollbar {
+  height: 4px;
+}
+
+.table-scroll::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.table-scroll::-webkit-scrollbar-thumb {
+  background: hsl(215 14% 80%);
+  border-radius: 2px;
+}
+
+/* ============================================================
+   CHAT SCROLL — For chat message panel
+   ============================================================ */
+.chat-scroll {
+  overflow-y: auto;
+  scroll-behavior: smooth;
+  overscroll-behavior: contain;
+}
+
+.chat-scroll::-webkit-scrollbar {
+  width: 4px;
+}
+
+.chat-scroll::-webkit-scrollbar-thumb {
+  background: hsl(215 14% 80%);
+  border-radius: 2px;
+}
+
+.chat-scroll::-webkit-scrollbar-track {
+  background: transparent;
 }

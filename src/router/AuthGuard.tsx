@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { Navigate, useLocation } from 'react-router-dom'
 import { useAuthStore } from '../stores/authStore'
 
@@ -16,15 +16,26 @@ export function getDefaultRoute(role?: string | null): string {
   return '/dashboard'
 }
 
+function useHydrationGuard(): boolean {
+  const [hydrated, setHydrated] = useState(() => useAuthStore.persist.hasHydrated())
+  useEffect(() => {
+    if (hydrated) return
+    const unsub = useAuthStore.persist.onFinishHydration(() => setHydrated(true))
+    return () => unsub()
+  }, [hydrated])
+  return hydrated
+}
+
 export function AuthGuard({ children, requiredRoles, requireCompany = true, callInitSession = true }: AuthGuardProps) {
+  const hydrated = useHydrationGuard()
   const { isAuthenticated, hasCompany, isLoading, profile, initSession } = useAuthStore()
   const location = useLocation()
 
   useEffect(() => {
-    if (callInitSession) initSession()
-  }, []) // run once on mount
+    if (hydrated && callInitSession) initSession()
+  }, [hydrated, callInitSession])
 
-  if (isLoading) {
+  if (!hydrated || isLoading) {
     return (
       <div
         role="status"
@@ -46,7 +57,6 @@ export function AuthGuard({ children, requiredRoles, requireCompany = true, call
   }
 
   if (requiredRoles && !requiredRoles.includes(profile?.role ?? '')) {
-    // Redirect to the correct home for their actual role
     const fallback = getDefaultRoute(profile?.role)
     return <Navigate to={fallback} replace />
   }
@@ -59,14 +69,15 @@ interface CompanySetupGuardProps {
 }
 
 export function CompanySetupGuard({ children }: CompanySetupGuardProps) {
+  const hydrated = useHydrationGuard()
   const { isAuthenticated, hasCompany, isLoading, initSession } = useAuthStore()
   const location = useLocation()
 
   useEffect(() => {
-    initSession()
-  }, [initSession])
+    if (hydrated) initSession()
+  }, [hydrated, initSession])
 
-  if (isLoading) {
+  if (!hydrated || isLoading) {
     return (
       <div
         role="status"

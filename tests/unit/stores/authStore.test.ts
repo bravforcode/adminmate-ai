@@ -1,15 +1,19 @@
-import { describe, it, expect, beforeEach } from 'vitest'
+import { describe, it, expect, beforeEach, vi } from 'vitest'
 import { useAuthStore } from '../../../src/stores/authStore'
 
 describe('authStore', () => {
   beforeEach(() => {
-    useAuthStore.setState({ user: null, profile: null, company: null, isLoading: false })
+    useAuthStore.setState({
+      user: null, profile: null, company: null, isLoading: false,
+      _langPref: 'en', error: null,
+    })
   })
 
   it('starts with null user', () => {
     const state = useAuthStore.getState()
     expect(state.user).toBeNull()
     expect(state.isLoading).toBe(false)
+    expect(state._langPref).toBe('en')
   })
 
   it('isAuthenticated returns false when no user', () => {
@@ -46,5 +50,28 @@ describe('authStore', () => {
     expect(s.user).toBeNull()
     expect(s.profile).toBeNull()
     expect(s.company).toBeNull()
+    expect(s._langPref).toBe('en')
+  })
+
+  it('userLanguage falls back through _langPref -> profile -> locale -> en', () => {
+    expect(useAuthStore.getState().userLanguage()).toBe('en')
+    useAuthStore.setState({ _langPref: 'th' })
+    expect(useAuthStore.getState().userLanguage()).toBe('th')
+  })
+
+  it('initDemo sets _langPref to th', () => {
+    useAuthStore.getState().initDemo()
+    expect(useAuthStore.getState()._langPref).toBe('th')
+  })
+
+  it('partialize does NOT include user, profile, or company', () => {
+    const persisted = useAuthStore.persist.getOptions()
+    expect(persisted.partialize).toBeDefined()
+    const state = useAuthStore.getState()
+    const partial = (persisted.partialize as (s: typeof state) => object)(state)
+    expect(partial).not.toHaveProperty('user')
+    expect(partial).not.toHaveProperty('profile')
+    expect(partial).not.toHaveProperty('company')
+    expect(partial).toHaveProperty('_langPref')
   })
 })

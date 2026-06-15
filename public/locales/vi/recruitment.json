@@ -134,5 +134,29 @@
     "senior": "Cao cấp",
     "lead": "Trưởng nhóm",
     "executive": "Điều hành"
+  },
+  "bulk_import": {
+    "title": "Nhập / Xuất dữ liệu",
+    "subtitle": "Nhập hàng loạt ứng viên hoặc công việc từ file CSV",
+    "import_type": "Loại nhập",
+    "type_candidates": "Ứng viên",
+    "type_jobs": "Công việc",
+    "download_template": "Tải mẫu",
+    "drag_drop": "Kéo và thả file CSV vào đây",
+    "or_click": "hoặc nhấp để chọn file",
+    "preview": "Xem trước",
+    "rows": "dòng",
+    "showing_first": "Hiển thị {{count}} trong số {{total}} dòng",
+    "validate": "Kiểm tra",
+    "validating": "Đang kiểm tra...",
+    "import": "Nhập",
+    "importing": "Đang nhập...",
+    "validation_errors": "Lỗi kiểm tra",
+    "results": "Kết quả nhập",
+    "results_summary": "Đã nhập thành công {{success}}/{{total}} bản ghi",
+    "failed_rows": "Dòng lỗi",
+    "import_another": "Nhập file khác",
+    "no_data": "Không có dữ liệu để nhập",
+    "export_success": "Xuất dữ liệu thành công"
   }
 }

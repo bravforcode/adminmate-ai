@@ -1,0 +1,7 @@
+src\pages\recruitment\InterviewsPage.tsx:178: U+2606 = '☆'
+src\pages\recruitment\InterviewsPage.tsx:178: U+2605 = '★'
+src\pages\recruitment\PipelinePage.tsx:70: U+2713 = '✓'
+src\pages\recruitment\PipelinePage.tsx:81: U+2713 = '✓'
+src\pages\recruitment\PipelinePage.tsx:87: U+2713 = '✓'
+src\pages\recruitment\PipelinePage.tsx:98: U+2713 = '✓'
+src\pages\recruitment\PipelinePage.tsx:107: U+2713 = '✓'

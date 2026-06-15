@@ -19,7 +19,7 @@ export function LanguageSwitcher() {
   }
 
   return (
-    <div style={{
+    <div role="group" aria-label="Language selector" style={{
       display: 'flex',
       gap: '2px',
       backgroundColor: 'var(--color-surface-alt, #f1f5f9)',
@@ -31,6 +31,7 @@ export function LanguageSwitcher() {
           key={lang.code}
           onClick={() => switchLang(lang.code)}
           id={`lang-${lang.code}`}
+          aria-label={`Switch to ${lang.label}`}
           style={{
             padding: '4px 10px',
             borderRadius: '6px',

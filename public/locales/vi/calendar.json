@@ -1,0 +1,16 @@
+{
+  "add_to_calendar": "Thêm vào lịch",
+  "download_ics": "Tải .ics",
+  "google_calendar": "Google Calendar",
+  "outlook": "Outlook",
+  "export_all": "Xuất tất cả phỏng vấn",
+  "export_interviews": "Xuất phỏng vấn",
+  "no_interviews": "Không có phỏng vấn sắp tới để xuất",
+  "settings_title": "Cài đặt lịch",
+  "reminder_time": "Thời gian nhắc nhở mặc định",
+  "reminder_time_desc": "Chọn thời điểm nhận nhắc nhở trước phỏng vấn.",
+  "default_format": "Định dạng lịch mặc định",
+  "default_format_desc": "Chọn định dạng lịch ưa thích để tải xuống.",
+  "save_settings": "Lưu cài đặt",
+  "settings_saved": "Đã lưu cài đặt lịch"
+}

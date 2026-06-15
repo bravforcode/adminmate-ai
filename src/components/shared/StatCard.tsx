@@ -1,4 +1,5 @@
 import type { LucideIcon } from 'lucide-react'
+import { AnimatedCounter } from './AnimatedCounter'
 
 interface StatCardProps {
   title: string
@@ -8,6 +9,7 @@ interface StatCardProps {
   trend?: string
   trendUp?: boolean
   onClick?: () => void
+  valueNode?: React.ReactNode
 }
 
 const colorMap = {
@@ -17,12 +19,13 @@ const colorMap = {
   secondary: { icon: 'var(--color-accent, #60a5fa)',   value: 'var(--color-navy-deep, #0f172a)', trend: '#22c55e' },
 }
 
-export function StatCard({ title, value, icon: Icon, color = 'primary', trend, trendUp, onClick }: StatCardProps) {
+export function StatCard({ title, value, icon: Icon, color = 'primary', trend, trendUp, onClick, valueNode }: StatCardProps) {
   const colors = colorMap[color]
 
   return (
     <div
       onClick={onClick}
+      className={`card-hover ${onClick ? 'cursor-pointer' : ''}`}
       style={{
         backgroundColor: 'var(--color-surface, #ffffff)',
         border: '1px solid var(--color-border-subtle, #e2e8f0)',
@@ -30,20 +33,7 @@ export function StatCard({ title, value, icon: Icon, color = 'primary', trend, t
         padding: '24px',
         position: 'relative',
         overflow: 'hidden',
-        cursor: onClick ? 'pointer' : 'default',
-        transition: 'border-color 0.3s ease-out, box-shadow 0.3s ease-out',
         fontFamily: 'var(--font-sans, Inter, sans-serif)',
-      }}
-      onMouseEnter={e => {
-        if (!onClick) return
-        const el = e.currentTarget
-        el.style.borderColor = 'var(--color-accent, #60a5fa)'
-        el.style.boxShadow = '0 8px 24px rgba(37, 99, 235, 0.08)'
-      }}
-      onMouseLeave={e => {
-        const el = e.currentTarget
-        el.style.borderColor = 'var(--color-border-subtle, #e2e8f0)'
-        el.style.boxShadow = 'none'
       }}
     >
       {/* Ghost background icon */}
@@ -85,7 +75,7 @@ export function StatCard({ title, value, icon: Icon, color = 'primary', trend, t
         lineHeight: 1,
         margin: '0 0 8px 0',
       }}>
-        {value}
+        {valueNode ?? (typeof value === 'number' ? <AnimatedCounter value={value} /> : value)}
       </p>
 
       {/* Trend */}

@@ -17,5 +17,5 @@ export function useCreateDocument() {
 export function useUpdateDocument() {
   const qc = useQueryClient()
   const company = useAuthStore(s => s.company)
-  return useMutation({ mutationFn: ({ id, data }: { id: string; data: Record<string, unknown> }) => documentService.update(id, data), onSuccess: () => { qc.invalidateQueries({ queryKey: ['documents', company?.id] }) }, onError: (e: Error) => toast.error(e.message) })
+  return useMutation({ mutationFn: ({ id, data }: { id: string; data: import('../services/documentService').UpdateDocumentInput }) => documentService.update(id, data, company!.id), onSuccess: () => { qc.invalidateQueries({ queryKey: ['documents', company?.id] }) }, onError: (e: Error) => toast.error(e.message) })
 }

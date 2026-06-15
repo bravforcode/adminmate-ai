@@ -86,12 +86,12 @@ export function initPageLoadMonitoring() {
       timestamp: new Date().toISOString(),
     }
     pushMark(mark)
-    console.info('[perf] page load', mark)
+    if (import.meta.env.DEV) console.info('[perf] page load', mark)
     if (isSlow(mark)) {
       reportError(new Error(`Slow page load: ${mark.durationMs}ms`), {
-        type: 'manual',
         severity: 'warning',
         ...mark,
+        type: 'manual',
       })
     }
   }
@@ -111,7 +111,7 @@ export function trackPageLoad(label = 'page', metadata?: Record<string, unknown>
       ...(metadata ? { metadata } : {}),
     } as PageLoadMark
     pushMark(mark)
-    console.info('[perf] page load', mark)
+    if (import.meta.env.DEV) console.info('[perf] page load', mark)
   }
 }
 
@@ -134,12 +134,12 @@ export async function trackQuery<T>(
       ...(metadata ? { metadata } : {}),
     }
     pushMark(mark)
-    console.info('[perf] query', mark)
+    if (import.meta.env.DEV) console.info('[perf] query', mark)
     if (isSlow(mark)) {
       reportError(new Error(`Slow query ${label}: ${mark.durationMs}ms`), {
-        type: 'manual',
         severity: 'warning',
         ...mark,
+        type: 'manual',
       })
     }
     return result
@@ -156,9 +156,9 @@ export async function trackQuery<T>(
     }
     pushMark(mark)
     reportError(err, {
-      type: 'api_error',
       severity: 'error',
       ...mark,
+      type: 'api_error',
     })
     throw err
   }
@@ -182,12 +182,12 @@ export async function trackEdgeFunction<T>(
       ...(metadata ? { metadata } : {}),
     }
     pushMark(mark)
-    console.info('[perf] edge function', mark)
+    if (import.meta.env.DEV) console.info('[perf] edge function', mark)
     if (isSlow(mark)) {
       reportError(new Error(`Slow edge function ${functionName}: ${mark.durationMs}ms`), {
-        type: 'manual',
         severity: 'warning',
         ...mark,
+        type: 'manual',
       })
     }
     return result
@@ -204,9 +204,9 @@ export async function trackEdgeFunction<T>(
     }
     pushMark(mark)
     reportError(err, {
-      type: 'api_error',
       severity: 'error',
       ...mark,
+      type: 'api_error',
     })
     throw err
   }
@@ -227,6 +227,6 @@ export function trackCustom(
       ...(metadata ? { metadata } : {}),
     }
     pushMark(mark)
-    console.info('[perf] custom', mark)
+    if (import.meta.env.DEV) console.info('[perf] custom', mark)
   })
 }

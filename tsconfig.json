@@ -1,5 +1,5 @@
 {
-  "exclude": ["supabase/functions", "tests", "node_modules", "dist"],
+  "exclude": ["supabase/functions", "tests", "node_modules", "dist", "**/*.test.ts", "**/*.test.tsx"],
   "compilerOptions": {
     "target": "ES2022",
     "experimentalDecorators": true,
@@ -18,10 +18,15 @@
     "jsx": "react-jsx",
     "paths": {
       "@/*": [
-        "./*"
+        "./src/*"
       ]
     },
     "allowImportingTsExtensions": true,
-    "noEmit": true
+    "noEmit": true,
+    "strict": true,
+    "noImplicitAny": true,
+    "strictNullChecks": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true
   }
 }

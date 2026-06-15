@@ -1,0 +1,16 @@
+{
+  "add_to_calendar": "Add to Calendar",
+  "download_ics": "Download .ics",
+  "google_calendar": "Google Calendar",
+  "outlook": "Outlook",
+  "export_all": "Export All Interviews",
+  "export_interviews": "Export Interviews",
+  "no_interviews": "No upcoming interviews to export",
+  "settings_title": "Calendar Settings",
+  "reminder_time": "Default Reminder Time",
+  "reminder_time_desc": "Choose when to receive reminders before an interview.",
+  "default_format": "Default Calendar Format",
+  "default_format_desc": "Choose your preferred calendar format for downloads.",
+  "save_settings": "Save Settings",
+  "settings_saved": "Calendar settings saved"
+}

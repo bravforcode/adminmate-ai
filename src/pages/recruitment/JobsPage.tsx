@@ -1,10 +1,13 @@
-import { useState } from 'react'
-import { Plus, Search, Briefcase, AlertCircle, RefreshCw, Trash2 } from 'lucide-react'
+import { useState, useMemo, useCallback, useEffect } from 'react'
+import { Plus, Search, Briefcase, Trash2, Download } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import { useJobs } from '../../hooks/useJobs'
+import { toCSV, downloadCSV } from '../../utils/csvParser'
 import { JobCard } from '../../components/jobs/JobCard'
 import { JobForm } from '../../components/jobs/JobForm'
+import { Button } from '../../components/ui/Button'
 import { EmptyState } from '../../components/shared/EmptyState'
+import { ErrorState } from '../../components/shared/ErrorState'
 import { LoadingState } from '../../components/shared/LoadingState'
 import { ConfirmDialog } from '../../components/shared/ConfirmDialog'
 import { supabase } from '../../lib/supabase'
@@ -16,8 +19,14 @@ export function JobsPage() {
   const qc = useQueryClient()
   const { data: jobs, isLoading, isError, error, refetch } = useJobs()
   const [showForm, setShowForm] = useState(false)
+  const [searchInput, setSearchInput] = useState('')
   const [search, setSearch] = useState('')
   const [deleteJobId, setDeleteJobId] = useState<string | null>(null)
+
+  useEffect(() => {
+    const timer = setTimeout(() => setSearch(searchInput), 300)
+    return () => clearTimeout(timer)
+  }, [searchInput])
 
   const handleDeleteJob = async () => {
     if (!deleteJobId) return
@@ -32,56 +41,81 @@ export function JobsPage() {
     setDeleteJobId(null)
   }
 
-  const filtered = jobs?.filter(j =>
+  const filtered = useMemo(() => jobs?.filter(j =>
     !search ||
     j.title?.toLowerCase().includes(search.toLowerCase()) ||
     j.department?.toLowerCase().includes(search.toLowerCase())
-  )
+  ), [jobs, search])
+
+  const handleSearchChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => setSearchInput(e.target.value), [])
+
+  const handleExportCSV = useCallback(() => {
+    if (!filtered || filtered.length === 0) return
+    const exportData = filtered.map(j => ({
+      title: j.title ?? '',
+      department: j.department ?? '',
+      location: j.location ?? '',
+      employment_type: j.employment_type ?? '',
+      status: j.status ?? '',
+      salary_min: j.salary_min != null ? String(j.salary_min) : '',
+      salary_max: j.salary_max != null ? String(j.salary_max) : '',
+      headcount: j.headcount != null ? String(j.headcount) : '',
+      skills_required: Array.isArray(j.skills_required) ? j.skills_required.join(', ') : '',
+    }))
+    downloadCSV(toCSV(exportData), 'jobs.csv')
+  }, [filtered])
 
   return (
     <div className="space-y-6">
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
-          <h1 className="text-headline-md font-bold text-on-surface">{t('jobs.title')}</h1>
-          <p className="text-body-md text-on-surface-variant mt-1">Manage your job postings</p>
+          <h1 className="text-headline-md font-bold text-on-surface dark:text-[#f1f5f9]">{t('jobs.title')}</h1>
+          <p className="text-body-md text-on-surface-variant dark:text-[#94a3b8] mt-1">Manage your job postings</p>
         </div>
-        <button
-          onClick={() => setShowForm(true)}
-          data-testid="create-job-button"
-          className="flex items-center gap-2 px-4 py-2.5 bg-primary text-on-primary rounded-lg font-medium hover:opacity-90 transition-opacity"
-        >
-          <Plus size={18} /> {t('jobs.create')}
-        </button>
+        <div className="flex gap-2">
+          <Button
+            variant="outline"
+            size="md"
+            onClick={handleExportCSV}
+            disabled={!filtered || filtered.length === 0}
+            icon={<Download size={16} />}
+          >
+            {t('common:export_csv')}
+          </Button>
+          <Button
+            variant="default"
+            size="lg"
+            onClick={() => setShowForm(true)}
+            data-testid="create-job-button"
+            icon={<Plus size={18} />}
+          >
+            {t('jobs.create')}
+          </Button>
+        </div>
       </div>
 
       <div className="relative max-w-sm">
-        <Search size={18} className="absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant" />
+        <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant dark:text-[#94a3b8] size-4" />
         <input
-          value={search}
-          onChange={e => setSearch(e.target.value)}
-          className="w-full pl-10 pr-4 py-2 rounded-lg border border-outline-variant bg-surface-container-lowest focus:border-primary outline-none text-sm"
+          value={searchInput}
+          onChange={handleSearchChange}
+          className="w-full pl-10 pr-4 py-3 rounded-xl border border-outline-variant dark:border-[#334155] bg-surface-container-lowest dark:bg-[#0f172a] text-on-surface dark:text-[#f1f5f9] focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all duration-200 outline-none text-sm placeholder:text-on-surface-variant/50"
           placeholder={t('jobs.search_placeholder')}
         />
       </div>
 
       {showForm && (
-        <div className="bg-surface rounded-xl border border-outline-variant p-6">
+        <div className="bg-surface dark:bg-[#1e293b] rounded-xl border border-outline-variant dark:border-[#334155] p-6">
           <JobForm onClose={() => setShowForm(false)} />
         </div>
       )}
 
       {isError ? (
-        <div className="bg-surface rounded-xl border border-outline-variant p-8 text-center">
-          <AlertCircle size={40} className="mx-auto text-error mb-3" />
-          <h3 className="font-semibold text-on-surface mb-1">{t('common:errors.load_failed')}</h3>
-          <p className="text-sm text-on-surface-variant mb-4">{(error as Error)?.message || ''}</p>
-          <button
-            onClick={() => refetch()}
-            className="inline-flex items-center gap-2 px-4 py-2 bg-primary text-on-primary rounded-lg text-sm font-medium hover:opacity-90"
-          >
-            <RefreshCw size={14} /> {t('common:errors.retry')}
-          </button>
-        </div>
+        <ErrorState
+          title={t('common:errors.load_failed')}
+          message={(error as Error)?.message || ''}
+          onRetry={() => refetch()}
+        />
       ) : isLoading ? (
         <LoadingState variant="cards" rows={4} message={t('common:loading')} />
       ) : filtered && filtered.length === 0 ? (
@@ -104,28 +138,28 @@ export function JobsPage() {
           {filtered?.map(job => (
             <div key={job.id} className="relative group">
               <JobCard job={job} />
-              <button
+              <Button
+                variant="ghost"
+                size="icon_xs"
                 onClick={(e) => { e.stopPropagation(); e.preventDefault(); setDeleteJobId(job.id) }}
-                className="absolute top-2 right-2 p-1.5 rounded-lg text-on-surface-variant hover:bg-error-container hover:text-error opacity-0 group-hover:opacity-100 transition-all z-10"
+                className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 z-10"
                 title={t('common:delete')}
-              >
-                <Trash2 size={14} />
-              </button>
+                icon={<Trash2 size={14} />}
+              />
             </div>
           ))}
         </div>
       )}
 
-      {deleteJobId && (
-        <ConfirmDialog
-          title={t('jobs.delete_title')}
-          message={t('jobs.delete_message')}
-          confirmLabel={t('common:delete')}
-          onConfirm={handleDeleteJob}
-          onCancel={() => setDeleteJobId(null)}
-          variant="danger"
-        />
-      )}
+      <ConfirmDialog
+        title={t('jobs.delete_title')}
+        message={t('jobs.delete_message')}
+        confirmLabel={t('common:delete')}
+        onConfirm={handleDeleteJob}
+        onCancel={() => setDeleteJobId(null)}
+        variant="danger"
+        open={!!deleteJobId}
+      />
     </div>
   )
 }

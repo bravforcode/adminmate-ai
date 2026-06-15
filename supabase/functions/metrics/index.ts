@@ -1,8 +1,8 @@
 import { serve } from 'https://deno.land/std@0.168.0/http/server.ts'
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2'
 import {
-  corsHeaders,
-  JSON_HEADERS,
+  getCorsHeaders,
+  getJsonHeaders,
   handleCorsPreflight,
   verifyAuth,
   enforceRateLimit,
@@ -20,7 +20,7 @@ serve(async (req) => {
   let userId: string | undefined
   try {
     if (req.method !== 'GET') {
-      return new Response(JSON.stringify({ success: false, error: 'Method not allowed' }), { status: 405, headers: JSON_HEADERS })
+      return new Response(JSON.stringify({ success: false, error: 'Method not allowed' }), { status: 405, headers: getJsonHeaders(req) })
     }
 
     const supabase = createClient(
@@ -30,7 +30,7 @@ serve(async (req) => {
 
     const user = await verifyAuth(req, supabase)
     if (!user) {
-      return new Response(JSON.stringify({ success: false, error: 'Unauthorized' }), { status: 401, headers: JSON_HEADERS })
+      return new Response(JSON.stringify({ success: false, error: 'Unauthorized' }), { status: 401, headers: getJsonHeaders(req) })
     }
     userId = user.id
 
@@ -44,7 +44,7 @@ serve(async (req) => {
       .single()
 
     if (!profile || !['admin', 'hr'].includes(profile.role)) {
-      return new Response(JSON.stringify({ success: false, error: 'Forbidden: admin only' }), { status: 403, headers: JSON_HEADERS })
+      return new Response(JSON.stringify({ success: false, error: 'Forbidden: admin only' }), { status: 403, headers: getJsonHeaders(req) })
     }
 
     const [usersRes, companiesRes, jobsRes, candidatesRes, recentSignupsRes] = await Promise.all([
@@ -67,10 +67,10 @@ serve(async (req) => {
     logRequest({ function: FN, userId, durationMs: Date.now() - start, status: 200 })
     return new Response(
       JSON.stringify({ success: true, data: metrics, generated_at: new Date().toISOString() }),
-      { status: 200, headers: JSON_HEADERS }
+      { status: 200, headers: getJsonHeaders(req) }
     )
   } catch (error: any) {
     logRequest({ function: FN, userId, durationMs: Date.now() - start, status: 500, error: error?.message })
-    return errorResponse(error, 500, corsHeaders)
+    return errorResponse(error, 500, getCorsHeaders(req))
   }
 })

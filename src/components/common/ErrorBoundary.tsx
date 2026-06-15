@@ -1,4 +1,5 @@
 import { Component, ReactNode } from 'react'
+import * as Sentry from '@sentry/react'
 
 interface Props {
   children: ReactNode
@@ -27,7 +28,9 @@ export class ErrorBoundary extends Component<Props, State> {
       timestamp: new Date().toISOString(),
     }
 
-    console.error('[ErrorBoundary] Caught error:', payload)
+    if (import.meta.env.DEV) console.error('[ErrorBoundary] Caught error:', payload)
+
+    Sentry.captureException(error, { extra: { componentStack: info?.componentStack } })
 
     if (typeof window !== 'undefined') {
       try {
@@ -41,7 +44,7 @@ export class ErrorBoundary extends Component<Props, State> {
           }).catch(() => {})
         }
       } catch {
-        void 0
+        // Remote logging is best-effort — do not let failure cascade
       }
 
       try {
@@ -49,7 +52,7 @@ export class ErrorBoundary extends Component<Props, State> {
         buf.push(payload)
         localStorage.setItem('adminmate:client-errors', JSON.stringify(buf.slice(-20)))
       } catch {
-        void 0
+        // localStorage may be full or unavailable — silently ignore
       }
     }
   }
@@ -71,22 +74,22 @@ export class ErrorBoundary extends Component<Props, State> {
         <div
           role="alert"
           aria-live="assertive"
-          className="min-h-screen flex flex-col items-center justify-center px-4 py-12 bg-slate-50 font-sans"
+          className="min-h-screen flex flex-col items-center justify-center px-4 py-12 bg-surface font-sans"
         >
-          <div className="max-w-md w-full bg-white rounded-2xl shadow-lg border border-slate-200 p-8 text-center">
-            <div className="w-16 h-16 mx-auto mb-6 rounded-full bg-red-100 text-red-600 flex items-center justify-center text-3xl font-bold">
+          <div className="max-w-md w-full bg-surface-container rounded-2xl shadow-lg border border-outline-variant p-8 text-center">
+            <div className="w-16 h-16 mx-auto mb-6 rounded-full bg-error/10 text-error flex items-center justify-center text-3xl font-bold">
               !
             </div>
-            <h1 className="text-2xl font-bold text-slate-900 mb-2">
+            <h1 className="text-2xl font-bold text-on-surface mb-2">
               Something went wrong
             </h1>
-            <p className="text-slate-600 mb-6 text-sm leading-relaxed">
+            <p className="text-on-surface-variant mb-6 text-sm leading-relaxed">
               An unexpected error occurred. Our team has been notified. You can try
               reloading the page, or contact support if the problem persists.
             </p>
-            {this.state.error?.message ? (
-              <details className="text-left mb-6 text-xs text-slate-500 bg-slate-50 rounded-lg p-3 border border-slate-200">
-                <summary className="cursor-pointer font-medium text-slate-700">
+            {import.meta.env.DEV && this.state.error?.message ? (
+              <details className="text-left mb-6 text-xs text-on-surface-variant bg-surface-dim rounded-lg p-3 border border-outline-variant">
+                <summary className="cursor-pointer font-medium text-on-surface">
                   Error details
                 </summary>
                 <pre className="mt-2 whitespace-pre-wrap break-words">
@@ -98,14 +101,14 @@ export class ErrorBoundary extends Component<Props, State> {
               <button
                 type="button"
                 onClick={this.handleReload}
-                className="px-6 py-2.5 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+                className="px-6 py-2.5 bg-primary text-on-primary rounded-lg font-medium hover:opacity-90 transition-colors focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
               >
                 Reload page
               </button>
               <button
                 type="button"
                 onClick={this.handleReset}
-                className="px-6 py-2.5 bg-white text-slate-700 border border-slate-300 rounded-lg font-medium hover:bg-slate-50 transition-colors focus:outline-none focus:ring-2 focus:ring-slate-400 focus:ring-offset-2"
+                className="px-6 py-2.5 bg-surface-container text-on-surface border border-outline-variant rounded-lg font-medium hover:bg-surface-container-high transition-colors focus:outline-none focus:ring-2 focus:ring-outline-variant focus:ring-offset-2"
               >
                 Try again
               </button>

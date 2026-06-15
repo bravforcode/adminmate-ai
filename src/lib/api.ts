@@ -70,6 +70,7 @@ async function readBodySafely(res: Response): Promise<unknown> {
   try {
     return JSON.parse(text)
   } catch {
+    // Response is not JSON — return raw text as-is
     return text
   }
 }
@@ -112,15 +113,17 @@ export async function safeFetch(
       clearTimeout(timer)
       const duration = performance.now() - start
 
-      console.info('[safeFetch] response', {
-        url,
-        method: requestInit.method ?? 'GET',
-        status: res.status,
-        ok: res.ok,
-        attempt,
-        durationMs: Math.round(duration),
-        ...(metadata ?? {}),
-      })
+      if (import.meta.env.DEV) {
+        console.info('[safeFetch] response', {
+          url,
+          method: requestInit.method ?? 'GET',
+          status: res.status,
+          ok: res.ok,
+          attempt,
+          durationMs: Math.round(duration),
+          ...(metadata ?? {}),
+        })
+      }
 
       if (!res.ok) {
         const body = await readBodySafely(res)
@@ -149,15 +152,17 @@ export async function safeFetch(
       const network = isNetworkError(err)
       const retriable = timedOut || network || (err instanceof ApiError && err.status >= 500)
 
-      console.warn('[safeFetch] attempt failed', {
-        url,
-        attempt,
-        totalAttempts,
-        timedOut,
-        network,
-        retriable,
-        error: err instanceof Error ? err.message : String(err),
-      })
+      if (import.meta.env.DEV) {
+        console.warn('[safeFetch] attempt failed', {
+          url,
+          attempt,
+          totalAttempts,
+          timedOut,
+          network,
+          retriable,
+          error: err instanceof Error ? err.message : String(err),
+        })
+      }
 
       if (attempt >= totalAttempts || !retriable) {
         const apiErr =
@@ -216,6 +221,7 @@ export async function safeFetchJson<T = unknown>(
   try {
     return JSON.parse(text) as T
   } catch {
+    // Response is not valid JSON — return raw text as the expected type
     return text as unknown as T
   }
 }

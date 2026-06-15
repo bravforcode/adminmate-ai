@@ -167,13 +167,18 @@ export class MessagingHub {
   private async sendWhatsApp(item: any): Promise<void> {
     const { data: conn } = await this.supabase
       .from('chat_platform_connections')
-      .select('access_token, platform_account_id')
+      .select('access_token_vault_id, platform_account_id')
       .eq('company_id', item.company_id)
       .eq('platform', 'whatsapp')
       .eq('is_active', true)
       .single()
 
-    const token = conn?.access_token || Deno.env.get('WHATSAPP_API_TOKEN')
+    let token: string | undefined
+    if (conn?.access_token_vault_id) {
+      const { data: decrypted } = await this.supabase.rpc('get_decrypted_token', { p_secret_id: conn.access_token_vault_id })
+      token = decrypted as string
+    }
+    token = token || Deno.env.get('WHATSAPP_API_TOKEN')
     const phoneId = conn?.platform_account_id || Deno.env.get('WHATSAPP_PHONE_NUMBER_ID')
     if (!token || !phoneId) throw new Error('WhatsApp not configured')
 
@@ -200,13 +205,18 @@ export class MessagingHub {
   private async sendLINE(item: any): Promise<void> {
     const { data: conn } = await this.supabase
       .from('chat_platform_connections')
-      .select('access_token')
+      .select('access_token_vault_id')
       .eq('company_id', item.company_id)
       .eq('platform', 'line')
       .eq('is_active', true)
       .single()
 
-    const token = conn?.access_token || Deno.env.get('LINE_CHANNEL_ACCESS_TOKEN')
+    let token: string | undefined
+    if (conn?.access_token_vault_id) {
+      const { data: decrypted } = await this.supabase.rpc('get_decrypted_token', { p_secret_id: conn.access_token_vault_id })
+      token = decrypted as string
+    }
+    token = token || Deno.env.get('LINE_CHANNEL_ACCESS_TOKEN')
     if (!token) throw new Error('LINE not configured')
 
     // LINE uses push message for outbound (not reply)

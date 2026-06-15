@@ -134,5 +134,29 @@
     "senior": "Senior",
     "lead": "Pemimpin",
     "executive": "Eksekutif"
+  },
+  "bulk_import": {
+    "title": "Impor / Ekspor Data",
+    "subtitle": "Impor massal kandidat atau lowongan dari file CSV",
+    "import_type": "Jenis Impor",
+    "type_candidates": "Kandidat",
+    "type_jobs": "Lowongan",
+    "download_template": "Unduh Template",
+    "drag_drop": "Seret & lepas file CSV di sini",
+    "or_click": "atau klik untuk memilih file",
+    "preview": "Pratinjau",
+    "rows": "baris",
+    "showing_first": "Menampilkan {{count}} dari {{total}} baris",
+    "validate": "Validasi",
+    "validating": "Memvalidasi...",
+    "import": "Impor",
+    "importing": "Mengimpor...",
+    "validation_errors": "Kesalahan Validasi",
+    "results": "Hasil Impor",
+    "results_summary": "{{success}} dari {{total}} catatan berhasil diimpor",
+    "failed_rows": "Baris Gagal",
+    "import_another": "Impor File Lain",
+    "no_data": "Tidak ada data untuk diimpor",
+    "export_success": "Data berhasil diekspor"
   }
 }

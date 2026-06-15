@@ -1,14 +1,15 @@
 import { serve } from 'https://deno.land/std@0.168.0/http/server.ts'
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2'
+import { createHmac } from 'node:crypto'
 import { handleIncomingMessage } from '../_shared/messageHandler.ts'
-import { corsHeaders, JSON_HEADERS, logRequest } from '../_shared/utils.ts'
+import { getCorsHeaders, getJsonHeaders, logRequest } from '../_shared/utils.ts'
 import { errorResponse } from '../_shared/errorHandler.ts'
 
 const FN = 'whatsapp-webhook'
 const MAX_BODY_BYTES = 1_000_000
 
 serve(async (req) => {
-  if (req.method === 'OPTIONS') return new Response('ok', { headers: corsHeaders })
+  if (req.method === 'OPTIONS') return new Response('ok', { headers: getCorsHeaders(req) })
 
   const start = Date.now()
   try {
@@ -29,7 +30,7 @@ serve(async (req) => {
     }
 
     if (req.method !== 'POST') {
-      return new Response(JSON.stringify({ success: false, error: 'Method not allowed' }), { status: 405, headers: JSON_HEADERS })
+      return new Response(JSON.stringify({ success: false, error: 'Method not allowed' }), { status: 405, headers: getJsonHeaders(req) })
     }
 
     const contentLength = parseInt(req.headers.get('content-length') || '0', 10)
@@ -38,7 +39,35 @@ serve(async (req) => {
     }
 
     const supabase = createClient(Deno.env.get('SUPABASE_URL')!, Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!)
-    const body = await req.json().catch(() => null)
+    
+    // Read body as text first for signature verification
+    const bodyText = await req.text()
+    if (!bodyText || bodyText.length > MAX_BODY_BYTES) {
+      return new Response('Invalid body', { status: 400 })
+    }
+
+    // Verify WhatsApp signature — fail closed
+    const signature = req.headers.get('x-hub-signature-256')
+    const secret = Deno.env.get('WHATSAPP_APP_SECRET')
+    if (!secret) {
+      logRequest({ function: FN, durationMs: Date.now() - start, status: 500, error: 'WHATSAPP_APP_SECRET not configured' })
+      return new Response('Server configuration error', { status: 500 })
+    }
+    if (!signature) {
+      logRequest({ function: FN, durationMs: Date.now() - start, status: 403, error: 'missing signature' })
+      return new Response('Forbidden', { status: 403 })
+    }
+    const hmac = createHmac('sha256', secret)
+    hmac.update(bodyText)
+    const expectedSignature = `sha256=${hmac.digest('hex')}`
+    if (signature !== expectedSignature) {
+      logRequest({ function: FN, durationMs: Date.now() - start, status: 403, error: 'invalid signature' })
+      return new Response('Forbidden', { status: 403 })
+    }
+
+    // Parse body after verification
+    let body
+    try { body = JSON.parse(bodyText) } catch { return new Response('Invalid JSON', { status: 400 }) }
     if (!body) return new Response('Invalid JSON', { status: 400 })
 
     const entry = body.entry?.[0]
@@ -46,6 +75,21 @@ serve(async (req) => {
     const value = change?.value
     const message = value?.messages?.[0]
     if (!message || message.type !== 'text') return new Response('ok')
+
+    // Check idempotency - skip if message already processed
+    const messageId = message.id
+    if (messageId) {
+      const { data: existingEvent } = await supabase
+        .from('webhook_events')
+        .select('id')
+        .eq('platform', 'whatsapp')
+        .eq('message_id', messageId)
+        .maybeSingle()
+      if (existingEvent) {
+        logRequest({ function: FN, durationMs: Date.now() - start, status: 200, error: 'duplicate message' })
+        return new Response('ok')
+      }
+    }
 
     const from = message.from
     const text = message.text?.body
@@ -71,6 +115,13 @@ serve(async (req) => {
       return new Response('ok')
     }
 
+    // Store event for idempotency
+    if (messageId) {
+      await supabase
+        .from('webhook_events')
+        .insert({ platform: 'whatsapp', message_id: messageId })
+    }
+
     await handleIncomingMessage(
       { platform: 'whatsapp', platformUserId: from, message: text, companyId },
       supabase
@@ -80,6 +131,6 @@ serve(async (req) => {
     return new Response('ok')
   } catch (error) {
     logRequest({ function: FN, durationMs: Date.now() - start, status: 500, error: error instanceof Error ? error.message : String(error) })
-    return errorResponse(error, 500, corsHeaders)
+    return errorResponse(error, 500, getCorsHeaders(req))
   }
 })

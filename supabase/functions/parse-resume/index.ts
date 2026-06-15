@@ -2,12 +2,13 @@ import { serve } from 'https://deno.land/std@0.168.0/http/server.ts'
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2'
 import { GoogleGenAI } from 'https://esm.sh/@google/genai@latest'
 import {
-  corsHeaders,
-  JSON_HEADERS,
+  getCorsHeaders,
+  getJsonHeaders,
   handleCorsPreflight,
   verifyAuth,
   enforceRateLimit,
   getGeminiKey,
+  checkAILimit,
   logRequest,
 } from '../_shared/utils.ts'
 import { errorResponse } from '../_shared/errorHandler.ts'
@@ -21,24 +22,25 @@ serve(async (req) => {
   const start = Date.now()
   let userId: string | undefined
   try {
+    const h = getJsonHeaders(req)
     if (req.method !== 'POST') {
-      return new Response(JSON.stringify({ success: false, error: 'Method not allowed' }), { status: 405, headers: JSON_HEADERS })
+      return new Response(JSON.stringify({ success: false, error: 'Method not allowed' }), { status: 405, headers: h })
     }
 
     const supabase = createClient(Deno.env.get('SUPABASE_URL')!, Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!)
     const user = await verifyAuth(req, supabase)
-    if (!user) return new Response(JSON.stringify({ success: false, error: 'Unauthorized' }), { status: 401, headers: JSON_HEADERS })
+    if (!user) return new Response(JSON.stringify({ success: false, error: 'Unauthorized' }), { status: 401, headers: h })
     userId = user.id
 
-    const rateLimited = await enforceRateLimit(supabase, user.id, 'parse_resume', 20, 60)
+    const rateLimited = await enforceRateLimit(supabase, user.id, 'parse_resume', 20, 60, req)
     if (rateLimited) return rateLimited
 
     let body: any
-    try { body = await req.json() } catch { return new Response(JSON.stringify({ success: false, error: 'Invalid JSON body' }), { status: 400, headers: JSON_HEADERS }) }
+    try { body = await req.json() } catch { return new Response(JSON.stringify({ success: false, error: 'Invalid JSON body' }), { status: 400, headers: h }) }
 
     const { cvDocumentId, candidateId, companyId } = body
     if (!cvDocumentId || typeof cvDocumentId !== 'string') {
-      return new Response(JSON.stringify({ success: false, error: 'cvDocumentId is required' }), { status: 400, headers: JSON_HEADERS })
+      return new Response(JSON.stringify({ success: false, error: 'cvDocumentId is required' }), { status: 400, headers: h })
     }
 
     const { data: cvDoc, error: cvError } = await supabase
@@ -47,22 +49,58 @@ serve(async (req) => {
       .eq('id', cvDocumentId)
       .single()
     if (cvError || !cvDoc) {
-      return new Response(JSON.stringify({ success: false, error: 'CV document not found' }), { status: 404, headers: JSON_HEADERS })
+      return new Response(JSON.stringify({ success: false, error: 'CV document not found' }), { status: 404, headers: h })
     }
 
     if (companyId && cvDoc.company_id && cvDoc.company_id !== companyId) {
-      return new Response(JSON.stringify({ success: false, error: 'CV does not belong to this company' }), { status: 403, headers: JSON_HEADERS })
+      return new Response(JSON.stringify({ success: false, error: 'CV does not belong to this company' }), { status: 403, headers: h })
     }
 
-    const fileRes = await fetch(cvDoc.file_url)
-    if (!fileRes.ok) {
-      return new Response(JSON.stringify({ success: false, error: 'Could not download CV file' }), { status: 502, headers: JSON_HEADERS })
+    const aiLimitOk = await checkAILimit(supabase, cvDoc.company_id || companyId || '', 'parse_resume', 30)
+    if (!aiLimitOk) {
+      return new Response(JSON.stringify({ success: false, error: 'AI usage limit exceeded. Please try again later.' }), { status: 429, headers: { ...h, 'Retry-After': '3600' } })
     }
+
+    // SSRF guard: validate URL is Supabase Storage
+    const supabaseUrl = Deno.env.get('SUPABASE_URL')!.replace(/\/+$/, '')
+    const storagePrefix = `${supabaseUrl}/storage/v1/object/public/`
+    if (!cvDoc.file_url?.startsWith(storagePrefix)) {
+      return new Response(JSON.stringify({ success: false, error: 'Invalid file URL' }), { status: 400, headers: h })
+    }
+
+    const controller = new AbortController()
+    const timeoutId = setTimeout(() => controller.abort(), 30000)
+    let fileRes: Response
+    try {
+      fileRes = await fetch(cvDoc.file_url, { signal: controller.signal })
+    } finally {
+      clearTimeout(timeoutId)
+    }
+    if (!fileRes.ok) {
+      return new Response(JSON.stringify({ success: false, error: 'Could not download CV file' }), { status: 502, headers: h })
+    }
+
+    // Validate file size (max 5MB)
+    const contentLength = fileRes.headers.get('content-length')
+    if (contentLength && parseInt(contentLength) > 5 * 1024 * 1024) {
+      return new Response(JSON.stringify({ success: false, error: 'File size exceeds 5MB limit' }), { status: 413, headers: h })
+    }
+
+    // Validate MIME type
+    const contentType = fileRes.headers.get('content-type') || ''
+    const allowedMimes = ['application/pdf', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document', 'text/plain']
+    if (!allowedMimes.some(mime => contentType.startsWith(mime))) {
+      return new Response(JSON.stringify({ success: false, error: 'Unsupported file type. Only PDF, DOCX, and TXT are allowed' }), { status: 415, headers: h })
+    }
+
     const fileBuffer = await fileRes.arrayBuffer()
+    if (fileBuffer.byteLength > 5 * 1024 * 1024) {
+      return new Response(JSON.stringify({ success: false, error: 'File size exceeds 5MB limit' }), { status: 413, headers: h })
+    }
     const fileText = new TextDecoder('utf-8', { fatal: false }).decode(fileBuffer)
 
     if (!fileText || fileText.length < 20) {
-      return new Response(JSON.stringify({ success: false, error: 'CV file is empty or unreadable' }), { status: 422, headers: JSON_HEADERS })
+      return new Response(JSON.stringify({ success: false, error: 'CV file is empty or unreadable' }), { status: 422, headers: h })
     }
 
     const ai = new GoogleGenAI({ apiKey: getGeminiKey() })
@@ -81,7 +119,7 @@ serve(async (req) => {
     const parsed = jsonMatch ? JSON.parse(jsonMatch[0]) : null
 
     if (!parsed) {
-      return new Response(JSON.stringify({ success: false, error: 'AI returned no parseable content' }), { status: 502, headers: JSON_HEADERS })
+      return new Response(JSON.stringify({ success: false, error: 'AI returned no parseable content' }), { status: 502, headers: h })
     }
 
     await supabase
@@ -113,9 +151,9 @@ serve(async (req) => {
     }
 
     logRequest({ function: FN, userId, durationMs: Date.now() - start, status: 200 })
-    return new Response(JSON.stringify({ success: true, data: parsed }), { headers: JSON_HEADERS })
+    return new Response(JSON.stringify({ success: true, data: parsed }), { headers: getJsonHeaders(req) })
   } catch (error: any) {
     logRequest({ function: FN, userId, durationMs: Date.now() - start, status: 500, error: error?.message })
-    return errorResponse(error, 500, corsHeaders)
+    return errorResponse(error, 500, getCorsHeaders(req))
   }
 })

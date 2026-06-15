@@ -1,4 +1,6 @@
 import { useState, useRef, useEffect } from 'react'
+import { motion, AnimatePresence } from 'framer-motion'
+import DOMPurify from 'dompurify'
 import { useChat } from '../../hooks/useChat'
 import { useTranslation } from 'react-i18next'
 import { Send, Sparkles, Bot, X, MessageSquare } from 'lucide-react'
@@ -33,7 +35,8 @@ export function ChatWidget() {
       {/* Floating Action Button */}
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="fixed bottom-20 md:bottom-6 right-4 md:right-6 z-50 w-14 h-14 rounded-full bg-gradient-to-tr from-navy-mid to-accent text-white flex items-center justify-center shadow-[0_4px_20px_rgba(37,99,235,0.4)] hover:shadow-[0_6px_24px_rgba(37,99,235,0.6)] hover:scale-105 active:scale-95 transition-all duration-300 border border-white/20 cursor-pointer"
+        className="chat-fab fixed bottom-20 md:bottom-6 right-4 md:right-6 z-50 w-14 h-14 rounded-full bg-gradient-to-tr from-navy-mid to-accent text-white flex items-center justify-center shadow-[0_4px_20px_rgba(37,99,235,0.4)] hover:shadow-[0_6px_24px_rgba(37,99,235,0.6)] hover:scale-105 active:scale-95 transition-all duration-300 border border-white/20 cursor-pointer"
+        style={{ paddingBottom: 'env(safe-area-inset-bottom, 0px)' }}
         aria-label="Toggle AI Assistant"
       >
         <div className="relative w-full h-full flex items-center justify-center">
@@ -47,13 +50,15 @@ export function ChatWidget() {
       </button>
 
       {/* Chat Window Panel */}
-      <div
-        className={`fixed bottom-[92px] md:bottom-24 right-4 md:right-6 z-50 w-[calc(100vw-32px)] sm:w-[400px] h-[550px] max-h-[calc(100vh-140px)] bg-surface border border-border rounded-2xl shadow-2xl flex flex-col overflow-hidden transition-all duration-300 transform origin-bottom-right ${
-          isOpen
-            ? 'opacity-100 scale-100 translate-y-0 pointer-events-auto'
-            : 'opacity-0 scale-90 translate-y-4 pointer-events-none'
-        }`}
-      >
+      <AnimatePresence>
+        {isOpen && (
+          <motion.div
+            className="chat-panel fixed bottom-[92px] md:bottom-24 right-4 md:right-6 z-50 w-[calc(100vw-32px)] sm:w-[400px] h-[550px] max-h-[calc(100vh-140px)] bg-surface dark:bg-[#1e293b] border border-border dark:border-[#334155] rounded-2xl shadow-2xl flex flex-col overflow-hidden origin-bottom-right pointer-events-auto"
+            initial={{ opacity: 0, scale: 0.9, y: 16 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            exit={{ opacity: 0, scale: 0.9, y: 16 }}
+            transition={{ type: 'spring', damping: 22, stiffness: 300 }}
+          >
         {/* Header */}
         <div className="bg-gradient-to-r from-navy-deep to-navy p-4 flex items-center justify-between border-b border-border/10">
           <div className="flex items-center gap-3">
@@ -83,7 +88,7 @@ export function ChatWidget() {
         </div>
 
         {/* Message Panel */}
-        <div className="flex-1 overflow-y-auto p-4 space-y-4 bg-bg scroll-smooth">
+        <div className="flex-1 chat-scroll p-4 space-y-4 bg-bg dark:bg-[#0f172a]">
           {messages.length === 0 && (
             <div className="text-center py-8 px-4 flex flex-col items-center justify-center h-full">
               <div className="w-12 h-12 rounded-full bg-accent-light flex items-center justify-center text-accent mb-3">
@@ -98,7 +103,7 @@ export function ChatWidget() {
                   <button
                     key={idx}
                     onClick={() => handleSuggestionClick(suggestion)}
-                    className="text-left px-3.5 py-2.5 bg-surface hover:bg-accent-light border border-border hover:border-accent-dim rounded-xl text-xs text-text-secondary hover:text-accent transition-all duration-200 shadow-sm cursor-pointer hover:translate-x-1"
+                    className="text-left px-3.5 py-2.5 bg-surface dark:bg-[#1e293b] hover:bg-accent-light dark:hover:bg-[#1e3a5f] border border-border dark:border-[#334155] hover:border-accent-dim dark:hover:border-[#60a5fa] rounded-xl text-xs text-text-secondary dark:text-[#94a3b8] hover:text-accent dark:hover:text-[#93c5fd] transition-all duration-200 shadow-sm cursor-pointer hover:translate-x-1"
                   >
                     {suggestion}
                   </button>
@@ -108,7 +113,13 @@ export function ChatWidget() {
           )}
 
           {messages.map((msg) => (
-            <div key={msg.id} className={`flex gap-2.5 ${msg.sender === 'user' ? 'justify-end' : 'justify-start'}`}>
+            <motion.div
+              key={msg.id}
+              initial={{ opacity: 0, y: 8 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ type: 'spring', damping: 20, stiffness: 300 }}
+              className={`flex gap-2.5 ${msg.sender === 'user' ? 'justify-end' : 'justify-start'}`}
+            >
               {msg.sender === 'ai' && (
                 <div className="w-7 h-7 rounded-full bg-accent text-white flex items-center justify-center flex-shrink-0 shadow-sm">
                   <Sparkles size={13} />
@@ -118,36 +129,46 @@ export function ChatWidget() {
                 className={`max-w-[80%] rounded-2xl p-3 text-xs shadow-sm leading-relaxed ${
                   msg.sender === 'user'
                     ? 'bg-accent text-white rounded-tr-none'
-                    : 'bg-surface text-text-primary border border-border rounded-tl-none'
+                    : 'bg-surface dark:bg-[#1e293b] text-text-primary dark:text-[#f1f5f9] border border-border dark:border-[#334155] rounded-tl-none'
                 }`}
               >
-                {msg.content}
+                {DOMPurify.sanitize(msg.content)}
               </div>
-            </div>
+            </motion.div>
           ))}
 
           {isLoading && (
-            <div className="flex gap-2.5 justify-start">
+            <motion.div
+              initial={{ opacity: 0, y: 8 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ type: 'spring', damping: 20, stiffness: 300 }}
+              className="flex gap-2.5 justify-start"
+            >
               <div className="w-7 h-7 rounded-full bg-accent text-white flex items-center justify-center flex-shrink-0 shadow-sm">
                 <Sparkles size={13} />
               </div>
-              <div className="bg-surface border border-border rounded-2xl rounded-tl-none p-3.5 flex gap-1 shadow-sm">
-                <div className="w-1.5 h-1.5 rounded-full bg-accent animate-bounce" style={{ animationDelay: '0ms' }} />
-                <div className="w-1.5 h-1.5 rounded-full bg-accent animate-bounce" style={{ animationDelay: '150ms' }} />
-                <div className="w-1.5 h-1.5 rounded-full bg-accent animate-bounce" style={{ animationDelay: '300ms' }} />
+              <div className="bg-surface dark:bg-[#1e293b] border border-border dark:border-[#334155] rounded-2xl rounded-tl-none p-3.5 flex gap-1.5 shadow-sm">
+                {[0, 1, 2].map((i) => (
+                  <motion.div
+                    key={i}
+                    className="w-1.5 h-1.5 rounded-full bg-accent"
+                    animate={{ y: [0, -4, 0] }}
+                    transition={{ duration: 0.6, repeat: Infinity, delay: i * 0.15, ease: 'easeInOut' }}
+                  />
+                ))}
               </div>
-            </div>
+            </motion.div>
           )}
           <div ref={bottomRef} />
         </div>
 
         {/* Input Bar */}
-        <div className="p-3 bg-surface border-t border-border flex gap-2 items-center">
+        <div className="p-3 bg-surface dark:bg-[#1e293b] border-t border-border dark:border-[#334155] flex gap-2 items-center" style={{ paddingBottom: 'max(12px, env(safe-area-inset-bottom))' }}>
           <input
             value={input}
             onChange={(e) => setInput(e.target.value)}
             onKeyDown={(e) => e.key === 'Enter' && handleSend()}
-            className="flex-1 px-4 py-2.5 rounded-full border border-border bg-bg focus:border-accent focus:ring-1 focus:ring-accent outline-none text-xs text-text-primary placeholder-text-muted transition-all"
+            className="flex-1 px-4 py-2.5 rounded-full border border-border dark:border-[#334155] bg-bg dark:bg-[#0f172a] focus:border-accent dark:focus:border-[#93c5fd] focus:ring-1 focus:ring-accent outline-none text-xs text-text-primary dark:text-[#f1f5f9] placeholder-text-muted dark:placeholder-[#64748b] transition-all"
             placeholder={t('placeholder')}
             disabled={isLoading}
           />
@@ -159,7 +180,9 @@ export function ChatWidget() {
             <Send size={15} />
           </button>
         </div>
-      </div>
+      </motion.div>
+        )}
+      </AnimatePresence>
     </>
   )
 }

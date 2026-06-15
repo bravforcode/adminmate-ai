@@ -42,6 +42,7 @@ function safeStringify(value: unknown): string {
     }
     return JSON.stringify(value)
   } catch {
+    // String conversion as last resort — safeStringify is intentionally best-effort
     return String(value)
   }
 }
@@ -80,7 +81,7 @@ async function sendToEndpoint(payload: AppErrorPayload) {
   const anonKey = env.VITE_SUPABASE_ANON_KEY
 
   if (!supabaseUrl) {
-    console.warn('[errorHandler] No VITE_SUPABASE_URL; skipping remote log')
+    if (import.meta.env.DEV) console.warn('[errorHandler] No VITE_SUPABASE_URL; skipping remote log')
     return
   }
 
@@ -95,7 +96,7 @@ async function sendToEndpoint(payload: AppErrorPayload) {
       keepalive: true,
     })
   } catch (err) {
-    console.warn('[errorHandler] Failed to send error to endpoint:', err)
+    if (import.meta.env.DEV) console.warn('[errorHandler] Failed to send error to endpoint:', err)
   }
 }
 
@@ -109,7 +110,7 @@ function persistLocally(payload: AppErrorPayload) {
       JSON.stringify(buf.slice(-50)),
     )
   } catch {
-    void 0
+    // localStorage write is best-effort — silently ignore quota/unavailable errors
   }
 }
 
@@ -127,7 +128,7 @@ function handleUncaughtError(event: ErrorEvent) {
     lineno: event.lineno,
     colno: event.colno,
   })
-  console.error('[errorHandler] uncaught error', payload)
+  if (import.meta.env.DEV) console.error('[errorHandler] uncaught error', payload)
   persistLocally(payload)
   void sendToEndpoint(payload)
 
@@ -143,7 +144,7 @@ function handleUnhandledRejection(event: PromiseRejectionEvent) {
   const payload = buildPayload('unhandled_promise', reason, {
     reason: reason instanceof Error ? reason.message : safeStringify(reason),
   })
-  console.error('[errorHandler] unhandled rejection', payload)
+  if (import.meta.env.DEV) console.error('[errorHandler] unhandled rejection', payload)
   persistLocally(payload)
   void sendToEndpoint(payload)
 
@@ -159,7 +160,7 @@ export function reportError(
   extras: Partial<AppErrorPayload> = {},
 ): AppErrorPayload {
   const payload = buildPayload('manual', error, extras)
-  console.error('[errorHandler] manual report', payload)
+  if (import.meta.env.DEV) console.error('[errorHandler] manual report', payload)
   persistLocally(payload)
   void sendToEndpoint(payload)
   return payload
@@ -173,7 +174,7 @@ export function initGlobalErrorHandler() {
   window.addEventListener('error', handleUncaughtError)
   window.addEventListener('unhandledrejection', handleUnhandledRejection)
 
-  console.info('[errorHandler] Global error handlers initialized')
+  if (import.meta.env.DEV) console.info('[errorHandler] Global error handlers initialized')
 }
 
 export function getBufferedErrors(): AppErrorPayload[] {
@@ -181,6 +182,7 @@ export function getBufferedErrors(): AppErrorPayload[] {
   try {
     return JSON.parse(localStorage.getItem('adminmate:client-errors') || '[]')
   } catch {
+    // Corrupted localStorage data — return empty rather than crashing
     return []
   }
 }
@@ -190,6 +192,6 @@ export function clearBufferedErrors() {
   try {
     localStorage.removeItem('adminmate:client-errors')
   } catch {
-    void 0
+    // localStorage remove is best-effort — silently ignore unavailable storage
   }
 }

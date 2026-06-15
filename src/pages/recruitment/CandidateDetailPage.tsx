@@ -4,6 +4,7 @@ import { useAuthStore } from '../../stores/authStore'
 import { CVUploader } from '../../components/candidates/CVUploader'
 import { CVParseResult } from '../../components/candidates/CVParseResult'
 import { CVDocument } from '../../types/models'
+import { LoadingState } from '../../components/shared/LoadingState'
 import { MapPin, Mail, Phone, ArrowLeft, Linkedin, Globe } from 'lucide-react'
 
 export function CandidateDetailPage() {
@@ -12,7 +13,7 @@ export function CandidateDetailPage() {
   const company = useAuthStore(s => s.company)
   const latestCV = candidate?.cv_documents?.find((cv: CVDocument) => cv.is_current)
 
-  if (isLoading) return <div className="p-8 text-center text-on-surface-variant">Loading...</div>
+  if (isLoading) return <LoadingState variant="detail" />
   if (!candidate) return <div className="p-8 text-center text-on-surface-variant">Candidate not found</div>
 
   return (
