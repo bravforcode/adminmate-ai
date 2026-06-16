@@ -1,4 +1,4 @@
-import { test, expect, signInAsHR, waitForPageReady } from './helpers'
+import { test, expect, signInAsHR, waitForPageReady, navigateTo } from './helpers'
 
 test.describe('404: Unknown Routes', () => {
   test('unknown route shows 404 page', async ({ page }) => {
@@ -30,15 +30,13 @@ test.describe('MOBILE: Responsive Layout', () => {
     await page.setViewportSize({ width: 375, height: 667 })
     await signInAsHR(page)
     await waitForPageReady(page)
-    const hasContent = await page.locator('h1, h2, h3, input, button, [class*="card"], [class*="form"]').count()
-    expect(hasContent).toBeGreaterThanOrEqual(1)
+    await expect(page.locator('h1, h2, h3, input, button, [class*="card"], [class*="form"]').first()).toBeVisible({ timeout: 15_000 })
   })
 
   test('mobile jobs page loads or redirects', async ({ page }) => {
     await page.setViewportSize({ width: 375, height: 667 })
     await signInAsHR(page)
-    await page.goto('/recruitment/jobs')
-    await waitForPageReady(page)
+    await navigateTo(page, '/recruitment/jobs')
     const hasContent = await page.locator('h1, h2, [class*="card"], [class*="empty"], input').count()
     expect(hasContent).toBeGreaterThanOrEqual(0)
   })
@@ -46,8 +44,7 @@ test.describe('MOBILE: Responsive Layout', () => {
   test('mobile settings page loads', async ({ page }) => {
     await page.setViewportSize({ width: 375, height: 667 })
     await signInAsHR(page)
-    await page.goto('/settings')
-    await waitForPageReady(page)
+    await navigateTo(page, '/settings')
     const hasContent = await page.locator('h1, h2, input, select, [class*="card"]').count()
     expect(hasContent).toBeGreaterThanOrEqual(0)
   })
@@ -112,7 +109,6 @@ test.describe('NAVIGATION: Full Sidebar', () => {
       '/hiring',
       '/onboarding',
       '/documents',
-      '/chat',
       '/reports',
       '/settings',
       '/health',
@@ -123,8 +119,7 @@ test.describe('NAVIGATION: Full Sidebar', () => {
         await link.click()
         await waitForPageReady(page)
         expect(page.url()).toContain(path)
-        await page.goto('/dashboard')
-        await waitForPageReady(page)
+        await navigateTo(page, '/dashboard')
       }
     }
   })

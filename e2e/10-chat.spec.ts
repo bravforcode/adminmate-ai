@@ -1,38 +1,48 @@
-import { test, expect, signInAsHR, waitForPageReady } from './helpers'
+import { test, expect, signInAsHR, waitForPageReady, openChatWidget, sendChatMessage, closeChatWidget } from './helpers'
 
 // ═══════════════════════════════════════════════════════════════════
-// CHAT: Page Load & UI
+// CHAT: Floating Widget — Open & UI
 // ═══════════════════════════════════════════════════════════════════
-test.describe('CHAT: Page Load', () => {
-  test('loads with heading and chat input', async ({ page }) => {
+test.describe('CHAT: Widget UI', () => {
+  test('chat FAB button is visible on dashboard', async ({ page }) => {
     await signInAsHR(page)
-    await page.goto('/chat')
     await waitForPageReady(page)
-    // Should have a heading (h1 or h2)
-    const headings = page.locator('h1, h2')
-    await expect(headings.first()).toBeVisible({ timeout: 15_000 })
-    // Should have a text input or textarea for chat
-    const input = page.locator('input[type="text"], textarea').first()
-    await expect(input).toBeVisible({ timeout: 10_000 })
+    const fab = page.locator('[data-testid="chat-fab"]')
+    await expect(fab).toBeVisible({ timeout: 10_000 })
   })
 
-  test('send button exists', async ({ page }) => {
+  test('clicking FAB opens chat panel', async ({ page }) => {
     await signInAsHR(page)
-    await page.goto('/chat')
     await waitForPageReady(page)
-    const sendBtn = page.locator('button[type="submit"], button').filter({ has: page.locator('svg, [class*="send"]') }).first()
-    await expect(sendBtn).toBeVisible({ timeout: 10_000 })
+    await openChatWidget(page)
+    const panel = page.locator('[data-testid="chat-panel"]')
+    await expect(panel).toBeVisible({ timeout: 5_000 })
   })
 
-  test('suggestion buttons are displayed on empty state', async ({ page }) => {
+  test('chat panel has input and send button', async ({ page }) => {
     await signInAsHR(page)
-    await page.goto('/chat')
     await waitForPageReady(page)
-    // Look for suggestion buttons (work hours, benefits, policy, holiday, etc.)
-    const suggestions = page.locator('button').filter({ hasText: /work hours|benefits|policy|holiday|leave|overtime|company/i })
+    await openChatWidget(page)
+    await expect(page.locator('[data-testid="chat-input"]')).toBeVisible()
+    await expect(page.locator('[data-testid="chat-send"]')).toBeVisible()
+  })
+
+  test('chat panel shows suggestions on empty state', async ({ page }) => {
+    await signInAsHR(page)
+    await waitForPageReady(page)
+    await openChatWidget(page)
+    const suggestions = page.locator('[data-testid="chat-suggestion"]')
     const count = await suggestions.count()
     // Should have at least 1 suggestion button
     expect(count).toBeGreaterThanOrEqual(1)
+  })
+
+  test('chat panel has message area', async ({ page }) => {
+    await signInAsHR(page)
+    await waitForPageReady(page)
+    await openChatWidget(page)
+    const messages = page.locator('[data-testid="chat-messages"]')
+    await expect(messages).toBeVisible()
   })
 })
 
@@ -42,18 +52,10 @@ test.describe('CHAT: Page Load', () => {
 test.describe('CHAT: Send Message', () => {
   test('type message and send — user message appears', async ({ page }) => {
     await signInAsHR(page)
-    await page.goto('/chat')
     await waitForPageReady(page)
+    await openChatWidget(page)
 
-    const input = page.locator('input[type="text"], textarea').first()
-    await expect(input).toBeVisible({ timeout: 10_000 })
-
-    // Type a question
-    await input.fill('What are the company benefits?')
-
-    // Find and click send button
-    const sendBtn = page.locator('button[type="submit"], button').filter({ has: page.locator('svg, [class*="send"]') }).first()
-    await sendBtn.click()
+    await sendChatMessage(page, 'What are the company benefits?')
 
     // The user message should appear in the chat
     await expect(page.getByText('What are the company benefits?')).toBeVisible({ timeout: 10_000 })
@@ -61,36 +63,27 @@ test.describe('CHAT: Send Message', () => {
 
   test('AI response appears after sending a message', async ({ page }) => {
     await signInAsHR(page)
-    await page.goto('/chat')
     await waitForPageReady(page)
+    await openChatWidget(page)
 
-    const input = page.locator('input[type="text"], textarea').first()
-    await input.fill('What are the company benefits?')
-
-    const sendBtn = page.locator('button[type="submit"], button').filter({ has: page.locator('svg, [class*="send"]') }).first()
-    await sendBtn.click()
+    await sendChatMessage(page, 'What are the company benefits?')
 
     // Wait for user message
     await expect(page.getByText('What are the company benefits?')).toBeVisible({ timeout: 10_000 })
 
-    // Wait for AI response — look for loading indicator then response
-    // The AI response should appear within 30 seconds
-    await page.waitForTimeout(30_000)
-
-    // Check for any AI response content (bot message, assistant message, etc.)
-    const messages = page.locator('[class*="message"], [class*="bubble"], [class*="chat"], [class*="markdown"]')
-    const messageCount = await messages.count()
-    // Should have at least 2 messages (user + AI)
-    expect(messageCount).toBeGreaterThanOrEqual(2)
+    // Wait for AI response — look for second message div (AI response)
+    // The AI response should appear within 45 seconds (Supabase Edge Function + Gemini)
+    const secondMessage = page.locator('[data-testid="chat-messages"] > div').nth(1)
+    await expect(secondMessage).toBeVisible({ timeout: 45_000 })
   })
 
   test('clicking suggestion button sends that message', async ({ page }) => {
     await signInAsHR(page)
-    await page.goto('/chat')
     await waitForPageReady(page)
+    await openChatWidget(page)
 
     // Find a suggestion button
-    const suggestions = page.locator('button').filter({ hasText: /work hours|benefits|policy|holiday/i })
+    const suggestions = page.locator('[data-testid="chat-suggestion"]')
     const firstSuggestion = suggestions.first()
 
     if (await firstSuggestion.isVisible({ timeout: 5_000 }).catch(() => false)) {
@@ -109,14 +102,17 @@ test.describe('CHAT: Send Message', () => {
 // CHAT: Empty State
 // ═══════════════════════════════════════════════════════════════════
 test.describe('CHAT: Empty State', () => {
-  test('shows bot icon, suggestions, or welcome message', async ({ page }) => {
+  test('shows welcome content, bot icon, or suggestions', async ({ page }) => {
     await signInAsHR(page)
-    await page.goto('/chat')
     await waitForPageReady(page)
+    await openChatWidget(page)
 
-    // Should have some content (heading, suggestion buttons, bot icon, or empty state)
-    const hasContent = await page.locator('h1, h2, h3, button, svg, [class*="empty"], [class*="suggestion"], [class*="bot"]').count()
-    expect(hasContent).toBeGreaterThanOrEqual(2)
+    // Should have suggestion buttons or bot icon
+    const suggestions = page.locator('[data-testid="chat-suggestion"]')
+    const botIcon = page.locator('[data-testid="chat-panel"] svg')
+    const suggCount = await suggestions.count()
+    const iconCount = await botIcon.count()
+    expect(suggCount + iconCount).toBeGreaterThanOrEqual(2)
   })
 })
 
@@ -126,23 +122,16 @@ test.describe('CHAT: Empty State', () => {
 test.describe('CHAT: Language Support', () => {
   test('Thai message gets Thai response', async ({ page }) => {
     await signInAsHR(page)
-    await page.goto('/chat')
     await waitForPageReady(page)
+    await openChatWidget(page)
 
-    const input = page.locator('input[type="text"], textarea').first()
-    await input.fill('สวัสดี นโยบายบริษัทมีอะไรบ้าง')
-
-    const sendBtn = page.locator('button[type="submit"], button').filter({ has: page.locator('svg, [class*="send"]') }).first()
-    await sendBtn.click()
+    await sendChatMessage(page, 'สวัสดี นโยบายบริษัทมีอะไรบ้าง')
 
     // User message should appear
     await expect(page.getByText('สวัสดี นโยบายบริษัทมีอะไรบ้าง')).toBeVisible({ timeout: 10_000 })
 
-    // Wait for response
-    await page.waitForTimeout(30_000)
-
-    // Should have multiple messages now
-    const messages = page.locator('[class*="message"], [class*="bubble"], [class*="chat"]')
-    expect(await messages.count()).toBeGreaterThanOrEqual(2)
+    // Wait for AI response — second message div
+    const secondMessage = page.locator('[data-testid="chat-messages"] > div').nth(1)
+    await expect(secondMessage).toBeVisible({ timeout: 45_000 })
   })
 })

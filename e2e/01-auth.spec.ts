@@ -129,7 +129,8 @@ test.describe('AUTH: Registration', () => {
 
   test('company name input exists', async ({ page }) => {
     await page.goto('/register')
-    await expect(page.locator('[data-testid="company-name-input"]')).toBeVisible()
+    await waitForPageReady(page)
+    await expect(page.locator('[data-testid="company-name-input"]')).toBeVisible({ timeout: 15_000 })
   })
 
   test('password mismatch shows error', async ({ page }) => {

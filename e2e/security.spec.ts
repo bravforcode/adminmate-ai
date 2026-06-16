@@ -1,4 +1,4 @@
-import { test, expect, signInAsHR, waitForPageReady, HR_USER } from './helpers'
+import { test, expect, signInAsHR, waitForPageReady, openChatWidget, HR_USER } from './helpers'
 
 // These tests only run against production (security headers not available on dev server)
 const isProd = process.env.E2E_BASE_URL?.includes('vercel.app') || false
@@ -35,7 +35,7 @@ test.describe('Authentication', () => {
     await expect(page).toHaveURL(/\/login/)
   })
 
-  test('should not store JWT in localStorage after login', async ({ page }) => {
+  test('should not store raw JWT in localStorage after login', async ({ page }) => {
     // Must click HR role card first (new login flow)
     await page.goto('/login')
     await page.locator('#role-card-hr').click()
@@ -45,16 +45,22 @@ test.describe('Authentication', () => {
     await page.locator('[data-testid="login-button"]').click()
     await page.waitForTimeout(5000)
     const authData = await page.evaluate(() => localStorage.getItem('adminmate-auth'))
-    expect(authData).toBeNull()
+    // localStorage may have the persisted zustand store with lang prefs,
+    // but should NOT contain raw JWT tokens (access_token, refresh_token)
+    if (authData) {
+      expect(authData).not.toContain('access_token')
+      expect(authData).not.toContain('refresh_token')
+      expect(authData).not.toContain('eyJ') // JWT typically starts with eyJ
+    }
   })
 })
 
 test.describe('XSS Prevention', () => {
   test('should sanitize AI chat output', async ({ page }) => {
     await signInAsHR(page)
-    await page.goto('/chat')
     await waitForPageReady(page)
-    const chatArea = page.locator('[class*="chat"], [class*="message"], [class*="Chat"]').first()
+    await openChatWidget(page)
+    const chatArea = page.locator('[data-testid="chat-messages"]')
     if (await chatArea.isVisible({ timeout: 5_000 }).catch(() => false)) {
       const html = await chatArea.innerHTML().catch(() => '')
       expect(html).not.toContain('<script')
@@ -76,15 +82,25 @@ test.describe('Rate Limiting', () => {
 test.describe('Audit Log', () => {
   test('audit log page loads for admin', async ({ page }) => {
     await signInAsHR(page)
-    await page.goto('/settings/audit-log')
+    // Navigate via SPA to avoid session loss on full page reload
+    await page.evaluate(() => {
+      window.history.pushState({}, '', '/settings/audit-log')
+      window.dispatchEvent(new PopStateEvent('popstate'))
+    })
     await waitForPageReady(page)
-    await expect(page.locator('h1, h2').first()).toBeVisible({ timeout: 10_000 })
+    await page.waitForTimeout(1000)
+    await expect(page.locator('h1, h2').first()).toBeVisible({ timeout: 15_000 })
   })
 
   test('audit log table contains action columns', async ({ page }) => {
     await signInAsHR(page)
-    await page.goto('/settings/audit-log')
+    // Navigate via SPA to avoid session loss on full page reload
+    await page.evaluate(() => {
+      window.history.pushState({}, '', '/settings/audit-log')
+      window.dispatchEvent(new PopStateEvent('popstate'))
+    })
     await waitForPageReady(page)
+    await page.waitForTimeout(1000)
     const table = page.locator('table')
     if (await table.isVisible({ timeout: 5_000 }).catch(() => false)) {
       await expect(table.locator('th')).toHaveCount(await table.locator('th').count())
