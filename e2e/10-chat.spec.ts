@@ -1,4 +1,4 @@
-import { test, expect, signInAsHR, waitForPageReady, openChatWidget, sendChatMessage, closeChatWidget } from './helpers'
+import { test, expect, signInAsHR, waitForPageReady, openChatWidget, sendChatMessage } from './helpers'
 
 // ═══════════════════════════════════════════════════════════════════
 // CHAT: Floating Widget — Open & UI

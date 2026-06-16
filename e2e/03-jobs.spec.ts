@@ -1,4 +1,4 @@
-import { test, expect, signInAsHR, waitForPageReady, navigateTo } from './helpers'
+import { test, expect, signInAsHR, navigateTo } from './helpers'
 
 const isSetup = (page: any) => page.url().includes('/setup-company')
 

@@ -1,4 +1,4 @@
-import { test, expect, signInAsHR, waitForPageReady } from './helpers'
+import { test, expect, signInAsHR } from './helpers'
 
 test.describe('DASHBOARD: Page Load', () => {
   test('loads after login', async ({ page }) => {

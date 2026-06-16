@@ -1,4 +1,4 @@
-import { test, expect, signInAsHR, waitForPageReady, navigateTo } from './helpers'
+import { test, expect, signInAsHR, navigateTo } from './helpers'
 
 // ═══════════════════════════════════════════════════════════════════
 // PIPELINE: Page Load & Kanban Board
