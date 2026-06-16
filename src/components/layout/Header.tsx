@@ -6,6 +6,7 @@ import { UserMenu } from './UserMenu'
 import { Menu } from 'lucide-react'
 import { ThemeToggle } from './ThemeToggle'
 import { GlobalSearch } from '../search/GlobalSearch'
+import { cn } from '../../lib/utils'
 
 export function Header() {
   const { toggleSidebar } = useUIStore()
@@ -15,59 +16,44 @@ export function Header() {
     <header
       role="banner"
       aria-label="Header"
-      style={{
-      height: '60px',
-      position: 'fixed',
-      top: 0, right: 0, left: 0,
-      marginLeft: '260px',
-      zIndex: 40,
-      backgroundColor: 'var(--color-surface, #ffffff)',
-      borderBottom: '1px solid var(--color-border-subtle, #f1f5f9)',
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'space-between',
-      padding: '0 28px',
-      fontFamily: 'var(--font-sans, Inter, sans-serif)',
-    }}
-    className="max-md:ml-0"
+      className={cn(
+        'h-[60px] fixed top-0 right-0 left-0 z-40',
+        'bg-surface border-b border-border-subtle',
+        'flex items-center justify-between',
+        'px-7 font-sans',
+        'max-md:ml-0 md:ml-[260px]',
+      )}
     >
       {/* Left: hamburger + search */}
-      <div style={{ display: 'flex', alignItems: 'center', gap: '16px', flex: 1 }}>
+      <div className="flex items-center gap-4 flex-1">
         <button
           onClick={toggleSidebar}
-          className="md:hidden"
+          className="md:hidden text-navy min-w-[44px] min-h-[44px] flex items-center justify-center rounded-lg bg-transparent border-none cursor-pointer hover:bg-gray-100 transition-colors"
           aria-label="Open navigation menu"
-          style={{
-            background: 'none', border: 'none', cursor: 'pointer',
-            color: 'var(--color-navy, #2563eb)', padding: '10px',
-            borderRadius: '8px',
-            minWidth: '44px', minHeight: '44px',
-            display: 'flex', alignItems: 'center', justifyContent: 'center',
-          }}
         >
           <Menu size={22} />
         </button>
 
-        {/* Global search trigger */}
+        {/* Global search - desktop */}
         {isHR && (
-          <div className="hidden sm:flex" style={{ flex: 1, maxWidth: '380px' }}>
+          <div className="hidden sm:flex flex-1 max-w-[380px]">
             <GlobalSearch />
           </div>
         )}
 
-        {/* Mobile search toggle */}
+        {/* Global search - mobile */}
         {isHR && (
-          <div className="sm:hidden" style={{ flex: 1 }}>
+          <div className="sm:hidden flex-1">
             <GlobalSearch />
           </div>
         )}
       </div>
 
       {/* Right: controls */}
-      <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+      <div className="flex items-center gap-2">
         <ThemeToggle />
         <LanguageSwitcher />
-        <div className="hidden sm:block" style={{ width: '1px', height: '20px', backgroundColor: 'var(--color-border-subtle, #f1f5f9)' }} />
+        <div className="hidden sm:block w-px h-5 bg-border-subtle" />
         <NotificationBell />
         <UserMenu />
       </div>

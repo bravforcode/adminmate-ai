@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { LoginForm } from '../../components/auth/LoginForm'
 import { useTranslation } from 'react-i18next'
 import { useUIStore } from '../../stores/uiStore'
-import { ArrowRight, ArrowLeft } from 'lucide-react'
+import { ArrowRight, ArrowLeft, Users, User } from 'lucide-react'
 import { Logo } from '../../components/brand/Logo'
 
 type SelectedRole = 'hr' | 'applicant' | null
@@ -306,11 +306,7 @@ export function LoginPage() {
                     boxShadow: '0 8px 20px rgba(37,99,235,0.2)',
                   }}
                 >
-                  <svg width="20" height="20" fill="none" stroke="#fff" strokeWidth="1.8" viewBox="0 0 24 24">
-                    <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
-                    <circle cx="9" cy="7" r="4" />
-                    <path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75" />
-                  </svg>
+                  <Users size={20} strokeWidth={1.8} color="#ffffff" />
                 </div>
 
                 <h2
@@ -408,10 +404,7 @@ export function LoginPage() {
                     display: 'flex', alignItems: 'center', justifyContent: 'center',
                   }}
                 >
-                  <svg width="20" height="20" fill="none" stroke="#60a5fa" strokeWidth="1.8" viewBox="0 0 24 24">
-                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
-                    <circle cx="12" cy="7" r="4" />
-                  </svg>
+                  <User size={20} strokeWidth={1.8} color="#60a5fa" />
                 </div>
 
                 <h2

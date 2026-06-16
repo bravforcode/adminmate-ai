@@ -157,7 +157,11 @@ export const router = createBrowserRouter([
       },
       {
         path: 'documents/sign/:id',
-        element: <AnimatedPage><DocumentSigningPage /></AnimatedPage>,
+        element: (
+          <AuthGuard callInitSession={false} requireCompany={false} requiredRoles={[...HR_ROLES, ...APPLICANT_ROLES]}>
+            <AnimatedPage><DocumentSigningPage /></AnimatedPage>
+          </AuthGuard>
+        ),
       },
       {
         path: 'hiring',

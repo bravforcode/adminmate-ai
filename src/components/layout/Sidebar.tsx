@@ -4,7 +4,9 @@ import { useAuthStore } from '../../stores/authStore'
 import { useUIStore } from '../../stores/uiStore'
 import { useTranslation } from 'react-i18next'
 import { navItems } from '../../lib/navigation'
+import { cn } from '../../lib/utils'
 import { Plus, X } from 'lucide-react'
+import { Button } from '../ui/Button'
 
 export function Sidebar() {
   const { sidebarOpen, toggleSidebar } = useUIStore()
@@ -27,14 +29,10 @@ export function Sidebar() {
 
   return (
     <>
+      {/* Mobile backdrop */}
       {sidebarOpen && (
         <div
-          style={{
-            position: 'fixed', inset: 0,
-            backgroundColor: 'rgba(15, 28, 46, 0.18)',
-            zIndex: 40,
-          }}
-          className="md:hidden animate-backdrop"
+          className="fixed inset-0 z-40 md:hidden bg-navy-deep/15 animate-backdrop"
           onClick={toggleSidebar}
         />
       )}
@@ -42,108 +40,51 @@ export function Sidebar() {
       <nav
         role="navigation"
         aria-label="Main navigation"
-        style={{
-          position: 'fixed',
-          left: 0, top: 0,
-          height: '100%',
-          width: '260px',
-          backgroundColor: 'var(--color-navy-deep, #0f2942)',
-          borderRight: 'none',
-          zIndex: 50,
-          display: 'flex',
-          flexDirection: 'column',
-          transition: 'transform 0.2s cubic-bezier(0.4, 0, 0.2, 1), width 0.2s cubic-bezier(0.4, 0, 0.2, 1)',
-          fontFamily: 'var(--font-sans, Inter, sans-serif)',
-        }}
-        className={`${sidebarOpen ? 'max-md:translate-x-0' : 'max-md:-translate-x-full'} md:translate-x-0`}
+        className={cn(
+          'fixed left-0 top-0 h-full w-[260px] z-50 flex flex-col',
+          'bg-navy-deep text-white border-r-0',
+          'transition-transform duration-200 ease-out',
+          sidebarOpen ? 'max-md:translate-x-0' : 'max-md:-translate-x-full',
+          'md:translate-x-0',
+        )}
       >
         {/* Logo strip */}
-        <div className="sidebar-logo" style={{
-          padding: '20px 20px 18px 20px',
-          borderBottom: '1px solid rgba(255,255,255,0.08)',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-        }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-            <div style={{
-              width: '32px', height: '32px',
-              borderRadius: '7px',
-              backgroundColor: 'var(--color-accent, #60a5fa)',
-              display: 'flex', alignItems: 'center', justifyContent: 'center',
-              flexShrink: 0,
-            }}>
-              <span style={{
-                color: '#fff',
-                fontFamily: 'var(--font-serif, Georgia, serif)',
-                fontSize: '15px', fontWeight: 400,
-              }}>A</span>
+        <div className="flex items-center justify-between px-5 py-[18px] border-b border-white/10">
+          <div className="flex items-center gap-2.5">
+            <div className="w-8 h-8 rounded-lg bg-accent flex items-center justify-center shrink-0">
+              <span className="text-white font-serif text-[15px]">A</span>
             </div>
-            <div className="sidebar-logo-text">
-          <p className="sidebar-version-text" style={{
-                fontFamily: 'var(--font-serif, Georgia, serif)',
-                fontSize: '15px', fontWeight: 400,
-                color: '#ffffff',
-                letterSpacing: '-0.01em',
-                margin: 0, lineHeight: 1.2,
-              }}>AdminMate</p>
-              <p className="sidebar-company-name" style={{
-                fontSize: '10px', color: 'rgba(255,255,255,0.45)',
-                margin: 0, fontWeight: 400,
-                maxWidth: '140px',
-                overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap',
-              }}>
+            <div>
+              <p className="text-white font-serif text-[15px] leading-tight m-0">
+                AdminMate
+              </p>
+              <p className="text-[10px] text-white/45 m-0 max-w-[140px] truncate">
                 {company?.name || 'AI Platform'}
               </p>
             </div>
           </div>
           <button
             onClick={toggleSidebar}
-            className="md:hidden"
+            className="md:hidden text-white/50 hover:text-white/80 p-1 rounded-md transition-colors"
             aria-label="Close sidebar"
-            style={{
-              background: 'none', border: 'none', cursor: 'pointer',
-              color: 'rgba(255,255,255,0.5)', padding: '4px',
-              borderRadius: '6px',
-            }}
           >
             <X size={16} />
           </button>
         </div>
 
         {/* New Request CTA */}
-        <div className="sidebar-cta" style={{ padding: '14px 14px 10px 14px' }}>
-          <button style={{
-            width: '100%',
-            backgroundColor: 'var(--color-accent, #60a5fa)',
-            color: '#ffffff',
-            border: 'none',
-            borderRadius: '8px',
-            padding: '9px 16px',
-            fontSize: '13px',
-            fontWeight: 500,
-            cursor: 'pointer',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            gap: '7px',
-            transition: 'opacity 0.2s ease-out',
-            fontFamily: 'var(--font-sans, Inter, sans-serif)',
-          }}
-          onMouseEnter={e => (e.currentTarget.style.opacity = '0.85')}
-          onMouseLeave={e => (e.currentTarget.style.opacity = '1')}
+        <div className="px-3.5 py-2.5">
+          <Button
+            variant="glow"
+            className="w-full justify-center gap-1.5 text-[13px] font-medium rounded-lg"
           >
             <Plus size={15} />
             {t('nav.new_request')}
-          </button>
+          </Button>
         </div>
 
         {/* Navigation links */}
-        <div className="sidebar-scroll" style={{
-          flex: 1,
-          padding: '8px 10px',
-          display: 'flex', flexDirection: 'column', gap: '2px',
-        }}>
+        <div className="flex-1 px-2.5 py-2 flex flex-col gap-0.5 overflow-y-auto">
           {visibleItems.map(item => (
             <motion.div
               key={item.path}
@@ -152,53 +93,25 @@ export function Sidebar() {
             >
               <NavLink
                 to={item.path!}
-                className="sidebar-nav-link"
-                style={({ isActive }) => ({
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: '12px',
-                  padding: '9px 14px',
-                  borderRadius: '8px',
-                  fontSize: '13px',
-                  fontWeight: isActive ? 600 : 400,
-                  color: isActive ? '#ffffff' : 'rgba(255,255,255,0.55)',
-                  backgroundColor: isActive ? 'rgba(96, 165, 250, 0.25)' : 'transparent',
-                  borderLeft: isActive ? '3px solid var(--color-accent, #60a5fa)' : '3px solid transparent',
-                  textDecoration: 'none',
-                  transition: 'all 0.2s ease-out',
-                })}
-                onMouseEnter={e => {
-                  const el = e.currentTarget
-                  if (!el.getAttribute('aria-current')) {
-                    el.style.backgroundColor = 'rgba(255,255,255,0.06)'
-                    el.style.color = 'rgba(255,255,255,0.85)'
-                  }
-                }}
-                onMouseLeave={e => {
-                  const el = e.currentTarget
-                  if (!el.getAttribute('aria-current')) {
-                    el.style.backgroundColor = 'transparent'
-                    el.style.color = 'rgba(255,255,255,0.55)'
-                  }
-                }}
+                className={({ isActive }) =>
+                  cn(
+                    'flex items-center gap-3 px-3.5 py-2 rounded-lg text-[13px] no-underline transition-all duration-200',
+                    isActive
+                      ? 'text-white bg-accent/25 border-l-[3px] border-accent font-semibold'
+                      : 'text-white/55 hover:text-white/85 hover:bg-white/6 border-l-[3px] border-transparent font-normal',
+                  )
+                }
               >
-                <item.icon size={17} style={{ flexShrink: 0 }} />
-                <span className="sidebar-label">{t(item.labelKey)}</span>
+                <item.icon size={17} className="shrink-0" />
+                <span>{t(item.labelKey)}</span>
               </NavLink>
             </motion.div>
           ))}
         </div>
 
         {/* Bottom — version */}
-        <div style={{
-          padding: '16px 20px',
-          borderTop: '1px solid rgba(255,255,255,0.06)',
-        }}>
-          <p style={{
-            fontSize: '10px',
-            color: 'rgba(255,255,255,0.25)',
-            margin: 0, letterSpacing: '0.05em',
-          }}>
+        <div className="px-5 py-4 border-t border-white/6">
+          <p className="text-[10px] text-white/25 m-0 tracking-wider">
             AdminMate AI &nbsp;&mdash;&nbsp; v2.0
           </p>
         </div>
