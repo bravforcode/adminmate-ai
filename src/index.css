@@ -18,6 +18,15 @@
   --color-accent-light:#dbeafe;
   --color-accent-dim:  #93c5fd;
 
+  /* --- Modern oklch Colors --- */
+  --color-primary-oklch:  oklch(0.65 0.22 250);
+  --color-secondary-oklch: oklch(0.75 0.15 320);
+  --color-success-oklch:   oklch(0.70 0.18 160);
+  --color-warning-oklch:   oklch(0.75 0.16 45);
+  --color-danger-oklch:    oklch(0.65 0.20 25);
+  --color-bg-oklch:        oklch(0.98 0 0);
+  --color-surface-oklch:   oklch(1 0 0);
+
   /* --- Background & Surface --- */
   --color-bg:          #f8fafc;
   --color-surface:     #ffffff;
@@ -57,11 +66,32 @@
   --font-label: 'Inter', ui-sans-serif, sans-serif;
   --font-code:  'IBM Plex Mono', ui-monospace, monospace;
 
+  /* --- Font Size Scale --- */
+  --text-xs:   0.75rem;
+  --text-xs--line-height: 1rem;
+  --text-sm:   0.875rem;
+  --text-sm--line-height: 1.25rem;
+  --text-base: 1rem;
+  --text-base--line-height: 1.5rem;
+  --text-lg:   1.125rem;
+  --text-lg--line-height: 1.75rem;
+  --text-xl:   1.25rem;
+  --text-xl--line-height: 1.75rem;
+  --text-2xl:  1.5rem;
+  --text-2xl--line-height: 2rem;
+  --text-3xl:  1.875rem;
+  --text-3xl--line-height: 2.25rem;
+  --text-4xl:  2.25rem;
+  --text-4xl--line-height: 2.5rem;
+
   /* --- Spacing (Luxury — uneven intentional) --- */
   --space-macro:  96px;
   --space-active: 56px;
   --space-mid:    40px;
   --space-micro:  20px;
+
+  /* --- Spacing Scale --- */
+  --spacing: 0.25rem;
 
   /* --- Transitions --- */
   --ease-luxury: cubic-bezier(0.4, 0, 0.2, 1);
@@ -73,10 +103,8 @@
   --radius-md:   8px;
   --radius-lg:   12px;
   --radius-xl:   16px;
+  --radius-2xl:  24px;
   --radius-full: 9999px;
-
-  /* Legacy radius compat */
-  --radius-2xl: 16px;
 }
 
 /* ============================================================

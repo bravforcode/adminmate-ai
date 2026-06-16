@@ -27,9 +27,9 @@ export const chatService = {
     return data
   },
 
-  getAIResponse: async (question: string, companyId: string, language: string) => {
+  getAIResponse: async (question: string, companyId: string, language: string, role: string) => {
     const { data } = await supabase.functions.invoke('mate-ai-chat', {
-      body: { question, companyId, language },
+      body: { question, companyId, language, role },
     })
     return data
   },

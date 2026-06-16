@@ -1,11 +1,15 @@
 import { Button } from '../ui/Button'
-import { LucideIcon } from 'lucide-react'
+import type { LucideIcon } from 'lucide-react'
+import { cn } from '../../lib/utils'
 
 interface Props { icon?: LucideIcon; title: string; description?: string; action?: { label: string; onClick: () => void } }
 
 export function EmptyState({ icon: Icon, title, description, action }: Props) {
   return (
-    <div className="flex flex-col items-center justify-center py-16 px-4 text-center animate-in fade-in duration-500">
+    <div className={cn(
+      'flex flex-col items-center justify-center py-16 px-4 text-center',
+      'animate-in fade-in duration-500'
+    )}>
       {Icon && (
         <div className="relative mb-6">
           <div className="absolute inset-0 rounded-full bg-gradient-to-br from-primary/5 to-tertiary/5 scale-150 blur-xl" />

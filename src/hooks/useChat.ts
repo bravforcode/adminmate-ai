@@ -11,7 +11,7 @@ interface ChatMessage {
 }
 
 export function useChat() {
-  const { user, company } = useAuthStore()
+  const { user, profile, company } = useAuthStore()
   const [messages, setMessages] = useState<ChatMessage[]>([])
   const [sessionId, setSessionId] = useState<string>(crypto.randomUUID())
   const [isLoading, setIsLoading] = useState(false)
@@ -27,7 +27,8 @@ export function useChat() {
 
       setIsLoading(true)
       const lang = useAuthStore.getState().userLanguage()
-      const result = await chatService.getAIResponse(text, company.id, lang)
+      const role = profile?.role ?? 'applicant'
+      const result = await chatService.getAIResponse(text, company.id, lang, role)
       const aiText = result?.data?.response || 'ขออภัย ไม่สามารถตอบคำถามได้ในขณะนี้'
 
       const aiMsg: ChatMessage = { id: crypto.randomUUID(), session_id: sessionId, sender: 'ai', content: aiText, created_at: new Date().toISOString() }
@@ -49,7 +50,7 @@ export function useChat() {
     } finally {
       setIsLoading(false)
     }
-  }, [sessionId, user?.id, company?.id])
+  }, [sessionId, user?.id, company?.id, profile?.role])
 
   return { messages, sendMessage, isLoading, sessionId, setSessionId }
 }

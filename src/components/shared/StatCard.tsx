@@ -1,5 +1,7 @@
 import type { LucideIcon } from 'lucide-react'
 import { AnimatedCounter } from './AnimatedCounter'
+import { Card, CardContent } from '../ui/Card'
+import { cn } from '../../lib/utils'
 
 interface StatCardProps {
   title: string
@@ -23,82 +25,57 @@ export function StatCard({ title, value, icon: Icon, color = 'primary', trend, t
   const colors = colorMap[color]
 
   return (
-    <div
+    <Card
+      className={cn(
+        'relative overflow-hidden card-hover',
+        onClick && 'cursor-pointer'
+      )}
       onClick={onClick}
-      className={`card-hover ${onClick ? 'cursor-pointer' : ''}`}
-      style={{
-        backgroundColor: 'var(--color-surface, #ffffff)',
-        border: '1px solid var(--color-border-subtle, #e2e8f0)',
-        borderRadius: '12px',
-        padding: '24px',
-        position: 'relative',
-        overflow: 'hidden',
-        fontFamily: 'var(--font-sans, Inter, sans-serif)',
-      }}
     >
       {/* Ghost background icon */}
-      <div style={{
-        position: 'absolute', top: '-4px', right: '-4px',
-        opacity: 0.04, pointerEvents: 'none',
-        color: colors.icon,
-      }}>
+      <div
+        className="absolute -top-1 -right-1 opacity-[0.04] pointer-events-none"
+        style={{ color: colors.icon }}
+      >
         <Icon size={72} />
       </div>
 
-      {/* Icon badge */}
-      <div style={{
-        width: '36px', height: '36px',
-        borderRadius: '8px',
-        backgroundColor: 'var(--color-accent-light, #dbeafe)',
-        display: 'flex', alignItems: 'center', justifyContent: 'center',
-        marginBottom: '16px',
-      }}>
-        <Icon size={17} style={{ color: colors.icon }} />
-      </div>
+      <CardContent className="p-6">
+        {/* Icon badge */}
+        <div
+          className="w-9 h-9 rounded-lg flex items-center justify-center mb-4"
+          style={{ backgroundColor: 'var(--color-accent-light, #dbeafe)' }}
+        >
+          <Icon size={17} style={{ color: colors.icon }} />
+        </div>
 
-      {/* Label */}
-      <p style={{
-        fontSize: '11px', fontWeight: 600,
-        color: 'var(--color-text-muted, #94a3b8)',
-        letterSpacing: '0.08em', textTransform: 'uppercase',
-        margin: '0 0 6px 0',
-      }}>
-        {title}
-      </p>
-
-      {/* Value */}
-      <p style={{
-        fontSize: 'clamp(24px, 2.5vw, 32px)',
-        fontWeight: 700,
-        color: colors.value,
-        letterSpacing: '-0.03em',
-        lineHeight: 1,
-        margin: '0 0 8px 0',
-      }}>
-        {valueNode ?? (typeof value === 'number' ? <AnimatedCounter value={value} /> : value)}
-      </p>
-
-      {/* Trend */}
-      {trend && (
-        <p style={{
-          fontSize: '11px',
-          fontWeight: 500,
-          color: trendUp ? colors.trend : '#ef4444',
-          margin: 0,
-          display: 'flex',
-          alignItems: 'center',
-          gap: '4px',
-        }}>
-          <span style={{
-            display: 'inline-block',
-            width: '5px', height: '5px',
-            borderRadius: '50%',
-            backgroundColor: trendUp ? colors.trend : '#ef4444',
-            flexShrink: 0,
-          }} />
-          {trend}
+        {/* Label */}
+        <p className="text-[11px] font-semibold text-[var(--color-text-muted,#94a3b8)] uppercase tracking-wider mb-1.5">
+          {title}
         </p>
-      )}
-    </div>
+
+        {/* Value */}
+        <p
+          className="text-[clamp(24px,2.5vw,32px)] font-bold tracking-tighter leading-none mb-2"
+          style={{ color: colors.value }}
+        >
+          {valueNode ?? (typeof value === 'number' ? <AnimatedCounter value={value} /> : value)}
+        </p>
+
+        {/* Trend */}
+        {trend && (
+          <p
+            className="text-[11px] font-medium flex items-center gap-1"
+            style={{ color: trendUp ? colors.trend : '#ef4444' }}
+          >
+            <span
+              className="inline-block w-1.5 h-1.5 rounded-full flex-shrink-0"
+              style={{ backgroundColor: trendUp ? colors.trend : '#ef4444' }}
+            />
+            {trend}
+          </p>
+        )}
+      </CardContent>
+    </Card>
   )
 }

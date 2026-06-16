@@ -2,6 +2,7 @@ import { useState, useRef, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import DOMPurify from 'dompurify'
 import { useChat } from '../../hooks/useChat'
+import { useAuthStore } from '../../stores/authStore'
 import { useTranslation } from 'react-i18next'
 import { Send, Sparkles, Bot, X, MessageSquare } from 'lucide-react'
 
@@ -11,6 +12,9 @@ export function ChatWidget() {
   const [input, setInput] = useState('')
   const { t } = useTranslation('chat')
   const bottomRef = useRef<HTMLDivElement>(null)
+  const profile = useAuthStore(s => s.profile)
+  const isHR = ['admin', 'hr', 'manager'].includes(profile?.role ?? '')
+  const userTitle = isHR ? `${t('title')} (HR)` : `${t('title')} (Applicant)`
 
   useEffect(() => {
     if (isOpen) {
@@ -69,7 +73,7 @@ export function ChatWidget() {
             </div>
             <div>
               <div className="flex items-center gap-1.5">
-                <span className="font-semibold text-white text-sm">{t('title')}</span>
+                <span className="font-semibold text-white text-sm">{userTitle}</span>
                 <span className="flex h-2 w-2 relative">
                   <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
                   <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
