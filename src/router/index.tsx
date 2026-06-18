@@ -296,7 +296,7 @@ export const router = createBrowserRouter([
       {
         path: '/applicant/dashboard',
         element: (
-          <AuthGuard callInitSession={false} requiredRoles={APPLICANT_ROLES}>
+          <AuthGuard callInitSession={false} requireCompany={false} requiredRoles={APPLICANT_ROLES}>
             <AnimatedPage><ApplicantDashboardPage /></AnimatedPage>
           </AuthGuard>
         ),
@@ -304,7 +304,7 @@ export const router = createBrowserRouter([
       {
         path: '/applicant/jobs',
         element: (
-          <AuthGuard callInitSession={false} requiredRoles={APPLICANT_ROLES}>
+          <AuthGuard callInitSession={false} requireCompany={false} requiredRoles={APPLICANT_ROLES}>
             <AnimatedPage><BrowseJobsPage /></AnimatedPage>
           </AuthGuard>
         ),
@@ -312,7 +312,7 @@ export const router = createBrowserRouter([
       {
         path: '/applicant/jobs/:id',
         element: (
-          <AuthGuard callInitSession={false} requiredRoles={APPLICANT_ROLES}>
+          <AuthGuard callInitSession={false} requireCompany={false} requiredRoles={APPLICANT_ROLES}>
             <AnimatedPage><ApplicantJobDetailPage /></AnimatedPage>
           </AuthGuard>
         ),
@@ -320,7 +320,7 @@ export const router = createBrowserRouter([
       {
         path: '/applicant/status',
         element: (
-          <AuthGuard callInitSession={false} requiredRoles={APPLICANT_ROLES}>
+          <AuthGuard callInitSession={false} requireCompany={false} requiredRoles={APPLICANT_ROLES}>
             <AnimatedPage><ApplicationStatusPage /></AnimatedPage>
           </AuthGuard>
         ),
@@ -328,7 +328,7 @@ export const router = createBrowserRouter([
       {
         path: '/my-profile',
         element: (
-          <AuthGuard callInitSession={false} requiredRoles={APPLICANT_ROLES}>
+          <AuthGuard callInitSession={false} requireCompany={false} requiredRoles={APPLICANT_ROLES}>
             <AnimatedPage><MyProfilePage /></AnimatedPage>
           </AuthGuard>
         ),
@@ -336,7 +336,7 @@ export const router = createBrowserRouter([
       {
         path: '/my-tasks',
         element: (
-          <AuthGuard callInitSession={false} requiredRoles={APPLICANT_ROLES}>
+          <AuthGuard callInitSession={false} requireCompany={false} requiredRoles={APPLICANT_ROLES}>
             <AnimatedPage><MyTasksPage /></AnimatedPage>
           </AuthGuard>
         ),
