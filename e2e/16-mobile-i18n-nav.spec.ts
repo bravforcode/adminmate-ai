@@ -1,4 +1,4 @@
-import { test, expect, signInAsHR, waitForPageReady, navigateTo } from './helpers'
+import { test, expect, ensureHRAuthenticated, waitForPageReady, navigateTo } from './helpers'
 
 test.describe('404: Unknown Routes', () => {
   test('unknown route shows 404 page', async ({ page }) => {
@@ -28,14 +28,14 @@ test.describe('404: Unknown Routes', () => {
 test.describe('MOBILE: Responsive Layout', () => {
   test('mobile viewport shows content or setup page', async ({ page }) => {
     await page.setViewportSize({ width: 375, height: 667 })
-    await signInAsHR(page)
+    await ensureHRAuthenticated(page)
     await waitForPageReady(page)
     await expect(page.locator('h1, h2, h3, input, button, [class*="card"], [class*="form"]').first()).toBeVisible({ timeout: 15_000 })
   })
 
   test('mobile jobs page loads or redirects', async ({ page }) => {
     await page.setViewportSize({ width: 375, height: 667 })
-    await signInAsHR(page)
+    await ensureHRAuthenticated(page)
     await navigateTo(page, '/recruitment/jobs')
     const hasContent = await page.locator('h1, h2, [class*="card"], [class*="empty"], input').count()
     expect(hasContent).toBeGreaterThanOrEqual(0)
@@ -43,7 +43,7 @@ test.describe('MOBILE: Responsive Layout', () => {
 
   test('mobile settings page loads', async ({ page }) => {
     await page.setViewportSize({ width: 375, height: 667 })
-    await signInAsHR(page)
+    await ensureHRAuthenticated(page)
     await navigateTo(page, '/settings')
     const hasContent = await page.locator('h1, h2, input, select, [class*="card"]').count()
     expect(hasContent).toBeGreaterThanOrEqual(0)
@@ -52,7 +52,7 @@ test.describe('MOBILE: Responsive Layout', () => {
 
 test.describe('i18n: Language Switcher', () => {
   test('language switcher exists in header', async ({ page }) => {
-    await signInAsHR(page)
+    await ensureHRAuthenticated(page)
     await expect(page).toHaveURL(/\/dashboard/, { timeout: 30_000 })
     const langSwitcher = page.locator('button, select').filter({ hasText: /th|en|vi|id/i }).first()
     if (await langSwitcher.isVisible({ timeout: 5000 }).catch(() => false)) {
@@ -61,7 +61,7 @@ test.describe('i18n: Language Switcher', () => {
   })
 
   test('switching to Thai works', async ({ page }) => {
-    await signInAsHR(page)
+    await ensureHRAuthenticated(page)
     await expect(page).toHaveURL(/\/dashboard/, { timeout: 30_000 })
     const thaiBtn = page.locator('button, option').filter({ hasText: /th|ไทย/i }).first()
     if (await thaiBtn.isVisible({ timeout: 5000 }).catch(() => false)) {
@@ -73,7 +73,7 @@ test.describe('i18n: Language Switcher', () => {
   })
 
   test('switching to Vietnamese works', async ({ page }) => {
-    await signInAsHR(page)
+    await ensureHRAuthenticated(page)
     await expect(page).toHaveURL(/\/dashboard/, { timeout: 30_000 })
     const viBtn = page.locator('button, option').filter({ hasText: /vi|tiếng/i }).first()
     if (await viBtn.isVisible({ timeout: 5000 }).catch(() => false)) {
@@ -85,7 +85,7 @@ test.describe('i18n: Language Switcher', () => {
   })
 
   test('switching to Indonesian works', async ({ page }) => {
-    await signInAsHR(page)
+    await ensureHRAuthenticated(page)
     await expect(page).toHaveURL(/\/dashboard/, { timeout: 30_000 })
     const idBtn = page.locator('button, option').filter({ hasText: /id|bahasa/i }).first()
     if (await idBtn.isVisible({ timeout: 5000 }).catch(() => false)) {
@@ -99,7 +99,7 @@ test.describe('i18n: Language Switcher', () => {
 
 test.describe('NAVIGATION: Full Sidebar', () => {
   test('sidebar links to all main pages', async ({ page }) => {
-    await signInAsHR(page)
+    await ensureHRAuthenticated(page)
     await expect(page).toHaveURL(/\/dashboard/, { timeout: 30_000 })
     const pages = [
       '/recruitment/jobs',

@@ -14,16 +14,16 @@ import { ErrorState } from '../components/shared/ErrorState'
 import { AnimatedCounter } from '../components/shared/AnimatedCounter'
 import { StaggeredList, StaggeredItem } from '../components/shared/StaggeredList'
 import { ScrollReveal } from '../components/shared/ScrollReveal'
-import { cn } from '../utils/cn'
+import { cn } from '../lib/utils'
 import { useCandidates } from '../hooks/useCandidates'
 
 const statusBadge = (status: string) => {
   const styles: Record<string, string> = {
-    Screening: 'bg-surface-dim dark:bg-[#334155] text-on-surface dark:text-[#f1f5f9]',
-    Interviewed: 'bg-primary-fixed dark:bg-[#1e40af] text-on-primary-fixed dark:text-[#93c5fd]',
-    Offered: 'bg-secondary-fixed dark:bg-[#1e3a5f] text-on-secondary-fixed dark:text-[#93c5fd]',
+    Screening: 'bg-surface-dim dark:bg-surface-container text-on-surface dark:text-on-surface',
+    Interviewed: 'bg-primary-fixed dark:bg-primary-container text-on-primary-fixed dark:text-accent-dim',
+    Offered: 'bg-secondary-fixed dark:bg-surface-container-low text-on-secondary-fixed dark:text-accent-dim',
   }
-  return styles[status] || 'bg-surface-container dark:bg-[#1e3a5f] text-on-surface dark:text-[#f1f5f9]'
+  return styles[status] || 'bg-surface-container dark:bg-surface-container-low text-on-surface dark:text-on-surface'
 }
 
 export function DashboardPage() {
@@ -83,10 +83,10 @@ export function DashboardPage() {
   return (
     <div className="space-y-6">
       <div>
-        <h2 className="text-2xl font-semibold text-on-surface dark:text-[#f1f5f9]">
+        <h2 className="text-2xl font-semibold text-on-surface dark:text-on-surface">
           {t('dashboard:welcome', { name: profile?.full_name?.split(' ')[0] || 'User' })}
         </h2>
-        <p className="text-base text-on-surface-variant dark:text-[#94a3b8] mt-2">{t('dashboard:subtitle')}</p>
+        <p className="text-base text-on-surface-variant dark:text-on-surface-variant mt-2">{t('dashboard:subtitle')}</p>
       </div>
 
       {statsHasError ? (
@@ -98,7 +98,7 @@ export function DashboardPage() {
         <>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 skeleton-stagger">
             {[0, 1, 2, 3].map(i => (
-              <div key={i} className="bg-surface dark:bg-[#1e293b] rounded-xl p-6 border border-surface-container-high dark:border-[#334155] shadow-sm">
+              <div key={i} className="bg-surface dark:bg-surface rounded-xl p-6 border border-surface-container-high dark:border-outline shadow-sm">
                 <div className="h-3 w-20 bg-surface-container-high dark:bg-slate-700/40 rounded-lg animate-shimmer mb-3" />
                 <div className="h-8 w-16 bg-surface-container-high dark:bg-slate-700/40 rounded-lg animate-shimmer" />
               </div>
@@ -157,43 +157,43 @@ export function DashboardPage() {
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
             <div className="lg:col-span-4 flex flex-col gap-6">
               <Card className="flex flex-col h-full">
-                <CardHeader className="border-b border-surface-container-high dark:border-[#334155] flex-row items-center justify-between bg-surface-bright dark:bg-[#1e3a5f] rounded-t-xl">
+                <CardHeader className="border-b border-surface-container-high dark:border-outline flex-row items-center justify-between bg-surface-bright dark:bg-surface-container-low rounded-t-xl">
                   <CardTitle className="text-lg">{t('dashboard:action_required')}</CardTitle>
-                  <span className="bg-error-container dark:bg-[#450a0a]/30 text-on-error-container dark:text-[#f87171] text-xs font-semibold px-3 py-1 rounded-full">{t('dashboard:high_priority')}</span>
+                  <span className="bg-error-container dark:bg-error-container/30 text-on-error-container dark:text-error text-xs font-semibold px-3 py-1 rounded-full">{t('dashboard:high_priority')}</span>
                 </CardHeader>
                 <CardContent className="flex-1 flex flex-col gap-4">
                   {pendingDocs?.map((doc) => (
-                    <div key={doc.id} onClick={() => navigate('/documents')} className="flex items-start gap-4 p-4 rounded-lg border border-outline-variant dark:border-[#334155] bg-surface dark:bg-[#1e293b] hover:border-primary dark:hover:border-[#3b82f6] transition-colors cursor-pointer group card-hover">
-                      <div className="p-2 bg-primary-fixed dark:bg-[#1e40af] rounded-full text-on-primary-fixed dark:text-[#93c5fd] mt-1">
+                    <div key={doc.id} role="button" tabIndex={0} onClick={() => navigate('/documents')} onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); navigate('/documents') } }} className="flex items-start gap-4 p-4 rounded-lg border border-outline-variant dark:border-outline bg-surface dark:bg-surface hover:border-primary dark:hover:border-primary transition-colors cursor-pointer group card-hover">
+                      <div className="p-2 bg-primary-fixed dark:bg-primary-container rounded-full text-on-primary-fixed dark:text-accent-dim mt-1">
                         <FileText size={20} />
                       </div>
                       <div className="flex-1">
-                        <h4 className="text-sm font-semibold text-on-surface dark:text-[#f1f5f9] group-hover:text-primary dark:group-hover:text-[#93c5fd] transition-colors">{doc.document_type?.replace(/_/g, ' ') || 'Document'}</h4>
-                        <p className="text-sm text-on-surface-variant dark:text-[#94a3b8] mt-1">{doc.candidates?.full_name || 'Unknown'} — {t('dashboard:needs_signature')}</p>
-                        <span className="text-xs font-semibold text-error dark:text-[#f87171] mt-2 inline-block">{t('dashboard:action_required')}</span>
+                        <h4 className="text-sm font-semibold text-on-surface dark:text-on-surface group-hover:text-primary dark:group-hover:text-accent-dim transition-colors">{doc.document_type?.replace(/_/g, ' ') || 'Document'}</h4>
+                        <p className="text-sm text-on-surface-variant dark:text-on-surface-variant mt-1">{doc.candidates?.full_name || 'Unknown'} — {t('dashboard:needs_signature')}</p>
+                        <span className="text-xs font-semibold text-error dark:text-error mt-2 inline-block">{t('dashboard:action_required')}</span>
                       </div>
                     </div>
                   ))}
                   {overdueChecklists?.map((cl) => (
-                    <div key={cl.id} onClick={() => navigate('/onboarding')} className="flex items-start gap-4 p-4 rounded-lg border border-outline-variant dark:border-[#334155] bg-surface dark:bg-[#1e293b] hover:border-error dark:hover:border-[#f87171] transition-colors cursor-pointer group card-hover">
-                      <div className="p-2 bg-error-container dark:bg-[#450a0a]/30 rounded-full text-on-error-container dark:text-[#f87171] mt-1">
+                    <div key={cl.id} role="button" tabIndex={0} onClick={() => navigate('/onboarding')} onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); navigate('/onboarding') } }} className="flex items-start gap-4 p-4 rounded-lg border border-outline-variant dark:border-outline bg-surface dark:bg-surface hover:border-error dark:hover:border-error transition-colors cursor-pointer group card-hover">
+                      <div className="p-2 bg-error-container dark:bg-error-container/30 rounded-full text-on-error-container dark:text-error mt-1">
                         <AlertCircle size={20} />
                       </div>
                       <div className="flex-1">
-                        <h4 className="text-sm font-semibold text-on-surface dark:text-[#f1f5f9] group-hover:text-error dark:group-hover:text-[#f87171] transition-colors">{t('dashboard:slow_onboarding')}</h4>
-                        <p className="text-sm text-on-surface-variant dark:text-[#94a3b8] mt-1">{cl.user_profiles?.full_name || 'Employee'} — {cl.progress_percentage || 0}% complete</p>
-                        <span className="text-xs font-semibold text-error dark:text-[#f87171] mt-2 inline-block">{t('dashboard:overdue')}</span>
+                        <h4 className="text-sm font-semibold text-on-surface dark:text-on-surface group-hover:text-error dark:group-hover:text-error transition-colors">{t('dashboard:slow_onboarding')}</h4>
+                        <p className="text-sm text-on-surface-variant dark:text-on-surface-variant mt-1">{cl.user_profiles?.full_name || 'Employee'} — {cl.progress_percentage || 0}% complete</p>
+                        <span className="text-xs font-semibold text-error dark:text-error mt-2 inline-block">{t('dashboard:overdue')}</span>
                       </div>
                     </div>
                   ))}
                   {(!pendingDocs?.length && !overdueChecklists?.length) && (
-                    <div className="flex items-center gap-3 p-4 rounded-lg border border-green-200 dark:border-[#166534] bg-green-50 dark:bg-[#052e16]/30 text-green-700 dark:text-[#4ade80]">
+                    <div className="flex items-center gap-3 p-4 rounded-lg border border-green-200 dark:border-success-container bg-green-50 dark:bg-success-container/30 text-green-700 dark:text-success">
                       <CheckCircle size={20} />
                       <p className="text-sm font-medium">{t('dashboard:all_clear') || 'All clear — no pending tasks'}</p>
                     </div>
                   )}
                 </CardContent>
-                <CardFooter className="border-t border-surface-container-high dark:border-[#334155] justify-center">
+                <CardFooter className="border-t border-surface-container-high dark:border-outline justify-center">
                   <Button variant="ghost" size="sm" onClick={() => navigate('/onboarding')}>{t('dashboard:view_all_tasks')}</Button>
                 </CardFooter>
               </Card>
@@ -201,14 +201,14 @@ export function DashboardPage() {
 
             <div className="lg:col-span-8 flex flex-col gap-6">
               <Card className="overflow-hidden flex flex-col h-full">
-                <CardHeader className="border-b border-surface-container-high dark:border-[#334155] flex-row items-center justify-between bg-surface-bright dark:bg-[#1e3a5f]">
+                <CardHeader className="border-b border-surface-container-high dark:border-outline flex-row items-center justify-between bg-surface-bright dark:bg-surface-container-low">
                   <CardTitle className="text-lg">{t('dashboard:recent_candidates')}</CardTitle>
                     <div className="relative">
-                      <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant dark:text-[#94a3b8] size-4" />
+                      <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant dark:text-on-surface-variant size-4" />
                       <input
                         value={search}
                         onChange={handleSearchChange}
-                        className="pl-10 pr-4 py-3 rounded-xl border border-outline-variant dark:border-[#334155] bg-surface-container-lowest dark:bg-[#0f172a] text-on-surface dark:text-[#f1f5f9] focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all duration-200 outline-none text-sm w-[200px]"
+                        className="pl-10 pr-4 py-3 rounded-xl border border-outline-variant dark:border-outline bg-surface-container-lowest dark:bg-surface-container-lowest text-on-surface dark:text-on-surface focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all duration-200 outline-none text-sm w-full max-w-[200px]"
                         placeholder={t('dashboard:search_candidates')}
                       />
                     </div>
@@ -216,15 +216,15 @@ export function DashboardPage() {
                 <div className="table-responsive overflow-x-auto">
                   <table role="table" className="w-full text-left border-collapse min-w-[500px]">
                     <thead>
-                      <tr className="bg-surface-container dark:bg-[#334155]/50 border-b border-outline-variant/50 dark:border-[#334155]/50">
-                        <th className="py-3 px-4 text-xs font-semibold uppercase tracking-wider text-on-surface-variant dark:text-[#94a3b8]">{t('dashboard:candidate_name')}</th>
-                        <th className="py-3 px-4 text-xs font-semibold uppercase tracking-wider text-on-surface-variant dark:text-[#94a3b8]">{t('dashboard:position')}</th>
-                        <th className="py-3 px-4 text-xs font-semibold uppercase tracking-wider text-on-surface-variant dark:text-[#94a3b8]">{t('dashboard:ai_match')}</th>
-                        <th className="py-3 px-4 text-xs font-semibold uppercase tracking-wider text-on-surface-variant dark:text-[#94a3b8]">{t('dashboard:status')}</th>
-                        <th className="py-3 px-4 text-xs font-semibold uppercase tracking-wider text-on-surface-variant dark:text-[#94a3b8] text-right">{t('dashboard:action')}</th>
+                      <tr className="bg-surface-container dark:bg-surface-container/50 border-b border-outline-variant/50 dark:border-outline/50">
+                        <th className="py-3 px-4 text-xs font-semibold uppercase tracking-wider text-on-surface-variant dark:text-on-surface-variant">{t('dashboard:candidate_name')}</th>
+                        <th className="py-3 px-4 text-xs font-semibold uppercase tracking-wider text-on-surface-variant dark:text-on-surface-variant">{t('dashboard:position')}</th>
+                        <th className="py-3 px-4 text-xs font-semibold uppercase tracking-wider text-on-surface-variant dark:text-on-surface-variant">{t('dashboard:ai_match')}</th>
+                        <th className="py-3 px-4 text-xs font-semibold uppercase tracking-wider text-on-surface-variant dark:text-on-surface-variant">{t('dashboard:status')}</th>
+                        <th className="py-3 px-4 text-xs font-semibold uppercase tracking-wider text-on-surface-variant dark:text-on-surface-variant text-right">{t('dashboard:action')}</th>
                       </tr>
                     </thead>
-                    <tbody className="text-sm text-on-surface dark:text-[#f1f5f9]">
+                    <tbody className="text-sm text-on-surface dark:text-on-surface">
                       {filtered && filtered.length === 0 ? (
                         <tr>
                           <td colSpan={5} className="p-0">
@@ -237,32 +237,32 @@ export function DashboardPage() {
                         </tr>
                       ) : (
                         filtered?.map(c => (
-                          <tr key={c.id} className="hover:bg-surface-container-high/50 dark:hover:bg-[#334155]/30 transition-colors duration-150 group">
-                            <td className="py-3 px-4 text-sm text-on-surface dark:text-[#f1f5f9] flex items-center gap-3">
-                              <div className="w-8 h-8 rounded-full bg-primary-container dark:bg-[#1e40af] text-on-primary-container dark:text-[#93c5fd] flex items-center justify-center font-bold text-sm">
+                          <tr key={c.id} className="hover:bg-surface-container-high/50 dark:hover:bg-surface-container/30 transition-colors duration-150 group">
+                            <td className="py-3 px-4 text-sm text-on-surface dark:text-on-surface flex items-center gap-3">
+                              <div className="w-8 h-8 rounded-full bg-primary-container dark:bg-primary-container text-on-primary-container dark:text-accent-dim flex items-center justify-center font-bold text-sm">
                                 {c.full_name?.split(' ').map((n: string) => n[0]).join('').slice(0, 2).toUpperCase() || '?'}
                               </div>
                               <span>{c.full_name}</span>
                             </td>
-                            <td className="py-3 px-4 text-sm text-on-surface dark:text-[#f1f5f9] text-on-surface-variant">{c.current_position || '-'}</td>
-                            <td className="py-3 px-4 text-sm text-on-surface dark:text-[#f1f5f9]">
+                            <td className="py-3 px-4 text-sm text-on-surface dark:text-on-surface text-on-surface-variant">{c.current_position || '-'}</td>
+                            <td className="py-3 px-4 text-sm text-on-surface dark:text-on-surface">
                               <div className="flex items-center gap-2">
                                 <span className="font-bold text-on-surface-variant">-</span>
                               </div>
                             </td>
-                            <td className="py-3 px-4 text-sm text-on-surface dark:text-[#f1f5f9]">
+                            <td className="py-3 px-4 text-sm text-on-surface dark:text-on-surface">
                               <span className={cn('px-2 py-1 rounded text-xs font-semibold', statusBadge(c.applications?.[0]?.status || 'New'))}>
                                 {c.applications?.[0]?.status || 'New'}
                               </span>
                             </td>
-                            <td className="py-3 px-4 text-sm text-on-surface dark:text-[#f1f5f9] text-right">
+                            <td className="py-3 px-4 text-sm text-on-surface dark:text-on-surface text-right">
                               <Button
                                 variant="ghost"
                                 size="icon_md"
                                 onClick={() => navigate(`/recruitment/candidates/${c.id}`)}
                                 className="opacity-0 group-hover:opacity-100"
                                 icon={<ArrowRight size={16} />}
-                                aria-hidden="true"
+                                aria-label={`View ${c.full_name || 'candidate'}`}
                               />
                             </td>
                           </tr>
@@ -271,7 +271,7 @@ export function DashboardPage() {
                     </tbody>
                   </table>
                 </div>
-                <CardFooter className="border-t border-surface-container-high dark:border-[#334155] bg-surface-bright dark:bg-[#1e3a5f] mt-auto justify-end">
+                <CardFooter className="border-t border-surface-container-high dark:border-outline bg-surface-bright dark:bg-surface-container-low mt-auto justify-end">
                   <Button variant="ghost" size="sm" onClick={() => navigate('/recruitment/pipeline')}>{t('dashboard:view_pipeline')}</Button>
                 </CardFooter>
               </Card>

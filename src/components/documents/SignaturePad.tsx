@@ -1,6 +1,7 @@
 import { useRef, useState, useCallback, useEffect } from 'react'
+import { useTranslation } from 'react-i18next'
 import { RotateCcw } from 'lucide-react'
-import { cn } from '../../utils/cn'
+import { cn } from '../../lib/utils'
 
 interface SignaturePadProps {
   onSave: (dataUrl: string) => void
@@ -10,6 +11,7 @@ interface SignaturePadProps {
 }
 
 export function SignaturePad({ onSave, height = 200, className }: SignaturePadProps) {
+  const { t } = useTranslation()
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const [isDrawing, setIsDrawing] = useState(false)
   const [hasDrawn, setHasDrawn] = useState(false)
@@ -87,7 +89,7 @@ export function SignaturePad({ onSave, height = 200, className }: SignaturePadPr
 
   return (
     <div className={cn('space-y-3', className)}>
-      <div className="relative border-2 border-dashed border-outline-variant dark:border-[#334155] rounded-xl overflow-hidden bg-surface-container-lowest dark:bg-[#0f172a]">
+      <div className="relative border-2 border-dashed border-outline-variant dark:border-outline rounded-xl overflow-hidden bg-surface-container-lowest dark:bg-surface-container-lowest">
         <canvas
           ref={canvasRef}
           className="w-full cursor-crosshair touch-none"
@@ -102,7 +104,7 @@ export function SignaturePad({ onSave, height = 200, className }: SignaturePadPr
         />
         {!hasDrawn && (
           <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-            <span className="text-on-surface-variant/50 dark:text-[#64748b] text-sm">Sign here</span>
+            <span className="text-on-surface-variant/50 dark:text-outline-variant text-sm">{t('documents.sign_here', 'Sign here')}</span>
           </div>
         )}
       </div>
@@ -110,7 +112,7 @@ export function SignaturePad({ onSave, height = 200, className }: SignaturePadPr
         <button
           onClick={clear}
           type="button"
-          className="inline-flex items-center gap-2 px-4 py-2 border border-outline-variant dark:border-[#334155] rounded-lg text-sm font-medium hover:bg-surface-container-low dark:hover:bg-[#1e3a5f] transition-colors dark:text-[#f1f5f9]"
+          className="inline-flex items-center gap-2 px-4 py-2 border border-outline-variant dark:border-outline rounded-lg text-sm font-medium hover:bg-surface-container-low dark:hover:bg-surface-container-low transition-colors dark:text-on-surface"
         >
           <RotateCcw size={14} /> Clear
         </button>

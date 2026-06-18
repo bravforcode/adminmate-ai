@@ -7,7 +7,7 @@ import { Briefcase, ClipboardList, CheckCircle, UserCircle, ArrowRight } from 'l
 import { StatCard } from '../../components/shared/StatCard'
 import { LoadingState } from '../../components/shared/LoadingState'
 import { ErrorState } from '../../components/shared/ErrorState'
-import { cn } from '../../utils/cn'
+import { cn } from '../../lib/utils'
 
 const statusColors: Record<string, string> = {
   applied: 'bg-blue-50 text-blue-700 border-blue-200',
@@ -103,11 +103,11 @@ export function ApplicantDashboardPage() {
                 <div className="divide-y divide-outline-variant">
                   {recentActivity.length === 0 ? (
                     <div className="p-6 text-center">
-                      <p className="text-sm text-on-surface-variant">{t('applicant.dashboard.noActivity', 'No activity yet. Start by browsing open positions!')}</p>
+                      <p className="text-sm text-on-surface-variant">{t('empty.applicant_activity_description')}</p>
                     </div>
                   ) : (
                     recentActivity.map((app) => (
-                      <div key={app.id} className="p-4 hover:bg-surface-container-low transition-colors cursor-pointer" onClick={() => navigate('/applicant/status')}>
+                      <div key={app.id} role="button" tabIndex={0} className="p-4 hover:bg-surface-container-low transition-colors cursor-pointer" onClick={() => navigate('/applicant/status')} onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); navigate('/applicant/status') } }}>
                         <div className="flex items-center justify-between">
                           <div>
                             <p className="font-medium text-on-surface text-sm">{app.jobs?.title || 'Job'}</p>

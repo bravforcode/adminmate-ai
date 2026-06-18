@@ -1,17 +1,17 @@
-import { test, expect, signInAsHR, navigateTo } from './helpers'
+import { test, expect, ensureHRAuthenticated, navigateTo } from './helpers'
 
 const isSetup = (page: any) => page.url().includes('/setup-company')
 
 test.describe('JOBS: List Page', () => {
   test('loads with heading', async ({ page }) => {
-    await signInAsHR(page)
+    await ensureHRAuthenticated(page)
     await navigateTo(page, '/recruitment/jobs')
     if (isSetup(page)) return
     await expect(page.locator('h1, h2').first()).toBeVisible({ timeout: 15_000 })
   })
 
   test('create job button visible or setup redirect', async ({ page }) => {
-    await signInAsHR(page)
+    await ensureHRAuthenticated(page)
     await navigateTo(page, '/recruitment/jobs')
     if (isSetup(page)) {
       await expect(page.locator('input, select, button').first()).toBeVisible({ timeout: 5_000 })
@@ -22,7 +22,7 @@ test.describe('JOBS: List Page', () => {
   })
 
   test('search input exists', async ({ page }) => {
-    await signInAsHR(page)
+    await ensureHRAuthenticated(page)
     await navigateTo(page, '/recruitment/jobs')
     if (isSetup(page)) return
     const search = page.locator('input[placeholder*="search" i], input[type="search"]').first()
@@ -32,7 +32,7 @@ test.describe('JOBS: List Page', () => {
   })
 
   test('job cards or empty state displayed', async ({ page }) => {
-    await signInAsHR(page)
+    await ensureHRAuthenticated(page)
     await navigateTo(page, '/recruitment/jobs')
     if (isSetup(page)) return
     const content = await page.locator('[class*="card"], [class*="empty"], [class*="skeleton"]').count()
@@ -42,7 +42,7 @@ test.describe('JOBS: List Page', () => {
 
 test.describe('JOBS: 3-Step Create Wizard', () => {
   test('step 1: basic info form or setup redirect', async ({ page }) => {
-    await signInAsHR(page)
+    await ensureHRAuthenticated(page)
     await navigateTo(page, '/recruitment/jobs')
     if (isSetup(page)) return
     const createBtn = page.locator('[data-testid="create-job-button"]')
@@ -55,7 +55,7 @@ test.describe('JOBS: 3-Step Create Wizard', () => {
   })
 
   test('step 1 -> step 2: next button works', async ({ page }) => {
-    await signInAsHR(page)
+    await ensureHRAuthenticated(page)
     await navigateTo(page, '/recruitment/jobs')
     if (isSetup(page)) return
     const createBtn = page.locator('[data-testid="create-job-button"]')
@@ -68,7 +68,7 @@ test.describe('JOBS: 3-Step Create Wizard', () => {
   })
 
   test('step 2: job description form', async ({ page }) => {
-    await signInAsHR(page)
+    await ensureHRAuthenticated(page)
     await navigateTo(page, '/recruitment/jobs')
     if (isSetup(page)) return
     const createBtn = page.locator('[data-testid="create-job-button"]')
@@ -81,7 +81,7 @@ test.describe('JOBS: 3-Step Create Wizard', () => {
   })
 
   test('step 2 -> step 3: next button works', async ({ page }) => {
-    await signInAsHR(page)
+    await ensureHRAuthenticated(page)
     await navigateTo(page, '/recruitment/jobs')
     if (isSetup(page)) return
     const createBtn = page.locator('[data-testid="create-job-button"]')
@@ -97,7 +97,7 @@ test.describe('JOBS: 3-Step Create Wizard', () => {
   })
 
   test('step 3: salary and publish', async ({ page }) => {
-    await signInAsHR(page)
+    await ensureHRAuthenticated(page)
     await navigateTo(page, '/recruitment/jobs')
     if (isSetup(page)) return
     const createBtn = page.locator('[data-testid="create-job-button"]')
@@ -115,7 +115,7 @@ test.describe('JOBS: 3-Step Create Wizard', () => {
 
   test('publish job end-to-end', async ({ page }) => {
     const title = `E2E Job ${Date.now()}`
-    await signInAsHR(page)
+    await ensureHRAuthenticated(page)
     await navigateTo(page, '/recruitment/jobs')
     if (isSetup(page)) return
     const createBtn = page.locator('[data-testid="create-job-button"]')
@@ -135,7 +135,7 @@ test.describe('JOBS: 3-Step Create Wizard', () => {
 
 test.describe('JOBS: Search & Filter', () => {
   test('search filters job list', async ({ page }) => {
-    await signInAsHR(page)
+    await ensureHRAuthenticated(page)
     await navigateTo(page, '/recruitment/jobs')
     if (isSetup(page)) return
     const search = page.locator('input[placeholder*="search" i]').first()
@@ -150,7 +150,7 @@ test.describe('JOBS: Search & Filter', () => {
 
 test.describe('JOBS: Detail Page', () => {
   test('clicking job card navigates to detail', async ({ page }) => {
-    await signInAsHR(page)
+    await ensureHRAuthenticated(page)
     await navigateTo(page, '/recruitment/jobs')
     if (isSetup(page)) return
     const jobCard = page.locator('[class*="card"]').first()
@@ -162,7 +162,7 @@ test.describe('JOBS: Detail Page', () => {
   })
 
   test('detail page shows back link', async ({ page }) => {
-    await signInAsHR(page)
+    await ensureHRAuthenticated(page)
     await navigateTo(page, '/recruitment/jobs')
     if (isSetup(page)) return
     const jobCard = page.locator('[class*="card"]').first()
@@ -179,7 +179,7 @@ test.describe('JOBS: Detail Page', () => {
 
 test.describe('JOBS: Delete', () => {
   test('delete button appears on hover', async ({ page }) => {
-    await signInAsHR(page)
+    await ensureHRAuthenticated(page)
     await navigateTo(page, '/recruitment/jobs')
     if (isSetup(page)) return
     const jobCard = page.locator('[class*="card"]').first()

@@ -1,9 +1,9 @@
 import * as React from 'react'
-import { cn } from '../../utils/cn'
+import { cn } from '../../lib/utils'
 
 const Card = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(
   ({ className, ...props }, ref) => (
-    <div ref={ref} className={cn('rounded-xl border bg-surface dark:bg-[#1e293b] border-outline-variant dark:border-[#334155] text-on-surface shadow-sm', className)} {...props} />
+    <div ref={ref} className={cn('rounded-xl border bg-surface border-outline-variant text-on-surface shadow-sm', className)} {...props} />
   )
 )
 Card.displayName = 'Card'
@@ -17,14 +17,14 @@ CardHeader.displayName = 'CardHeader'
 
 const CardTitle = React.forwardRef<HTMLParagraphElement, React.HTMLAttributes<HTMLHeadingElement>>(
   ({ className, ...props }, ref) => (
-    <h3 ref={ref} className={cn('font-semibold text-lg leading-none tracking-tight text-on-surface dark:text-[#f1f5f9]', className)} {...props} />
+    <h3 ref={ref} className={cn('font-semibold text-lg leading-none tracking-tight text-on-surface', className)} {...props} />
   )
 )
 CardTitle.displayName = 'CardTitle'
 
 const CardDescription = React.forwardRef<HTMLParagraphElement, React.HTMLAttributes<HTMLParagraphElement>>(
   ({ className, ...props }, ref) => (
-    <p ref={ref} className={cn('text-sm text-on-surface-variant dark:text-[#94a3b8]', className)} {...props} />
+    <p ref={ref} className={cn('text-sm text-on-surface-variant', className)} {...props} />
   )
 )
 CardDescription.displayName = 'CardDescription'

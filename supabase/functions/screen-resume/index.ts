@@ -12,6 +12,7 @@ import {
   logRequest,
 } from '../_shared/utils.ts'
 import { errorResponse } from '../_shared/errorHandler.ts'
+import { checkAIMonthlyLimit, limitExceededResponse } from '../_shared/limits.ts'
 
 const FN = 'screen-resume'
 
@@ -57,6 +58,12 @@ serve(async (req) => {
     const aiLimitOk = await checkAILimit(supabase, job.company_id, 'screen_resume', 30)
     if (!aiLimitOk) {
       return new Response(JSON.stringify({ success: false, error: 'AI usage limit exceeded for this company. Please try again later.' }), { status: 429, headers: { ...h, 'Retry-After': '3600' } })
+    }
+
+    // Check subscription-based monthly AI limit
+    const monthlyLimit = await checkAIMonthlyLimit(supabase, job.company_id)
+    if (!monthlyLimit.allowed) {
+      return limitExceededResponse(monthlyLimit)
     }
 
     const cvContent = cv?.parsed_content || cv?.raw_text || 'No CV content available'

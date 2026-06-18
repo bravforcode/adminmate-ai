@@ -1,4 +1,4 @@
-import { NavLink } from 'react-router-dom'
+import { NavLink, useNavigate } from 'react-router-dom'
 import { motion } from 'motion/react'
 import { useAuthStore } from '../../stores/authStore'
 import { useUIStore } from '../../stores/uiStore'
@@ -9,12 +9,14 @@ import { Plus, X } from 'lucide-react'
 import { Button } from '../ui/Button'
 
 export function Sidebar() {
+  const navigate = useNavigate()
   const { sidebarOpen, toggleSidebar } = useUIStore()
   const company = useAuthStore(s => s.company)
   const profile = useAuthStore(s => s.profile)
   const { t } = useTranslation('common')
 
   const userRole = profile?.role ?? 'hr'
+  const isApplicant = userRole === 'applicant'
 
   // Filter items by role — items with no `roles` array are shown to all
   const visibleItems = navItems
@@ -26,6 +28,16 @@ export function Sidebar() {
       )
       return visibleChildren.length ? visibleChildren : []
     })
+
+  const handlePrimaryAction = () => {
+    if (isApplicant) {
+      navigate('/applicant/jobs')
+    } else {
+      navigate('/recruitment/jobs', { state: { openCreateJob: true } })
+    }
+
+    if (sidebarOpen) toggleSidebar()
+  }
 
   return (
     <>
@@ -65,7 +77,7 @@ export function Sidebar() {
           </div>
           <button
             onClick={toggleSidebar}
-            className="md:hidden text-white/50 hover:text-white/80 p-1 rounded-md transition-colors"
+            className="md:hidden text-white/50 hover:text-white/80 p-2 rounded-md transition-colors min-w-[44px] min-h-[44px] flex items-center justify-center"
             aria-label="Close sidebar"
           >
             <X size={16} />
@@ -77,9 +89,10 @@ export function Sidebar() {
           <Button
             variant="glow"
             className="w-full justify-center gap-1.5 text-[13px] font-medium rounded-lg"
+            onClick={handlePrimaryAction}
           >
             <Plus size={15} />
-            {t('nav.new_request')}
+            {isApplicant ? t('nav.browse_jobs') : t('nav.new_request')}
           </Button>
         </div>
 

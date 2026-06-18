@@ -42,6 +42,8 @@
     "labor_law": "当地劳动法常见问题"
   },
   "accepted_offers": "已接受的录用通知",
+  "checklist_created": "清单已创建",
+  "task_updated": "任务已更新",
   "error_title": "入职数据加载失败",
   "error_description": "无法获取入职数据。请重试。",
   "empty_team_title": "暂无团队入职信息",

@@ -27,3 +27,6 @@ test-results.txt
 
 
 lancedb/
+
+# Playwright auth state (never commit)
+playwright/.auth/

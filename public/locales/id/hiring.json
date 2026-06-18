@@ -5,6 +5,27 @@
   "create_first_offer": "Buat surat tawaran pekerjaan pertama Anda.",
   "create_offer": "Buat Penawaran",
   "export_audit": "Ekspor Log Audit",
+  "form": {
+    "title": "Buat Surat Penawaran",
+    "position_title": "Jabatan",
+    "salary_offered": "Gaji yang Ditawarkan",
+    "salary_required": "Gaji wajib diisi",
+    "currency": "Mata Uang",
+    "start_date": "Tanggal Mulai",
+    "work_hours": "Jam Kerja",
+    "benefits": "Benefit (satu per baris)",
+    "benefits_placeholder": "Asuransi kesehatan\nCuti tahunan: 12 hari\nDana pensiun",
+    "special_conditions": "Ketentuan Khusus",
+    "cancel": "Batal",
+    "submit": "Buat Penawaran",
+    "submitting": "Sedang membuat..."
+  },
+  "pdf": {
+    "downloaded": "PDF berhasil diunduh",
+    "failed": "Gagal membuat PDF",
+    "generating": "Sedang membuat...",
+    "download": "Unduh PDF"
+  },
   "sent": "Terkirim",
   "viewed": "Dilihat",
   "accepted": "Diterima",
@@ -49,6 +70,7 @@
     "send_for_sig": "Kirim untuk Tanda Tangan"
   },
   "toasts": {
+    "offer_created": "Penawaran berhasil dibuat",
     "no_offers_export": "Tidak ada penawaran untuk diekspor",
     "select_offer_first": "Mohon pilih penawaran dulu",
     "only_draft_editable": "Hanya penawaran draf yang dapat diedit"

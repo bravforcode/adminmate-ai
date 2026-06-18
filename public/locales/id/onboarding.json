@@ -42,6 +42,8 @@
     "labor_law": "FAQ Hukum Ketenagakerjaan"
   },
   "accepted_offers": "Penawaran Diterima",
+  "checklist_created": "Checklist berhasil dibuat",
+  "task_updated": "Tugas berhasil diperbarui",
   "error_title": "Gagal memuat orientasi",
   "error_description": "Kami tidak dapat mengambil data orientasi. Silakan coba lagi.",
   "empty_team_title": "Belum ada orientasi tim",

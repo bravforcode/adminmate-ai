@@ -1,4 +1,5 @@
 import toast from 'react-hot-toast'
+import i18n from './i18n'
 
 export type ErrorSeverity = 'critical' | 'error' | 'warning' | 'info'
 
@@ -133,7 +134,7 @@ function handleUncaughtError(event: ErrorEvent) {
   void sendToEndpoint(payload)
 
   if (shouldShowToast(payload.severity)) {
-    toast.error('Something went wrong. The issue has been reported.', {
+    toast.error(i18n.t('common:errors.unexpected_issue_reported'), {
       id: 'uncaught-error',
     })
   }
@@ -149,7 +150,7 @@ function handleUnhandledRejection(event: PromiseRejectionEvent) {
   void sendToEndpoint(payload)
 
   if (shouldShowToast(payload.severity)) {
-    toast.error('An async operation failed. Our team has been notified.', {
+    toast.error(i18n.t('common:errors.async_operation_failed'), {
       id: 'unhandled-rejection',
     })
   }

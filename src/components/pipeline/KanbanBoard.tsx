@@ -39,7 +39,7 @@ export function KanbanBoard({ onSelectApplication, selectedId }: KanbanBoardProp
     <div className="h-full flex flex-col">
       <div className="flex items-center gap-4 mb-4 shrink-0">
         <select data-testid="job-filter" value={selectedJobId} onChange={e => setSelectedJobId(e.target.value)}
-          className="px-4 py-3 rounded-xl border border-outline-variant dark:border-[#334155] bg-surface-container-lowest dark:bg-[#0f172a] text-on-surface dark:text-[#f1f5f9] focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all duration-200 outline-none text-sm min-w-[250px]">
+          className="px-4 py-3 rounded-xl border border-outline-variant dark:border-outline bg-surface-container-lowest dark:bg-surface-container-lowest text-on-surface dark:text-on-surface focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all duration-200 outline-none text-sm min-w-[200px] sm:min-w-[250px] max-w-full">
           <option value="">{activeJobs.length ? t('pipeline.select_job') : t('pipeline.no_active_jobs')}</option>
           {activeJobs.map(j => (
             <option key={j.id} value={j.id}>{j.title} ({j.department})</option>

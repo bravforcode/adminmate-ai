@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next'
 import { useAuthStore } from '../../stores/authStore'
 import { notificationPreferencesService, NOTIFICATION_TYPES, type NotificationPreference, type PreferenceType } from '../../services/notificationPreferencesService'
 import { Bell, Mail, Smartphone, ArrowLeft } from 'lucide-react'
-import { cn } from '../../utils/cn'
+import { cn } from '../../lib/utils'
 import { Link } from 'react-router-dom'
 import toast from 'react-hot-toast'
 

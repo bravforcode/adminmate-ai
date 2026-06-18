@@ -2,10 +2,11 @@ import { useState } from 'react'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { useAuthStore } from '../../stores/authStore'
 import { supabase } from '../../lib/supabase'
+import { useTranslation } from 'react-i18next'
 import { CheckCircle, Circle, ClipboardList } from 'lucide-react'
 import { EmptyState } from '../../components/shared/EmptyState'
 import { ErrorState } from '../../components/shared/ErrorState'
-import { cn } from '../../utils/cn'
+import { cn } from '../../lib/utils'
 import toast from 'react-hot-toast'
 
 interface OnboardingTask {
@@ -31,6 +32,7 @@ interface OnboardingChecklist {
 }
 
 export function MyTasksPage() {
+  const { t } = useTranslation('common')
   const profile = useAuthStore(s => s.profile)
   const qc = useQueryClient()
   const [activeCategory, setActiveCategory] = useState<string | null>(null)
@@ -129,8 +131,8 @@ export function MyTasksPage() {
       {checklists?.length === 0 ? (
         <EmptyState
           icon={ClipboardList}
-          title="No tasks assigned yet"
-          description="Your HR team will assign onboarding tasks once your offer is accepted."
+          title={t('empty.applicant_tasks_title')}
+          description={t('empty.applicant_tasks_description')}
         />
       ) : (
         <>

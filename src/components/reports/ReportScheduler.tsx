@@ -5,7 +5,7 @@ import { Calendar, Trash2, Power, PowerOff, Clock, Users, FileText } from 'lucid
 import { useAuthStore } from '../../stores/authStore'
 import { reportService, type ReportFrequency } from '../../services/reportService'
 import type { ReportType } from '../../utils/reportGenerator'
-import { cn } from '../../utils/cn'
+import { cn } from '../../lib/utils'
 
 const REPORT_TYPES: { value: ReportType; labelKey: string }[] = [
   { value: 'hiring_summary', labelKey: 'scheduling.type_hiring_summary' },
@@ -51,24 +51,26 @@ export function ReportScheduler({ onClose }: SchedulerProps) {
   }
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40" onClick={onClose}>
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40" onClick={onClose} onKeyDown={(e) => { if (e.key === 'Escape') onClose() }}>
       <div
-        className="bg-surface dark:bg-[#1e293b] rounded-2xl border border-outline-variant dark:border-[#334155] shadow-xl w-full max-w-lg mx-4"
+        role="dialog"
+        aria-modal="true"
+        className="bg-surface dark:bg-surface rounded-2xl border border-outline-variant dark:border-outline shadow-xl w-full max-w-lg mx-4"
         onClick={e => e.stopPropagation()}
       >
-        <div className="flex items-center gap-3 p-6 border-b border-outline-variant dark:border-[#334155]">
+        <div className="flex items-center gap-3 p-6 border-b border-outline-variant dark:border-outline">
           <div className="w-10 h-10 rounded-full bg-primary-fixed flex items-center justify-center">
             <Calendar size={20} className="text-primary" />
           </div>
           <div>
-            <h2 className="text-lg font-semibold text-on-background dark:text-[#f1f5f9]">{t('scheduling.title')}</h2>
-            <p className="text-sm text-on-surface-variant dark:text-[#94a3b8]">{t('scheduling.subtitle')}</p>
+            <h2 className="text-lg font-semibold text-on-background dark:text-on-surface">{t('scheduling.title')}</h2>
+            <p className="text-sm text-on-surface-variant dark:text-on-surface-variant">{t('scheduling.subtitle')}</p>
           </div>
         </div>
 
         <form onSubmit={handleSubmit} className="p-6 space-y-5">
           <div>
-            <label className="block text-sm font-medium text-on-surface dark:text-[#f1f5f9] mb-2">
+            <label className="block text-sm font-medium text-on-surface dark:text-on-surface mb-2">
               <FileText size={14} className="inline mr-1" />
               {t('scheduling.report_type')}
             </label>
@@ -81,13 +83,13 @@ export function ReportScheduler({ onClose }: SchedulerProps) {
                   className={cn(
                     'flex items-center gap-2 px-3 py-2 rounded-lg text-sm text-left transition-colors',
                     reportType === rt.value
-                      ? 'bg-primary-fixed text-primary dark:text-[#93c5fd] font-medium'
-                      : 'bg-surface-container dark:bg-[#0f172a] text-on-surface dark:text-[#f1f5f9] hover:bg-surface-container-high dark:hover:bg-[#334155]'
+                      ? 'bg-primary-fixed text-primary dark:text-accent-dim font-medium'
+                      : 'bg-surface-container dark:bg-surface-container-lowest text-on-surface dark:text-on-surface hover:bg-surface-container-high dark:hover:bg-outline'
                   )}
                 >
                   <span className={cn(
                     'w-3 h-3 rounded-full border-2 flex-shrink-0',
-                    reportType === rt.value ? 'border-primary dark:border-[#93c5fd] bg-primary dark:bg-[#93c5fd]' : 'border-outline dark:border-[#64748b]'
+                    reportType === rt.value ? 'border-primary dark:border-accent-dim bg-primary dark:bg-accent-dim' : 'border-outline dark:border-outline-variant'
                   )} />
                   {t(rt.labelKey)}
                 </button>
@@ -96,7 +98,7 @@ export function ReportScheduler({ onClose }: SchedulerProps) {
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-on-surface dark:text-[#f1f5f9] mb-2">
+            <label className="block text-sm font-medium text-on-surface dark:text-on-surface mb-2">
               <Clock size={14} className="inline mr-1" />
               {t('scheduling.frequency')}
             </label>
@@ -110,7 +112,7 @@ export function ReportScheduler({ onClose }: SchedulerProps) {
                     'flex-1 px-3 py-2 rounded-lg text-sm font-medium transition-colors',
                     frequency === f.value
                       ? 'bg-primary text-on-primary'
-                      : 'bg-surface-container dark:bg-[#0f172a] text-on-surface dark:text-[#f1f5f9] hover:bg-surface-container-high dark:hover:bg-[#334155]'
+                      : 'bg-surface-container dark:bg-surface-container-lowest text-on-surface dark:text-on-surface hover:bg-surface-container-high dark:hover:bg-outline'
                   )}
                 >
                   {t(f.labelKey)}
@@ -119,22 +121,22 @@ export function ReportScheduler({ onClose }: SchedulerProps) {
             </div>
           </div>
 
-          <div className="bg-surface-container dark:bg-[#0f172a] rounded-lg p-3">
-            <div className="flex items-center gap-2 text-sm text-on-surface-variant dark:text-[#94a3b8]">
+          <div className="bg-surface-container dark:bg-surface-container-lowest rounded-lg p-3">
+            <div className="flex items-center gap-2 text-sm text-on-surface-variant dark:text-on-surface-variant">
               <Users size={14} />
-              {t('scheduling.recipients_label')}: <span className="text-on-surface dark:text-[#f1f5f9] font-medium">{profile?.full_name || profile?.email}</span>
+              {t('scheduling.recipients_label')}: <span className="text-on-surface dark:text-on-surface font-medium">{profile?.full_name || profile?.email}</span>
             </div>
           </div>
 
           {createMutation.isError && (
-            <p className="text-sm text-error dark:text-[#f87171]">{t('scheduling.error')}</p>
+            <p className="text-sm text-error dark:text-error">{t('scheduling.error')}</p>
           )}
 
           <div className="flex gap-3 pt-2">
             <button
               type="button"
               onClick={onClose}
-              className="flex-1 px-4 py-2.5 border border-outline-variant dark:border-[#334155] rounded-lg text-sm font-medium hover:bg-surface-container-low dark:hover:bg-[#1e3a5f] transition-colors dark:text-[#f1f5f9]"
+              className="flex-1 px-4 py-2.5 border border-outline-variant dark:border-outline rounded-lg text-sm font-medium hover:bg-surface-container-low dark:hover:bg-surface-container transition-colors dark:text-on-surface"
             >
               {t('cancel', { ns: 'common' })}
             </button>
@@ -184,43 +186,45 @@ export function ScheduleList({ onGenerateNow, generatingType }: ScheduleListProp
   return (
     <div className="space-y-3">
       {schedules.map(s => (
-        <div key={s.id} className="flex items-center gap-3 bg-surface dark:bg-[#1e293b] rounded-xl p-4 border border-outline-variant dark:border-[#334155]">
+        <div key={s.id} className="flex items-center gap-3 bg-surface dark:bg-surface rounded-xl p-4 border border-outline-variant dark:border-outline">
           <div className={cn(
             'w-9 h-9 rounded-full flex items-center justify-center flex-shrink-0',
-            s.is_enabled ? 'bg-success-container' : 'bg-surface-container-high dark:bg-[#334155]'
+            s.is_enabled ? 'bg-success-container' : 'bg-surface-container-high dark:bg-surface-container'
           )}>
             {s.is_enabled
               ? <Power size={16} className="text-success" />
-              : <PowerOff size={16} className="text-on-surface-variant dark:text-[#94a3b8]" />
+              : <PowerOff size={16} className="text-on-surface-variant dark:text-on-surface-variant" />
             }
           </div>
           <div className="flex-1 min-w-0">
-            <p className="text-sm font-medium text-on-background dark:text-[#f1f5f9] truncate">
+            <p className="text-sm font-medium text-on-background dark:text-on-surface truncate">
               {t(`scheduling.type_${s.report_type}`)}
             </p>
-            <p className="text-xs text-on-surface-variant dark:text-[#94a3b8]">
+            <p className="text-xs text-on-surface-variant dark:text-on-surface-variant">
               {t(`scheduling.freq_${s.frequency}`)} · {t('scheduling.next_run')}: {new Date(s.next_run_at).toLocaleDateString()}
             </p>
           </div>
           <button
             onClick={() => onGenerateNow(s.report_type)}
             disabled={generatingType === s.report_type}
-            className="px-3 py-1.5 text-xs font-medium bg-primary-fixed text-primary dark:text-[#93c5fd] rounded-lg hover:opacity-90 disabled:opacity-50"
+            className="px-3 py-1.5 text-xs font-medium bg-primary-fixed text-primary dark:text-accent-dim rounded-lg hover:opacity-90 disabled:opacity-50"
           >
             {generatingType === s.report_type ? '...' : t('scheduling.generate_now')}
           </button>
           <button
             onClick={() => toggleMutation.mutate(s)}
-            className="p-1.5 rounded-lg hover:bg-surface-container-high dark:hover:bg-[#334155] transition-colors"
+            className="p-2 rounded-lg hover:bg-surface-container-high dark:hover:bg-outline transition-colors min-w-[44px] min-h-[44px] flex items-center justify-center"
+            aria-label={s.is_enabled ? 'Disable schedule' : 'Enable schedule'}
           >
             {s.is_enabled
               ? <Power size={14} className="text-success" />
-              : <PowerOff size={14} className="text-on-surface-variant dark:text-[#94a3b8]" />
+              : <PowerOff size={14} className="text-on-surface-variant dark:text-on-surface-variant" />
             }
           </button>
           <button
             onClick={() => deleteMutation.mutate(s.id)}
-            className="p-1.5 rounded-lg hover:bg-error-container transition-colors"
+            className="p-2 rounded-lg hover:bg-error-container transition-colors min-w-[44px] min-h-[44px] flex items-center justify-center"
+            aria-label="Delete schedule"
           >
             <Trash2 size={14} className="text-error" />
           </button>

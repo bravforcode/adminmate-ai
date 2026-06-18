@@ -1,6 +1,6 @@
-import { motion } from 'framer-motion'
+import { motion } from 'motion/react'
 import { Loader2 } from 'lucide-react'
-import { cn } from '../../utils/cn'
+import { cn } from '../../lib/utils'
 
 const staggerItem = {
   hidden: { opacity: 0 },
@@ -22,7 +22,7 @@ export function Skeleton({ className, shimmer = true }: SkeletonProps) {
     <div
       className={cn(
         'rounded-lg relative overflow-hidden',
-        'bg-surface-container-high dark:bg-slate-700/40',
+        'bg-surface-container-high dark:bg-surface-alt',
         shimmer && 'animate-shimmer',
         className
       )}
@@ -45,7 +45,7 @@ function KanbanSkeleton() {
       animate="show"
     >
       {[1, 2, 3, 4].map((col) => (
-        <motion.div key={col} variants={staggerItem} className="flex-1 min-w-[260px] flex flex-col">
+        <motion.div key={col} variants={staggerItem} className="flex-1 min-w-[200px] sm:min-w-[260px] flex flex-col">
           <div className="flex items-center gap-2 mb-4 px-1">
             <Skeleton className="h-4 w-20" />
             <Skeleton className="h-5 w-7 rounded-full" />
@@ -55,7 +55,7 @@ function KanbanSkeleton() {
               <motion.div
                 key={card}
                 variants={staggerItem}
-                className="bg-surface dark:bg-[#1e293b] rounded-xl border border-outline-variant dark:border-[#334155] p-4 space-y-3"
+                className="bg-surface dark:bg-surface rounded-xl border border-outline-variant dark:border-outline p-4 space-y-3"
               >
                 <div className="flex items-start gap-3">
                   <Skeleton className="h-10 w-10 rounded-full shrink-0" />
@@ -85,7 +85,7 @@ function DetailSkeleton() {
   return (
     <div className="space-y-6 max-w-4xl">
       <Skeleton className="h-4 w-32" />
-      <div className="bg-surface dark:bg-[#1e293b] rounded-xl border border-outline-variant dark:border-[#334155] p-6">
+      <div className="bg-surface dark:bg-surface rounded-xl border border-outline-variant dark:border-outline p-6">
         <div className="flex items-start gap-4 mb-6">
           <Skeleton className="h-16 w-16 rounded-full shrink-0" />
           <div className="flex-1 space-y-3">
@@ -98,11 +98,11 @@ function DetailSkeleton() {
             </div>
           </div>
         </div>
-        <div className="space-y-3 pt-4 border-t border-outline-variant dark:border-[#334155]">
+        <div className="space-y-3 pt-4 border-t border-outline-variant dark:border-outline">
           <Skeleton className="h-4 w-28" />
           <Skeleton className="h-28 w-full rounded-xl" />
         </div>
-        <div className="mt-6 p-4 bg-surface-container-low dark:bg-slate-800/50 rounded-lg space-y-3">
+        <div className="mt-6 p-4 bg-surface-container-low dark:bg-surface-alt rounded-lg space-y-3">
           <Skeleton className="h-4 w-36" />
           <Skeleton className="h-3 w-full" />
           <Skeleton className="h-3 w-5/6" />
@@ -116,7 +116,7 @@ function DetailSkeleton() {
 
 function FormSkeleton() {
   return (
-    <div className="bg-surface dark:bg-[#1e293b] rounded-xl border border-outline-variant dark:border-[#334155] p-6 space-y-5">
+    <div className="bg-surface dark:bg-surface rounded-xl border border-outline-variant dark:border-outline p-6 space-y-5">
       <Skeleton className="h-6 w-48" />
       {[1, 2, 3, 4].map((i) => (
         <div key={i} className="space-y-2">
@@ -177,9 +177,9 @@ export function LoadingState({ rows = 4, variant = 'cards', message }: LoadingSt
 
   if (variant === 'table') {
     return (
-      <div className="bg-surface dark:bg-[#1e293b] rounded-xl border border-outline-variant dark:border-[#334155] overflow-hidden">
+      <div className="bg-surface dark:bg-surface rounded-xl border border-outline-variant dark:border-outline overflow-hidden">
         <div className="p-4 space-y-3">
-          <div className="flex items-center gap-3 pb-2 border-b border-outline-variant dark:border-[#334155]">
+          <div className="flex items-center gap-3 pb-2 border-b border-outline-variant dark:border-outline">
             <Skeleton className="h-3 w-16" />
             <Skeleton className="h-3 w-20" />
             <Skeleton className="h-3 w-24" />
@@ -199,7 +199,7 @@ export function LoadingState({ rows = 4, variant = 'cards', message }: LoadingSt
           </motion.div>
         </div>
         {message && (
-          <div className="flex items-center justify-center gap-2 text-sm text-on-surface-variant py-3 border-t border-outline-variant dark:border-[#334155]">
+          <div className="flex items-center justify-center gap-2 text-sm text-on-surface-variant py-3 border-t border-outline-variant dark:border-outline">
             <Loader2 size={14} className="animate-spin" />
             {message}
           </div>
@@ -217,7 +217,7 @@ export function LoadingState({ rows = 4, variant = 'cards', message }: LoadingSt
         animate="show"
       >
         {Array.from({ length: rows }).map((_, i) => (
-          <motion.div key={i} variants={staggerItem} className="bg-surface dark:bg-[#1e293b] rounded-xl border border-outline-variant dark:border-[#334155] p-4 space-y-3">
+          <motion.div key={i} variants={staggerItem} className="bg-surface dark:bg-surface rounded-xl border border-outline-variant dark:border-outline p-4 space-y-3">
             <div className="flex items-center gap-3">
               <Skeleton className="h-5 w-5 rounded-full shrink-0" />
               <Skeleton className="h-4 w-1/3" />
@@ -253,7 +253,7 @@ export function LoadingState({ rows = 4, variant = 'cards', message }: LoadingSt
       animate="show"
     >
       {Array.from({ length: rows }).map((_, i) => (
-        <motion.div key={i} variants={staggerItem} className="bg-surface dark:bg-[#1e293b] rounded-xl border border-outline-variant dark:border-[#334155] p-4">
+        <motion.div key={i} variants={staggerItem} className="bg-surface dark:bg-surface rounded-xl border border-outline-variant dark:border-outline p-4">
           <div className="flex items-start gap-4">
             <Skeleton className="h-12 w-12 rounded-full shrink-0" />
             <div className="flex-1 space-y-2">

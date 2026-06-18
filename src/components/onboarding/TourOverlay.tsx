@@ -155,10 +155,10 @@ export function TourOverlay({
             width: tooltipWidth,
             pointerEvents: 'auto',
           }}
-          className="bg-surface dark:bg-[#1e293b] rounded-2xl shadow-2xl border border-outline-variant dark:border-[#334155] overflow-hidden"
+          className="bg-surface dark:bg-surface rounded-2xl shadow-2xl border border-outline-variant dark:border-outline overflow-hidden"
         >
           {/* Progress bar */}
-          <div className="h-1 bg-surface-container dark:bg-[#334155] w-full">
+          <div className="h-1 bg-surface-container dark:bg-surface-container w-full">
             <motion.div
               className="h-full bg-primary"
               initial={{ width: 0 }}
@@ -183,7 +183,7 @@ export function TourOverlay({
               </div>
               <button
                 onClick={onSkip}
-                className="p-1 rounded-lg hover:bg-surface-container dark:hover:bg-[#334155] transition-colors text-on-surface-variant dark:text-[#94a3b8] hover:text-on-surface dark:hover:text-[#f1f5f9]"
+                className="p-2 rounded-lg hover:bg-surface-container dark:hover:bg-surface-container transition-colors text-on-surface-variant dark:text-on-surface-variant hover:text-on-surface dark:hover:text-on-surface min-w-[44px] min-h-[44px] flex items-center justify-center"
                 aria-label={t('tour.skip')}
               >
                 <X size={16} />
@@ -199,7 +199,7 @@ export function TourOverlay({
             <div className="flex items-center justify-between">
               <button
                 onClick={onSkip}
-                className="text-xs text-on-surface-variant hover:text-on-surface transition-colors px-2 py-1"
+                className="text-xs text-on-surface-variant hover:text-on-surface transition-colors px-3 py-2 min-h-[44px] flex items-center"
               >
                 {t('tour.skip')}
               </button>
@@ -208,7 +208,7 @@ export function TourOverlay({
                 {!isFirstStep && (
                   <button
                     onClick={onPrev}
-                    className="flex items-center gap-1 text-xs text-on-surface-variant dark:text-[#94a3b8] hover:text-on-surface dark:hover:text-[#f1f5f9] transition-colors px-3 py-1.5 rounded-lg hover:bg-surface-container dark:hover:bg-[#334155]"
+                    className="flex items-center gap-1 text-xs text-on-surface-variant dark:text-on-surface-variant hover:text-on-surface dark:hover:text-on-surface transition-colors px-3 py-1.5 rounded-lg hover:bg-surface-container dark:hover:bg-surface-container"
                   >
                     <ChevronLeft size={14} />
                     {t('tour.prev')}

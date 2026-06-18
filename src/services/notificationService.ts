@@ -28,8 +28,8 @@ function mapRow(row: Record<string, unknown>): Notification {
     type: TYPE_MAP[row.notification_type as string] ?? TYPE_MAP[row.type as string] ?? 'system',
     title: (row.title as string) ?? '',
     message: (row.message as string) ?? '',
-    read: (row.is_read as boolean) ?? (row.read as boolean) ?? false,
-    link: (row.action_url as string) ?? (row.link as string),
+    read: (row.is_read as boolean) ?? false,
+    link: (row.action_url as string) ?? '',
     created_at: row.created_at as string,
   }
 }
@@ -38,7 +38,7 @@ export const notificationService = {
   getNotifications: async (userId: string, limit = 20) => {
     const { data, error } = await supabase
       .from('notifications')
-      .select('id, user_id, company_id, notification_type, title, message, is_read, read, action_url, link, created_at')
+      .select('id, user_id, company_id, notification_type, title, message, is_read, action_url, created_at')
       .eq('user_id', userId)
       .order('created_at', { ascending: false })
       .limit(limit)
@@ -51,7 +51,7 @@ export const notificationService = {
       .from('notifications')
       .select('*', { count: 'exact', head: true })
       .eq('user_id', userId)
-      .or('is_read.eq.false,read.eq.false')
+      .or('is_read.eq.false')
     if (error) throw error
     return count ?? 0
   },
@@ -59,7 +59,7 @@ export const notificationService = {
   markAsRead: async (notificationId: string) => {
     const { error } = await supabase
       .from('notifications')
-      .update({ is_read: true, read: true })
+      .update({ is_read: true })
       .eq('id', notificationId)
     if (error) throw error
   },
@@ -67,9 +67,9 @@ export const notificationService = {
   markAllAsRead: async (userId: string) => {
     const { error } = await supabase
       .from('notifications')
-      .update({ is_read: true, read: true })
+      .update({ is_read: true })
       .eq('user_id', userId)
-      .or('is_read.eq.false,read.eq.false')
+      .or('is_read.eq.false')
     if (error) throw error
   },
 

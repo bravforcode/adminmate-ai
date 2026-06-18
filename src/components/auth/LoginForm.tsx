@@ -23,9 +23,13 @@ const loginSchema = z.object({
 
 type LoginFormData = z.infer<typeof loginSchema>
 
-export function LoginForm() {
+interface LoginFormProps {
+  selectedRole?: 'hr' | 'applicant'
+}
+
+export function LoginForm({ selectedRole }: LoginFormProps) {
   const { t } = useTranslation('common')
-  const { login, loginWithGoogle } = useAuth()
+  const { login, loginWithGoogle, logout } = useAuth()
   const navigate = useNavigate()
   const location = useLocation() as { state?: { from?: { pathname?: string } } }
   const [showPassword, setShowPassword] = useState(false)
@@ -51,6 +55,21 @@ export function LoginForm() {
     return getDefaultRoute(role)
   }
 
+  const roleMatchesWorkspace = useCallback((role?: string | null) => {
+    if (!selectedRole) return true
+    if (selectedRole === 'applicant') return role === 'applicant'
+    return ['admin', 'hr', 'manager'].includes(role ?? '')
+  }, [selectedRole])
+
+  const handleWrongWorkspace = useCallback(async () => {
+    await logout()
+    toast.error(
+      selectedRole === 'applicant'
+        ? t('auth.role_mismatch_applicant')
+        : t('auth.role_mismatch_hr'),
+    )
+  }, [logout, selectedRole, t])
+
   const checkMFAEnrollment = useCallback(async (): Promise<string | null> => {
     try {
       const { data: factors, error } = await supabase.auth.mfa.listFactors()
@@ -71,6 +90,11 @@ export function LoginForm() {
       // Read role from store after login completed
       const currentProfile = useAuthStore.getState().profile
 
+      if (!roleMatchesWorkspace(currentProfile?.role)) {
+        await handleWrongWorkspace()
+        return
+      }
+
       // Check if MFA is enabled
       if (currentProfile?.id) {
         const factorId = await checkMFAEnrollment()
@@ -90,6 +114,11 @@ export function LoginForm() {
     try {
       await loginWithGoogle()
       const currentProfile = useAuthStore.getState().profile
+
+      if (!roleMatchesWorkspace(currentProfile?.role)) {
+        await handleWrongWorkspace()
+        return
+      }
 
       // Check if MFA is enabled
       if (currentProfile?.id) {
@@ -129,7 +158,7 @@ export function LoginForm() {
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-5" noValidate>
       <div>
-        <label htmlFor="email" className="block text-sm font-medium text-[#475569] mb-1.5">
+        <label htmlFor="email" className="block text-sm font-medium text-text-secondary mb-1.5">
           {t('auth.email')}
         </label>
         <input
@@ -142,23 +171,20 @@ export function LoginForm() {
           aria-required="true"
           aria-invalid={!!errors.email}
           aria-describedby={errors.email ? 'email-error' : undefined}
-          className="w-full px-4 py-3 rounded-xl border border-[#e2e8f0] bg-white focus:border-[#2563eb] focus:ring-2 focus:ring-[rgba(37,99,235,0.15)] outline-none transition-all duration-300 text-[#0f172a] placeholder:text-[#94a3b8]"
-          placeholder="you@company.com"
-          style={{ transition: 'border-color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease' }}
-          onFocus={e => { e.currentTarget.style.transform = 'scale(1.01)' }}
-          onBlur={e => { e.currentTarget.style.transform = 'scale(1)' }}
+          className="w-full px-4 py-3 rounded-xl border border-border bg-surface focus:border-primary focus:ring-2 focus:ring-primary/15 outline-none transition-all duration-300 text-on-surface placeholder:text-text-muted"
+          placeholder={t('auth.placeholder_email')}
         />
-        {errors.email && <p id="email-error" role="alert" className="text-red-500 text-sm mt-1">{t('auth.error_invalid_email')}</p>}
+        {errors.email && <p id="email-error" role="alert" className="text-error text-sm mt-1">{t('auth.error_invalid_email')}</p>}
       </div>
 
       <div>
         <div className="flex items-center justify-between mb-1.5">
-          <label htmlFor="password" className="block text-sm font-medium text-[#475569]">
+          <label htmlFor="password" className="block text-sm font-medium text-text-secondary">
             {t('auth.password')}
           </label>
           <Link
             to="/forgot-password"
-            className="text-sm text-[#2563eb] hover:text-[#3b82f6] transition-colors"
+            className="text-sm text-primary hover:text-primary/80 transition-colors"
           >
             {t('auth.forgot_password')}
           </Link>
@@ -173,32 +199,29 @@ export function LoginForm() {
             aria-required="true"
             aria-invalid={!!errors.password}
             aria-describedby={errors.password ? 'password-error' : undefined}
-            className="w-full px-4 py-3 rounded-xl border border-[#e2e8f0] bg-white focus:border-[#2563eb] focus:ring-2 focus:ring-[rgba(37,99,235,0.15)] outline-none transition-all duration-300 pr-11 text-[#0f172a] placeholder:text-[#94a3b8]"
-            placeholder="••••••••"
-            style={{ transition: 'border-color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease' }}
-            onFocus={e => { e.currentTarget.style.transform = 'scale(1.01)' }}
-            onBlur={e => { e.currentTarget.style.transform = 'scale(1)' }}
+            className="w-full px-4 py-3 rounded-xl border border-border bg-surface focus:border-primary focus:ring-2 focus:ring-primary/15 outline-none transition-all duration-300 pr-11 text-on-surface placeholder:text-text-muted"
+            placeholder={t('auth.password')}
           />
           <button
             type="button"
             onClick={() => setShowPassword(!showPassword)}
-            className="absolute right-3 top-1/2 -translate-y-1/2 text-[#94a3b8] hover:text-[#2563eb] transition-colors"
+            className="absolute right-3 top-1/2 -translate-y-1/2 text-text-muted hover:text-primary transition-colors"
             tabIndex={-1}
             aria-label={showPassword ? t('auth.hide_password') : t('auth.show_password')}
           >
             {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
           </button>
         </div>
-        {errors.password && <p id="password-error" role="alert" className="text-red-500 text-sm mt-1">{errors.password.message}</p>}
+        {errors.password && <p id="password-error" role="alert" className="text-error text-sm mt-1">{errors.password.message}</p>}
       </div>
 
-      <label className="flex items-center gap-2 text-sm text-[#475569] select-none cursor-pointer group">
+      <label className="flex items-center gap-2 text-sm text-text-secondary select-none cursor-pointer group">
         <input
           type="checkbox"
           {...register('remember')}
-          className="h-4 w-4 rounded border-[#e2e8f0] text-[#2563eb] focus:ring-[#2563eb] focus:ring-offset-0 transition-all duration-200"
+          className="h-4 w-4 rounded border-border text-primary focus:ring-primary focus:ring-offset-0 transition-all duration-200"
         />
-        <span className="group-hover:text-[#2563eb] transition-colors duration-200">{t('auth.remember_me')}</span>
+        <span className="group-hover:text-primary transition-colors duration-200">{t('auth.remember_me')}</span>
       </label>
 
       <Button
@@ -215,10 +238,10 @@ export function LoginForm() {
 
       <div className="relative my-5">
         <div className="absolute inset-0 flex items-center">
-          <div className="w-full border-t border-[#e2e8f0]" />
+          <div className="w-full border-t border-border" />
         </div>
         <div className="relative flex justify-center text-sm">
-          <span className="px-3 bg-white text-[#94a3b8]">{t('auth.or')}</span>
+          <span className="px-3 bg-surface text-text-muted">{t('auth.or')}</span>
         </div>
       </div>
 
@@ -240,9 +263,9 @@ export function LoginForm() {
         {t('auth.sign_in_google')}
       </Button>
 
-      <p className="text-center text-sm text-[#475569] mt-5">
+      <p className="text-center text-sm text-text-secondary mt-5">
         {t('auth.no_account')}{' '}
-        <Link to="/register" className="text-[#2563eb] hover:text-[#3b82f6] hover:underline transition-colors">
+        <Link to="/register" className="text-primary hover:text-primary/80 hover:underline transition-colors">
           {t('auth.create_account')}
         </Link>
       </p>

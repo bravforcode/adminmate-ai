@@ -1,14 +1,14 @@
-import { test, expect, signInAsHR, waitForPageReady, navigateTo } from './helpers'
+import { test, expect, ensureHRAuthenticated, waitForPageReady, navigateTo } from './helpers'
 
 test.describe('CANDIDATES: List Page', () => {
   test('loads with heading', async ({ page }) => {
-    await signInAsHR(page)
+    await ensureHRAuthenticated(page)
     await navigateTo(page, '/recruitment/candidates')
     await expect(page.locator('h1, h2').first()).toBeVisible({ timeout: 15_000 })
   })
 
   test('add candidate button visible or redirected to setup', async ({ page }) => {
-    await signInAsHR(page)
+    await ensureHRAuthenticated(page)
     await navigateTo(page, '/recruitment/candidates')
     if (page.url().includes('/setup-company')) {
       await expect(page.locator('input, select, button').first()).toBeVisible({ timeout: 5_000 })
@@ -20,7 +20,7 @@ test.describe('CANDIDATES: List Page', () => {
   })
 
   test('search input exists', async ({ page }) => {
-    await signInAsHR(page)
+    await ensureHRAuthenticated(page)
     await navigateTo(page, '/recruitment/candidates')
     const search = page.locator('input[placeholder*="search" i], input[type="search"]').first()
     if (await search.isVisible({ timeout: 5_000 }).catch(() => false)) {
@@ -29,7 +29,7 @@ test.describe('CANDIDATES: List Page', () => {
   })
 
   test('candidate cards or empty state displayed', async ({ page }) => {
-    await signInAsHR(page)
+    await ensureHRAuthenticated(page)
     await navigateTo(page, '/recruitment/candidates')
     const content = await page.locator('[class*="card"], [class*="empty"], [class*="skeleton"]').count()
     expect(content).toBeGreaterThanOrEqual(0)
@@ -38,7 +38,7 @@ test.describe('CANDIDATES: List Page', () => {
 
 test.describe('CANDIDATES: Create', () => {
   test('add candidate form opens or setup-company redirect', async ({ page }) => {
-    await signInAsHR(page)
+    await ensureHRAuthenticated(page)
     await navigateTo(page, '/recruitment/candidates')
     if (page.url().includes('/setup-company')) {
       await expect(page.locator('input, select, button').first()).toBeVisible({ timeout: 5_000 })
@@ -52,7 +52,7 @@ test.describe('CANDIDATES: Create', () => {
   })
 
   test('form has all fields', async ({ page }) => {
-    await signInAsHR(page)
+    await ensureHRAuthenticated(page)
     await navigateTo(page, '/recruitment/candidates')
     if (page.url().includes('/setup-company')) return
     const addBtn = page.locator('[data-testid="add-candidate"]')
@@ -66,7 +66,7 @@ test.describe('CANDIDATES: Create', () => {
 
   test('create candidate end-to-end', async ({ page }) => {
     const name = `E2E Candidate ${Date.now()}`
-    await signInAsHR(page)
+    await ensureHRAuthenticated(page)
     await navigateTo(page, '/recruitment/candidates')
     if (page.url().includes('/setup-company')) return
     const addBtn = page.locator('[data-testid="add-candidate"]')
@@ -80,7 +80,7 @@ test.describe('CANDIDATES: Create', () => {
   })
 
   test('empty name shows validation error', async ({ page }) => {
-    await signInAsHR(page)
+    await ensureHRAuthenticated(page)
     await navigateTo(page, '/recruitment/candidates')
     if (page.url().includes('/setup-company')) return
     const addBtn = page.locator('[data-testid="add-candidate"]')
@@ -92,7 +92,7 @@ test.describe('CANDIDATES: Create', () => {
   })
 
   test('cancel button closes form', async ({ page }) => {
-    await signInAsHR(page)
+    await ensureHRAuthenticated(page)
     await navigateTo(page, '/recruitment/candidates')
     if (page.url().includes('/setup-company')) return
     const addBtn = page.locator('[data-testid="add-candidate"]')
@@ -110,7 +110,7 @@ test.describe('CANDIDATES: Create', () => {
 
 test.describe('CANDIDATES: Search', () => {
   test('search filters candidates', async ({ page }) => {
-    await signInAsHR(page)
+    await ensureHRAuthenticated(page)
     await navigateTo(page, '/recruitment/candidates')
     const search = page.locator('input[placeholder*="search" i]').first()
     if (await search.isVisible({ timeout: 5_000 }).catch(() => false)) {
@@ -124,7 +124,7 @@ test.describe('CANDIDATES: Search', () => {
 
 test.describe('CANDIDATES: Detail Page', () => {
   test('clicking candidate navigates to detail', async ({ page }) => {
-    await signInAsHR(page)
+    await ensureHRAuthenticated(page)
     await navigateTo(page, '/recruitment/candidates')
     const card = page.locator('[class*="card"]').first()
     if (await card.isVisible({ timeout: 5_000 }).catch(() => false)) {
@@ -135,7 +135,7 @@ test.describe('CANDIDATES: Detail Page', () => {
   })
 
   test('detail page shows back link', async ({ page }) => {
-    await signInAsHR(page)
+    await ensureHRAuthenticated(page)
     await navigateTo(page, '/recruitment/candidates')
     const card = page.locator('[class*="card"]').first()
     if (await card.isVisible({ timeout: 5_000 }).catch(() => false)) {
@@ -149,7 +149,7 @@ test.describe('CANDIDATES: Detail Page', () => {
   })
 
   test('detail page shows CV upload section', async ({ page }) => {
-    await signInAsHR(page)
+    await ensureHRAuthenticated(page)
     await navigateTo(page, '/recruitment/candidates')
     const card = page.locator('[class*="card"]').first()
     if (await card.isVisible({ timeout: 5_000 }).catch(() => false)) {

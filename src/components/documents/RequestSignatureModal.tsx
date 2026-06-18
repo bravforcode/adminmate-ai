@@ -1,5 +1,5 @@
 import { useState, useCallback } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
+import { motion, AnimatePresence } from 'motion/react'
 import { X } from 'lucide-react'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { useTranslation } from 'react-i18next'
@@ -50,7 +50,7 @@ export function RequestSignatureModal({ documentId, onClose, open = true }: Requ
           <motion.div
             role="dialog"
             aria-modal="true"
-            className="bg-surface dark:bg-[#1e293b] rounded-xl p-6 w-full max-w-md shadow-lg"
+            className="bg-surface dark:bg-surface rounded-xl p-6 w-full max-w-md shadow-lg"
             onClick={(e) => e.stopPropagation()}
             initial={{ opacity: 0, scale: 0.95, y: 8 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
@@ -58,37 +58,37 @@ export function RequestSignatureModal({ documentId, onClose, open = true }: Requ
             transition={{ duration: 0.15, ease: 'easeOut' }}
           >
             <div className="flex items-center justify-between mb-4">
-              <h2 className="text-lg font-semibold text-on-surface dark:text-[#f1f5f9]">{t('request_signature_modal_title')}</h2>
-              <button onClick={onClose} className="p-1 hover:bg-surface-container dark:hover:bg-[#1e3a5f] rounded dark:text-[#f1f5f9]">
+              <h2 className="text-lg font-semibold text-on-surface dark:text-on-surface">{t('request_signature_modal_title')}</h2>
+              <button onClick={onClose} className="p-2 hover:bg-surface-container dark:hover:bg-surface-container-low rounded dark:text-on-surface min-w-[44px] min-h-[44px] flex items-center justify-center">
                 <X size={18} />
               </button>
             </div>
             <form onSubmit={handleSubmit} className="space-y-4">
               <div>
-                <label className="block text-sm font-medium text-on-surface dark:text-[#f1f5f9] mb-1">{t('signer_name')}</label>
+                <label className="block text-sm font-medium text-on-surface dark:text-on-surface mb-1">{t('signer_name')}</label>
                 <input
                   type="text"
                   value={name}
                   onChange={(e) => setName(e.target.value)}
                   required
-                  className="w-full px-3 py-2 rounded-lg border border-outline-variant dark:border-[#334155] bg-surface-container-lowest dark:bg-[#0f172a] text-sm dark:text-[#f1f5f9] focus:border-primary dark:focus:border-[#3b82f6] outline-none"
+                  className="w-full px-3 py-2 rounded-lg border border-outline-variant dark:border-outline bg-surface-container-lowest dark:bg-surface-container-lowest text-sm dark:text-on-surface focus:border-primary dark:focus:border-error outline-none"
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-on-surface dark:text-[#f1f5f9] mb-1">{t('signer_email')}</label>
+                <label className="block text-sm font-medium text-on-surface dark:text-on-surface mb-1">{t('signer_email')}</label>
                 <input
                   type="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   required
-                  className="w-full px-3 py-2 rounded-lg border border-outline-variant dark:border-[#334155] bg-surface-container-lowest dark:bg-[#0f172a] text-sm dark:text-[#f1f5f9] focus:border-primary dark:focus:border-[#3b82f6] outline-none"
+                  className="w-full px-3 py-2 rounded-lg border border-outline-variant dark:border-outline bg-surface-container-lowest dark:bg-surface-container-lowest text-sm dark:text-on-surface focus:border-primary dark:focus:border-error outline-none"
                 />
               </div>
               <div className="flex gap-3 pt-2">
                 <button
                   type="button"
                   onClick={onClose}
-                  className="flex-1 px-4 py-2 border border-outline-variant dark:border-[#334155] rounded-lg text-sm font-medium hover:bg-surface-container-low dark:hover:bg-[#1e3a5f] transition-colors dark:text-[#f1f5f9]"
+                  className="flex-1 px-4 py-2 border border-outline-variant dark:border-outline rounded-lg text-sm font-medium hover:bg-surface-container-low dark:hover:bg-surface-container-low transition-colors dark:text-on-surface"
                 >
                   {t('common:cancel')}
                 </button>

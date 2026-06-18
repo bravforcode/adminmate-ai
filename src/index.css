@@ -54,7 +54,22 @@
   --color-surface-container-lowest: #ffffff;
   --color-surface-container-low:    #f1f5f9;
   --color-surface-container:        #dbeafe;
+  --color-surface-bright:     #f8fafc;
+  --color-surface-dim:        #f1f5f9;
   --color-on-surface:         #0f172a;
+  --color-on-surface-variant: #475569;
+  --color-on-background:      #0f172a;
+  --color-on-primary-container: #1e3a5f;
+  --color-on-error-container:  #7f1d1d;
+  --color-on-primary-fixed:   #2563eb;
+  --color-on-secondary-fixed: #1e3a5f;
+  --color-inverse-primary:    #2563eb;
+  --color-primary-fixed:      #dbeafe;
+  --color-secondary-fixed:    #e0e7ff;
+  --color-secondary-container: #e0e7ff;
+  --color-error-container:    #fecaca;
+  --color-warning-container:  #fef3c7;
+  --color-success-container:  #dcfce7;
   --color-outline:            #e2e8f0;
   --color-outline-variant:    #f1f5f9;
 
@@ -140,7 +155,22 @@
   --color-surface-container-lowest: #0f172a;
   --color-surface-container-low:    #1e293b;
   --color-surface-container:        #1e3a5f;
+  --color-surface-bright:     #1e293b;
+  --color-surface-dim:        #0f172a;
   --color-on-surface:         #f1f5f9;
+  --color-on-surface-variant: #94a3b8;
+  --color-on-background:      #f1f5f9;
+  --color-on-primary-container: #93c5fd;
+  --color-on-error-container:  #fca5a5;
+  --color-on-primary-fixed:   #3b82f6;
+  --color-on-secondary-fixed: #93c5fd;
+  --color-inverse-primary:    #3b82f6;
+  --color-primary-fixed:      #1e3a5f;
+  --color-secondary-fixed:    #1e3a5f;
+  --color-secondary-container: #1e3a5f;
+  --color-error-container:    #450a0a;
+  --color-warning-container:  #451a03;
+  --color-success-container:  #052e16;
   --color-outline:            #334155;
   --color-outline-variant:    #1e293b;
 }
@@ -231,7 +261,7 @@ html {
   text-rendering: optimizeLegibility;
   scroll-behavior: smooth;
   scroll-padding-top: 60px;
-  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+  /* ponytail: removed global transition — causes jank on dark mode toggle and page transitions */
 }
 
 body {
@@ -241,6 +271,7 @@ body {
   font-size: 16px;
   line-height: 1.65;
   letter-spacing: 0.01em;
+  transition: background-color 0.25s ease, color 0.25s ease;
 }
 
 /* ============================================================
@@ -432,6 +463,14 @@ body {
               box-shadow var(--duration-primary) var(--ease-luxury);
   position: relative;
   overflow: hidden;
+}
+
+.role-card:focus-visible {
+  outline: 2px solid var(--color-navy);
+  outline-offset: 4px;
+  border-color: var(--color-accent);
+  transform: translateY(-4px);
+  box-shadow: 0 20px 48px rgba(30, 58, 95, 0.12);
 }
 
 .role-card::before {
@@ -1303,4 +1342,19 @@ body {
 
 .chat-scroll::-webkit-scrollbar-track {
   background: transparent;
+}
+
+/* ============================================================
+   ACCESSIBILITY & PREFERS-REDUCED-MOTION
+   ============================================================ */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-delay: -1ms !important;
+    animation-duration: 1ms !important;
+    animation-iteration-count: 1 !important;
+    background-attachment: initial !important;
+    scroll-behavior: auto !important;
+    transition-duration: 0s !important;
+    transition-delay: 0s !important;
+  }
 }

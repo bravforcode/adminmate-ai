@@ -1,18 +1,18 @@
-import { test, expect, signInAsHR, waitForPageReady, openChatWidget, sendChatMessage } from './helpers'
+import { test, expect, ensureHRAuthenticated, waitForPageReady, openChatWidget, sendChatMessage } from './helpers'
 
 // ═══════════════════════════════════════════════════════════════════
 // CHAT: Floating Widget — Open & UI
 // ═══════════════════════════════════════════════════════════════════
 test.describe('CHAT: Widget UI', () => {
   test('chat FAB button is visible on dashboard', async ({ page }) => {
-    await signInAsHR(page)
+    await ensureHRAuthenticated(page)
     await waitForPageReady(page)
     const fab = page.locator('[data-testid="chat-fab"]')
     await expect(fab).toBeVisible({ timeout: 10_000 })
   })
 
   test('clicking FAB opens chat panel', async ({ page }) => {
-    await signInAsHR(page)
+    await ensureHRAuthenticated(page)
     await waitForPageReady(page)
     await openChatWidget(page)
     const panel = page.locator('[data-testid="chat-panel"]')
@@ -20,7 +20,7 @@ test.describe('CHAT: Widget UI', () => {
   })
 
   test('chat panel has input and send button', async ({ page }) => {
-    await signInAsHR(page)
+    await ensureHRAuthenticated(page)
     await waitForPageReady(page)
     await openChatWidget(page)
     await expect(page.locator('[data-testid="chat-input"]')).toBeVisible()
@@ -28,7 +28,7 @@ test.describe('CHAT: Widget UI', () => {
   })
 
   test('chat panel shows suggestions on empty state', async ({ page }) => {
-    await signInAsHR(page)
+    await ensureHRAuthenticated(page)
     await waitForPageReady(page)
     await openChatWidget(page)
     const suggestions = page.locator('[data-testid="chat-suggestion"]')
@@ -38,7 +38,7 @@ test.describe('CHAT: Widget UI', () => {
   })
 
   test('chat panel has message area', async ({ page }) => {
-    await signInAsHR(page)
+    await ensureHRAuthenticated(page)
     await waitForPageReady(page)
     await openChatWidget(page)
     const messages = page.locator('[data-testid="chat-messages"]')
@@ -51,7 +51,7 @@ test.describe('CHAT: Widget UI', () => {
 // ═══════════════════════════════════════════════════════════════════
 test.describe('CHAT: Send Message', () => {
   test('type message and send — user message appears', async ({ page }) => {
-    await signInAsHR(page)
+    await ensureHRAuthenticated(page)
     await waitForPageReady(page)
     await openChatWidget(page)
 
@@ -62,7 +62,7 @@ test.describe('CHAT: Send Message', () => {
   })
 
   test('AI response appears after sending a message', async ({ page }) => {
-    await signInAsHR(page)
+    await ensureHRAuthenticated(page)
     await waitForPageReady(page)
     await openChatWidget(page)
 
@@ -78,7 +78,7 @@ test.describe('CHAT: Send Message', () => {
   })
 
   test('clicking suggestion button sends that message', async ({ page }) => {
-    await signInAsHR(page)
+    await ensureHRAuthenticated(page)
     await waitForPageReady(page)
     await openChatWidget(page)
 
@@ -103,7 +103,7 @@ test.describe('CHAT: Send Message', () => {
 // ═══════════════════════════════════════════════════════════════════
 test.describe('CHAT: Empty State', () => {
   test('shows welcome content, bot icon, or suggestions', async ({ page }) => {
-    await signInAsHR(page)
+    await ensureHRAuthenticated(page)
     await waitForPageReady(page)
     await openChatWidget(page)
 
@@ -121,7 +121,7 @@ test.describe('CHAT: Empty State', () => {
 // ═══════════════════════════════════════════════════════════════════
 test.describe('CHAT: Language Support', () => {
   test('Thai message gets Thai response', async ({ page }) => {
-    await signInAsHR(page)
+    await ensureHRAuthenticated(page)
     await waitForPageReady(page)
     await openChatWidget(page)
 

@@ -6,7 +6,7 @@ import { useTranslation } from 'react-i18next'
 import { ClipboardCheck, AlertCircle, RefreshCw } from 'lucide-react'
 import { EmptyState } from '../../components/shared/EmptyState'
 import { LoadingState } from '../../components/shared/LoadingState'
-import { cn } from '../../utils/cn'
+import { cn } from '../../lib/utils'
 
 const PIPELINE_STEPS = ['applied', 'screening', 'interview', 'offer', 'hired']
 

@@ -45,6 +45,24 @@ async function completeCompanySetup(page: Page) {
 }
 
 // ─── Auth Helpers ────────────────────────────────────────────────
+
+/**
+ * Ensure the page is authenticated as HR.
+ * If storageState is active (Supabase auth cookie exists), skips login.
+ * Otherwise performs a full UI login via signInAsHR.
+ * Use this in HR specs that may run with or without storageState.
+ */
+export async function ensureHRAuthenticated(page: Page) {
+  // Check if Supabase auth cookie exists (indicates valid storageState)
+  const cookies = await page.context().cookies()
+  const hasAuthCookie = cookies.some(c => c.name === 'sb-' || c.name.includes('auth'))
+  if (hasAuthCookie) {
+    return // Authenticated via storageState — skip UI login
+  }
+  // No auth cookie — perform full UI login
+  await signInAsHR(page)
+}
+
 export async function signInAsHR(page: Page) {
   await goToLoginForm(page)
   await page.locator('[data-testid="email-input"]').fill(HR_USER.email)
@@ -127,17 +145,48 @@ export async function waitForPageReady(page: Page) {
 }
 
 export async function navigateTo(page: Page, path: string) {
-  await page.goto(path)
-  await waitForPageReady(page)
-  // If page.goto caused session loss and redirected to login, re-login and retry
-  if (page.url().includes('/login')) {
-    await signInAsHR(page)
-    // Use SPA navigation to avoid another full page reload
+  // If already on the target route, skip navigation
+  if (page.url().endsWith(path)) {
+    await waitForPageReady(page)
+    return
+  }
+  // Try SPA navigation first (preserves storageState auth)
+  // Only works if page is already on the app (not about:blank)
+  const isOnApp = page.url().includes('localhost') || page.url().includes('vercel.app')
+  if (isOnApp) {
     await page.evaluate((p) => {
       window.history.pushState({}, '', p)
       window.dispatchEvent(new PopStateEvent('popstate'))
     }, path)
     await waitForPageReady(page)
+    // If SPA nav redirected to login (session lost), fall back to full navigation
+    if (page.url().includes('/login')) {
+      await page.goto(path)
+      await waitForPageReady(page)
+      // If still on login, re-authenticate
+      if (page.url().includes('/login')) {
+        await signInAsHR(page)
+        await page.evaluate((p) => {
+          window.history.pushState({}, '', p)
+          window.dispatchEvent(new PopStateEvent('popstate'))
+        }, path)
+        await waitForPageReady(page)
+      }
+    }
+  } else {
+    // First navigation — use page.goto
+    await page.goto(path)
+    await waitForPageReady(page)
+    // If page.goto caused session loss and redirected to login, re-login and retry
+    if (page.url().includes('/login')) {
+      await signInAsHR(page)
+      // Use SPA navigation to avoid another full page reload
+      await page.evaluate((p) => {
+        window.history.pushState({}, '', p)
+        window.dispatchEvent(new PopStateEvent('popstate'))
+      }, path)
+      await waitForPageReady(page)
+    }
   }
 }
 

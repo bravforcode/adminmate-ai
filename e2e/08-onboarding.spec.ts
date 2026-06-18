@@ -1,15 +1,15 @@
-import { test, expect, signInAsHR, waitForPageReady } from './helpers'
+import { test, expect, ensureHRAuthenticated, waitForPageReady } from './helpers'
 
 test.describe('ONBOARDING: Page Load', () => {
   test('loads with heading', async ({ page }) => {
-    await signInAsHR(page)
+    await ensureHRAuthenticated(page)
     await page.goto('/onboarding')
     await waitForPageReady(page)
     await expect(page.locator('h1, h2').first()).toBeVisible({ timeout: 15_000 })
   })
 
   test('shows checklist or empty state', async ({ page }) => {
-    await signInAsHR(page)
+    await ensureHRAuthenticated(page)
     await page.goto('/onboarding')
     await waitForPageReady(page)
     const content = await page.locator('[class*="card"], [class*="checklist"], [class*="empty"], [class*="task"]').count()
@@ -17,7 +17,7 @@ test.describe('ONBOARDING: Page Load', () => {
   })
 
   test('team status section exists', async ({ page }) => {
-    await signInAsHR(page)
+    await ensureHRAuthenticated(page)
     await page.goto('/onboarding')
     await waitForPageReady(page)
     const hasContent = await page.locator('h1, h2, h3, h4, table, [class*="card"]').count()
@@ -27,7 +27,7 @@ test.describe('ONBOARDING: Page Load', () => {
 
 test.describe('ONBOARDING: Task Management', () => {
   test('task toggle buttons exist', async ({ page }) => {
-    await signInAsHR(page)
+    await ensureHRAuthenticated(page)
     await page.goto('/onboarding')
     await waitForPageReady(page)
     const toggles = page.locator('button').filter({ hasText: /complete|check|toggle/i })
@@ -37,7 +37,7 @@ test.describe('ONBOARDING: Task Management', () => {
   })
 
   test('progress bar exists', async ({ page }) => {
-    await signInAsHR(page)
+    await ensureHRAuthenticated(page)
     await page.goto('/onboarding')
     await waitForPageReady(page)
     const progress = page.locator('[class*="progress"], [role="progressbar"]').first()
@@ -49,7 +49,7 @@ test.describe('ONBOARDING: Task Management', () => {
 
 test.describe('ONBOARDING: Mate AI Chat', () => {
   test('chat input exists', async ({ page }) => {
-    await signInAsHR(page)
+    await ensureHRAuthenticated(page)
     await page.goto('/onboarding')
     await waitForPageReady(page)
     const chatInput = page.locator('input[placeholder*="ask" i], textarea[placeholder*="ask" i], input[placeholder*="chat" i]').first()
@@ -59,7 +59,7 @@ test.describe('ONBOARDING: Mate AI Chat', () => {
   })
 
   test('send button exists', async ({ page }) => {
-    await signInAsHR(page)
+    await ensureHRAuthenticated(page)
     await page.goto('/onboarding')
     await waitForPageReady(page)
     const sendBtn = page.locator('button').filter({ hasText: /send/i }).first()
@@ -69,7 +69,7 @@ test.describe('ONBOARDING: Mate AI Chat', () => {
   })
 
   test('quick resource buttons exist', async ({ page }) => {
-    await signInAsHR(page)
+    await ensureHRAuthenticated(page)
     await page.goto('/onboarding')
     await waitForPageReady(page)
     const resources = page.locator('button').filter({ hasText: /handbook|benefits|labor|resource/i })
@@ -81,7 +81,7 @@ test.describe('ONBOARDING: Mate AI Chat', () => {
 
 test.describe('ONBOARDING: View All Link', () => {
   test('View All navigates to candidates', async ({ page }) => {
-    await signInAsHR(page)
+    await ensureHRAuthenticated(page)
     await page.goto('/onboarding')
     await waitForPageReady(page)
     const viewAll = page.getByText(/view all/i).first()

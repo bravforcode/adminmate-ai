@@ -34,21 +34,30 @@ const registerSchema = z
 type RegisterFormData = z.infer<typeof registerSchema>
 
 const INDUSTRIES = [
-  'Technology',
-  'Finance',
-  'Healthcare',
-  'Manufacturing',
-  'Retail',
-  'Education',
-  'Logistics',
-  'Other',
+  'technology',
+  'finance',
+  'healthcare',
+  'manufacturing',
+  'retail',
+  'education',
+  'logistics',
+  'other',
 ]
 
-const COUNTRIES: Array<{ value: 'TH' | 'VN' | 'ID'; label: string }> = [
-  { value: 'TH', label: 'Thailand' },
-  { value: 'VN', label: 'Vietnam' },
-  { value: 'ID', label: 'Indonesia' },
+const COUNTRIES: Array<{ value: 'TH' | 'VN' | 'ID'; labelKey: string }> = [
+  { value: 'TH', labelKey: 'auth.country_thailand' },
+  { value: 'VN', labelKey: 'auth.country_vietnam' },
+  { value: 'ID', labelKey: 'auth.country_indonesia' },
 ]
+
+// Map Zod error messages to i18n keys
+const PASSWORD_ERROR_MAP: Record<string, string> = {
+  'Password must be at least 8 characters': 'auth.error_password_min',
+  'Add an uppercase letter': 'auth.error_password_uppercase',
+  'Add a number': 'auth.error_password_number',
+  'Add a special character': 'auth.error_password_special',
+  'Passwords do not match': 'auth.error_passwords_match',
+}
 
 export function RegisterForm() {
   const { t } = useTranslation('common')
@@ -119,8 +128,8 @@ export function RegisterForm() {
           aria-required="true"
           aria-invalid={!!errors.fullName}
           aria-describedby={errors.fullName ? 'fullName-error' : undefined}
-          className="w-full px-3 py-2 rounded-lg border border-outline-variant dark:border-[#334155] bg-surface-container-lowest dark:bg-[#0f172a] focus:border-primary dark:focus:border-[#3b82f6] focus:ring-2 focus:ring-primary/20 outline-none transition-all dark:text-[#f1f5f9]"
-          placeholder="Somchai Jaidee"
+          className="w-full px-3 py-2 rounded-lg border border-outline-variant bg-surface-container-lowest focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all"
+          placeholder={t('auth.placeholder_name')}
         />
         {errors.fullName && <p id="fullName-error" role="alert" className="text-error text-sm mt-1">{t('auth.error_name_required')}</p>}
       </div>
@@ -139,8 +148,8 @@ export function RegisterForm() {
           aria-required="true"
           aria-invalid={!!errors.companyName}
           aria-describedby={errors.companyName ? 'companyName-error' : undefined}
-          className="w-full px-3 py-2 rounded-lg border border-outline-variant dark:border-[#334155] bg-surface-container-lowest dark:bg-[#0f172a] focus:border-primary dark:focus:border-[#3b82f6] focus:ring-2 focus:ring-primary/20 outline-none transition-all dark:text-[#f1f5f9]"
-          placeholder="TechNova Solutions Co., Ltd."
+          className="w-full px-3 py-2 rounded-lg border border-outline-variant bg-surface-container-lowest focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all"
+          placeholder={t('auth.placeholder_company')}
         />
         {errors.companyName && (
           <p id="companyName-error" role="alert" className="text-error text-sm mt-1">{t('auth.error_company_required')}</p>
@@ -155,11 +164,11 @@ export function RegisterForm() {
           <select
             id="country"
             {...register('country')}
-            className="w-full px-3 py-2 rounded-lg border border-outline-variant dark:border-[#334155] bg-surface-container-lowest dark:bg-[#0f172a] focus:border-primary dark:focus:border-[#3b82f6] focus:ring-2 focus:ring-primary/20 outline-none dark:text-[#f1f5f9]"
+            className="w-full px-3 py-2 rounded-lg border border-outline-variant bg-surface-container-lowest focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none"
           >
             {COUNTRIES.map((c) => (
               <option key={c.value} value={c.value}>
-                {c.label}
+                {t(c.labelKey)}
               </option>
             ))}
           </select>
@@ -168,25 +177,25 @@ export function RegisterForm() {
           <label htmlFor="industry" className="block text-label-md text-on-surface-variant mb-1">
             {t('company.industry')}
           </label>
-        <select
-          id="industry"
-          {...register('industry')}
-          data-testid="industry-input"
-          aria-required="true"
-          aria-invalid={!!errors.industry}
-          aria-describedby={errors.industry ? 'industry-error' : undefined}
-          className="w-full px-3 py-2 rounded-lg border border-outline-variant dark:border-[#334155] bg-surface-container-lowest dark:bg-[#0f172a] focus:border-primary dark:focus:border-[#3b82f6] focus:ring-2 focus:ring-primary/20 outline-none dark:text-[#f1f5f9]"
-        >
-          <option value="">{t('common.select')}...</option>
-          {INDUSTRIES.map((i) => (
-            <option key={i} value={i}>
-              {i}
-            </option>
-          ))}
-        </select>
-        {errors.industry && (
-          <p id="industry-error" role="alert" className="text-error text-sm mt-1">{t('auth.error_industry_required')}</p>
-        )}
+          <select
+            id="industry"
+            {...register('industry')}
+            data-testid="industry-input"
+            aria-required="true"
+            aria-invalid={!!errors.industry}
+            aria-describedby={errors.industry ? 'industry-error' : undefined}
+            className="w-full px-3 py-2 rounded-lg border border-outline-variant bg-surface-container-lowest focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none"
+          >
+            <option value="">{t('auth.reg_select_industry')}...</option>
+            {INDUSTRIES.map((i) => (
+              <option key={i} value={i}>
+                {t(`auth.industry_${i}`)}
+              </option>
+            ))}
+          </select>
+          {errors.industry && (
+            <p id="industry-error" role="alert" className="text-error text-sm mt-1">{t('auth.error_industry_required')}</p>
+          )}
         </div>
       </div>
 
@@ -203,8 +212,8 @@ export function RegisterForm() {
           aria-required="true"
           aria-invalid={!!errors.email}
           aria-describedby={errors.email ? 'reg-email-error' : undefined}
-          className="w-full px-3 py-2 rounded-lg border border-outline-variant dark:border-[#334155] bg-surface-container-lowest dark:bg-[#0f172a] focus:border-primary dark:focus:border-[#3b82f6] focus:ring-2 focus:ring-primary/20 outline-none transition-all dark:text-[#f1f5f9]"
-          placeholder="you@company.com"
+          className="w-full px-3 py-2 rounded-lg border border-outline-variant bg-surface-container-lowest focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all"
+          placeholder={t('auth.placeholder_email')}
         />
         {errors.email && <p id="reg-email-error" role="alert" className="text-error text-sm mt-1">{t('auth.error_invalid_email')}</p>}
       </div>
@@ -238,7 +247,7 @@ export function RegisterForm() {
         </div>
         {passwordValue && (
           <div className="mt-2" data-testid="password-strength">
-            <div className="h-1.5 w-full rounded-full bg-outline-variant dark:bg-[#334155] overflow-hidden">
+            <div className="h-1.5 w-full rounded-full bg-outline-variant overflow-hidden">
               <div
                 className={`h-full ${strength.color} transition-all`}
                 style={{ width: `${strength.percent}%` }}
@@ -257,7 +266,11 @@ export function RegisterForm() {
           </div>
         )}
         {errors.password && (
-          <p id="password-error" role="alert" className="text-error text-sm mt-1">{errors.password.message}</p>
+          <p id="password-error" role="alert" className="text-error text-sm mt-1">
+            {errors.password.message && PASSWORD_ERROR_MAP[errors.password.message]
+              ? t(PASSWORD_ERROR_MAP[errors.password.message])
+              : errors.password.message ?? ''}
+          </p>
         )}
       </div>
 
@@ -273,18 +286,22 @@ export function RegisterForm() {
           aria-required="true"
           aria-invalid={!!errors.confirmPassword}
           aria-describedby={errors.confirmPassword ? 'confirmPassword-error' : undefined}
-          className="w-full px-3 py-2 rounded-lg border border-outline-variant dark:border-[#334155] bg-surface-container-lowest dark:bg-[#0f172a] focus:border-primary dark:focus:border-[#3b82f6] focus:ring-2 focus:ring-primary/20 outline-none transition-all dark:text-[#f1f5f9]"
+          className="w-full px-3 py-2 rounded-lg border border-outline-variant bg-surface-container-lowest focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all"
           placeholder="••••••••"
         />
         {errors.confirmPassword && (
-          <p id="confirmPassword-error" role="alert" className="text-error text-sm mt-1">{errors.confirmPassword.message}</p>
+          <p id="confirmPassword-error" role="alert" className="text-error text-sm mt-1">
+            {errors.confirmPassword.message && PASSWORD_ERROR_MAP[errors.confirmPassword.message]
+              ? t(PASSWORD_ERROR_MAP[errors.confirmPassword.message])
+              : errors.confirmPassword.message ?? ''}
+          </p>
         )}
       </div>
 
       {submitError && (
         <div
           role="alert"
-          className="rounded-lg border border-error/40 bg-error-container/40 dark:bg-[#450a0a]/30 text-error dark:text-[#f87171] px-3 py-2 text-sm"
+          className="rounded-lg border border-error/40 bg-error-container/40 text-error px-3 py-2 text-sm"
         >
           {submitError}
         </div>
@@ -304,7 +321,7 @@ export function RegisterForm() {
 
       <p className="text-center text-sm text-on-surface-variant mt-4">
         {t('auth.already_have_account')}{' '}
-        <Link to="/login" className="text-primary hover:underline">
+        <Link to="/login" className="text-primary underline hover:text-primary/80">
           {t('auth.sign_in')}
         </Link>
       </p>

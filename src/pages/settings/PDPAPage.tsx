@@ -232,7 +232,7 @@ export function PDPAPage() {
                       {t('pdpa.revoke_button') || 'Revoke'}
                     </button>
                   )}
-                  <button onClick={() => downloadReceipt(consent)} className="text-xs text-primary hover:underline px-2 py-1">
+                  <button onClick={() => downloadReceipt(consent)} className="text-xs text-primary hover:underline px-3 py-2 min-h-[44px] flex items-center">
                     {t('pdpa.download_receipt') || 'Receipt'}
                   </button>
                 </div>

@@ -1,10 +1,12 @@
 import { useState, useRef, useEffect } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
+import { motion, AnimatePresence } from 'motion/react'
 import DOMPurify from 'dompurify'
 import { useChat } from '../../hooks/useChat'
 import { useAuthStore } from '../../stores/authStore'
 import { useTranslation } from 'react-i18next'
 import { Send, Sparkles, Bot, X, MessageSquare } from 'lucide-react'
+
+type OpenChatEvent = CustomEvent<{ message?: string }>
 
 export function ChatWidget() {
   const [isOpen, setIsOpen] = useState(false)
@@ -24,6 +26,19 @@ export function ChatWidget() {
     }
   }, [messages, isOpen])
 
+  useEffect(() => {
+    const handleOpenChat = (event: Event) => {
+      const detail = (event as OpenChatEvent).detail
+      setIsOpen(true)
+      if (detail?.message) {
+        setInput(detail.message)
+      }
+    }
+
+    window.addEventListener('adminmate:open-chat', handleOpenChat as EventListener)
+    return () => window.removeEventListener('adminmate:open-chat', handleOpenChat as EventListener)
+  }, [])
+
   const handleSend = () => {
     if (!input.trim() || isLoading) return
     sendMessage(input)
@@ -40,8 +55,8 @@ export function ChatWidget() {
       <button
         onClick={() => setIsOpen(!isOpen)}
         data-testid="chat-fab"
-        className="chat-fab fixed bottom-20 md:bottom-6 right-4 md:right-6 z-50 w-14 h-14 rounded-full bg-gradient-to-tr from-navy-mid to-accent text-white flex items-center justify-center shadow-[0_4px_20px_rgba(37,99,235,0.4)] hover:shadow-[0_6px_24px_rgba(37,99,235,0.6)] hover:scale-105 active:scale-95 transition-all duration-300 border border-white/20 cursor-pointer"
-        style={{ paddingBottom: 'env(safe-area-inset-bottom, 0px)' }}
+        className="chat-fab fixed bottom-20 md:bottom-6 right-4 md:right-6 z-[60] w-14 h-14 rounded-full bg-gradient-to-tr from-navy-mid to-accent text-white flex items-center justify-center shadow-[0_4px_20px_rgba(37,99,235,0.4)] hover:shadow-[0_6px_24px_rgba(37,99,235,0.6)] hover:scale-105 active:scale-95 transition-all duration-300 border border-white/20 cursor-pointer"
+        style={{ paddingBottom: 'max(0px, env(safe-area-inset-bottom))' }}
         aria-label="Toggle AI Assistant"
       >
         <div className="relative w-full h-full flex items-center justify-center">
@@ -59,7 +74,7 @@ export function ChatWidget() {
         {isOpen && (
           <motion.div
             data-testid="chat-panel"
-            className="chat-panel fixed bottom-[92px] md:bottom-24 right-4 md:right-6 z-50 w-[calc(100vw-32px)] sm:w-[400px] h-[550px] max-h-[calc(100vh-140px)] bg-surface dark:bg-[#1e293b] border border-border dark:border-[#334155] rounded-2xl shadow-2xl flex flex-col overflow-hidden origin-bottom-right pointer-events-auto"
+            className="chat-panel fixed bottom-[92px] md:bottom-24 right-4 md:right-6 z-[60] w-[calc(100vw-32px)] sm:w-[400px] h-[min(550px,calc(100vh-180px))] bg-surface border border-border rounded-2xl shadow-2xl flex flex-col overflow-hidden origin-bottom-right pointer-events-auto"
             initial={{ opacity: 0, scale: 0.9, y: 16 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.9, y: 16 }}
@@ -87,14 +102,15 @@ export function ChatWidget() {
           </div>
           <button
             onClick={() => setIsOpen(false)}
-            className="text-white/60 hover:text-white p-1 hover:bg-white/10 rounded-full transition-colors cursor-pointer"
+            className="text-white/60 hover:text-white p-2 hover:bg-white/10 rounded-full transition-colors cursor-pointer min-w-[44px] min-h-[44px] flex items-center justify-center"
+            aria-label="Close chat"
           >
             <X size={18} />
           </button>
         </div>
 
         {/* Message Panel */}
-        <div data-testid="chat-messages" className="flex-1 chat-scroll p-4 space-y-4 bg-bg dark:bg-[#0f172a]">
+        <div data-testid="chat-messages" className="flex-1 chat-scroll p-4 space-y-4 bg-bg">
           {messages.length === 0 && (
             <div className="text-center py-8 px-4 flex flex-col items-center justify-center h-full">
               <div className="w-12 h-12 rounded-full bg-accent-light flex items-center justify-center text-accent mb-3">
@@ -110,7 +126,7 @@ export function ChatWidget() {
                     key={idx}
                     onClick={() => handleSuggestionClick(suggestion)}
                     data-testid="chat-suggestion"
-                    className="text-left px-3.5 py-2.5 bg-surface dark:bg-[#1e293b] hover:bg-accent-light dark:hover:bg-[#1e3a5f] border border-border dark:border-[#334155] hover:border-accent-dim dark:hover:border-[#60a5fa] rounded-xl text-xs text-text-secondary dark:text-[#94a3b8] hover:text-accent dark:hover:text-[#93c5fd] transition-all duration-200 shadow-sm cursor-pointer hover:translate-x-1"
+                    className="text-left px-3.5 py-2.5 bg-surface hover:bg-accent-light border border-border hover:border-accent-dim rounded-xl text-xs text-text-secondary hover:text-accent transition-all duration-200 shadow-sm cursor-pointer hover:translate-x-1"
                   >
                     {suggestion}
                   </button>
@@ -136,7 +152,7 @@ export function ChatWidget() {
                 className={`max-w-[80%] rounded-2xl p-3 text-xs shadow-sm leading-relaxed ${
                   msg.sender === 'user'
                     ? 'bg-accent text-white rounded-tr-none'
-                    : 'bg-surface dark:bg-[#1e293b] text-text-primary dark:text-[#f1f5f9] border border-border dark:border-[#334155] rounded-tl-none'
+                    : 'bg-surface text-text-primary border border-border rounded-tl-none'
                 }`}
               >
                 {DOMPurify.sanitize(msg.content)}
@@ -154,7 +170,7 @@ export function ChatWidget() {
               <div className="w-7 h-7 rounded-full bg-accent text-white flex items-center justify-center flex-shrink-0 shadow-sm">
                 <Sparkles size={13} />
               </div>
-              <div className="bg-surface dark:bg-[#1e293b] border border-border dark:border-[#334155] rounded-2xl rounded-tl-none p-3.5 flex gap-1.5 shadow-sm">
+              <div className="bg-surface border border-border rounded-2xl rounded-tl-none p-3.5 flex gap-1.5 shadow-sm">
                 {[0, 1, 2].map((i) => (
                   <motion.div
                     key={i}
@@ -170,13 +186,13 @@ export function ChatWidget() {
         </div>
 
         {/* Input Bar */}
-        <div className="p-3 bg-surface dark:bg-[#1e293b] border-t border-border dark:border-[#334155] flex gap-2 items-center" style={{ paddingBottom: 'max(12px, env(safe-area-inset-bottom))' }}>
+        <div className="p-3 bg-surface border-t border-border flex gap-2 items-center" style={{ paddingBottom: 'max(12px, env(safe-area-inset-bottom))' }}>
           <input
             value={input}
             onChange={(e) => setInput(e.target.value)}
             onKeyDown={(e) => e.key === 'Enter' && handleSend()}
             data-testid="chat-input"
-            className="flex-1 px-4 py-2.5 rounded-full border border-border dark:border-[#334155] bg-bg dark:bg-[#0f172a] focus:border-accent dark:focus:border-[#93c5fd] focus:ring-1 focus:ring-accent outline-none text-xs text-text-primary dark:text-[#f1f5f9] placeholder-text-muted dark:placeholder-[#64748b] transition-all"
+            className="flex-1 px-4 py-2.5 rounded-full border border-border bg-bg focus:border-accent focus:ring-1 focus:ring-accent outline-none text-xs text-text-primary placeholder-text-muted transition-all"
             placeholder={t('placeholder')}
             disabled={isLoading}
           />
@@ -184,7 +200,7 @@ export function ChatWidget() {
             onClick={handleSend}
             disabled={isLoading || !input.trim()}
             data-testid="chat-send"
-            className="w-9 h-9 rounded-full bg-accent text-white flex items-center justify-center hover:opacity-90 active:scale-95 disabled:opacity-40 disabled:scale-100 transition-all cursor-pointer shadow-[0_2px_8px_rgba(96,165,250,0.2)] flex-shrink-0"
+            className="w-11 h-11 rounded-full bg-accent text-white flex items-center justify-center hover:opacity-90 active:scale-95 disabled:opacity-40 disabled:scale-100 transition-all cursor-pointer shadow-[0_2px_8px_rgba(96,165,250,0.2)] flex-shrink-0"
           >
             <Send size={15} />
           </button>

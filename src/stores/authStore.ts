@@ -46,6 +46,7 @@ interface AuthState {
   setError: (error: string | null) => void
   initSession: () => Promise<void>
   subscribeAuth: () => () => void
+  initDemo: () => void
   reset: () => void
   isAuthenticated: () => boolean
   isAdminOrHR: () => boolean
@@ -107,7 +108,7 @@ export const useAuthStore = create<AuthState>()(
             set({ user })
             const { data: profile } = await supabase
               .from('user_profiles')
-              .select('id, email, full_name, full_name_th, avatar_url, role, company_id, language_preference, is_active')
+              .select('id, email, full_name, full_name_th, avatar_url, role, company_id, language_preference, is_active, phone')
               .eq('id', user.id)
               .maybeSingle()
             if (profile) {
@@ -147,7 +148,7 @@ export const useAuthStore = create<AuthState>()(
             set({ user: session.user })
             const { data: profile } = await supabase
               .from('user_profiles')
-              .select('id, email, full_name, full_name_th, avatar_url, role, company_id, language_preference, is_active')
+              .select('id, email, full_name, full_name_th, avatar_url, role, company_id, language_preference, is_active, phone')
               .eq('id', session.user.id)
               .maybeSingle()
             if (profile) {
@@ -169,6 +170,7 @@ export const useAuthStore = create<AuthState>()(
           authSubscription = null
         }
       },
+      initDemo: () => set({ _langPref: 'th' }),
       reset: () => {
         _sessionInitPromise = null
         set({ user: null, profile: null, company: null, _langPref: 'en', isLoading: false, error: null })

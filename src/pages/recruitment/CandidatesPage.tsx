@@ -48,8 +48,8 @@ export function CandidatesPage() {
     <div className="space-y-6">
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
-          <h1 className="text-headline-md font-bold text-on-surface dark:text-[#f1f5f9]">{t('candidates.title')}</h1>
-          <p className="text-body-md text-on-surface-variant dark:text-[#94a3b8] mt-1">Manage your candidate database</p>
+          <h1 className="text-headline-md font-bold text-on-surface dark:text-on-surface">{t('candidates.title')}</h1>
+          <p className="text-body-md text-on-surface-variant dark:text-on-surface-variant mt-1">{t('candidates.subtitle')}</p>
         </div>
         <div className="flex gap-2">
           <Button
@@ -68,23 +68,23 @@ export function CandidatesPage() {
             data-testid="add-candidate"
             icon={<Plus size={18} />}
           >
-            {t('candidates.add')}
+            {t('candidates.add_candidate')}
           </Button>
         </div>
       </div>
 
       <div className="relative max-w-sm">
-        <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant dark:text-[#94a3b8] size-4" />
+        <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant dark:text-on-surface-variant size-4" />
         <input
           value={searchInput}
           onChange={handleSearchChange}
-          className="w-full pl-10 pr-4 py-3 rounded-xl border border-outline-variant dark:border-[#334155] bg-surface-container-lowest dark:bg-[#0f172a] text-on-surface dark:text-[#f1f5f9] focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all duration-200 outline-none text-sm placeholder:text-on-surface-variant/50"
+          className="w-full pl-10 pr-4 py-3 rounded-xl border border-outline-variant dark:border-outline bg-surface-container-lowest dark:bg-surface-container-lowest text-on-surface dark:text-on-surface focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all duration-200 outline-none text-sm placeholder:text-on-surface-variant/50"
           placeholder={t('candidates.search_placeholder')}
         />
       </div>
 
       {showForm && (
-        <div className="bg-surface dark:bg-[#1e293b] rounded-xl border border-outline-variant dark:border-[#334155] p-6">
+        <div className="bg-surface dark:bg-surface rounded-xl border border-outline-variant dark:border-outline p-6">
           <CandidateForm onClose={() => setShowForm(false)} />
         </div>
       )}

@@ -1,4 +1,4 @@
-import { createBrowserRouter, Navigate, useLocation } from 'react-router-dom'
+import { createBrowserRouter, Navigate } from 'react-router-dom'
 import { lazy } from 'react'
 import { AuthGuard, CompanySetupGuard, getDefaultRoute } from './AuthGuard'
 import { AppLayout } from '../components/layout/AppLayout'
@@ -6,6 +6,11 @@ import { ErrorBoundary } from '../components/common/ErrorBoundary'
 import { AnimatedPage } from '../components/shared/AnimatedPage'
 import { useAuthStore } from '../stores/authStore'
 
+const LandingPage = lazy(() => import('../pages/public/LandingPage'))
+const PricingPage = lazy(() => import('../pages/public/PricingPage'))
+const TermsPage = lazy(() => import('../pages/public/TermsPage'))
+const PrivacyPage = lazy(() => import('../pages/public/PrivacyPage'))
+const CookiesPage = lazy(() => import('../pages/public/CookiesPage'))
 const LoginPage = lazy(() => import('../pages/auth/LoginPage'))
 const RegisterPage = lazy(() => import('../pages/auth/RegisterPage'))
 const ForgotPasswordPage = lazy(() => import('../pages/auth/ForgotPasswordPage'))
@@ -30,6 +35,7 @@ const CompliancePage = lazy(() => import('../pages/settings/CompliancePage'))
 const AuditLogPage = lazy(() => import('../pages/settings/AuditLogPage'))
 const NotificationPreferencesPage = lazy(() => import('../pages/settings/NotificationPreferencesPage'))
 const BulkImportPage = lazy(() => import('../pages/settings/BulkImportPage'))
+const BillingPage = lazy(() => import('../pages/settings/BillingPage'))
 const PDPAPage = lazy(() => import('../pages/settings/PDPAPage'))
 const HiringPage = lazy(() => import('../pages/hiring/HiringPage'))
 const HealthPage = lazy(() => import('../pages/HealthPage'))
@@ -47,17 +53,20 @@ const ApplicationStatusPage = lazy(() => import('../pages/applicant/ApplicationS
 const HR_ROLES = ['admin', 'hr', 'manager']
 const APPLICANT_ROLES = ['applicant']
 
-function RoleRedirect() {
+function PublicRoot() {
   const profile = useAuthStore(s => s.profile)
-  const location = useLocation()
-  const target = getDefaultRoute(profile?.role)
-  if (location.pathname === '/' || location.pathname === '') {
+  if (profile) {
+    const target = getDefaultRoute(profile.role)
     return <Navigate to={target} replace />
   }
-  return <Navigate to={target} replace />
+  return <AnimatedPage><LandingPage /></AnimatedPage>
 }
 
 export const router = createBrowserRouter([
+  {
+    path: '/',
+    element: <PublicRoot />,
+  },
   {
     path: '/login',
     element: <AnimatedPage><LoginPage /></AnimatedPage>,
@@ -75,6 +84,22 @@ export const router = createBrowserRouter([
     element: <AnimatedPage><ResetPasswordPage /></AnimatedPage>,
   },
   {
+    path: '/pricing',
+    element: <AnimatedPage><PricingPage /></AnimatedPage>,
+  },
+  {
+    path: '/terms',
+    element: <AnimatedPage><TermsPage /></AnimatedPage>,
+  },
+  {
+    path: '/privacy',
+    element: <AnimatedPage><PrivacyPage /></AnimatedPage>,
+  },
+  {
+    path: '/cookies',
+    element: <AnimatedPage><CookiesPage /></AnimatedPage>,
+  },
+  {
     path: '/setup-company',
     element: (
       <AnimatedPage>
@@ -85,14 +110,11 @@ export const router = createBrowserRouter([
     ),
   },
   {
-    path: '/',
     element: <AuthGuard><ErrorBoundary><AppLayout /></ErrorBoundary></AuthGuard>,
     children: [
-      { index: true, element: <RoleRedirect /> },
-
       // ── HR / Admin / Manager routes ──────────────────────────────
       {
-        path: 'dashboard',
+        path: '/dashboard',
         element: (
           <AuthGuard callInitSession={false} requiredRoles={HR_ROLES}>
             <AnimatedPage><DashboardPage /></AnimatedPage>
@@ -100,7 +122,7 @@ export const router = createBrowserRouter([
         ),
       },
       {
-        path: 'recruitment/candidates',
+        path: '/recruitment/candidates',
         element: (
           <AuthGuard callInitSession={false} requiredRoles={HR_ROLES}>
             <AnimatedPage><CandidatesPage /></AnimatedPage>
@@ -108,7 +130,7 @@ export const router = createBrowserRouter([
         ),
       },
       {
-        path: 'recruitment/candidates/:id',
+        path: '/recruitment/candidates/:id',
         element: (
           <AuthGuard callInitSession={false} requiredRoles={HR_ROLES}>
             <AnimatedPage><CandidateDetailPage /></AnimatedPage>
@@ -116,7 +138,7 @@ export const router = createBrowserRouter([
         ),
       },
       {
-        path: 'recruitment/jobs',
+        path: '/recruitment/jobs',
         element: (
           <AuthGuard callInitSession={false} requiredRoles={HR_ROLES}>
             <AnimatedPage><JobsPage /></AnimatedPage>
@@ -124,7 +146,7 @@ export const router = createBrowserRouter([
         ),
       },
       {
-        path: 'recruitment/jobs/:id',
+        path: '/recruitment/jobs/:id',
         element: (
           <AuthGuard callInitSession={false} requiredRoles={HR_ROLES}>
             <AnimatedPage><JobDetailPage /></AnimatedPage>
@@ -132,7 +154,7 @@ export const router = createBrowserRouter([
         ),
       },
       {
-        path: 'recruitment/pipeline',
+        path: '/recruitment/pipeline',
         element: (
           <AuthGuard callInitSession={false} requiredRoles={HR_ROLES}>
             <AnimatedPage><PipelinePage /></AnimatedPage>
@@ -140,7 +162,7 @@ export const router = createBrowserRouter([
         ),
       },
       {
-        path: 'recruitment/interviews',
+        path: '/recruitment/interviews',
         element: (
           <AuthGuard callInitSession={false} requiredRoles={HR_ROLES}>
             <AnimatedPage><InterviewsPage /></AnimatedPage>
@@ -148,7 +170,7 @@ export const router = createBrowserRouter([
         ),
       },
       {
-        path: 'documents',
+        path: '/documents',
         element: (
           <AuthGuard callInitSession={false} requiredRoles={HR_ROLES}>
             <AnimatedPage><DocumentsPage /></AnimatedPage>
@@ -156,7 +178,7 @@ export const router = createBrowserRouter([
         ),
       },
       {
-        path: 'documents/sign/:id',
+        path: '/documents/sign/:id',
         element: (
           <AuthGuard callInitSession={false} requireCompany={false} requiredRoles={[...HR_ROLES, ...APPLICANT_ROLES]}>
             <AnimatedPage><DocumentSigningPage /></AnimatedPage>
@@ -164,7 +186,7 @@ export const router = createBrowserRouter([
         ),
       },
       {
-        path: 'hiring',
+        path: '/hiring',
         element: (
           <AuthGuard callInitSession={false} requiredRoles={HR_ROLES}>
             <AnimatedPage><HiringPage /></AnimatedPage>
@@ -172,7 +194,7 @@ export const router = createBrowserRouter([
         ),
       },
       {
-        path: 'onboarding',
+        path: '/onboarding',
         element: (
           <AuthGuard callInitSession={false} requiredRoles={HR_ROLES}>
             <AnimatedPage><OnboardingMgmtPage /></AnimatedPage>
@@ -180,7 +202,7 @@ export const router = createBrowserRouter([
         ),
       },
       {
-        path: 'reports',
+        path: '/reports',
         element: (
           <AuthGuard callInitSession={false} requiredRoles={HR_ROLES}>
             <AnimatedPage><ReportsPage /></AnimatedPage>
@@ -188,7 +210,7 @@ export const router = createBrowserRouter([
         ),
       },
       {
-        path: 'health',
+        path: '/health',
         element: (
           <AuthGuard callInitSession={false} requiredRoles={HR_ROLES}>
             <AnimatedPage><HealthPage /></AnimatedPage>
@@ -196,7 +218,7 @@ export const router = createBrowserRouter([
         ),
       },
       {
-        path: 'monitoring',
+        path: '/monitoring',
         element: (
           <AuthGuard callInitSession={false} requiredRoles={HR_ROLES}>
             <AnimatedPage><GeminiMonitoringPage /></AnimatedPage>
@@ -204,7 +226,7 @@ export const router = createBrowserRouter([
         ),
       },
       {
-        path: 'settings',
+        path: '/settings',
         element: (
           <AuthGuard callInitSession={false} requiredRoles={HR_ROLES}>
             <AnimatedPage><SettingsPage /></AnimatedPage>
@@ -212,7 +234,7 @@ export const router = createBrowserRouter([
         ),
       },
       {
-        path: 'settings/security',
+        path: '/settings/security',
         element: (
           <AuthGuard callInitSession={false} requiredRoles={HR_ROLES}>
             <AnimatedPage><SecurityPage /></AnimatedPage>
@@ -220,7 +242,7 @@ export const router = createBrowserRouter([
         ),
       },
       {
-        path: 'settings/compliance',
+        path: '/settings/compliance',
         element: (
           <AuthGuard callInitSession={false} requiredRoles={['admin']}>
             <AnimatedPage><CompliancePage /></AnimatedPage>
@@ -228,7 +250,7 @@ export const router = createBrowserRouter([
         ),
       },
       {
-        path: 'settings/notifications',
+        path: '/settings/notifications',
         element: (
           <AuthGuard callInitSession={false} requiredRoles={HR_ROLES}>
             <AnimatedPage><NotificationPreferencesPage /></AnimatedPage>
@@ -236,7 +258,7 @@ export const router = createBrowserRouter([
         ),
       },
       {
-        path: 'settings/audit-log',
+        path: '/settings/audit-log',
         element: (
           <AuthGuard callInitSession={false} requiredRoles={['admin', 'hr']}>
             <AnimatedPage><AuditLogPage /></AnimatedPage>
@@ -244,7 +266,7 @@ export const router = createBrowserRouter([
         ),
       },
       {
-        path: 'settings/import',
+        path: '/settings/import',
         element: (
           <AuthGuard callInitSession={false} requiredRoles={HR_ROLES}>
             <AnimatedPage><BulkImportPage /></AnimatedPage>
@@ -252,10 +274,18 @@ export const router = createBrowserRouter([
         ),
       },
       {
-        path: 'settings/pdpa',
+        path: '/settings/pdpa',
         element: (
           <AuthGuard callInitSession={false} requiredRoles={HR_ROLES}>
             <AnimatedPage><PDPAPage /></AnimatedPage>
+          </AuthGuard>
+        ),
+      },
+      {
+        path: '/settings/billing',
+        element: (
+          <AuthGuard callInitSession={false} requiredRoles={HR_ROLES}>
+            <AnimatedPage><BillingPage /></AnimatedPage>
           </AuthGuard>
         ),
       },
@@ -264,7 +294,7 @@ export const router = createBrowserRouter([
 
       // ── Applicant routes ──────────────────────────────────────────
       {
-        path: 'applicant/dashboard',
+        path: '/applicant/dashboard',
         element: (
           <AuthGuard callInitSession={false} requiredRoles={APPLICANT_ROLES}>
             <AnimatedPage><ApplicantDashboardPage /></AnimatedPage>
@@ -272,7 +302,7 @@ export const router = createBrowserRouter([
         ),
       },
       {
-        path: 'applicant/jobs',
+        path: '/applicant/jobs',
         element: (
           <AuthGuard callInitSession={false} requiredRoles={APPLICANT_ROLES}>
             <AnimatedPage><BrowseJobsPage /></AnimatedPage>
@@ -280,7 +310,7 @@ export const router = createBrowserRouter([
         ),
       },
       {
-        path: 'applicant/jobs/:id',
+        path: '/applicant/jobs/:id',
         element: (
           <AuthGuard callInitSession={false} requiredRoles={APPLICANT_ROLES}>
             <AnimatedPage><ApplicantJobDetailPage /></AnimatedPage>
@@ -288,7 +318,7 @@ export const router = createBrowserRouter([
         ),
       },
       {
-        path: 'applicant/status',
+        path: '/applicant/status',
         element: (
           <AuthGuard callInitSession={false} requiredRoles={APPLICANT_ROLES}>
             <AnimatedPage><ApplicationStatusPage /></AnimatedPage>
@@ -296,7 +326,7 @@ export const router = createBrowserRouter([
         ),
       },
       {
-        path: 'my-profile',
+        path: '/my-profile',
         element: (
           <AuthGuard callInitSession={false} requiredRoles={APPLICANT_ROLES}>
             <AnimatedPage><MyProfilePage /></AnimatedPage>
@@ -304,7 +334,7 @@ export const router = createBrowserRouter([
         ),
       },
       {
-        path: 'my-tasks',
+        path: '/my-tasks',
         element: (
           <AuthGuard callInitSession={false} requiredRoles={APPLICANT_ROLES}>
             <AnimatedPage><MyTasksPage /></AnimatedPage>

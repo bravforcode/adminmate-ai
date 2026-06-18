@@ -2,27 +2,34 @@ import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
+import { useTranslation } from 'react-i18next'
 import { useAuthStore } from '../../stores/authStore'
 import { supabase } from '../../lib/supabase'
 import toast from 'react-hot-toast'
 import { useNavigate } from 'react-router-dom'
 import { LogOut, UserCircle, Phone, MapPin, Briefcase, Mail, Save } from 'lucide-react'
 
-const profileSchema = z.object({
-  full_name: z.string().min(1, 'Name is required'),
-  full_name_th: z.string().optional(),
-  phone: z.string().optional(),
-  location: z.string().optional(),
-  current_position: z.string().optional(),
-})
-
-type ProfileForm = z.infer<typeof profileSchema>
+type ProfileForm = {
+  full_name: string
+  full_name_th?: string
+  phone?: string
+  location?: string
+  current_position?: string
+}
 
 export function MyProfilePage() {
+  const { t } = useTranslation('common')
   const navigate = useNavigate()
   const profile = useAuthStore(s => s.profile)
   const { setProfile, reset } = useAuthStore()
   const [saving, setSaving] = useState(false)
+  const profileSchema = z.object({
+    full_name: z.string().min(1, t('profile_page.name_required')),
+    full_name_th: z.string().optional(),
+    phone: z.string().optional(),
+    location: z.string().optional(),
+    current_position: z.string().optional(),
+  })
 
   const { register, handleSubmit, formState: { errors } } = useForm<ProfileForm>({
     resolver: zodResolver(profileSchema),
@@ -44,6 +51,9 @@ export function MyProfilePage() {
         .update({
           full_name: data.full_name,
           full_name_th: data.full_name_th,
+          phone: data.phone || null,
+          location: data.location || null,
+          current_position: data.current_position || null,
         })
         .eq('id', profile.id)
 
@@ -62,10 +72,17 @@ export function MyProfilePage() {
           .eq('email', profile.email)
       }
 
-      setProfile({ ...profile, full_name: data.full_name } as never)
-      toast.success('Profile updated successfully')
+      setProfile({
+        ...profile,
+        full_name: data.full_name,
+        full_name_th: data.full_name_th,
+        phone: data.phone || undefined,
+        location: data.location || undefined,
+        current_position: data.current_position || undefined,
+      } as never)
+      toast.success(t('profile_page.updated'))
     } catch (e: unknown) {
-      toast.error(e instanceof Error ? e.message : 'Failed to save')
+      toast.error(e instanceof Error ? e.message : t('errors.generic'))
     } finally {
       setSaving(false)
     }
@@ -84,15 +101,15 @@ export function MyProfilePage() {
       {/* Header */}
       <div className="flex items-start justify-between">
         <div>
-          <h1 className="text-headline-md font-bold text-on-surface">My Profile</h1>
-          <p className="text-body-md text-on-surface-variant mt-1">Manage your personal information</p>
+          <h1 className="text-headline-md font-bold text-on-surface">{t('my_profile')}</h1>
+          <p className="text-body-md text-on-surface-variant mt-1">{t('profile_page.subtitle')}</p>
         </div>
         <button
           onClick={handleLogout}
           className="flex items-center gap-2 px-4 py-2 border border-outline-variant text-on-surface-variant rounded-lg text-sm hover:bg-error-container hover:text-error hover:border-error transition-colors"
         >
           <LogOut size={16} />
-          Sign Out
+          {t('sign_out')}
         </button>
       </div>
 
@@ -106,7 +123,7 @@ export function MyProfilePage() {
             <h2 className="text-xl font-semibold text-on-surface">{profile?.full_name}</h2>
             <p className="text-sm text-on-surface-variant">{profile?.email}</p>
             <span className="mt-2 inline-block px-3 py-1 bg-secondary-container text-on-secondary-container text-xs font-semibold rounded-full capitalize">
-              {profile?.role || 'Applicant'}
+              {profile?.role || t('profile_page.default_role')}
             </span>
           </div>
         </div>
@@ -116,30 +133,30 @@ export function MyProfilePage() {
       <div className="bg-surface rounded-xl border border-outline-variant shadow-sm p-6">
         <div className="flex items-center gap-2 mb-6 pb-4 border-b border-surface-container">
           <UserCircle size={20} className="text-primary" />
-          <h3 className="text-title-lg font-semibold text-on-surface">Personal Information</h3>
+          <h3 className="text-title-lg font-semibold text-on-surface">{t('profile_page.personal_information')}</h3>
         </div>
 
         <form id="profile-form" onSubmit={handleSubmit(onSubmit)} className="space-y-5">
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
               <label className="block text-sm font-medium mb-1 text-on-surface-variant">
-                Full Name (EN) *
+                {t('profile_page.full_name_en')} *
               </label>
               <input
                 {...register('full_name')}
                 className="w-full px-3 py-2 rounded-lg border border-outline-variant bg-surface-container-lowest focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all"
-                placeholder="Your full name"
+                placeholder={t('profile_page.full_name_placeholder')}
               />
               {errors.full_name && <p className="text-error text-xs mt-1">{errors.full_name.message}</p>}
             </div>
             <div>
               <label className="block text-sm font-medium mb-1 text-on-surface-variant">
-                Full Name (TH)
+                {t('profile_page.full_name_local')}
               </label>
               <input
                 {...register('full_name_th')}
                 className="w-full px-3 py-2 rounded-lg border border-outline-variant bg-surface-container-lowest focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all"
-                placeholder="ชื่อ - นามสกุล"
+                placeholder={t('profile_page.full_name_local_placeholder')}
               />
             </div>
           </div>
@@ -148,51 +165,51 @@ export function MyProfilePage() {
             <div>
               <label className="flex items-center gap-1.5 text-sm font-medium mb-1 text-on-surface-variant">
                 <Phone size={13} />
-                Phone Number
+                {t('profile_page.phone')}
               </label>
               <input
                 {...register('phone')}
                 type="tel"
                 className="w-full px-3 py-2 rounded-lg border border-outline-variant bg-surface-container-lowest focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all"
-                placeholder="+66 8x-xxx-xxxx"
+                placeholder={t('profile_page.phone_placeholder')}
               />
             </div>
             <div>
               <label className="flex items-center gap-1.5 text-sm font-medium mb-1 text-on-surface-variant">
                 <MapPin size={13} />
-                Location / City
+                {t('profile_page.location')}
               </label>
               <input
                 {...register('location')}
                 className="w-full px-3 py-2 rounded-lg border border-outline-variant bg-surface-container-lowest focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all"
-                placeholder="Bangkok, Thailand"
+                placeholder={t('profile_page.location_placeholder')}
               />
             </div>
           </div>
 
           <div>
-            <label className="flex items-center gap-1.5 text-sm font-medium mb-1 text-on-surface-variant">
-              <Briefcase size={13} />
-              Current Position / Job Title
-            </label>
-            <input
-              {...register('current_position')}
-              className="w-full px-3 py-2 rounded-lg border border-outline-variant bg-surface-container-lowest focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all"
-              placeholder="e.g. Frontend Developer"
-            />
+              <label className="flex items-center gap-1.5 text-sm font-medium mb-1 text-on-surface-variant">
+                <Briefcase size={13} />
+                {t('profile_page.current_position')}
+              </label>
+              <input
+                {...register('current_position')}
+                className="w-full px-3 py-2 rounded-lg border border-outline-variant bg-surface-container-lowest focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all"
+                placeholder={t('profile_page.current_position_placeholder')}
+              />
           </div>
 
           <div className="pt-2">
-            <label className="flex items-center gap-1.5 text-sm font-medium mb-1 text-on-surface-variant">
-              <Mail size={13} />
-              Email Address
-            </label>
+              <label className="flex items-center gap-1.5 text-sm font-medium mb-1 text-on-surface-variant">
+                <Mail size={13} />
+                {t('profile_page.email')}
+              </label>
             <input
               value={profile?.email ?? ''}
               disabled
               className="w-full px-3 py-2 rounded-lg border border-outline-variant bg-surface-container text-on-surface-variant outline-none cursor-not-allowed"
             />
-            <p className="text-xs text-on-surface-variant mt-1">Email cannot be changed here.</p>
+            <p className="text-xs text-on-surface-variant mt-1">{t('profile_page.email_readonly')}</p>
           </div>
         </form>
       </div>
@@ -206,7 +223,7 @@ export function MyProfilePage() {
           className="flex items-center gap-2 px-6 py-2.5 bg-primary text-on-primary rounded-lg font-medium hover:opacity-90 disabled:opacity-50 shadow-sm transition-opacity"
         >
           <Save size={16} />
-          {saving ? 'Saving...' : 'Save Changes'}
+          {saving ? t('saving') : t('save_changes')}
         </button>
       </div>
     </div>

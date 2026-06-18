@@ -1,6 +1,7 @@
 import { useQuery } from '@tanstack/react-query'
 import { supabase } from '../../lib/supabase'
 import { useAuthStore } from '../../stores/authStore'
+import { useTranslation } from 'react-i18next'
 import { Shield, CheckCircle, AlertTriangle, Clock, FileDown } from 'lucide-react'
 import { DataDeletionRequest } from '../../types/models'
 
@@ -8,24 +9,25 @@ import toast from 'react-hot-toast'
 
 const COUNTRY_CHECKS = {
   TH: [
-    { id: 'pdpa_consent', label: 'PDPA Consent active', required: true },
-    { id: 'dpo', label: 'DPO contact configured', required: false },
-    { id: 'retention_policy', label: 'Data retention policy set', required: true },
-    { id: 'breach_procedure', label: 'Data breach procedure ready', required: true },
+    { id: 'pdpa_consent', labelKey: 'compliance.checks.pdpa_consent', required: true },
+    { id: 'dpo', labelKey: 'compliance.checks.dpo', required: false },
+    { id: 'retention_policy', labelKey: 'compliance.checks.retention_policy', required: true },
+    { id: 'breach_procedure', labelKey: 'compliance.checks.breach_procedure', required: true },
   ],
   VN: [
-    { id: 'consent', label: 'Consent before collection', required: true },
-    { id: 'cross_border', label: 'Cross-border transfer assessment', required: true },
-    { id: 'security', label: 'Technical security measures', required: true },
+    { id: 'consent', labelKey: 'compliance.checks.consent', required: true },
+    { id: 'cross_border', labelKey: 'compliance.checks.cross_border', required: true },
+    { id: 'security', labelKey: 'compliance.checks.security', required: true },
   ],
   ID: [
-    { id: 'consent', label: 'Explicit consent obtained', required: true },
-    { id: 'breach', label: '14-day breach notification procedure', required: true },
-    { id: 'retention', label: 'Data retention limits defined', required: true },
+    { id: 'consent', labelKey: 'compliance.checks.explicit_consent', required: true },
+    { id: 'breach', labelKey: 'compliance.checks.breach', required: true },
+    { id: 'retention', labelKey: 'compliance.checks.retention', required: true },
   ],
 }
 
 export function CompliancePage() {
+  const { t } = useTranslation('common')
   const company = useAuthStore(s => s.company)
   const country = company?.country || 'TH'
   const checks = COUNTRY_CHECKS[country as keyof typeof COUNTRY_CHECKS] || COUNTRY_CHECKS.TH
@@ -54,22 +56,22 @@ export function CompliancePage() {
       if (req) await supabase.rpc('anonymize_candidate_data', { p_email: req.requester_email, p_company_id: company?.id })
     }
     await supabase.from('data_deletion_requests').update({ status: action === 'approved' ? 'completed' : 'rejected', completed_at: new Date().toISOString() }).eq('id', requestId)
-    toast.success(`Request ${action}`)
+    toast.success(t(action === 'approved' ? 'compliance.request_approved' : 'compliance.request_rejected'))
   }
 
   return (
     <div className="space-y-6 max-w-3xl">
       <div>
-        <h1 className="text-headline-md font-bold text-on-surface">Compliance</h1>
-        <p className="text-body-md text-on-surface-variant mt-1">Data protection & regulatory compliance for {country}</p>
+        <h1 className="text-headline-md font-bold text-on-surface">{t('compliance.title')}</h1>
+        <p className="text-body-md text-on-surface-variant mt-1">{t('compliance.subtitle', { country })}</p>
       </div>
 
       <div className="bg-surface rounded-xl border border-outline-variant p-6">
-        <div className="flex items-center gap-2 mb-4"><Shield size={20} className="text-primary" /><h3 className="font-semibold">{country} Compliance Checklist</h3></div>
+        <div className="flex items-center gap-2 mb-4"><Shield size={20} className="text-primary" /><h3 className="font-semibold">{t('compliance.checklist_title', { country })}</h3></div>
         <div className="space-y-2">
           {checks.map(check => (
             <div key={check.id} className="flex items-center justify-between py-2 px-3 rounded-lg bg-surface-container-low">
-              <span className="text-sm">{check.label}</span>
+              <span className="text-sm">{t(check.labelKey)}</span>
               {check.required ? <AlertTriangle size={16} className="text-yellow-600" /> : <CheckCircle size={16} className="text-green-600" />}
             </div>
           ))}
@@ -77,9 +79,9 @@ export function CompliancePage() {
       </div>
 
       <div className="bg-surface rounded-xl border border-outline-variant p-6">
-        <div className="flex items-center gap-2 mb-4"><FileDown size={20} className="text-primary" /><h3 className="font-semibold">Data Subject Requests</h3></div>
+        <div className="flex items-center gap-2 mb-4"><FileDown size={20} className="text-primary" /><h3 className="font-semibold">{t('compliance.data_subject_requests')}</h3></div>
         {deletionRequests?.length === 0 ? (
-          <p className="text-sm text-on-surface-variant">No pending data subject requests</p>
+          <p className="text-sm text-on-surface-variant">{t('empty.compliance_requests_title')}</p>
         ) : (
           <div className="space-y-2">
             {deletionRequests?.map((req: DataDeletionRequest) => (
@@ -89,8 +91,8 @@ export function CompliancePage() {
                   <p className="text-xs text-on-surface-variant">{req.request_type} · {req.created_at ? new Date(req.created_at).toLocaleDateString() : ''}</p>
                 </div>
                 <div className="flex gap-2">
-                  <button onClick={() => handleDeletion(req.id, 'approved')} className="px-3 py-1 bg-green-50 text-green-700 rounded text-xs font-medium hover:bg-green-100">Approve</button>
-                  <button onClick={() => handleDeletion(req.id, 'rejected')} className="px-3 py-1 bg-red-50 text-red-700 rounded text-xs font-medium hover:bg-red-100">Reject</button>
+                  <button onClick={() => handleDeletion(req.id, 'approved')} className="px-3 py-2 bg-green-50 text-green-700 rounded text-xs font-medium hover:bg-green-100 min-h-[44px]">{t('compliance.approve')}</button>
+                  <button onClick={() => handleDeletion(req.id, 'rejected')} className="px-3 py-2 bg-red-50 text-red-700 rounded text-xs font-medium hover:bg-red-100 min-h-[44px]">{t('compliance.reject')}</button>
                 </div>
               </div>
             ))}
@@ -99,11 +101,11 @@ export function CompliancePage() {
       </div>
 
       <div className="bg-surface rounded-xl border border-outline-variant p-6">
-        <div className="flex items-center gap-2 mb-4"><Clock size={20} className="text-primary" /><h3 className="font-semibold">Data Retention</h3></div>
+        <div className="flex items-center gap-2 mb-4"><Clock size={20} className="text-primary" /><h3 className="font-semibold">{t('compliance.data_retention')}</h3></div>
         <div className="space-y-3 text-sm">
-          <div className="flex justify-between py-2 border-b border-outline-variant"><span className="text-on-surface-variant">CV Data</span><span>2 years after application</span></div>
-          <div className="flex justify-between py-2 border-b border-outline-variant"><span className="text-on-surface-variant">Employee Data</span><span>7 years after termination</span></div>
-          <div className="flex justify-between py-2"><span className="text-on-surface-variant">Chat History</span><span>1 year</span></div>
+          <div className="flex justify-between py-2 border-b border-outline-variant"><span className="text-on-surface-variant">{t('compliance.cv_data')}</span><span>{t('compliance.cv_data_retention')}</span></div>
+          <div className="flex justify-between py-2 border-b border-outline-variant"><span className="text-on-surface-variant">{t('compliance.employee_data')}</span><span>{t('compliance.employee_data_retention')}</span></div>
+          <div className="flex justify-between py-2"><span className="text-on-surface-variant">{t('compliance.chat_history')}</span><span>{t('compliance.chat_history_retention')}</span></div>
         </div>
       </div>
     </div>

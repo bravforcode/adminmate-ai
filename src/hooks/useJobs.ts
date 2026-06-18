@@ -2,6 +2,7 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { jobService } from '../services/jobService'
 import { useAuthStore } from '../stores/authStore'
 import toast from 'react-hot-toast'
+import i18n from '../lib/i18n'
 
 const KEYS = { all: ['jobs'] as const, list: (id: string) => ['jobs', 'list', id] as const, detail: (id: string) => ['jobs', 'detail', id] as const }
 
@@ -17,7 +18,14 @@ export function useJob(id: string) {
 export function useCreateJob() {
   const qc = useQueryClient()
   const company = useAuthStore(s => s.company)
-  return useMutation({ mutationFn: jobService.create, onSuccess: () => { qc.invalidateQueries({ queryKey: KEYS.list(company?.id ?? '') }); toast.success('Job created') }, onError: (e: Error) => toast.error(e.message) })
+  return useMutation({
+    mutationFn: jobService.create,
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: KEYS.list(company?.id ?? '') })
+      toast.success(i18n.t('recruitment:toasts.job_created'))
+    },
+    onError: (e: Error) => toast.error(e.message),
+  })
 }
 
 export function useUpdateJob() {

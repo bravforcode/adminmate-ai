@@ -1,4 +1,5 @@
 import { useState, useMemo, useCallback, useEffect } from 'react'
+import { useLocation, useNavigate } from 'react-router-dom'
 import { Plus, Search, Briefcase, Trash2, Download } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import { useJobs } from '../../hooks/useJobs'
@@ -17,6 +18,8 @@ import toast from 'react-hot-toast'
 export function JobsPage() {
   const { t } = useTranslation(['recruitment', 'common'])
   const qc = useQueryClient()
+  const location = useLocation()
+  const navigate = useNavigate()
   const { data: jobs, isLoading, isError, error, refetch } = useJobs()
   const [showForm, setShowForm] = useState(false)
   const [searchInput, setSearchInput] = useState('')
@@ -27,6 +30,13 @@ export function JobsPage() {
     const timer = setTimeout(() => setSearch(searchInput), 300)
     return () => clearTimeout(timer)
   }, [searchInput])
+
+  useEffect(() => {
+    if ((location.state as { openCreateJob?: boolean } | null)?.openCreateJob) {
+      setShowForm(true)
+      navigate(location.pathname, { replace: true, state: null })
+    }
+  }, [location.pathname, location.state, navigate])
 
   const handleDeleteJob = async () => {
     if (!deleteJobId) return
@@ -69,8 +79,8 @@ export function JobsPage() {
     <div className="space-y-6">
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
-          <h1 className="text-headline-md font-bold text-on-surface dark:text-[#f1f5f9]">{t('jobs.title')}</h1>
-          <p className="text-body-md text-on-surface-variant dark:text-[#94a3b8] mt-1">Manage your job postings</p>
+          <h1 className="text-headline-md font-bold text-on-surface dark:text-on-surface">{t('jobs.title')}</h1>
+          <p className="text-body-md text-on-surface-variant dark:text-on-surface-variant mt-1">{t('jobs.subtitle')}</p>
         </div>
         <div className="flex gap-2">
           <Button
@@ -95,17 +105,17 @@ export function JobsPage() {
       </div>
 
       <div className="relative max-w-sm">
-        <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant dark:text-[#94a3b8] size-4" />
+        <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant dark:text-on-surface-variant size-4" />
         <input
           value={searchInput}
           onChange={handleSearchChange}
-          className="w-full pl-10 pr-4 py-3 rounded-xl border border-outline-variant dark:border-[#334155] bg-surface-container-lowest dark:bg-[#0f172a] text-on-surface dark:text-[#f1f5f9] focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all duration-200 outline-none text-sm placeholder:text-on-surface-variant/50"
+          className="w-full pl-10 pr-4 py-3 rounded-xl border border-outline-variant dark:border-outline bg-surface-container-lowest dark:bg-surface-container-lowest text-on-surface dark:text-on-surface focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all duration-200 outline-none text-sm placeholder:text-on-surface-variant/50"
           placeholder={t('jobs.search_placeholder')}
         />
       </div>
 
       {showForm && (
-        <div className="bg-surface dark:bg-[#1e293b] rounded-xl border border-outline-variant dark:border-[#334155] p-6">
+        <div className="bg-surface dark:bg-surface rounded-xl border border-outline-variant dark:border-outline p-6">
           <JobForm onClose={() => setShowForm(false)} />
         </div>
       )}

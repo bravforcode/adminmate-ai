@@ -5,10 +5,12 @@ import { storageService } from '../../services/storageService'
 import { supabase } from '../../lib/supabase'
 import toast from 'react-hot-toast'
 import { MAX_FILE_SIZE } from '../../utils/constants'
+import { useTranslation } from 'react-i18next'
 
 interface CVUploaderProps { candidateId: string; companyId: string }
 
 export function CVUploader({ candidateId, companyId }: CVUploaderProps) {
+  const { t } = useTranslation('recruitment')
   const [uploading, setUploading] = useState(false)
   const [parsing, setParsing] = useState(false)
   const [error, setError] = useState('')
@@ -32,9 +34,9 @@ export function CVUploader({ candidateId, companyId }: CVUploaderProps) {
       setParsing(true)
       await supabase.functions.invoke('parse-resume', { body: { cvDocumentId: cvDoc.id, candidateId, companyId } })
       setParsing(false)
-      toast.success('CV uploaded and parsed')
+      toast.success(t('candidates.upload_success'))
     } catch (err: unknown) {
-      setError(err instanceof Error ? err.message : 'Upload failed')
+      setError(err instanceof Error ? err.message : t('candidates.upload_failed'))
       setUploading(false)
       setParsing(false)
     }
@@ -52,13 +54,13 @@ export function CVUploader({ candidateId, companyId }: CVUploaderProps) {
         {uploading || parsing ? (
           <div className="space-y-2">
             <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto" />
-            <p className="text-sm text-on-surface-variant">{uploading ? 'Uploading...' : 'Parsing with AI...'}</p>
+            <p className="text-sm text-on-surface-variant">{uploading ? t('candidates.uploading') : t('candidates.parsing')}</p>
           </div>
         ) : (
           <div className="space-y-2">
             <Upload size={32} className="mx-auto text-on-surface-variant" />
-            <p className="text-sm font-medium">Drag & drop CV here, or click to browse</p>
-            <p className="text-xs text-on-surface-variant">PDF or DOCX, max 10MB</p>
+            <p className="text-sm font-medium">{t('candidates.upload_prompt')}</p>
+            <p className="text-xs text-on-surface-variant">{t('candidates.upload_hint')}</p>
           </div>
         )}
       </div>

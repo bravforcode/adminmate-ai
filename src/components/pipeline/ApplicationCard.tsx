@@ -5,8 +5,9 @@ import { Button } from '../ui/Button'
 import { Sparkles, ArrowRight, ArrowLeft, Eye, MessageSquare } from 'lucide-react'
 import { PIPELINE_STAGES } from '../../utils/constants'
 import { ApplicationDrawer } from './ApplicationDrawer'
-import { cn } from '../../utils/cn'
+import { cn } from '../../lib/utils'
 import toast from 'react-hot-toast'
+import { useTranslation } from 'react-i18next'
 
 import { Application, CVDocument } from '../../types/models'
 
@@ -18,6 +19,7 @@ interface ApplicationCardProps {
 }
 
 export const ApplicationCard = memo(function ApplicationCard({ application, isActive, onClick, role }: ApplicationCardProps) {
+  const { t } = useTranslation('recruitment')
   const updateStatus = useUpdateApplicationStatus()
   const triggerAI = useTriggerAIScreening()
   const company = useAuthStore(s => s.company)
@@ -32,8 +34,13 @@ export const ApplicationCard = memo(function ApplicationCard({ application, isAc
   const handleScreen = async (e: React.MouseEvent) => {
     e.stopPropagation()
     const latestCV = application.cv_documents?.find((cv: CVDocument) => cv.is_current)
-    if (!latestCV) { toast.error('No CV available for screening'); return }
+    if (!latestCV) { toast.error(t('pipeline.no_cv_for_screening')); return }
     await triggerAI.mutateAsync({ applicationId: application.id, jobId: application.job_id ?? '', cvDocumentId: latestCV.id, companyId: company?.id ?? '' })
+  }
+
+  const handleOpenChat = (e: React.MouseEvent) => {
+    e.stopPropagation()
+    window.dispatchEvent(new CustomEvent('adminmate:open-chat'))
   }
 
   return (
@@ -43,7 +50,7 @@ export const ApplicationCard = memo(function ApplicationCard({ application, isAc
         aria-grabbed="false"
         aria-dropeffect="move"
         className={cn(
-          'bg-surface-container-lowest dark:bg-[#1e293b] p-4 rounded-xl border shadow-sm hover:shadow-md transition-all cursor-pointer relative overflow-hidden card-hover',
+          'bg-surface-container-lowest dark:bg-surface p-4 rounded-xl border shadow-sm hover:shadow-md transition-all cursor-pointer relative overflow-hidden card-hover',
           isActive ? 'border-primary shadow-md' : 'border-outline-variant'
         )}
         data-testid="kanban-card"
@@ -67,10 +74,10 @@ export const ApplicationCard = memo(function ApplicationCard({ application, isAc
               <p className="text-xs text-on-surface-variant mt-0.5">
                 {application.status === 'ai_screening' ? (
                   <span className="flex items-center gap-1 text-primary">
-                    <span className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse" /> Processing...
+                    <span className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse" /> {t('pipeline.processing')}
                   </span>
                 ) : (
-                  application.candidates?.current_position || 'Candidate'
+                  application.candidates?.current_position || t('pipeline.candidate_default')
                 )}
               </p>
             </div>
@@ -82,7 +89,7 @@ export const ApplicationCard = memo(function ApplicationCard({ application, isAc
               matchScore >= 80 ? 'bg-primary text-on-primary shadow-sm' : 'bg-surface-container text-on-surface-variant border border-outline-variant/50'
             )}>
               {matchScore >= 80 && <Sparkles size={12} />}
-              {matchScore}% Match
+              {t('pipeline.match_percent', { score: matchScore })}
             </span>
           )}
         </div>
@@ -90,7 +97,7 @@ export const ApplicationCard = memo(function ApplicationCard({ application, isAc
         <div className="flex justify-between items-center mt-3">
           <div className="flex gap-2">
             <span className="text-xs text-on-surface-variant bg-surface-container px-2 py-1 rounded">
-              {application.candidates?.years_experience ? `${application.candidates.years_experience} yrs exp` : 'N/A exp'}
+              {application.candidates?.years_experience ? t('pipeline.years_experience', { count: application.candidates.years_experience }) : t('pipeline.no_experience')}
             </span>
             {application.candidates?.primary_skill && (
               <span className="text-xs text-on-surface-variant bg-surface-container px-2 py-1 rounded">
@@ -104,14 +111,14 @@ export const ApplicationCard = memo(function ApplicationCard({ application, isAc
               variant="ghost"
               size="icon_sm"
               onClick={e => { e.stopPropagation(); setShowDrawer(true) }}
-              aria-label={`View details for ${application.candidates?.full_name || 'candidate'}`}
+              aria-label={t('pipeline.view_candidate_details', { name: application.candidates?.full_name || t('pipeline.candidate_default') })}
               icon={<Eye size={16} />}
             />
             <Button
               variant="ghost"
               size="icon_sm"
-              onClick={e => { e.stopPropagation(); toast.success('Chat opened') }}
-              aria-label={`Chat with ${application.candidates?.full_name || 'candidate'}`}
+              onClick={handleOpenChat}
+              aria-label={t('pipeline.chat_with_candidate', { name: application.candidates?.full_name || t('pipeline.candidate_default') })}
               icon={<MessageSquare size={16} />}
             />
           </div>
@@ -127,7 +134,7 @@ export const ApplicationCard = memo(function ApplicationCard({ application, isAc
                 onClick={e => { e.stopPropagation(); updateStatus.mutate({ id: application.id, status: PIPELINE_STAGES[stageIndex - 1].id }) }}
                 icon={<ArrowLeft size={12} />}
               >
-                Back
+                {t('pipeline.back')}
               </Button>
             )}
             {stageIndex < PIPELINE_STAGES.length - 2 && (
@@ -138,7 +145,7 @@ export const ApplicationCard = memo(function ApplicationCard({ application, isAc
                 icon={<ArrowRight size={12} />}
                 iconPosition="right"
               >
-                Forward
+                {t('pipeline.forward')}
               </Button>
             )}
             {hasCV && application.status === 'applied' && (
@@ -150,7 +157,7 @@ export const ApplicationCard = memo(function ApplicationCard({ application, isAc
                 loading={triggerAI.isPending}
                 icon={<Sparkles size={12} />}
               >
-                {triggerAI.isPending ? 'Screening...' : 'Screen'}
+                {triggerAI.isPending ? t('pipeline.screening') : t('pipeline.screen')}
               </Button>
             )}
           </div>

@@ -2,6 +2,7 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { offerService } from '../services/offerService'
 import { useAuthStore } from '../stores/authStore'
 import toast from 'react-hot-toast'
+import i18n from '../lib/i18n'
 
 export function useOffers() {
   const company = useAuthStore(s => s.company)
@@ -11,7 +12,14 @@ export function useOffers() {
 export function useCreateOffer() {
   const qc = useQueryClient()
   const company = useAuthStore(s => s.company)
-  return useMutation({ mutationFn: offerService.create, onSuccess: () => { qc.invalidateQueries({ queryKey: ['offers', company?.id] }); toast.success('Offer created') }, onError: (e: Error) => toast.error(e.message) })
+  return useMutation({
+    mutationFn: offerService.create,
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: ['offers', company?.id] })
+      toast.success(i18n.t('hiring:toasts.offer_created'))
+    },
+    onError: (e: Error) => toast.error(e.message),
+  })
 }
 
 export function useUpdateOffer() {

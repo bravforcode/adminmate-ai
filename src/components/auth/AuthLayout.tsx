@@ -6,65 +6,34 @@ interface AuthLayoutProps {
   subtitle?: string
 }
 
-// AuthLayout is no longer used for LoginPage (replaced by inline LoginPage design)
-// Kept for ForgotPassword, ResetPassword pages
+/**
+ * ponytail: AuthLayout for Forgot/Reset password pages.
+ * Uses Tailwind + CSS variables for consistency with LoginPage.
+ */
 export function AuthLayout({ children, title, subtitle }: AuthLayoutProps) {
   return (
-    <div style={{
-      minHeight: '100vh',
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-      backgroundColor: 'var(--color-bg, #f8fafc)',
-      padding: '24px',
-      fontFamily: 'var(--font-sans, Inter, sans-serif)',
-    }}>
-      <div style={{ width: '100%', maxWidth: '420px' }}>
-
+    <div className="min-h-screen flex items-center justify-center bg-background dark:bg-surface-container-lowest p-6 font-sans">
+      <div className="w-full max-w-[420px]">
         {/* Logo */}
-        <div style={{ textAlign: 'center', marginBottom: '40px' }}>
-          <div style={{ display: 'inline-block', marginBottom: '16px' }}>
+        <div className="text-center mb-10">
+          <div className="inline-block mb-4">
             <Logo size={40} showText={false} />
           </div>
-          <h1 style={{
-            fontFamily: 'var(--font-serif, Georgia, serif)',
-            fontSize: '20px', fontWeight: 400,
-            color: 'var(--color-navy-deep, #0f172a)',
-            letterSpacing: '-0.02em', margin: '0 0 4px 0',
-          }}>
+          <h1 className="font-serif text-xl font-normal text-on-surface dark:text-on-surface tracking-[-0.02em] m-0 mb-1">
             AdminMate AI
           </h1>
-          <p style={{
-            fontSize: '12px', color: 'var(--color-text-muted, #94a3b8)',
-            margin: 0, fontWeight: 400,
-          }}>
+          <p className="text-xs text-text-muted dark:text-outline-variant m-0 font-normal">
             HR Intelligence for SME
           </p>
         </div>
 
         {/* Card */}
-        <div style={{
-          backgroundColor: 'var(--color-surface, #ffffff)',
-          border: '1px solid var(--color-border-subtle, #f1f5f9)',
-          borderRadius: '14px',
-          padding: '36px 32px',
-          boxShadow: '0 4px 24px rgba(37, 99, 235, 0.06)',
-        }}>
-          <h2 style={{
-            fontFamily: 'var(--font-serif, Georgia, serif)',
-            fontSize: '24px', fontWeight: 400,
-            color: 'var(--color-navy-deep, #0f172a)',
-            letterSpacing: '-0.02em',
-            margin: '0 0 4px 0',
-          }}>
+        <div className="bg-surface dark:bg-surface border border-border-subtle dark:border-outline rounded-[14px] p-9 shadow-[0_4px_24px_rgba(37,99,235,0.06)] dark:shadow-[0_4px_24px_rgba(0,0,0,0.3)]">
+          <h2 className="font-serif text-2xl font-normal text-on-surface dark:text-on-surface tracking-[-0.02em] m-0 mb-1">
             {title}
           </h2>
           {subtitle && (
-            <p style={{
-              fontSize: '14px', fontWeight: 300,
-              color: 'var(--color-text-secondary, #475569)',
-              margin: '0 0 24px 0', lineHeight: 1.6,
-            }}>
+            <p className="text-sm font-light text-text-secondary dark:text-on-surface-variant m-0 mb-6 leading-relaxed">
               {subtitle}
             </p>
           )}

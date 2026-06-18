@@ -29,7 +29,7 @@ export interface SignUpResult {
 async function loadProfile(userId: string) {
   const { data: profile } = await supabase
     .from('user_profiles')
-    .select('id, email, full_name, full_name_th, avatar_url, role, company_id, language_preference, is_active')
+    .select('id, email, full_name, full_name_th, avatar_url, role, company_id, language_preference, is_active, phone')
     .eq('id', userId)
     .maybeSingle()
   if (profile) {

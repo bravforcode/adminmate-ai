@@ -13,10 +13,11 @@ vi.mock('@sentry/react', () => ({
 describe('Sentry beforeSend', () => {
   beforeEach(async () => {
     vi.resetModules()
+    vi.stubEnv('VITE_SENTRY_DSN', 'https://key@o0.ingest.sentry.io/0')
     beforeSendFn = null
     mockInit.mockClear()
-    vi.stubEnv('VITE_SENTRY_DSN', 'https://key@o0.ingest.sentry.io/0')
-    await import('../../../src/lib/sentry')
+    const mod = await import('../../../src/lib/sentry')
+    mod.initSentry()
     await new Promise(resolve => setTimeout(resolve, 10))
   })
 

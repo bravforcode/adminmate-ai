@@ -5,6 +5,27 @@
   "create_first_offer": "Tạo thư mời làm việc đầu tiên của bạn.",
   "create_offer": "Tạo đề nghị",
   "export_audit": "Xuất nhật ký kiểm tra",
+  "form": {
+    "title": "Tạo thư mời nhận việc",
+    "position_title": "Chức danh",
+    "salary_offered": "Mức lương đề nghị",
+    "salary_required": "Cần nhập mức lương",
+    "currency": "Tiền tệ",
+    "start_date": "Ngày bắt đầu",
+    "work_hours": "Giờ làm việc",
+    "benefits": "Phúc lợi (mỗi dòng một mục)",
+    "benefits_placeholder": "Bảo hiểm sức khỏe\nNghỉ phép năm: 12 ngày\nQuỹ dự phòng",
+    "special_conditions": "Điều kiện đặc biệt",
+    "cancel": "Hủy",
+    "submit": "Tạo đề nghị",
+    "submitting": "Đang tạo..."
+  },
+  "pdf": {
+    "downloaded": "Đã tải PDF",
+    "failed": "Tạo PDF thất bại",
+    "generating": "Đang tạo...",
+    "download": "Tải PDF"
+  },
   "sent": "Đã gửi",
   "viewed": "Đã xem",
   "accepted": "Đã chấp nhận",
@@ -49,6 +70,7 @@
     "send_for_sig": "Gửi để ký"
   },
   "toasts": {
+    "offer_created": "Đã tạo đề nghị",
     "no_offers_export": "Không có đề nghị để xuất",
     "select_offer_first": "Vui lòng chọn đề nghị trước",
     "only_draft_editable": "Chỉ có thể sửa đề nghị ở trạng thái bản nháp"

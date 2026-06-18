@@ -9,7 +9,7 @@ import { GlobalSearch } from '../search/GlobalSearch'
 import { cn } from '../../lib/utils'
 
 export function Header() {
-  const { toggleSidebar } = useUIStore()
+  const { toggleSidebar, sidebarOpen } = useUIStore()
   const isHR = useAuthStore(s => s.isAdminOrHR())
 
   return (
@@ -29,7 +29,7 @@ export function Header() {
         <button
           onClick={toggleSidebar}
           className="md:hidden text-navy min-w-[44px] min-h-[44px] flex items-center justify-center rounded-lg bg-transparent border-none cursor-pointer hover:bg-gray-100 transition-colors"
-          aria-label="Open navigation menu"
+          aria-label={sidebarOpen ? 'Close navigation menu' : 'Open navigation menu'}
         >
           <Menu size={22} />
         </button>

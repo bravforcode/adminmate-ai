@@ -68,7 +68,7 @@ export function CompanySetupPage() {
               <label className="block text-label-md text-on-surface-variant mb-1">{t('company.name')}</label>
               <input {...register('name')} data-testid="company-name"
                 className="w-full px-3 py-2 rounded-lg border border-outline-variant bg-surface-container-lowest focus:border-primary focus:ring-1 focus:ring-primary outline-none"
-                placeholder="TechNova Solutions Co., Ltd." />
+                placeholder={t('auth.placeholder_company')} />
               {errors.name && <p className="text-error text-sm mt-1">{errors.name.message}</p>}
             </div>
 
@@ -76,22 +76,22 @@ export function CompanySetupPage() {
               <label className="block text-label-md text-on-surface-variant mb-1">{t('company.name_th')}</label>
               <input {...register('name_th')}
                 className="w-full px-3 py-2 rounded-lg border border-outline-variant bg-surface-container-lowest focus:border-primary focus:ring-1 focus:ring-primary outline-none"
-                placeholder="บริษัท เทคโนว่า โซลูชั่น จำกัด" />
+                placeholder="" />
             </div>
 
             <div>
               <label className="block text-label-md text-on-surface-variant mb-1">{t('company.industry')}</label>
               <select {...register('industry')}
                 className="w-full px-3 py-2 rounded-lg border border-outline-variant bg-surface-container-lowest focus:border-primary focus:ring-1 focus:ring-primary outline-none">
-                <option value="">{t('common.select')}...</option>
-                <option value="Technology">Technology / เทคโนโลยี</option>
-                <option value="Finance">Finance / การเงิน</option>
-                <option value="Healthcare">Healthcare / การแพทย์</option>
-                <option value="Manufacturing">Manufacturing / การผลิต</option>
-                <option value="Retail">Retail / ค้าปลีก</option>
-                <option value="Education">Education / การศึกษา</option>
-                <option value="Logistics">Logistics / ขนส่ง</option>
-                <option value="Other">Other / อื่นๆ</option>
+                <option value="">{t('auth.reg_select_industry')}</option>
+                <option value="Technology">{t('auth.industry_technology')}</option>
+                <option value="Finance">{t('auth.industry_finance')}</option>
+                <option value="Healthcare">{t('auth.industry_healthcare')}</option>
+                <option value="Manufacturing">{t('auth.industry_manufacturing')}</option>
+                <option value="Retail">{t('auth.industry_retail')}</option>
+                <option value="Education">{t('auth.industry_education')}</option>
+                <option value="Logistics">{t('auth.industry_logistics')}</option>
+                <option value="Other">{t('auth.industry_other')}</option>
               </select>
               {errors.industry && <p className="text-error text-sm mt-1">{errors.industry.message}</p>}
             </div>

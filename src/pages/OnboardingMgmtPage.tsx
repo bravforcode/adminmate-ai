@@ -7,7 +7,7 @@ import { useCreateChecklist, useUpdateTask, useRecalculateProgress } from '../ho
 import { useAuthStore } from '../stores/authStore'
 import { Button } from '../components/ui/Button'
 import { Check, Plus, Send, BookOpen, Heart, Scale, ExternalLink, Bot, Users } from 'lucide-react'
-import { cn } from '../utils/cn'
+import { cn } from '../lib/utils'
 import toast from 'react-hot-toast'
 import { LoadingState } from '../components/shared/LoadingState'
 import { EmptyState } from '../components/shared/EmptyState'
@@ -25,7 +25,7 @@ export function OnboardingMgmtPage() {
   const { profile, company } = useAuthStore()
 
   const [messages, setMessages] = useState<{ role: 'bot' | 'user'; text: string }[]>([
-    { role: 'bot', text: t('onboarding.ai.greeting') },
+    { role: 'bot', text: t('ai.greeting') },
   ])
   const [input, setInput] = useState('')
 
@@ -59,10 +59,10 @@ export function OnboardingMgmtPage() {
       const { data } = await supabase.functions.invoke('mate-ai-chat', {
         body: { question: userText, companyId: company?.id, language: profile?.language_preference || 'en' },
       })
-      setMessages(prev => [...prev, { role: 'bot', text: data?.reply || t('onboarding.ai.fallback_reply') }])
+      setMessages(prev => [...prev, { role: 'bot', text: data?.reply || t('ai.fallback_reply') }])
     } catch (err) {
       if (import.meta.env.DEV) console.error('[OnboardingMgmtPage] AI chat failed:', err)
-      setMessages(prev => [...prev, { role: 'bot', text: t('onboarding.ai.error_reply') }])
+      setMessages(prev => [...prev, { role: 'bot', text: t('ai.error_reply') }])
     }
   }
 
@@ -73,22 +73,22 @@ export function OnboardingMgmtPage() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-headline-md font-bold text-on-surface dark:text-[#f1f5f9]">{t('onboarding.hub')}</h1>
-        <p className="text-body-md text-on-surface-variant dark:text-[#94a3b8] mt-1">{t('onboarding.subtitle')}</p>
+        <h1 className="text-headline-md font-bold text-on-surface dark:text-on-surface">{t('hub')}</h1>
+        <p className="text-body-md text-on-surface-variant dark:text-on-surface-variant mt-1">{t('subtitle')}</p>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
         <div className="lg:col-span-8 space-y-6 w-full min-w-0">
-          <div className="bg-surface dark:bg-[#1e293b] rounded-xl border border-outline-variant dark:border-[#334155] p-6 shadow-sm">
-            <h3 className="text-title-lg font-semibold text-on-surface dark:text-[#f1f5f9] mb-4">{t('onboarding.my_checklist')}</h3>
+          <div className="bg-surface dark:bg-surface rounded-xl border border-outline-variant dark:border-outline p-6 shadow-sm">
+            <h3 className="text-title-lg font-semibold text-on-surface dark:text-on-surface mb-4">{t('my_checklist')}</h3>
             {myChecklist ? (
               <>
                 <div className="mb-4">
-                  <div className="flex justify-between text-sm text-on-surface-variant dark:text-[#94a3b8] mb-1">
-                    <span>{t('onboarding.progress')}</span>
+                  <div className="flex justify-between text-sm text-on-surface-variant dark:text-on-surface-variant mb-1">
+                    <span>{t('progress')}</span>
                     <span>{myChecklist.progress_percentage || 0}%</span>
                   </div>
-                  <div className="w-full bg-surface-container-high dark:bg-[#334155] h-2 rounded-full overflow-hidden">
+                  <div className="w-full bg-surface-container-high dark:bg-surface-container h-2 rounded-full overflow-hidden">
                     <div className="bg-primary h-full rounded-full transition-all" style={{ width: `${myChecklist.progress_percentage || 0}%` }} />
                   </div>
                 </div>
@@ -105,9 +105,9 @@ export function OnboardingMgmtPage() {
                         disabled={isUpcoming}
                         className={cn(
                           'w-full flex items-center gap-3 p-3 rounded-lg border text-left transition-colors',
-                          isCompleted && 'bg-surface-container-low dark:bg-[#1e3a5f] border-outline-variant dark:border-[#334155]',
-                          isCurrent && 'bg-surface dark:bg-[#1e293b] border-primary dark:border-[#3b82f6] ring-1 ring-primary dark:ring-[#3b82f6]',
-                          isUpcoming && 'bg-surface dark:bg-[#1e293b] border-outline-variant dark:border-[#334155] opacity-60 cursor-not-allowed'
+                          isCompleted && 'bg-surface-container-low dark:bg-surface-container-low border-outline-variant dark:border-outline',
+                          isCurrent && 'bg-surface dark:bg-surface border-primary dark:border-primary ring-1 ring-primary dark:ring-primary',
+                          isUpcoming && 'bg-surface dark:bg-surface border-outline-variant dark:border-outline opacity-60 cursor-not-allowed'
                         )}
                       >
                         <div className={cn(
@@ -119,15 +119,15 @@ export function OnboardingMgmtPage() {
                           {isCompleted ? <Check size={14} /> : isCurrent ? <div className="w-2 h-2 bg-primary rounded-full" /> : null}
                         </div>
                         <div className="flex-1">
-                          <p className={cn('text-sm font-semibold dark:text-[#f1f5f9]', isCompleted && 'line-through text-on-surface-variant dark:text-[#94a3b8]')}>{task.task_name}</p>
-                          {isCurrent && <p className="text-xs text-error mt-0.5">{t('onboarding.due_today')}</p>}
+                          <p className={cn('text-sm font-semibold dark:text-on-surface', isCompleted && 'line-through text-on-surface-variant dark:text-on-surface-variant')}>{task.task_name}</p>
+                          {isCurrent && <p className="text-xs text-error mt-0.5">{t('due_today')}</p>}
                           {isUpcoming && task.assigned_to && (
-                            <p className="text-xs text-on-surface-variant mt-0.5">{t('onboarding.requires')} {task.assigned_to}</p>
+                            <p className="text-xs text-on-surface-variant mt-0.5">{t('requires')} {task.assigned_to}</p>
                           )}
                         </div>
                         {isCurrent && (
                           <span className="px-3 py-1 bg-primary text-on-primary text-xs font-medium rounded">
-                            {t('onboarding.start')}
+                            {t('start')}
                           </span>
                         )}
                       </button>
@@ -136,19 +136,19 @@ export function OnboardingMgmtPage() {
                 </div>
               </>
             ) : (
-              <p className="text-sm text-on-surface-variant dark:text-[#94a3b8] py-4">{t('onboarding.no_checklist')}</p>
+              <p className="text-sm text-on-surface-variant dark:text-on-surface-variant py-4">{t('no_checklist')}</p>
             )}
           </div>
 
-          <div className="bg-surface dark:bg-[#1e293b] rounded-xl border border-outline-variant dark:border-[#334155] p-6 shadow-sm">
+          <div className="bg-surface dark:bg-surface rounded-xl border border-outline-variant dark:border-outline p-6 shadow-sm">
             <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2 mb-4">
-              <h3 className="text-title-lg font-semibold text-on-surface dark:text-[#f1f5f9]">{t('onboarding.team_status')}</h3>
-              <Button variant="link" size="sm" onClick={() => navigate('/recruitment/candidates')}>{t('onboarding.view_all')}</Button>
+              <h3 className="text-title-lg font-semibold text-on-surface dark:text-on-surface">{t('team_status')}</h3>
+              <Button variant="link" size="sm" onClick={() => navigate('/recruitment/candidates')}>{t('view_all')}</Button>
             </div>
             {isError ? (
               <ErrorState
-                title={t('onboarding.error_title')}
-                message={(error as Error)?.message || t('onboarding.error_description')}
+                title={t('error_title')}
+                message={(error as Error)?.message || t('error_description')}
                 onRetry={() => refetch()}
               />
             ) : isLoading ? (
@@ -158,32 +158,32 @@ export function OnboardingMgmtPage() {
                 {checklists && checklists.length > 0 ? (
                   <table role="table" className="table-card-mobile w-full text-left border-collapse min-w-[500px]">
                     <thead>
-                      <tr className="bg-surface-container dark:bg-[#334155]/50 border-b border-outline-variant/50 dark:border-[#334155]/50">
-                        <th className="py-3 px-4 text-xs font-semibold uppercase tracking-wider text-on-surface-variant dark:text-[#94a3b8]">{t('onboarding.employee')}</th>
-                        <th className="py-3 px-4 text-xs font-semibold uppercase tracking-wider text-on-surface-variant dark:text-[#94a3b8]">{t('onboarding.role')}</th>
-                        <th className="py-3 px-4 text-xs font-semibold uppercase tracking-wider text-on-surface-variant dark:text-[#94a3b8]">{t('onboarding.progress')}</th>
-                        <th className="py-3 px-4 text-xs font-semibold uppercase tracking-wider text-on-surface-variant dark:text-[#94a3b8]">{t('onboarding.status')}</th>
+                      <tr className="bg-surface-container dark:bg-surface-container/50 border-b border-outline-variant/50 dark:border-outline/50">
+                        <th className="py-3 px-4 text-xs font-semibold uppercase tracking-wider text-on-surface-variant dark:text-on-surface-variant">{t('employee')}</th>
+                        <th className="py-3 px-4 text-xs font-semibold uppercase tracking-wider text-on-surface-variant dark:text-on-surface-variant">{t('role')}</th>
+                        <th className="py-3 px-4 text-xs font-semibold uppercase tracking-wider text-on-surface-variant dark:text-on-surface-variant">{t('progress')}</th>
+                        <th className="py-3 px-4 text-xs font-semibold uppercase tracking-wider text-on-surface-variant dark:text-on-surface-variant">{t('status')}</th>
                       </tr>
                     </thead>
                     <tbody>
                       {checklists?.map((cl: { id: string; template_name?: string; progress_percentage?: number; status?: string; user_profiles?: { full_name?: string } }) => (
-                        <tr key={cl.id} className="border-b border-outline-variant/50 dark:border-[#334155]/50 hover:bg-surface-container-high/50 dark:hover:bg-[#334155]/30 transition-colors duration-150 last:border-0">
-                          <td className="py-3 px-4 text-sm text-on-surface dark:text-[#f1f5f9]" data-label={t('onboarding.employee')}>{cl.user_profiles?.full_name}</td>
-                          <td className="py-3 px-4 text-sm text-on-surface dark:text-[#f1f5f9] text-on-surface-variant" data-label={t('onboarding.role')}>{cl.template_name}</td>
-                          <td className="py-3 px-4 text-sm text-on-surface dark:text-[#f1f5f9]" data-label={t('onboarding.progress')}>
+                        <tr key={cl.id} className="border-b border-outline-variant/50 dark:border-outline/50 hover:bg-surface-container-high/50 dark:hover:bg-surface-container/30 transition-colors duration-150 last:border-0">
+                          <td className="py-3 px-4 text-sm text-on-surface dark:text-on-surface" data-label={t('employee')}>{cl.user_profiles?.full_name}</td>
+                          <td className="py-3 px-4 text-sm text-on-surface dark:text-on-surface text-on-surface-variant" data-label={t('role')}>{cl.template_name}</td>
+                          <td className="py-3 px-4 text-sm text-on-surface dark:text-on-surface" data-label={t('progress')}>
                             <div className="flex items-center gap-2 w-24 sm:w-32">
-                              <div className="flex-1 bg-surface-container dark:bg-[#334155] h-1.5 rounded-full overflow-hidden">
+                              <div className="flex-1 bg-surface-container dark:bg-surface-container h-1.5 rounded-full overflow-hidden">
                                 <div className={cn('h-full rounded-full', (cl.progress_percentage ?? 0) >= 80 ? 'bg-green-500' : (cl.progress_percentage ?? 0) >= 40 ? 'bg-primary' : 'bg-yellow-500')} style={{ width: `${cl.progress_percentage || 0}%` }} />
                               </div>
-                              <span className="text-xs text-on-surface-variant dark:text-[#94a3b8]">{cl.progress_percentage || 0}%</span>
+                              <span className="text-xs text-on-surface-variant dark:text-on-surface-variant">{cl.progress_percentage || 0}%</span>
                             </div>
                           </td>
-                          <td className="py-3 px-4 text-sm text-on-surface dark:text-[#f1f5f9]" data-label={t('onboarding.status')}>
+                          <td className="py-3 px-4 text-sm text-on-surface dark:text-on-surface" data-label={t('status')}>
                             <span className={cn(
                               'inline-block px-2 py-0.5 rounded text-xs font-medium',
-                              cl.status === 'completed' ? 'bg-green-100 dark:bg-[#052e16]/30 text-green-700 dark:text-[#4ade80]' : (cl.progress_percentage ?? 0) < 20 ? 'bg-error-container dark:bg-[#450a0a]/30 text-on-error-container dark:text-[#f87171]' : 'bg-surface-container-high dark:bg-[#334155] text-on-surface dark:text-[#f1f5f9]'
+                              cl.status === 'completed' ? 'bg-green-100 dark:bg-success-container/30 text-green-700 dark:text-success' : (cl.progress_percentage ?? 0) < 20 ? 'bg-error-container dark:bg-error-container/30 text-on-error-container dark:text-error' : 'bg-surface-container-high dark:bg-surface-container text-on-surface dark:text-on-surface'
                             )}>
-                              {cl.status === 'completed' ? t('onboarding.completed') : (cl.progress_percentage ?? 0) < 20 ? t('onboarding.at_risk') : t('onboarding.on_track')}
+                              {cl.status === 'completed' ? t('completed') : (cl.progress_percentage ?? 0) < 20 ? t('at_risk') : t('on_track')}
                             </span>
                           </td>
                         </tr>
@@ -193,8 +193,8 @@ export function OnboardingMgmtPage() {
                 ) : (
                   <EmptyState
                     icon={Users}
-                    title={t('onboarding.empty_team_title')}
-                    description={t('onboarding.empty_team_description')}
+                    title={t('empty_team_title')}
+                    description={t('empty_team_description')}
                   />
                 )}
               </div>
@@ -203,40 +203,40 @@ export function OnboardingMgmtPage() {
         </div>
 
         <div className="lg:col-span-4 space-y-6">
-          <div className="bg-surface dark:bg-[#1e293b] rounded-xl border border-outline-variant dark:border-[#334155] shadow-sm flex flex-col h-[400px] overflow-hidden">
-            <div className="bg-primary-container dark:bg-[#1e40af] p-4 flex items-center gap-3">
-              <div className="w-8 h-8 rounded bg-surface dark:bg-[#1e293b] flex items-center justify-center text-primary dark:text-[#93c5fd]">
+          <div className="bg-surface dark:bg-surface rounded-xl border border-outline-variant dark:border-outline shadow-sm flex flex-col h-[400px] overflow-hidden">
+            <div className="bg-primary-container dark:bg-primary-container p-4 flex items-center gap-3">
+              <div className="w-8 h-8 rounded bg-surface dark:bg-surface flex items-center justify-center text-primary dark:text-accent-dim">
                 <Bot size={20} />
               </div>
               <div>
-                <h3 className="text-sm font-bold text-on-primary-container dark:text-[#f1f5f9]">Mate AI</h3>
-                <p className="text-xs text-inverse-primary dark:text-[#94a3b8]">{t('onboarding.ai.hr_assistant')}</p>
+                <h3 className="text-sm font-bold text-on-primary-container dark:text-on-surface">Mate AI</h3>
+                <p className="text-xs text-inverse-primary dark:text-on-surface-variant">{t('ai.hr_assistant')}</p>
               </div>
             </div>
-            <div className="flex-1 p-4 overflow-y-auto bg-surface dark:bg-[#1e293b] flex flex-col gap-3">
+            <div className="flex-1 p-4 overflow-y-auto bg-surface dark:bg-surface flex flex-col gap-3">
               {messages.map((msg, i) => (
                 <div key={i} className={cn('flex gap-2', msg.role === 'user' && 'justify-end')}>
                   {msg.role === 'bot' && (
-                    <div className="w-6 h-6 rounded bg-primary-container dark:bg-[#1e40af] text-on-primary dark:text-[#93c5fd] flex items-center justify-center shrink-0 mt-1">
+                    <div className="w-6 h-6 rounded bg-primary-container dark:bg-primary-container text-on-primary dark:text-accent-dim flex items-center justify-center shrink-0 mt-1">
                       <Bot size={14} />
                     </div>
                   )}
                   <div className={cn(
                     'p-2 rounded-lg text-sm max-w-[85%]',
-                    msg.role === 'bot' ? 'bg-surface-container-low dark:bg-[#1e3a5f] rounded-tl-none text-on-surface dark:text-[#f1f5f9]' : 'bg-primary dark:bg-[#3b82f6] text-on-primary dark:text-[#fff] rounded-tr-none'
+                    msg.role === 'bot' ? 'bg-surface-container-low dark:bg-surface-container-low rounded-tl-none text-on-surface dark:text-on-surface' : 'bg-primary dark:bg-primary text-on-primary dark:text-on-primary rounded-tr-none'
                   )}>
                     {msg.text}
                   </div>
                 </div>
               ))}
             </div>
-            <div className="p-2 bg-surface dark:bg-[#1e293b] border-t border-outline-variant dark:border-[#334155] flex gap-2 items-center">
+            <div className="p-2 bg-surface dark:bg-surface border-t border-outline-variant dark:border-outline flex gap-2 items-center">
               <input
                 value={input}
                 onChange={e => setInput(e.target.value)}
                 onKeyDown={e => e.key === 'Enter' && handleSendMessage()}
-                placeholder={t('onboarding.ai.ask_question')}
-                className="flex-1 bg-surface-container dark:bg-[#0f172a] border-none rounded-full px-4 py-2 text-sm text-on-surface dark:text-[#f1f5f9] focus:ring-1 focus:ring-primary outline-none"
+                placeholder={t('ai.ask_question')}
+                className="flex-1 bg-surface-container dark:bg-surface-container-lowest border-none rounded-full px-4 py-2 text-sm text-on-surface dark:text-on-surface focus:ring-1 focus:ring-primary outline-none"
               />
               <Button
                 variant="default"
@@ -248,47 +248,47 @@ export function OnboardingMgmtPage() {
             </div>
           </div>
 
-          <div className="bg-surface dark:bg-[#1e293b] rounded-xl border border-outline-variant dark:border-[#334155] p-6 shadow-sm">
-            <h3 className="text-title-lg font-semibold text-on-surface dark:text-[#f1f5f9] mb-4">{t('onboarding.quick_resources')}</h3>
+          <div className="bg-surface dark:bg-surface rounded-xl border border-outline-variant dark:border-outline p-6 shadow-sm">
+            <h3 className="text-title-lg font-semibold text-on-surface dark:text-on-surface mb-4">{t('quick_resources')}</h3>
             <ul className="space-y-2">
               <li>
-                <button onClick={() => navigate('/documents?type=handbook')} className="w-full flex items-center justify-between p-2 rounded hover:bg-surface-container-high dark:hover:bg-[#334155] transition-colors text-on-surface dark:text-[#f1f5f9] group">
+                <button onClick={() => navigate('/documents?type=handbook')} className="w-full flex items-center justify-between p-2 rounded hover:bg-surface-container-high dark:hover:bg-surface-container transition-colors text-on-surface dark:text-on-surface group">
                   <div className="flex items-center gap-2">
-                    <BookOpen size={18} className="text-outline-variant dark:text-[#64748b] group-hover:text-primary dark:group-hover:text-[#93c5fd]" />
-                    <span className="text-sm">{t('onboarding.resources.handbook')}</span>
+                    <BookOpen size={18} className="text-outline-variant dark:text-outline-variant group-hover:text-primary dark:group-hover:text-accent-dim" />
+                    <span className="text-sm">{t('resources.handbook')}</span>
                   </div>
-                  <ExternalLink size={14} className="text-outline-variant dark:text-[#64748b]" />
+                  <ExternalLink size={14} className="text-outline-variant dark:text-outline-variant" />
                 </button>
               </li>
               <li>
-                <button onClick={() => navigate('/documents?type=health_insurance')} className="w-full flex items-center justify-between p-2 rounded hover:bg-surface-container-high dark:hover:bg-[#334155] transition-colors text-on-surface dark:text-[#f1f5f9] group">
+                <button onClick={() => navigate('/documents?type=health_insurance')} className="w-full flex items-center justify-between p-2 rounded hover:bg-surface-container-high dark:hover:bg-surface-container transition-colors text-on-surface dark:text-on-surface group">
                   <div className="flex items-center gap-2">
-                    <Heart size={18} className="text-outline-variant dark:text-[#64748b] group-hover:text-primary dark:group-hover:text-[#93c5fd]" />
-                    <span className="text-sm">{t('onboarding.resources.health_benefits')}</span>
+                    <Heart size={18} className="text-outline-variant dark:text-outline-variant group-hover:text-primary dark:group-hover:text-accent-dim" />
+                    <span className="text-sm">{t('resources.health_benefits')}</span>
                   </div>
-                  <ExternalLink size={14} className="text-outline-variant dark:text-[#64748b]" />
+                  <ExternalLink size={14} className="text-outline-variant dark:text-outline-variant" />
                 </button>
               </li>
               <li>
-                <button onClick={() => navigate('/documents?type=company_policy')} className="w-full flex items-center justify-between p-2 rounded hover:bg-surface-container-high dark:hover:bg-[#334155] transition-colors text-on-surface dark:text-[#f1f5f9] group">
+                <button onClick={() => navigate('/documents?type=company_policy')} className="w-full flex items-center justify-between p-2 rounded hover:bg-surface-container-high dark:hover:bg-surface-container transition-colors text-on-surface dark:text-on-surface group">
                   <div className="flex items-center gap-2">
-                    <Scale size={18} className="text-outline-variant dark:text-[#64748b] group-hover:text-primary dark:group-hover:text-[#93c5fd]" />
-                    <span className="text-sm">{t('onboarding.resources.labor_law')}</span>
+                    <Scale size={18} className="text-outline-variant dark:text-outline-variant group-hover:text-primary dark:group-hover:text-accent-dim" />
+                    <span className="text-sm">{t('resources.labor_law')}</span>
                   </div>
-                  <ExternalLink size={14} className="text-outline-variant dark:text-[#64748b]" />
+                  <ExternalLink size={14} className="text-outline-variant dark:text-outline-variant" />
                 </button>
               </li>
             </ul>
           </div>
 
-          <div className="bg-surface dark:bg-[#1e293b] rounded-xl border border-outline-variant dark:border-[#334155] p-6 shadow-sm">
-            <h3 className="text-title-lg font-semibold text-on-surface dark:text-[#f1f5f9] mb-3">{t('onboarding.accepted_offers')}</h3>
+          <div className="bg-surface dark:bg-surface rounded-xl border border-outline-variant dark:border-outline p-6 shadow-sm">
+            <h3 className="text-title-lg font-semibold text-on-surface dark:text-on-surface mb-3">{t('accepted_offers')}</h3>
             {acceptedOffers && acceptedOffers.length > 0 ? (
               acceptedOffers.map((offer: Offer) => (
-                <div key={offer.id} className="flex items-center justify-between py-2 border-b border-outline-variant dark:border-[#334155] last:border-0">
+                <div key={offer.id} className="flex items-center justify-between py-2 border-b border-outline-variant dark:border-outline last:border-0">
                   <div>
-                    <p className="text-sm font-medium dark:text-[#f1f5f9]">{offer.candidates?.full_name}</p>
-                    <p className="text-xs text-on-surface-variant dark:text-[#94a3b8]">{offer.position_title}</p>
+                    <p className="text-sm font-medium dark:text-on-surface">{offer.candidates?.full_name}</p>
+                    <p className="text-xs text-on-surface-variant dark:text-on-surface-variant">{offer.position_title}</p>
                   </div>
                   <Button
                     variant="default"
@@ -297,14 +297,14 @@ export function OnboardingMgmtPage() {
                     disabled={createChecklist.isPending}
                     icon={<Plus size={12} />}
                   >
-                    {t('onboarding.create_checklist')}
+                    {t('create_checklist')}
                   </Button>
                 </div>
               ))
             ) : (
               <EmptyState
                 icon={Users}
-                title={t('onboarding.no_offers')}
+                title={t('no_offers')}
               />
             )}
           </div>

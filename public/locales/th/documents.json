@@ -12,6 +12,7 @@
   "empty_description": "เอกสารจะปรากฏที่นี่เมื่อสร้างจากข้อเสนอและสัญญา",
   "total_documents": "เอกสารทั้งหมด",
   "pending_action": "รอดำเนินการ",
+  "document_created": "สร้างเอกสารแล้ว",
   "search_placeholder": "ค้นหาเอกสาร...",
   "all_types": "ทุกประเภท",
   "request_signature": "ขอลงนาม",

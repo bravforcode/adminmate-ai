@@ -14,7 +14,7 @@ import {
   Users,
   TrendingUp,
 } from 'lucide-react'
-import { cn } from '../../utils/cn'
+import { cn } from '../../lib/utils'
 import { LoadingState } from '../../components/shared/LoadingState'
 import { EmptyState } from '../../components/shared/EmptyState'
 
@@ -254,45 +254,45 @@ export function AuditLogPage() {
         ) : logs.length === 0 ? (
           <EmptyState
             icon={ScrollText}
-            title={t('audit_log.no_logs') || 'No audit logs found'}
-            description="Try adjusting your filters or check back later."
+            title={t('empty.audit_log_title')}
+            description={t('empty.audit_log_description')}
           />
         ) : (
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
               <thead>
-                <tr className="bg-surface-container dark:bg-[#334155]/50 border-b border-outline-variant/50 dark:border-[#334155]/50">
-                  <th className="py-3 px-4 text-xs font-semibold uppercase tracking-wider text-on-surface-variant dark:text-[#94a3b8]">{t('audit_log.timestamp') || 'Timestamp'}</th>
-                  <th className="py-3 px-4 text-xs font-semibold uppercase tracking-wider text-on-surface-variant dark:text-[#94a3b8]">{t('audit_log.user') || 'User'}</th>
-                  <th className="py-3 px-4 text-xs font-semibold uppercase tracking-wider text-on-surface-variant dark:text-[#94a3b8]">{t('audit_log.action') || 'Action'}</th>
-                  <th className="py-3 px-4 text-xs font-semibold uppercase tracking-wider text-on-surface-variant dark:text-[#94a3b8]">{t('audit_log.resource') || 'Resource'}</th>
-                  <th className="py-3 px-4 text-xs font-semibold uppercase tracking-wider text-on-surface-variant dark:text-[#94a3b8]">{t('audit_log.details') || 'Details'}</th>
-                  <th className="py-3 px-4 text-xs font-semibold uppercase tracking-wider text-on-surface-variant dark:text-[#94a3b8]">{t('audit_log.ip_address') || 'IP Address'}</th>
+                <tr className="bg-surface-container dark:bg-surface-container/50 border-b border-outline-variant/50 dark:border-outline/50">
+                  <th className="py-3 px-4 text-xs font-semibold uppercase tracking-wider text-on-surface-variant dark:text-on-surface-variant">{t('audit_log.timestamp') || 'Timestamp'}</th>
+                  <th className="py-3 px-4 text-xs font-semibold uppercase tracking-wider text-on-surface-variant dark:text-on-surface-variant">{t('audit_log.user') || 'User'}</th>
+                  <th className="py-3 px-4 text-xs font-semibold uppercase tracking-wider text-on-surface-variant dark:text-on-surface-variant">{t('audit_log.action') || 'Action'}</th>
+                  <th className="py-3 px-4 text-xs font-semibold uppercase tracking-wider text-on-surface-variant dark:text-on-surface-variant">{t('audit_log.resource') || 'Resource'}</th>
+                  <th className="py-3 px-4 text-xs font-semibold uppercase tracking-wider text-on-surface-variant dark:text-on-surface-variant">{t('audit_log.details') || 'Details'}</th>
+                  <th className="py-3 px-4 text-xs font-semibold uppercase tracking-wider text-on-surface-variant dark:text-on-surface-variant">{t('audit_log.ip_address') || 'IP Address'}</th>
                 </tr>
               </thead>
               <tbody>
                 {logs.map(log => (
-                  <tr key={log.id} className="border-b border-outline-variant/50 dark:border-[#334155]/50 last:border-0 hover:bg-surface-container-high/50 dark:hover:bg-[#334155]/30 transition-colors duration-150">
-                    <td className="py-3 px-4 text-sm text-on-surface dark:text-[#f1f5f9] whitespace-nowrap">{formatDate(log.created_at)}</td>
-                    <td className="py-3 px-4 text-sm text-on-surface dark:text-[#f1f5f9]">
+                  <tr key={log.id} className="border-b border-outline-variant/50 dark:border-outline/50 last:border-0 hover:bg-surface-container-high/50 dark:hover:bg-surface-container/30 transition-colors duration-150">
+                    <td className="py-3 px-4 text-sm text-on-surface dark:text-on-surface whitespace-nowrap">{formatDate(log.created_at)}</td>
+                    <td className="py-3 px-4 text-sm text-on-surface dark:text-on-surface">
                       <div>
-                        <div className="font-medium text-on-surface dark:text-[#f1f5f9]">{log.user_profiles?.full_name || 'Unknown'}</div>
-                        <div className="text-xs text-on-surface-variant dark:text-[#94a3b8]">{log.user_profiles?.email || ''}</div>
+                        <div className="font-medium text-on-surface dark:text-on-surface">{log.user_profiles?.full_name || 'Unknown'}</div>
+                        <div className="text-xs text-on-surface-variant dark:text-on-surface-variant">{log.user_profiles?.email || ''}</div>
                       </div>
                     </td>
-                    <td className="py-3 px-4 text-sm text-on-surface dark:text-[#f1f5f9]">
+                    <td className="py-3 px-4 text-sm text-on-surface dark:text-on-surface">
                       <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-primary/10 text-primary">
                         {log.action}
                       </span>
                     </td>
-                    <td className="py-3 px-4 text-sm text-on-surface dark:text-[#f1f5f9] text-on-surface-variant">
+                    <td className="py-3 px-4 text-sm text-on-surface dark:text-on-surface text-on-surface-variant">
                       {log.resource_type && <span className="font-medium">{log.resource_type}</span>}
                       {log.resource_id && <span className="text-on-surface-variant/60 ml-1">#{log.resource_id.slice(0, 8)}</span>}
                     </td>
-                    <td className="py-3 px-4 text-sm text-on-surface dark:text-[#f1f5f9] text-on-surface-variant max-w-[200px] truncate">
+                    <td className="py-3 px-4 text-sm text-on-surface dark:text-on-surface text-on-surface-variant max-w-[200px] truncate">
                       {log.details ? JSON.stringify(log.details) : '—'}
                     </td>
-                    <td className="py-3 px-4 text-sm text-on-surface dark:text-[#f1f5f9] text-on-surface-variant font-mono text-xs">{log.ip_address || '—'}</td>
+                    <td className="py-3 px-4 text-sm text-on-surface dark:text-on-surface text-on-surface-variant font-mono text-xs">{log.ip_address || '—'}</td>
                   </tr>
                 ))}
               </tbody>

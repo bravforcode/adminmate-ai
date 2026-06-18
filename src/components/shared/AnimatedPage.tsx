@@ -1,22 +1,22 @@
 import { Suspense } from 'react'
-import { motion } from 'framer-motion'
+import { motion } from 'motion/react'
 
 const pageVariants = {
-  initial: { opacity: 0, y: 16, scale: 0.98 },
-  animate: { opacity: 1, y: 0, scale: 1 },
-  exit: { opacity: 0, y: -10, scale: 0.98 },
+  initial: { opacity: 0, y: 12 },
+  animate: { opacity: 1, y: 0 },
+  exit: { opacity: 0, y: -8 },
 }
 
 const pageTransition = {
   type: 'spring' as const,
-  damping: 25,
-  stiffness: 200,
+  damping: 30,
+  stiffness: 300,
+  mass: 0.8,
 }
 
 export function AnimatedPage({ children }: { children: React.ReactNode }) {
   return (
     <motion.div
-      layout
       variants={pageVariants}
       initial="initial"
       animate="animate"

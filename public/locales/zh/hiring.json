@@ -5,6 +5,27 @@
   "create_first_offer": "创建您的第一封录用通知。",
   "create_offer": "创建录用通知",
   "export_audit": "导出审计日志",
+  "form": {
+    "title": "创建录用通知书",
+    "position_title": "职位名称",
+    "salary_offered": "录用薪资",
+    "salary_required": "请输入薪资",
+    "currency": "币种",
+    "start_date": "入职日期",
+    "work_hours": "工作时间",
+    "benefits": "福利（每行一项）",
+    "benefits_placeholder": "健康保险\n年假：12 天\n公积金",
+    "special_conditions": "特殊条件",
+    "cancel": "取消",
+    "submit": "创建录用通知",
+    "submitting": "创建中..."
+  },
+  "pdf": {
+    "downloaded": "PDF 已下载",
+    "failed": "生成 PDF 失败",
+    "generating": "生成中...",
+    "download": "下载 PDF"
+  },
   "sent": "已发送",
   "viewed": "已查看",
   "accepted": "已接受",
@@ -49,6 +70,7 @@
     "send_for_sig": "发送签署"
   },
   "toasts": {
+    "offer_created": "录用通知已创建",
     "no_offers_export": "没有可导出的录用通知",
     "select_offer_first": "请先选择录用通知",
     "only_draft_editable": "只有草稿状态的录用通知可以编辑"

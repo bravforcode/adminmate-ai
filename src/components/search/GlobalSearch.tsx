@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef, useCallback } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { motion, AnimatePresence } from 'framer-motion'
+import { motion, AnimatePresence } from 'motion/react'
 import { useTranslation } from 'react-i18next'
 import { useAuthStore } from '../../stores/authStore'
 import { searchService, type GlobalSearchResults, type SearchResult } from '../../services/searchService'
@@ -96,7 +96,7 @@ export function GlobalSearch() {
       <button
         onClick={() => setOpen(true)}
         aria-label={t('search.placeholder')}
-        className="flex items-center gap-2 px-3 py-[7px] rounded-lg border border-outline-variant bg-surface-container-high/50 text-on-surface-variant text-[13px] cursor-pointer transition-all duration-200 min-w-[200px] max-w-[320px] flex-1 hover:bg-surface-container-high focus-visible:ring-2 focus-visible:ring-primary/30 focus-visible:outline-none"
+        className="flex items-center gap-2 px-3 py-[7px] rounded-lg border border-outline-variant bg-surface-container-high/50 text-on-surface-variant text-[13px] cursor-pointer transition-all duration-200 min-w-0 sm:min-w-[200px] max-w-[320px] flex-1 hover:bg-surface-container-high focus-visible:ring-2 focus-visible:ring-primary/30 focus-visible:outline-none"
       >
         <Search size={15} />
         <span className="flex-1 text-left">{t('search.placeholder')}</span>
@@ -152,7 +152,7 @@ export function GlobalSearch() {
             <button
               onClick={close}
               aria-label={t('common.close')}
-              className="p-1 rounded-md text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high transition-colors"
+              className="p-2 rounded-md text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high transition-colors min-w-[44px] min-h-[44px] flex items-center justify-center"
             >
               <X size={16} />
             </button>

@@ -12,6 +12,7 @@ import {
   logRequest,
 } from '../_shared/utils.ts'
 import { errorResponse } from '../_shared/errorHandler.ts'
+import { checkAIMonthlyLimit, limitExceededResponse } from '../_shared/limits.ts'
 
 const FN = 'mate-ai-chat'
 
@@ -44,6 +45,12 @@ serve(async (req) => {
     }
     if (!companyId || typeof companyId !== 'string') {
       return new Response(JSON.stringify({ success: false, error: 'companyId is required' }), { status: 400, headers: h })
+    }
+
+    // Check subscription-based monthly AI limit
+    const monthlyLimit = await checkAIMonthlyLimit(supabase, companyId)
+    if (!monthlyLimit.allowed) {
+      return limitExceededResponse(monthlyLimit)
     }
 
     const [{ data: company }, { data: policies }, { data: hrContacts }] = await Promise.all([

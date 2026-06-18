@@ -1,27 +1,146 @@
+import { useState, useRef, useEffect } from 'react'
 import { NavLink } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
-import { LayoutDashboard, Briefcase, FileCheck, UserCheck } from 'lucide-react'
+import { useAuthStore } from '../../stores/authStore'
+import { navItems, type NavItem } from '../../lib/navigation'
+import { MoreHorizontal, X } from 'lucide-react'
 
-const mobileItems = [
-  { path: '/dashboard', icon: LayoutDashboard, key: 'nav.dashboard' },
-  { path: '/recruitment/jobs', icon: Briefcase, key: 'nav.recruitment' },
-  { path: '/hiring', icon: FileCheck, key: 'nav.hiring' },
-  { path: '/onboarding', icon: UserCheck, key: 'nav.onboarding' },
-]
-
+/**
+ * ponytail: MobileNav generated from shared navItems.
+ * Shows 4 primary items + "More" overflow menu.
+ * Role-aware: HR sees HR routes, applicant sees applicant routes.
+ */
 export function MobileNav() {
   const { t } = useTranslation('common')
+  const profile = useAuthStore(s => s.profile)
+  const userRole = profile?.role ?? 'hr'
+  const [moreOpen, setMoreOpen] = useState(false)
+  const moreRef = useRef<HTMLDivElement>(null)
+
+  // Flatten navItems by role (same logic as Sidebar)
+  const visibleItems = navItems
+    .filter(item => !item.roles || item.roles.includes(userRole))
+    .flatMap(item => {
+      if (!item.children) return [item]
+      const visibleChildren = item.children.filter(
+        child => !child.roles || child.roles.includes(userRole)
+      )
+      return visibleChildren.length ? visibleChildren : []
+    })
+
+  // Primary items: first 4 routes with paths
+  const primaryPaths = userRole === 'applicant'
+    ? ['/applicant/dashboard', '/applicant/jobs', '/applicant/status', '/my-profile']
+    : ['/dashboard', '/recruitment/jobs', '/recruitment/candidates', '/onboarding']
+
+  const primaryItems = primaryPaths
+    .map(path => visibleItems.find(item => item.path === path))
+    .filter((item): item is NavItem => !!item)
+
+  // Overflow: everything else
+  const primarySet = new Set(primaryItems.map(i => i.path))
+  const overflowItems = visibleItems.filter(item => !primarySet.has(item.path))
+
+  // Close more menu on outside click
+  useEffect(() => {
+    if (!moreOpen) return
+    const handler = (e: MouseEvent) => {
+      if (moreRef.current && !moreRef.current.contains(e.target as Node)) {
+        setMoreOpen(false)
+      }
+    }
+    document.addEventListener('mousedown', handler)
+    return () => document.removeEventListener('mousedown', handler)
+  }, [moreOpen])
+
+  // Close on escape
+  useEffect(() => {
+    if (!moreOpen) return
+    const handler = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') setMoreOpen(false)
+    }
+    document.addEventListener('keydown', handler)
+    return () => document.removeEventListener('keydown', handler)
+  }, [moreOpen])
 
   return (
-    <nav aria-label="Mobile navigation" className="md:hidden fixed bottom-0 left-0 right-0 bg-surface dark:bg-[#1e293b] border-t border-outline-variant dark:border-[#334155] z-50 flex justify-around py-2 safe-bottom" style={{ paddingBottom: 'max(8px, env(safe-area-inset-bottom))' }}>
-      {mobileItems.map(item => (
-        <NavLink key={item.path} to={item.path} className={({ isActive }) =>
-          `flex flex-col items-center gap-0.5 px-3 py-1.5 rounded-lg text-xs transition-all duration-200 ease-out ${isActive ? 'text-primary dark:text-[#93c5fd] bg-surface-container-low dark:bg-[#1e3a5f] scale-105 shadow-sm' : 'text-on-surface-variant dark:text-[#94a3b8] hover:text-on-surface dark:hover:text-[#f1f5f9] active:scale-95'}`
-        }>
-          <item.icon size={22} strokeWidth={2.2} />
-          <span className="font-medium">{t(item.key)}</span>
-        </NavLink>
-      ))}
-    </nav>
+    <>
+      {/* More menu overlay */}
+      {moreOpen && (
+        <div className="fixed inset-0 z-50 md:hidden bg-black/30" onClick={() => setMoreOpen(false)} />
+      )}
+
+      {/* More menu panel */}
+      {moreOpen && (
+        <div
+          ref={moreRef}
+          role="dialog"
+          aria-label="More navigation"
+          className="fixed bottom-16 left-2 right-2 z-50 md:hidden bg-surface dark:bg-surface border border-outline-variant dark:border-outline rounded-xl shadow-lg max-h-[60vh] overflow-y-auto"
+        >
+          <div className="flex items-center justify-between px-4 py-3 border-b border-outline-variant dark:border-outline">
+            <span className="text-sm font-semibold text-on-surface dark:text-on-surface">
+              {t('nav.more')}
+            </span>
+            <button
+              onClick={() => setMoreOpen(false)}
+              className="p-2 rounded-lg hover:bg-surface-container-low dark:hover:bg-surface-container-low transition-colors min-w-[44px] min-h-[44px] flex items-center justify-center"
+              aria-label={t('nav.close_menu')}
+            >
+              <X size={18} className="text-on-surface-variant dark:text-on-surface-variant" />
+            </button>
+          </div>
+          <div className="p-2">
+            {overflowItems.map(item => (
+              <NavLink
+                key={item.path}
+                to={item.path!}
+                onClick={() => setMoreOpen(false)}
+                className={({ isActive }) =>
+                  `flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm transition-colors ${
+                    isActive
+                      ? 'text-primary dark:text-accent-dim bg-surface-container-low dark:bg-surface-container-low'
+                      : 'text-on-surface dark:text-on-surface hover:bg-surface-container-low dark:hover:bg-surface-container-low'
+                  }`
+                }
+              >
+                <item.icon size={18} className="shrink-0" />
+                <span>{t(item.labelKey)}</span>
+              </NavLink>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* Bottom nav bar */}
+      <nav aria-label="Mobile navigation" className="md:hidden fixed bottom-0 left-0 right-0 bg-surface dark:bg-surface border-t border-outline-variant dark:border-outline z-50 flex justify-around py-2" style={{ paddingBottom: 'max(8px, env(safe-area-inset-bottom))' }}>
+        {primaryItems.map(item => (
+          <NavLink key={item.path} to={item.path!} className={({ isActive }) =>
+            `flex flex-col items-center gap-0.5 px-3 py-1.5 rounded-lg text-xs transition-all duration-200 ease-out ${isActive ? 'text-primary dark:text-accent-dim bg-surface-container-low dark:bg-surface-container-low scale-105 shadow-sm' : 'text-on-surface-variant dark:text-on-surface-variant hover:text-on-surface dark:hover:text-on-surface active:scale-95'}`
+          }>
+            <item.icon size={22} strokeWidth={2.2} />
+            <span className="font-medium">{t(item.labelKey)}</span>
+          </NavLink>
+        ))}
+
+        {/* More button */}
+        {overflowItems.length > 0 && (
+          <button
+            onClick={() => setMoreOpen(!moreOpen)}
+            aria-expanded={moreOpen}
+            aria-haspopup="dialog"
+            aria-label={t('nav.more')}
+            className={`flex flex-col items-center gap-0.5 px-3 py-1.5 rounded-lg text-xs transition-all duration-200 ease-out ${
+              moreOpen
+                ? 'text-primary dark:text-accent-dim bg-surface-container-low dark:bg-surface-container-low scale-105 shadow-sm'
+                : 'text-on-surface-variant dark:text-on-surface-variant hover:text-on-surface dark:hover:text-on-surface active:scale-95'
+            }`}
+          >
+            <MoreHorizontal size={22} strokeWidth={2.2} />
+            <span className="font-medium">{t('nav.more')}</span>
+          </button>
+        )}
+      </nav>
+    </>
   )
 }

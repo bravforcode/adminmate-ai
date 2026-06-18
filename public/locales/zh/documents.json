@@ -12,6 +12,7 @@
   "empty_description": "文档将在从录用通知和合同创建后显示在此处",
   "total_documents": "文档总数",
   "pending_action": "待处理",
+  "document_created": "文档已创建",
   "search_placeholder": "搜索文档...",
   "all_types": "所有类型",
   "request_signature": "请求签名",

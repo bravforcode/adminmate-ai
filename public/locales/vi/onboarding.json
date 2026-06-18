@@ -42,6 +42,8 @@
     "labor_law": "Câu hỏi thường gặp về luật lao động"
   },
   "accepted_offers": "Đề nghị đã chấp nhận",
+  "checklist_created": "Đã tạo checklist",
+  "task_updated": "Đã cập nhật tác vụ",
   "error_title": "Tải dữ liệu hội nhập thất bại",
   "error_description": "Chúng tôi không thể lấy dữ liệu hội nhập. Vui lòng thử lại.",
   "empty_team_title": "Chưa có hội nhập nhóm",

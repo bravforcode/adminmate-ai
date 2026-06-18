@@ -12,6 +12,7 @@ import {
   logRequest,
 } from '../_shared/utils.ts'
 import { errorResponse } from '../_shared/errorHandler.ts'
+import { checkAIMonthlyLimit, limitExceededResponse } from '../_shared/limits.ts'
 
 const FN = 'generate-offer-content'
 
@@ -58,6 +59,15 @@ serve(async (req) => {
     const aiLimitOk = await checkAILimit(supabase, offer.companies?.id || '', 'offer_generation', 15)
     if (!aiLimitOk) {
       return new Response(JSON.stringify({ success: false, error: 'AI usage limit exceeded. Please try again later.' }), { status: 429, headers: { ...h, 'Retry-After': '3600' } })
+    }
+
+    // Check subscription-based monthly AI limit
+    const companyId = offer.companies?.id || ''
+    if (companyId) {
+      const monthlyLimit = await checkAIMonthlyLimit(supabase, companyId)
+      if (!monthlyLimit.allowed) {
+        return limitExceededResponse(monthlyLimit)
+      }
     }
 
     const countryCtx: Record<string, string> = {

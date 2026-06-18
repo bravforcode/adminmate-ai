@@ -13,7 +13,7 @@ import {
   Loader2,
   KeyRound,
 } from 'lucide-react'
-import { cn } from '../../utils/cn'
+import { cn } from '../../lib/utils'
 import { LoadingState } from '../../components/shared/LoadingState'
 
 interface MFAStatus {

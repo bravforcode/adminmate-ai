@@ -1,15 +1,15 @@
-import { test, expect, signInAsHR, waitForPageReady } from './helpers'
+import { test, expect, ensureHRAuthenticated, waitForPageReady } from './helpers'
 
 test.describe('HIRING: Page Load', () => {
   test('loads with heading', async ({ page }) => {
-    await signInAsHR(page)
+    await ensureHRAuthenticated(page)
     await page.goto('/hiring')
     await waitForPageReady(page)
     await expect(page.locator('h1, h2').first()).toBeVisible({ timeout: 15_000 })
   })
 
   test('shows document generation section', async ({ page }) => {
-    await signInAsHR(page)
+    await ensureHRAuthenticated(page)
     await page.goto('/hiring')
     await waitForPageReady(page)
     const hasContent = await page.locator('h1, h2, h3, h4, [class*="card"]').count()
@@ -17,7 +17,7 @@ test.describe('HIRING: Page Load', () => {
   })
 
   test('create offer button exists', async ({ page }) => {
-    await signInAsHR(page)
+    await ensureHRAuthenticated(page)
     await page.goto('/hiring')
     await waitForPageReady(page)
     const createBtn = page.locator('button').filter({ hasText: /create|add|new/i }).first()
@@ -27,7 +27,7 @@ test.describe('HIRING: Page Load', () => {
   })
 
   test('export audit button exists', async ({ page }) => {
-    await signInAsHR(page)
+    await ensureHRAuthenticated(page)
     await page.goto('/hiring')
     await waitForPageReady(page)
     const exportBtn = page.locator('button').filter({ hasText: /export|csv/i }).first()
@@ -39,7 +39,7 @@ test.describe('HIRING: Page Load', () => {
 
 test.describe('HIRING: Offers', () => {
   test('offers list or empty state displayed', async ({ page }) => {
-    await signInAsHR(page)
+    await ensureHRAuthenticated(page)
     await page.goto('/hiring')
     await waitForPageReady(page)
     const content = await page.locator('[class*="card"], [class*="table"], [class*="empty"]').count()
@@ -47,7 +47,7 @@ test.describe('HIRING: Offers', () => {
   })
 
   test('offer form opens when creating', async ({ page }) => {
-    await signInAsHR(page)
+    await ensureHRAuthenticated(page)
     await page.goto('/hiring')
     await waitForPageReady(page)
     const createBtn = page.locator('button').filter({ hasText: /create|add|new/i }).first()

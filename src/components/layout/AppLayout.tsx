@@ -8,14 +8,14 @@ import { Toaster } from 'react-hot-toast'
 
 export function AppLayout() {
   return (
-    <div className="min-h-screen bg-background dark:bg-[#0f172a] flex">
+    <div className="min-h-screen bg-background dark:bg-surface-container-lowest flex">
       <a href="#main-content" className="sr-only focus:not-sr-only focus:fixed focus:top-2 focus:left-2 focus:z-[100] focus:bg-white focus:p-2 focus:rounded focus:ring-2 focus:ring-primary">
         Skip to main content
       </a>
       <Sidebar />
       <div className="flex-1 md:ml-[260px] flex flex-col min-h-screen">
         <Header />
-        <main id="main-content" role="main" className="flex-1 px-4 md:px-8 pt-[60px] pb-20 md:pb-8 max-w-[1440px] mx-auto w-full overflow-y-auto">
+        <main id="main-content" role="main" className="flex-1 px-4 md:px-8 pt-[60px] pb-[max(80px,env(safe-area-inset-bottom))] md:pb-8 max-w-[1440px] mx-auto w-full overflow-y-auto">
           <Outlet />
         </main>
       </div>

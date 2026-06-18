@@ -106,7 +106,7 @@ export function ForgotPasswordPage() {
               inputMode="email"
               data-testid="forgot-email-input"
               className="w-full px-3 py-2 rounded-lg border border-outline-variant bg-surface-container-lowest focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all"
-              placeholder="you@company.com"
+              placeholder={t('auth.placeholder_email')}
             />
             {errors.email && (
               <p className="text-error text-sm mt-1">{t('auth.error_invalid_email')}</p>

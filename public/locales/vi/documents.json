@@ -12,6 +12,7 @@
   "empty_description": "Tài liệu sẽ xuất hiện tại đây khi được tạo từ đề nghị và hợp đồng",
   "total_documents": "Tổng tài liệu",
   "pending_action": "Đang chờ xử lý",
+  "document_created": "Đã tạo tài liệu",
   "search_placeholder": "Tìm kiếm tài liệu...",
   "all_types": "Tất cả loại",
   "request_signature": "Yêu cầu chữ ký",

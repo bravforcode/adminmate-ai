@@ -2,6 +2,7 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { onboardingService } from '../services/onboardingService'
 import { useAuthStore } from '../stores/authStore'
 import toast from 'react-hot-toast'
+import i18n from '../lib/i18n'
 
 export function useOnboardingChecklists() {
   const company = useAuthStore(s => s.company)
@@ -13,7 +14,10 @@ export function useCreateChecklist() {
   const company = useAuthStore(s => s.company)
   return useMutation({
     mutationFn: ({ employeeId, offerId, country }: { employeeId: string; offerId: string; country: string }) => onboardingService.createChecklist(company!.id, employeeId, offerId, country),
-    onSuccess: () => { qc.invalidateQueries({ queryKey: ['onboarding'] }); toast.success('Checklist created') },
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: ['onboarding'] })
+      toast.success(i18n.t('onboarding:checklist_created'))
+    },
     onError: (e: Error) => toast.error(e.message),
   })
 }
@@ -23,7 +27,10 @@ export function useUpdateTask() {
   const profile = useAuthStore(s => s.profile)
   return useMutation({
     mutationFn: ({ taskId, completed }: { taskId: string; completed: boolean }) => onboardingService.updateTask(taskId, completed, profile?.id),
-    onSuccess: () => { qc.invalidateQueries({ queryKey: ['onboarding'] }); toast.success('Task updated') },
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: ['onboarding'] })
+      toast.success(i18n.t('onboarding:task_updated'))
+    },
     onError: (e: Error) => toast.error(e.message),
   })
 }

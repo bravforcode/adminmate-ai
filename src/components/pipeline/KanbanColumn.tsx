@@ -1,5 +1,5 @@
 import { ApplicationCard } from './ApplicationCard'
-import { cn } from '../../utils/cn'
+import { cn } from '../../lib/utils'
 import { useTranslation } from 'react-i18next'
 
 const COLUMN_COLORS: Record<string, string> = {

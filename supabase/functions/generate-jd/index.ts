@@ -12,6 +12,7 @@ import {
   logRequest,
 } from '../_shared/utils.ts'
 import { errorResponse } from '../_shared/errorHandler.ts'
+import { checkAIMonthlyLimit, limitExceededResponse } from '../_shared/limits.ts'
 
 const FN = 'generate-jd'
 
@@ -54,6 +55,12 @@ serve(async (req) => {
     const aiLimitOk = await checkAILimit(supabase, profile.company_id, 'jd_generation', 15)
     if (!aiLimitOk) {
       return new Response(JSON.stringify({ success: false, error: 'AI usage limit exceeded. Please try again later.' }), { status: 429, headers: { ...h, 'Retry-After': '3600' } })
+    }
+
+    // Check subscription-based monthly AI limit
+    const monthlyLimit = await checkAIMonthlyLimit(supabase, profile.company_id)
+    if (!monthlyLimit.allowed) {
+      return limitExceededResponse(monthlyLimit)
     }
 
     const langInstr: Record<string, string> = {

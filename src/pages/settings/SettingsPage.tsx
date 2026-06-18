@@ -1,13 +1,14 @@
 import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
 import { useAuthStore, useAuthLoading, useAuthError } from '../../stores/authStore'
 import { companyService } from '../../services/companyService'
-import { Save, Building2, Shield, Gavel, MessageSquare, Phone, RotateCcw, ScrollText, Bell, Lock } from 'lucide-react'
+import { Save, Building2, Shield, Gavel, MessageSquare, Phone, RotateCcw, ScrollText, Bell, Lock, CreditCard } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import toast from 'react-hot-toast'
-import { cn } from '../../utils/cn'
+import { cn } from '../../lib/utils'
 import { LoadingState } from '../../components/shared/LoadingState'
 import { ErrorState } from '../../components/shared/ErrorState'
 import { Card, CardHeader, CardContent, CardTitle, CardDescription } from '../../components/ui/Card'
@@ -20,6 +21,7 @@ type FormData = z.infer<typeof companySchema>
 
 export function SettingsPage() {
   const { t } = useTranslation('common')
+  const navigate = useNavigate()
   const { profile, company, setCompany } = useAuthStore()
   const isLoading = useAuthLoading()
   const authError = useAuthError()
@@ -112,15 +114,15 @@ export function SettingsPage() {
                     <div>
                       <label className="block text-sm font-medium mb-1 text-on-surface-variant">{t('settings.industry') || 'Primary Industry'}</label>
                       <select {...register('industry')} className="w-full px-3 py-2 rounded-lg border border-outline-variant bg-surface-container-lowest focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all">
-                        <option value="">Select industry...</option>
-                        <option value="Technology">Technology</option>
-                        <option value="Finance">Finance</option>
-                        <option value="Healthcare">Healthcare</option>
-                        <option value="Manufacturing">Manufacturing</option>
-                        <option value="Retail">Retail</option>
-                        <option value="Education">Education</option>
-                        <option value="Logistics">Logistics</option>
-                        <option value="Other">Other</option>
+                        <option value="">{t('auth.reg_select_industry')}</option>
+                        <option value="Technology">{t('auth.industry_technology')}</option>
+                        <option value="Finance">{t('auth.industry_finance')}</option>
+                        <option value="Healthcare">{t('auth.industry_healthcare')}</option>
+                        <option value="Manufacturing">{t('auth.industry_manufacturing')}</option>
+                        <option value="Retail">{t('auth.industry_retail')}</option>
+                        <option value="Education">{t('auth.industry_education')}</option>
+                        <option value="Logistics">{t('auth.industry_logistics')}</option>
+                        <option value="Other">{t('auth.industry_other')}</option>
                       </select>
                     </div>
                   </div>
@@ -176,7 +178,7 @@ export function SettingsPage() {
                 <p className="text-3xl font-bold text-primary tracking-tight">—</p>
                 <p className="text-sm text-on-surface-variant">{t('settings.contact_sales') || 'Contact sales for plan details'}</p>
               </div>
-              <Button variant="outline" fullWidth onClick={() => toast('Billing portal will open in a new tab')}>
+              <Button variant="outline" fullWidth onClick={() => navigate('/settings/billing')}>
                 {t('settings.manage_billing') || 'Manage Billing'}
               </Button>
             </CardContent>
@@ -240,6 +242,24 @@ export function SettingsPage() {
           >
             <Lock size={15} />
             {t('pdpa.manage') || 'Manage Privacy'}
+          </Link>
+        </div>
+
+        {/* Billing & Plans */}
+        <div className="bg-surface rounded-xl border border-outline-variant shadow-sm p-6">
+          <div className="flex items-center gap-2 mb-4">
+            <CreditCard size={20} className="text-primary" />
+            <h3 className="text-title-lg font-semibold text-on-surface">{t('billing.title') || 'Billing & Plans'}</h3>
+          </div>
+          <p className="text-sm text-on-surface-variant mb-4">
+            {t('billing.subtitle') || 'Manage your subscription and billing'}
+          </p>
+          <Link
+            to="/settings/billing"
+            className="inline-flex items-center gap-2 px-4 py-2 bg-primary text-on-primary rounded-lg font-medium hover:opacity-90 transition-opacity text-sm"
+          >
+            <CreditCard size={15} />
+            {t('billing.current_plan_btn') || 'Manage Billing'}
           </Link>
         </div>
 

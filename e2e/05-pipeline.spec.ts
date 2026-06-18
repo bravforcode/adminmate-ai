@@ -1,24 +1,24 @@
-import { test, expect, signInAsHR, navigateTo } from './helpers'
+import { test, expect, ensureHRAuthenticated, navigateTo } from './helpers'
 
 // ═══════════════════════════════════════════════════════════════════
 // PIPELINE: Page Load & Kanban Board
 // ═══════════════════════════════════════════════════════════════════
 test.describe('PIPELINE: Page Load', () => {
   test('loads with heading and kanban board', async ({ page }) => {
-    await signInAsHR(page)
+    await ensureHRAuthenticated(page)
     await navigateTo(page, '/recruitment/pipeline')
     await expect(page.locator('h1, h2').first()).toBeVisible({ timeout: 15_000 })
   })
 
   test('job filter select exists', async ({ page }) => {
-    await signInAsHR(page)
+    await ensureHRAuthenticated(page)
     await navigateTo(page, '/recruitment/pipeline')
     const filter = page.locator('[data-testid="job-filter"]')
     await expect(filter).toBeVisible({ timeout: 10_000 })
   })
 
   test('kanban columns are rendered (with or without cards)', async ({ page }) => {
-    await signInAsHR(page)
+    await ensureHRAuthenticated(page)
     await navigateTo(page, '/recruitment/pipeline')
     await page.waitForTimeout(2000)
     // Kanban columns should exist (Applied, Screening, Interview, Offer, Hired, Rejected)
@@ -34,7 +34,7 @@ test.describe('PIPELINE: Page Load', () => {
 // ═══════════════════════════════════════════════════════════════════
 test.describe('PIPELINE: Kanban Cards', () => {
   test('kanban cards or empty state displayed', async ({ page }) => {
-    await signInAsHR(page)
+    await ensureHRAuthenticated(page)
     await navigateTo(page, '/recruitment/pipeline')
     await page.waitForTimeout(2000)
     // Cards may or may not exist — check that the page loaded properly
@@ -45,7 +45,7 @@ test.describe('PIPELINE: Kanban Cards', () => {
   })
 
   test('clicking a kanban card opens detail drawer', async ({ page }) => {
-    await signInAsHR(page)
+    await ensureHRAuthenticated(page)
     await navigateTo(page, '/recruitment/pipeline')
     await page.waitForTimeout(2000)
 
@@ -65,7 +65,7 @@ test.describe('PIPELINE: Kanban Cards', () => {
 // ═══════════════════════════════════════════════════════════════════
 test.describe('PIPELINE: Job Filter', () => {
   test('filter has "All Jobs" option', async ({ page }) => {
-    await signInAsHR(page)
+    await ensureHRAuthenticated(page)
     await navigateTo(page, '/recruitment/pipeline')
     const filter = page.locator('[data-testid="job-filter"]')
     if (await filter.isVisible({ timeout: 5_000 }).catch(() => false)) {
@@ -75,7 +75,7 @@ test.describe('PIPELINE: Job Filter', () => {
   })
 
   test('selecting a job filter updates the board', async ({ page }) => {
-    await signInAsHR(page)
+    await ensureHRAuthenticated(page)
     await navigateTo(page, '/recruitment/pipeline')
     const filter = page.locator('[data-testid="job-filter"]')
     if (await filter.isVisible({ timeout: 5_000 }).catch(() => false)) {
@@ -96,7 +96,7 @@ test.describe('PIPELINE: Job Filter', () => {
 // ═══════════════════════════════════════════════════════════════════
 test.describe('PIPELINE: JD Generation', () => {
   test('JD Generation button exists and navigates to jobs', async ({ page }) => {
-    await signInAsHR(page)
+    await ensureHRAuthenticated(page)
     await navigateTo(page, '/recruitment/pipeline')
     const jdBtn = page.getByText(/jd generation|generate jd/i).first()
     if (await jdBtn.isVisible({ timeout: 5_000 }).catch(() => false)) {

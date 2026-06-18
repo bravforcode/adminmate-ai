@@ -1,19 +1,19 @@
 import * as React from 'react'
-import { cn } from '../../utils/cn'
+import { cn } from '../../lib/utils'
 import { Spinner } from './Spinner'
 import { Slot } from './Slot'
 
 const buttonVariants = {
-  default: 'bg-blue-600 text-white hover:bg-blue-700 active:bg-blue-800 dark:bg-blue-500 dark:hover:bg-blue-600 dark:active:bg-blue-700',
+  default: 'bg-primary text-on-primary hover:opacity-90 active:opacity-100',
   gradient: 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white hover:from-blue-700 hover:to-indigo-700 active:from-blue-800 active:to-indigo-800 shadow-md hover:shadow-lg dark:from-blue-500 dark:to-indigo-500',
-  secondary: 'bg-gray-100 text-gray-900 hover:bg-gray-200 active:bg-gray-300 dark:bg-gray-800 dark:text-gray-100 dark:hover:bg-gray-700 dark:active:bg-gray-600',
-  outline: 'border border-gray-300 bg-white text-gray-700 hover:bg-gray-50 active:bg-gray-100 dark:border-gray-600 dark:bg-gray-900 dark:text-gray-300 dark:hover:bg-gray-800 dark:active:bg-gray-700',
-  ghost: 'text-gray-700 hover:bg-gray-100 active:bg-gray-200 dark:text-gray-300 dark:hover:bg-gray-800 dark:active:bg-gray-700',
-  destructive: 'bg-red-600 text-white hover:bg-red-700 active:bg-red-800 dark:bg-red-500 dark:hover:bg-red-600 dark:active:bg-red-700',
-  link: 'text-blue-600 underline-offset-4 hover:underline dark:text-blue-400',
-  glow: 'bg-blue-600 text-white hover:bg-blue-700 active:bg-blue-800 shadow-[0_0_20px_rgba(59,130,246,0.3)] hover:shadow-[0_0_30px_rgba(59,130,246,0.5)] dark:bg-blue-500 dark:hover:bg-blue-600 transition-shadow duration-300',
-  glass: 'bg-white/20 backdrop-blur-md border border-white/30 text-white hover:bg-white/30 active:bg-white/40 dark:bg-black/20 dark:border-white/10 dark:text-gray-100',
-  'premium-white': 'bg-white text-gray-900 hover:bg-gray-100 active:bg-gray-200 shadow-lg hover:shadow-xl dark:bg-gray-100 dark:text-gray-900',
+  secondary: 'bg-surface-container-low text-on-surface hover:bg-surface-container-high active:bg-surface-container dark:bg-surface-alt dark:text-on-surface dark:hover:bg-surface-container dark:active:bg-surface-container-low',
+  outline: 'border border-outline bg-surface text-on-surface-variant hover:bg-surface-container-low active:bg-surface-container-low dark:border-outline dark:bg-surface dark:text-on-surface-variant dark:hover:bg-surface-container-low dark:active:bg-surface-container',
+  ghost: 'text-on-surface-variant hover:bg-surface-container-low active:bg-surface-container dark:text-on-surface-variant dark:hover:bg-surface-container dark:active:bg-surface-container-low',
+  destructive: 'bg-error text-white hover:opacity-90 active:opacity-100',
+  link: 'text-primary underline-offset-4 hover:underline',
+  glow: 'bg-primary text-on-primary hover:opacity-90 active:opacity-100 shadow-[0_0_20px_rgba(59,130,246,0.3)] hover:shadow-[0_0_30px_rgba(59,130,246,0.5)] transition-shadow duration-300',
+  glass: 'bg-white/20 backdrop-blur-md border border-white/30 text-white hover:bg-white/30 active:bg-white/40 dark:bg-black/20 dark:border-white/10 dark:text-on-surface',
+  'premium-white': 'bg-surface text-on-surface hover:bg-surface-container-low active:bg-surface-container shadow-lg hover:shadow-xl',
 }
 
 const buttonSizes = {
@@ -85,7 +85,7 @@ export function Button({
     'relative inline-flex items-center justify-center font-medium select-none',
     !asChild && [
       'transition-all duration-200 ease-out',
-      'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 dark:focus-visible:ring-offset-gray-900',
+      'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 dark:focus-visible:ring-offset-background',
       'disabled:pointer-events-none disabled:opacity-50',
       'cursor-pointer',
     ],
@@ -103,6 +103,7 @@ export function Button({
       data-icon={iconAttr}
       onClick={!asChild ? handleClick : undefined}
       disabled={!asChild ? (disabled || loading) : undefined}
+      type={!asChild ? (props.type ?? 'button') : undefined}
       {...props}
     >
       {loading && !asChild && (

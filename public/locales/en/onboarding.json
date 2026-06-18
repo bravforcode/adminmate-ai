@@ -42,6 +42,8 @@
     "labor_law": "Local Labor Law FAQ"
   },
   "accepted_offers": "Accepted Offers",
+  "checklist_created": "Checklist created",
+  "task_updated": "Task updated",
   "error_title": "Failed to load onboarding",
   "error_description": "We could not retrieve onboarding data. Please try again.",
   "empty_team_title": "No team onboardings yet",

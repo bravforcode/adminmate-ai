@@ -5,6 +5,27 @@
   "create_first_offer": "สร้างจดหมายเสนองานแรกของคุณ",
   "create_offer": "สร้างข้อเสนอ",
   "export_audit": "ส่งออกบันทึกการตรวจสอบ",
+  "form": {
+    "title": "สร้างจดหมายเสนองาน",
+    "position_title": "ชื่อตำแหน่ง",
+    "salary_offered": "เงินเดือนที่เสนอ",
+    "salary_required": "กรุณากรอกเงินเดือน",
+    "currency": "สกุลเงิน",
+    "start_date": "วันเริ่มงาน",
+    "work_hours": "เวลาทำงาน",
+    "benefits": "สวัสดิการ (หนึ่งบรรทัดต่อรายการ)",
+    "benefits_placeholder": "ประกันสุขภาพ\nลาพักร้อน 12 วันต่อปี\nกองทุนสำรองเลี้ยงชีพ",
+    "special_conditions": "เงื่อนไขพิเศษ",
+    "cancel": "ยกเลิก",
+    "submit": "สร้างข้อเสนอ",
+    "submitting": "กำลังสร้าง..."
+  },
+  "pdf": {
+    "downloaded": "ดาวน์โหลด PDF แล้ว",
+    "failed": "สร้าง PDF ไม่สำเร็จ",
+    "generating": "กำลังสร้าง...",
+    "download": "ดาวน์โหลด PDF"
+  },
   "sent": "ส่งแล้ว",
   "viewed": "ดูแล้ว",
   "accepted": "ตอบรับ",
@@ -49,6 +70,7 @@
     "send_for_sig": "ส่งเพื่อลงนาม"
   },
   "toasts": {
+    "offer_created": "สร้างข้อเสนอแล้ว",
     "no_offers_export": "ไม่มีข้อเสนอให้ส่งออก",
     "select_offer_first": "กรุณาเลือกข้อเสนอก่อน",
     "only_draft_editable": "แก้ไขได้เฉพาะข้อเสนอที่เป็นร่างเท่านั้น"
