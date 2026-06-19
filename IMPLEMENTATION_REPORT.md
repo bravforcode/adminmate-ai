@@ -4,6 +4,7 @@
 - **Release 0** — Repo Audit + Production Baseline ✅
 - **Release 1** — Multi-Tenant Core + RBAC + Sensitive Fields + Global Config ✅ (stabilized)
 - **Release 1B** — Legal Entity + Org Hierarchy ✅
+- **Release 2** — Recruiting Core + Employee Referral ✅
 
 ## Release 0 Summary
 
@@ -17,7 +18,7 @@ Implemented security hardening, RBAC foundation (with legacy fallback), sensitiv
 
 ## Files Changed — Release 1
 
-### SQL Migrations (10)
+### SQL Migrations (12)
 - `20240620000001_security_hotfix_notifications_rls.sql`
 - `20240620000002_rbac_tables.sql`
 - `20240620000003_rbac_seed.sql`
@@ -28,8 +29,10 @@ Implemented security hardening, RBAC foundation (with legacy fallback), sensitiv
 - `20240620000008_legal_entities.sql` (Release 1B)
 - `20240620000009_org_hierarchy.sql` (Release 1B)
 - `20240620000010_rbac_org_permissions.sql` (Release 1B)
+- `20240620000011_employee_referrals.sql` (Release 2)
+- `20240620000012_referral_permissions.sql` (Release 2)
 
-### Frontend Services (8)
+### Frontend Services (9)
 - `src/services/permissionService.ts`
 - `src/services/sensitiveFieldService.ts`
 - `src/services/featureFlagService.ts`
@@ -37,6 +40,7 @@ Implemented security hardening, RBAC foundation (with legacy fallback), sensitiv
 - `src/services/orgStructureService.ts` (Release 1B)
 - `src/services/locationService.ts` (Release 1B)
 - `src/services/costCenterService.ts` (Release 1B)
+- `src/services/referralService.ts` (Release 2)
 
 ### Frontend Components (2)
 - `src/components/common/PermissionDenied.tsx`
@@ -46,13 +50,16 @@ Implemented security hardening, RBAC foundation (with legacy fallback), sensitiv
 - `src/components/layout/AppLayout.tsx` — RTL dir support
 - `src/index.css` — RTL CSS additions
 
-### Tests (6 new files, 29 tests)
+### Tests (9 new files, 44 tests)
 - `tests/unit/services/permissionService.test.ts` (11 tests)
 - `tests/unit/services/sensitiveFieldService.test.ts` (5 tests)
 - `tests/unit/services/featureFlagService.test.ts` (8 tests)
 - `tests/unit/components/PermissionComponents.test.tsx` (3 tests)
 - `tests/unit/services/legalEntityService.test.ts` (3 tests) (Release 1B)
 - `tests/unit/services/orgStructureService.test.ts` (8 tests) (Release 1B)
+- `tests/unit/services/referralService.test.ts` (7 tests) (Release 2)
+- `tests/unit/services/candidateService.test.ts` (4 tests) (Release 2)
+- `tests/unit/services/applicationService.test.ts` (4 tests) (Release 2)
 
 ## Database Changes — Release 1
 - 51 total migrations (44 existing + 7 new)

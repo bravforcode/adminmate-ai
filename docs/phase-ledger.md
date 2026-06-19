@@ -9,7 +9,7 @@
 | 0 | Repo Audit + Production Baseline | ✅ COMPLETE | 2026-06-20 | Full audit. 408/417 tests pass. Build/typecheck/lint clean. |
 | 1 | Multi-Tenant Core + RBAC + Audit + i18n + Global Country Framework | ✅ COMPLETE | 2026-06-20 | Security hotfix, RBAC with legacy fallback, sensitive fields, global config. 429/438 tests pass. Stabilized: company_id naming, docs consistency, dual-mode RBAC. |
 | 1B | Legal Entity & Organizational Hierarchy | ✅ COMPLETE | 2026-06-20 | 10 tables, 12 new permissions, 4 services, 8 tests. 443/452 tests pass. |
-| 2 | Recruiting Core + Employee Referral | ⏳ PENDING | — | Partially exists (jobs, candidates, applications) |
+| 2 | Recruiting Core + Employee Referral | ✅ COMPLETE | 2026-06-20 | Employee referral system (table + service + RBAC + auto-hire trigger), audit fixes for cv_documents + interviews. 458/467 tests pass. |
 | 3 | Candidate Portal + Application Forms | ⏳ PENDING | — | |
 | 4 | AI Recruiting Layer | ⏳ PENDING | — | AI features already partially exist |
 | 5 | Messaging + Approval Workflow | ⏳ PENDING | — | Messaging infrastructure exists |
