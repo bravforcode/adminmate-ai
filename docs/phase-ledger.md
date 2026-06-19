@@ -13,7 +13,7 @@
 | 3 | Candidate Portal + Application Forms | ✅ COMPLETE | 2026-06-20 | Public apply page, service-role edge functions, tracking, consent logging, 16 security tests. 474/483 tests pass. |
 | 4 | AI Recruiting Layer | ✅ COMPLETE | 2026-06-20 | Evidence-based scoring, sensitive field exclusion, HR override, prompt versioning, 19 safety tests. 493/502 tests pass. |
 | 5 | Messaging + Approval Workflow | ✅ COMPLETE | 2026-06-20 | Approval workflow, 6 provider adapters, template system, 23 messaging tests. 516/525 tests pass. |
-| 6 | Onboarding + Documents + Contract Templates | ⏳ PENDING | — | Onboarding tables exist |
+| 6 | Onboarding + Documents + Contract Templates | ✅ COMPLETE | 2026-06-20 | 8 new tables, secure upload tokens, contract templates, e-signature adapters, 27 onboarding tests. 543/552 tests pass. |
 | 6B | Offboarding + Exit Management | ⏳ PENDING | — | |
 | 7 | HRIS Core + Directory + Org Chart | ⏳ PENDING | — | |
 | 7B | Global Mobility, Visa & Work Permit | ⏳ PENDING | — | |

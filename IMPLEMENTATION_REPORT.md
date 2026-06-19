@@ -8,6 +8,7 @@
 - **Release 3** — Candidate Portal + Application Forms ✅
 - **Release 4** — AI Recruiting Layer ✅
 - **Release 5** — Messaging + Approval Workflow ✅
+- **Release 6** — Onboarding + Documents + Contract Templates ✅
 
 ## Release 0 Summary
 
