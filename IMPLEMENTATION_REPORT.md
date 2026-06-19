@@ -7,6 +7,7 @@
 - **Release 2** — Recruiting Core + Employee Referral ✅
 - **Release 3** — Candidate Portal + Application Forms ✅
 - **Release 4** — AI Recruiting Layer ✅
+- **Release 5** — Messaging + Approval Workflow ✅
 
 ## Release 0 Summary
 

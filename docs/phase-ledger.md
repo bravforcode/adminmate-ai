@@ -12,7 +12,7 @@
 | 2 | Recruiting Core + Employee Referral | ✅ COMPLETE | 2026-06-20 | Employee referral system (table + service + RBAC + auto-hire trigger), audit fixes for cv_documents + interviews. 458/467 tests pass. |
 | 3 | Candidate Portal + Application Forms | ✅ COMPLETE | 2026-06-20 | Public apply page, service-role edge functions, tracking, consent logging, 16 security tests. 474/483 tests pass. |
 | 4 | AI Recruiting Layer | ✅ COMPLETE | 2026-06-20 | Evidence-based scoring, sensitive field exclusion, HR override, prompt versioning, 19 safety tests. 493/502 tests pass. |
-| 5 | Messaging + Approval Workflow | ⏳ PENDING | — | Messaging infrastructure exists |
+| 5 | Messaging + Approval Workflow | ✅ COMPLETE | 2026-06-20 | Approval workflow, 6 provider adapters, template system, 23 messaging tests. 516/525 tests pass. |
 | 6 | Onboarding + Documents + Contract Templates | ⏳ PENDING | — | Onboarding tables exist |
 | 6B | Offboarding + Exit Management | ⏳ PENDING | — | |
 | 7 | HRIS Core + Directory + Org Chart | ⏳ PENDING | — | |
