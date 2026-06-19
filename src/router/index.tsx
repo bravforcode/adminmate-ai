@@ -42,6 +42,8 @@ const HiringPage = lazy(() => import('../pages/hiring/HiringPage'))
 const HealthPage = lazy(() => import('../pages/HealthPage'))
 const GeminiMonitoringPage = lazy(() => import('../pages/GeminiMonitoringPage'))
 const NotFoundPage = lazy(() => import('../pages/NotFoundPage'))
+const ApplyPage = lazy(() => import('../pages/portal/ApplyPage'))
+const TrackApplicationPage = lazy(() => import('../pages/portal/TrackApplicationPage'))
 
 const HR_ROLES = ['admin', 'hr', 'manager']
 
@@ -94,6 +96,14 @@ export const router = createBrowserRouter([
   {
     path: '/auth/callback',
     element: <OAuthCallbackPage />,
+  },
+  {
+    path: '/apply/:jobToken',
+    element: <AnimatedPage><ApplyPage /></AnimatedPage>,
+  },
+  {
+    path: '/portal/track/:trackingToken',
+    element: <AnimatedPage><TrackApplicationPage /></AnimatedPage>,
   },
   {
     path: '/setup-company',

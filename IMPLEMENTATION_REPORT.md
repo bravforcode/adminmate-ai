@@ -5,6 +5,7 @@
 - **Release 1** — Multi-Tenant Core + RBAC + Sensitive Fields + Global Config ✅ (stabilized)
 - **Release 1B** — Legal Entity + Org Hierarchy ✅
 - **Release 2** — Recruiting Core + Employee Referral ✅
+- **Release 3** — Candidate Portal + Application Forms ✅
 
 ## Release 0 Summary
 
@@ -18,7 +19,7 @@ Implemented security hardening, RBAC foundation (with legacy fallback), sensitiv
 
 ## Files Changed — Release 1
 
-### SQL Migrations (12)
+### SQL Migrations (13)
 - `20240620000001_security_hotfix_notifications_rls.sql`
 - `20240620000002_rbac_tables.sql`
 - `20240620000003_rbac_seed.sql`
@@ -31,6 +32,7 @@ Implemented security hardening, RBAC foundation (with legacy fallback), sensitiv
 - `20240620000010_rbac_org_permissions.sql` (Release 1B)
 - `20240620000011_employee_referrals.sql` (Release 2)
 - `20240620000012_referral_permissions.sql` (Release 2)
+- `20240620000013_candidate_portal.sql` (Release 3)
 
 ### Frontend Services (9)
 - `src/services/permissionService.ts`
