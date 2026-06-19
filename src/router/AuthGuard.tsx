@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
-import { Navigate, useLocation } from 'react-router-dom'
+import { Navigate, useLocation, useNavigate } from 'react-router-dom'
 import { useAuthStore } from '../stores/authStore'
+import { supabase } from '../lib/supabase'
 
 interface AuthGuardProps {
   children: React.ReactNode
@@ -28,18 +29,35 @@ function useHydrationGuard(): boolean {
 
 export function AuthGuard({ children, requiredRoles, requireCompany = true, callInitSession = true }: AuthGuardProps) {
   const hydrated = useHydrationGuard()
-  const { isAuthenticated, hasCompany, isLoading, profile, initSession } = useAuthStore()
+  const { isAuthenticated, hasCompany, isLoading, profile, initSession, resetSessionInit } = useAuthStore()
   const location = useLocation()
+  const navigate = useNavigate()
 
-  // When returning from OAuth, URL has ?code= for PKCE exchange
-  // Only show loading if not yet authenticated (prevents flash redirect to login)
-  const isOAuthRedirect = location.search.includes('code=')
+  // When returning from OAuth, manually exchange PKCE code
+  useEffect(() => {
+    const params = new URLSearchParams(location.search)
+    const code = params.get('code')
+    if (!code) return
+
+    supabase.auth.exchangeCodeForSession(code).then(({ error }) => {
+      // Clean the code from URL without reload
+      const cleanUrl = location.pathname
+      navigate(cleanUrl, { replace: true })
+      if (!error) {
+        // Session stored — re-init to load profile
+        resetSessionInit()
+        initSession()
+      }
+    })
+  }, [location.search])
 
   useEffect(() => {
     if (hydrated && callInitSession) initSession()
   }, [hydrated, callInitSession])
 
-  if (!hydrated || (isLoading && !isAuthenticated())) {
+  // Show loading if code is being exchanged
+  const hasCodeParam = location.search.includes('code=')
+  if (!hydrated || (isLoading && !isAuthenticated()) || hasCodeParam) {
     return (
       <div
         role="status"
@@ -53,19 +71,6 @@ export function AuthGuard({ children, requiredRoles, requireCompany = true, call
   }
 
   if (!isAuthenticated()) {
-    if (isOAuthRedirect) {
-      // Still waiting for PKCE exchange — show loading
-      return (
-        <div
-          role="status"
-          aria-live="polite"
-          data-testid="auth-guard-loading"
-          className="flex items-center justify-center h-screen"
-        >
-          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary" />
-        </div>
-      )
-    }
     return <Navigate to="/login" state={{ from: location }} replace />
   }
 

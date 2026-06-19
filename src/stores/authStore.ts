@@ -46,6 +46,7 @@ interface AuthState {
   setError: (error: string | null) => void
   initSession: () => Promise<void>
   subscribeAuth: () => () => void
+  resetSessionInit: () => void
   initDemo: () => void
   reset: () => void
   isAuthenticated: () => boolean
@@ -177,6 +178,7 @@ export const useAuthStore = create<AuthState>()(
         _sessionInitPromise = null
         set({ user: null, profile: null, company: null, _langPref: 'en', isLoading: false, error: null })
       },
+      resetSessionInit: () => { _sessionInitPromise = null },
 
       isAuthenticated: () => !!get().user,
       isAdminOrHR: () => ['admin', 'hr'].includes(get().profile?.role ?? ''),
