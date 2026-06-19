@@ -16,7 +16,7 @@
 | 6 | Onboarding + Documents + Contract Templates | ✅ COMPLETE | 2026-06-20 | 8 new tables, secure upload tokens, contract templates, e-signature adapters, 27 onboarding tests. 543/552 tests pass. |
 | 6B | Offboarding + Exit Management | ✅ COMPLETE | 2026-06-20 | 9 new tables, asset return, access revocation, exit interview, final settlement readiness, 38 tests. 581/590 tests pass. |
 | 7 | HRIS Core + Employee Directory + Org Chart | ✅ COMPLETE | 2026-06-20 | 8 new tables, employee lifecycle, change requests, org chart, custom fields, 28 HRIS tests. 609/618 tests pass. |
-| 7B | Global Mobility, Visa & Work Permit | ⏳ PENDING | — | |
+| 7B | Global Mobility, Visa & Work Permit Tracking | ✅ COMPLETE | 2026-06-20 | 11 new tables, immigration cases, travel approval, day counts, visa alerts, EOR, 16 mobility tests. 625/634 tests pass. |
 | 8 | Attendance + Leave Core | ⏳ PENDING | — | |
 | 8B | Workforce Scheduling & Shift Marketplace | ⏳ PENDING | — | |
 | 9A | Thailand Payroll Pack | ⏳ PENDING | — | |

@@ -11,6 +11,7 @@
 - **Release 6** — Onboarding + Documents + Contract Templates ✅
 - **Release 6B** — Offboarding + Exit Management ✅
 - **Release 7** — HRIS Core + Employee Directory + Org Chart ✅
+- **Release 7B** — Global Mobility, Visa & Work Permit Tracking ✅
 
 ## Release 0 Summary
 
