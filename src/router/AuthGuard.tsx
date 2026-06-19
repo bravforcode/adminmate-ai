@@ -31,11 +31,15 @@ export function AuthGuard({ children, requiredRoles, requireCompany = true, call
   const { isAuthenticated, hasCompany, isLoading, profile, initSession } = useAuthStore()
   const location = useLocation()
 
+  // When returning from OAuth, URL has ?code= for PKCE exchange
+  // Keep loading until Supabase finishes the async code exchange
+  const isOAuthRedirect = location.search.includes('code=')
+
   useEffect(() => {
     if (hydrated && callInitSession) initSession()
   }, [hydrated, callInitSession])
 
-  if (!hydrated || isLoading) {
+  if (!hydrated || isLoading || isOAuthRedirect) {
     return (
       <div
         role="status"

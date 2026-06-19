@@ -141,11 +141,13 @@ export const useAuthStore = create<AuthState>()(
             return
           }
           if (event === 'SIGNED_OUT' || !session?.user) {
+            _sessionInitPromise = null
             set({ user: null, profile: null, company: null })
             return
           }
           if (event === 'SIGNED_IN' || event === 'USER_UPDATED') {
-            set({ user: session.user })
+            _sessionInitPromise = null
+            set({ user: session.user, isLoading: false })
             const { data: profile } = await supabase
               .from('user_profiles')
               .select('id, email, full_name, full_name_th, avatar_url, role, company_id, language_preference, is_active, phone')
