@@ -1,5 +1,6 @@
 import { serve } from "https://deno.land/std@0.177.0/http/server.ts"
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2"
+import { captureError } from '../_shared/sentry.ts'
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -38,8 +39,16 @@ async function verifyStripeSignature(
     .map(b => b.toString(16).padStart(2, '0'))
     .join('')
 
-  // Compare signatures (constant-time comparison)
-  return signatureParts.some(v1 => v1.slice(3) === computedSignature)
+  // Compare signatures (constant-time comparison to prevent timing attacks)
+  return signatureParts.some(v1 => {
+    const sig = v1.slice(3)
+    if (sig.length !== computedSignature.length) return false
+    let result = 0
+    for (let i = 0; i < sig.length; i++) {
+      result |= sig.charCodeAt(i) ^ computedSignature.charCodeAt(i)
+    }
+    return result === 0
+  })
 }
 
 serve(async (req: Request) => {
@@ -160,7 +169,8 @@ serve(async (req: Request) => {
 
     return new Response("OK", { status: 200 })
   } catch (error) {
-    return new Response(JSON.stringify({ error: error.message }), {
+    captureError(error, { function: 'stripe-webhook' })
+    return new Response(JSON.stringify({ error: 'Internal server error' }), {
       status: 500,
       headers: { ...corsHeaders, "Content-Type": "application/json" },
     })

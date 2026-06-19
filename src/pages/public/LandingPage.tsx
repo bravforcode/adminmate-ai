@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { motion } from 'motion/react'
+import { Logo } from '../../components/brand/Logo'
 import {
   Users, FileText, MessageSquare, Shield, Clock,
   ArrowRight, ChevronDown, ChevronUp, Sparkles,
@@ -57,9 +58,7 @@ export default function LandingPage() {
       <nav className="sticky top-0 z-50 backdrop-blur-xl bg-[var(--color-surface)]/80 border-b border-[var(--color-border)]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <div className="w-8 h-8 rounded-lg bg-[var(--color-primary)] flex items-center justify-center">
-              <Sparkles size={18} className="text-white" />
-            </div>
+            <Logo size={28} showText={false} />
             <span className="text-lg font-semibold tracking-tight">AdminMate AI</span>
           </div>
           <div className="flex items-center gap-3">
@@ -70,7 +69,7 @@ export default function LandingPage() {
               {t('landing.nav_sign_in', 'Sign In')}
             </button>
             <button
-              onClick={() => handleCTA('/register')}
+              onClick={() => handleCTA('/login')}
               className="px-5 py-2.5 text-sm font-medium bg-[var(--color-primary)] text-white rounded-xl hover:opacity-90 transition-opacity"
             >
               {t('landing.nav_start_free', 'Start Free')}
@@ -100,7 +99,7 @@ export default function LandingPage() {
             </p>
             <div className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4">
               <button
-                onClick={() => handleCTA('/register')}
+                onClick={() => handleCTA('/login')}
                 className="w-full sm:w-auto px-8 py-4 text-base font-semibold bg-[var(--color-primary)] text-white rounded-2xl hover:opacity-90 transition-opacity flex items-center justify-center gap-2"
               >
                 {t('landing.hero_cta', 'Start Free — No Credit Card')}
@@ -343,7 +342,7 @@ export default function LandingPage() {
           </p>
           <div className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4">
             <button
-              onClick={() => handleCTA('/register')}
+              onClick={() => handleCTA('/login')}
               className="w-full sm:w-auto px-8 py-4 text-base font-semibold bg-white text-[var(--color-primary)] rounded-2xl hover:opacity-90 transition-opacity flex items-center justify-center gap-2"
             >
               {t('landing.cta_button', 'Create Free Account')}
@@ -358,15 +357,13 @@ export default function LandingPage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col sm:flex-row items-center justify-between gap-6">
             <div className="flex items-center gap-2">
-              <div className="w-7 h-7 rounded-lg bg-[var(--color-primary)] flex items-center justify-center">
-                <Sparkles size={14} className="text-white" />
-              </div>
+              <Logo size={24} showText={false} />
               <span className="font-semibold">AdminMate AI</span>
             </div>
             <div className="flex items-center gap-6 text-sm text-[var(--color-text-muted)]">
               <button onClick={() => handleCTA('/pricing')} className="hover:text-[var(--color-text-primary)] transition-colors">{t('landing.footer_pricing', 'Pricing')}</button>
               <button onClick={() => handleCTA('/login')} className="hover:text-[var(--color-text-primary)] transition-colors">{t('landing.footer_sign_in', 'Sign In')}</button>
-              <button onClick={() => handleCTA('/register')} className="hover:text-[var(--color-text-primary)] transition-colors">{t('landing.footer_get_started', 'Get Started')}</button>
+              <button onClick={() => handleCTA('/login')} className="hover:text-[var(--color-text-primary)] transition-colors">{t('landing.footer_get_started', 'Get Started')}</button>
               <button onClick={() => handleCTA('/terms')} className="hover:text-[var(--color-text-primary)] transition-colors">{t('landing.footer_terms', 'Terms')}</button>
               <button onClick={() => handleCTA('/privacy')} className="hover:text-[var(--color-text-primary)] transition-colors">{t('landing.footer_privacy', 'Privacy')}</button>
             </div>

@@ -17,9 +17,11 @@ export function parseCookies(cookieHeader: string): Record<string, string> {
 }
 
 export function createRefreshCookie(value: string): string {
-  return `${COOKIE_NAME}=${value}; HttpOnly; Secure; SameSite=Lax; Path=/; Max-Age=${COOKIE_MAX_AGE}`
+  // __Host- prefix requires: Secure, Path=/, no Domain attribute
+  // SameSite=Strict prevents CSRF via top-level navigation
+  return `__Host-${COOKIE_NAME}=${value}; HttpOnly; Secure; SameSite=Strict; Path=/; Max-Age=${COOKIE_MAX_AGE}`
 }
 
 export function clearRefreshCookie(): string {
-  return `${COOKIE_NAME}=; HttpOnly; Secure; SameSite=Lax; Path=/; Max-Age=0`
+  return `__Host-${COOKIE_NAME}=; HttpOnly; Secure; SameSite=Strict; Path=/; Max-Age=0`
 }

@@ -8,11 +8,15 @@ import { router } from './router'
 import { ErrorBoundary } from './components/common/ErrorBoundary'
 import { initGlobalErrorHandler } from './lib/errorHandler'
 import { initPageLoadMonitoring } from './lib/performance'
+import { useAuthStore } from './stores/authStore'
 import './lib/i18n'
 import './index.css'
 
 initGlobalErrorHandler()
 initPageLoadMonitoring()
+
+// Subscribe to Supabase auth state changes (catches OAuth SIGNED_IN events)
+useAuthStore.getState().subscribeAuth()
 
 if (import.meta.env.VITE_SENTRY_DSN) {
   import('./lib/sentry').then(m => m.initSentry())
@@ -22,7 +26,7 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
     <ErrorBoundary>
       <QueryClientProvider client={queryClient}>
-        <MotionConfig reducedMotion="user">
+        <MotionConfig reducedMotion="never">
           <RouterProvider router={router} />
         </MotionConfig>
       </QueryClientProvider>

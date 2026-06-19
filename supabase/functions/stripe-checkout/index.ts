@@ -1,5 +1,6 @@
 import { serve } from "https://deno.land/std@0.177.0/http/server.ts"
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2"
+import { captureError } from '../_shared/sentry.ts'
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -104,7 +105,8 @@ serve(async (req: Request) => {
 
       const customer = await customerRes.json()
       if (customer.error) {
-        return new Response(JSON.stringify({ error: customer.error.message }), {
+        console.error('Stripe customer creation failed:', customer.error.message)
+        return new Response(JSON.stringify({ error: 'Failed to create customer. Please try again.' }), {
           status: 500,
           headers: { ...corsHeaders, "Content-Type": "application/json" },
         })
@@ -143,7 +145,8 @@ serve(async (req: Request) => {
 
     const session = await sessionRes.json()
     if (session.error) {
-      return new Response(JSON.stringify({ error: session.error.message }), {
+      console.error('Stripe checkout session failed:', session.error.message)
+      return new Response(JSON.stringify({ error: 'Failed to create checkout session. Please try again.' }), {
         status: 500,
         headers: { ...corsHeaders, "Content-Type": "application/json" },
       })
@@ -154,7 +157,8 @@ serve(async (req: Request) => {
       headers: { ...corsHeaders, "Content-Type": "application/json" },
     })
   } catch (error) {
-    return new Response(JSON.stringify({ error: error.message }), {
+    captureError(error, { function: 'stripe-checkout' })
+    return new Response(JSON.stringify({ error: 'Internal server error' }), {
       status: 500,
       headers: { ...corsHeaders, "Content-Type": "application/json" },
     })

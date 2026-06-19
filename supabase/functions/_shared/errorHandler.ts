@@ -9,7 +9,7 @@ export function sanitizeError(error: unknown): string {
     if (msg.includes('jwt') || msg.includes('auth')) return 'Authentication required'
     if (msg.includes('timeout') || msg.includes('aborted')) return 'Request timed out. Please try again.'
     if (msg.includes('network') || msg.includes('fetch failed')) return 'External service unavailable. Please try again.'
-    return `Error: ${error.message}`
+    return 'An unexpected error occurred. Please try again.'
   }
   return 'An unexpected error occurred.'
 }

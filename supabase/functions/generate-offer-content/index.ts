@@ -13,6 +13,7 @@ import {
 } from '../_shared/utils.ts'
 import { errorResponse } from '../_shared/errorHandler.ts'
 import { checkAIMonthlyLimit, limitExceededResponse } from '../_shared/limits.ts'
+import { captureError } from '../_shared/sentry.ts'
 
 const FN = 'generate-offer-content'
 
@@ -47,12 +48,27 @@ serve(async (req) => {
       return new Response(JSON.stringify({ success: false, error: 'Invalid language' }), { status: 400, headers: h })
     }
 
+    // Resolve user's company_id from auth profile
+    const { data: profile } = await supabase
+      .from('user_profiles')
+      .select('company_id')
+      .eq('id', user.id)
+      .single()
+    if (!profile?.company_id) {
+      return new Response(JSON.stringify({ success: false, error: 'Forbidden' }), { status: 403, headers: h })
+    }
+
     const { data: offer, error: offerError } = await supabase
       .from('offers')
       .select('*, companies(name, country), candidates(full_name), jobs(title, department)')
       .eq('id', offerId)
       .single()
     if (offerError || !offer) {
+      return new Response(JSON.stringify({ success: false, error: 'Offer not found' }), { status: 404, headers: h })
+    }
+
+    // Ownership check: offer must belong to user's company
+    if (offer.company_id !== profile.company_id) {
       return new Response(JSON.stringify({ success: false, error: 'Offer not found' }), { status: 404, headers: h })
     }
 
@@ -118,6 +134,7 @@ OFFER DATA:
     logRequest({ function: FN, userId, durationMs: Date.now() - start, status: 200 })
     return new Response(JSON.stringify({ success: true, data: content }), { headers: getJsonHeaders(req) })
   } catch (error: any) {
+    captureError(error, { function: FN, userId })
     logRequest({ function: FN, userId, durationMs: Date.now() - start, status: 500, error: error?.message })
     return errorResponse(error, 500, getCorsHeaders(req))
   }

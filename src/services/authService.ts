@@ -55,11 +55,8 @@ function checkLoginRateLimit(email: string): void {
     const remaining = Math.ceil((state.lockedUntil - Date.now()) / 1000)
     throw new Error(`Too many login attempts. Please try again in ${remaining} seconds.`)
   }
-  if (state.attempts > 0) {
-    const delay = Math.min(Math.pow(2, state.attempts) * 100, 3200)
-    const start = Date.now()
-    while (Date.now() - start < delay) { /* progressive delay */ }
-  }
+  // Note: Server-side rate limiting is the actual security control.
+  // Client-side is only for UX feedback (showing lockout state).
 }
 
 function recordLoginAttempt(email: string): void {

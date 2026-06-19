@@ -2,6 +2,30 @@ import { createClient } from 'https://esm.sh/@supabase/supabase-js@2'
 import { getJsonHeaders, validateInput, logRequest } from '../_shared/utils.ts'
 import { errorResponse } from '../_shared/errorHandler.ts'
 import { createRefreshCookie } from './cookies.ts'
+import { captureError } from '../_shared/sentry.ts'
+
+// Server-side rate limiting for login attempts
+// Key: SHA-256(email + ip) to avoid storing plaintext PII in rate_limits table
+async function checkLoginRateLimit(supabase: ReturnType<typeof createClient>, email: string, ip: string): Promise<boolean> {
+  const encoder = new TextEncoder()
+  const keyData = encoder.encode(`${email.toLowerCase().trim()}:${ip}`)
+  const hashBuffer = await crypto.subtle.digest('SHA-256', keyData)
+  const keyHash = Array.from(new Uint8Array(hashBuffer)).map(b => b.toString(16).padStart(2, '0')).join('')
+
+  const { data, error } = await supabase.rpc('check_login_rate_limit', {
+    p_key_hash: keyHash,
+    p_action: 'login_attempt',
+    p_limit: 5,
+    p_window_seconds: 900, // 15 minutes
+  })
+  if (error) {
+    // If rate limit check fails, allow the request (fail-open for availability)
+    console.error('Rate limit check failed:', error)
+    return true
+  }
+  const row = Array.isArray(data) ? data[0] : data
+  return row?.allowed !== false
+}
 
 export async function handleLogin(req: Request): Promise<Response> {
   const fn = 'auth-session/login'
@@ -31,15 +55,29 @@ export async function handleLogin(req: Request): Promise<Response> {
       )
     }
 
+    // Server-side rate limiting by email+IP hash
+    const clientIp = req.headers.get('x-forwarded-for')?.split(',')[0]?.trim()
+      || req.headers.get('x-real-ip')
+      || 'unknown'
+    const rateAllowed = await checkLoginRateLimit(supabase, body.email!, clientIp)
+    if (!rateAllowed) {
+      logRequest({ function: fn, durationMs: Date.now() - start, status: 429 })
+      return new Response(
+        JSON.stringify({ success: false, error: 'Too many login attempts. Please try again later.' }),
+        { status: 429, headers: { ...getJsonHeaders(req), 'Retry-After': '900' } }
+      )
+    }
+
     const { data, error } = await supabase.auth.signInWithPassword({
       email: body.email!,
       password: body.password!,
     })
 
     if (error || !data.session) {
-      logRequest({ function: fn, durationMs: Date.now() - start, status: 401, error: error?.message })
+      logRequest({ function: fn, durationMs: Date.now() - start, status: 401 })
+      // Generic error — never leak whether email exists or password is wrong
       return new Response(
-        JSON.stringify({ success: false, error: error?.message || 'Authentication failed' }),
+        JSON.stringify({ success: false, error: 'Invalid email or password' }),
         { status: 401, headers: getJsonHeaders(req) }
       )
     }
@@ -63,8 +101,9 @@ export async function handleLogin(req: Request): Promise<Response> {
       }),
       { status: 200, headers }
     )
-  } catch (error: unknown) {
-    logRequest({ function: fn, durationMs: Date.now() - start, status: 500, error: error instanceof Error ? error.message : String(error) })
-    return errorResponse(error, 500, getJsonHeaders(req))
+  } catch (error) {
+    captureError(error, { function: fn })
+    logRequest({ function: fn, durationMs: Date.now() - start, status: 500 })
+    return errorResponse(new Error('Internal server error'), 500, getJsonHeaders(req))
   }
 }

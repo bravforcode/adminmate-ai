@@ -30,15 +30,19 @@ serve(async (req) => {
 
     const signature = req.headers.get('x-line-signature')
     const secret = Deno.env.get('LINE_CHANNEL_SECRET') || ''
-    if (secret && signature) {
-      const hmac = createHmac('sha256', secret)
-      hmac.update(body)
-      if (hmac.digest('base64') !== signature) {
-        logRequest({ function: FN, durationMs: Date.now() - start, status: 401, error: 'invalid signature' })
-        return new Response('Forbidden', { status: 401 })
-      }
-    } else if (secret && !signature) {
+    if (!secret) {
+      // Fail closed: reject all requests if secret is not configured in production
+      logRequest({ function: FN, durationMs: Date.now() - start, status: 500, error: 'LINE_CHANNEL_SECRET not configured' })
+      return new Response('Server configuration error', { status: 500 })
+    }
+    if (!signature) {
       logRequest({ function: FN, durationMs: Date.now() - start, status: 401, error: 'missing signature' })
+      return new Response('Forbidden', { status: 401 })
+    }
+    const hmac = createHmac('sha256', secret)
+    hmac.update(body)
+    if (hmac.digest('base64') !== signature) {
+      logRequest({ function: FN, durationMs: Date.now() - start, status: 401, error: 'invalid signature' })
       return new Response('Forbidden', { status: 401 })
     }
 
