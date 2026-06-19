@@ -45,9 +45,9 @@
 | Data deletion requests | ✅ Active | data_deletion_requests table + edge function |
 | Data export | ✅ Active | export-user-data edge function |
 | Audit logging | ✅ Active | audit_logs table with company scoping |
-| Sensitive data masking | ✅ Active | `sensitive_fields` registry table (15 fields) + `get_sensitive_field_names()` SQL function + `sensitiveFieldService.ts` client helper |
+| Sensitive data masking | ✅ Active | `sensitive_field_registry` table (15 fields) + `get_sensitive_field_names()` SQL function + `sensitiveFieldService.ts` client helper |
 | Activity logging | ✅ Active | activity_log table |
-| Feature flags | ✅ Active | `feature_flags` + `organization_feature_flags` tables + `is_feature_enabled()` SQL function |
+| Feature flags | ✅ Active | `feature_flags` + `company_feature_flags` tables + `is_feature_enabled()` SQL function |
 | Global configs | ✅ Active | Country, currency, timezone, locale, data residency tables seeded |
 
 ## Infrastructure
@@ -72,7 +72,7 @@
 
 1. ~~**Fix notifications RLS**~~ — ✅ DONE: Changed `WITH CHECK (true)` to `WITH CHECK (user_id = auth.uid() AND company_id = safe_user_company_id())`
 2. ~~**Add roles/permissions tables**~~ — ✅ DONE: RBAC tables created with RLS + 10 roles + 40+ permissions seeded
-3. ~~**Add sensitive_field_registry**~~ — ✅ DONE: `sensitive_fields` table with 15 fields + SQL functions
+3. ~~**Add sensitive_field_registry**~~ — ✅ DONE: `sensitive_field_registry` table with 15 fields + SQL functions
 4. **Wire RBAC into AuthGuard** — permissionService exists but AuthGuard not yet updated to use it
 5. **Add audit logging to sensitive actions** — Many service functions don't write audit logs
 6. **Server-side RBAC enforcement** — SQL functions exist but not yet called from edge functions

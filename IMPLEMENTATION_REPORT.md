@@ -2,7 +2,7 @@
 
 ## Phases Completed
 - **Release 0** — Repo Audit + Production Baseline ✅
-- **Release 1** — Multi-Tenant Core + RBAC + Sensitive Fields + Global Config ✅
+- **Release 1** — Multi-Tenant Core + RBAC + Sensitive Fields + Global Config ✅ (stabilized)
 
 ## Release 0 Summary
 
@@ -10,17 +10,20 @@ Full repository audit completed. The codebase is a mature, production-grade Vite
 
 ## Release 1 Summary
 
-Implemented security hardening, RBAC foundation, sensitive field registry, and global configuration framework. 6 SQL migrations, 3 frontend services, 2 UI components, 21 new tests (all passing). Total: 429 passing tests (438 total, 9 pre-existing failures unchanged).
+Implemented security hardening, RBAC foundation (with legacy fallback), sensitive field registry, and global configuration framework. 7 SQL migrations, 3 frontend services, 2 UI components, 21 new tests (all passing). Total: 429 passing tests (438 total, 9 pre-existing failures unchanged).
+
+**Stabilization applied:** Renamed `organization_feature_flags` → `company_feature_flags` with `company_id` column. Fixed docs to use `sensitive_field_registry` consistently. Added dual-mode RBAC fallback (migration 000007) so existing users don't lose access.
 
 ## Files Changed — Release 1
 
-### SQL Migrations (6)
+### SQL Migrations (7)
 - `20240620000001_security_hotfix_notifications_rls.sql`
 - `20240620000002_rbac_tables.sql`
 - `20240620000003_rbac_seed.sql`
 - `20240620000004_permission_helpers.sql`
 - `20240620000005_sensitive_field_registry.sql`
 - `20240620000006_global_config_tables.sql`
+- `20240620000007_rbac_legacy_fallback.sql` (stabilization)
 
 ### Frontend Services (3)
 - `src/services/permissionService.ts`
@@ -42,13 +45,13 @@ Implemented security hardening, RBAC foundation, sensitive field registry, and g
 - `tests/unit/components/PermissionComponents.test.tsx` (3 tests)
 
 ## Database Changes — Release 1
-- 50 total migrations (44 existing + 6 new)
+- 51 total migrations (44 existing + 7 new)
 - **New tables:** `roles`, `permissions`, `role_permissions`, `user_roles` (RBAC)
-- **New tables:** `sensitive_fields` (registry for AI masking)
-- **New tables:** `country_configs`, `currency_configs`, `timezone_configs`, `locale_configs`, `data_residency_regions`, `feature_flags`, `organization_feature_flags`
-- **New SQL functions:** `has_role()`, `has_permission()`, `has_any_role()`, `user_role_names()`, `migrate_legacy_roles()`, `get_sensitive_field_names()`, `is_sensitive_field()`, `is_feature_enabled()`
+- **New tables:** `sensitive_field_registry` (registry for AI masking)
+- **New tables:** `country_configs`, `currency_configs`, `timezone_configs`, `locale_configs`, `data_residency_regions`, `feature_flags`, `company_feature_flags`
+- **New SQL functions:** `has_role()`, `has_permission()`, `has_any_role()`, `user_role_names()`, `migrate_legacy_roles()`, `map_legacy_role()`, `get_sensitive_field_names()`, `is_sensitive_field()`, `is_feature_enabled()`
 - **Seeded data:** 10 system roles, 40+ permissions, 9 countries, 9 currencies, 9 timezones, 10 locales (incl RTL ar-SA), 3 data residency regions, 11 feature flags, 15 sensitive fields
-- Tenant scoping: `company_id` (not `organization_id`)
+- **Dual-mode RBAC:** `has_role()` etc. fall back to `user_profiles.role` when `user_roles` is empty
 
 ## Security Changes — Release 1
 - ✅ **Fixed:** notifications RLS `WITH CHECK (true)` → now requires `user_id = auth.uid() AND company_id = safe_user_company_id()`
@@ -120,7 +123,7 @@ Implemented security hardening, RBAC foundation, sensitive field registry, and g
 6. **No dark mode toggle in settings** — CSS variables exist but no user-facing toggle found in settings pages.
 7. **i18n namespaces** — 12 namespaces already exist. New modules must add their own namespace files.
 8. ~~**No role/permission tables**~~ — ✅ RESOLVED: RBAC tables created with RLS + seed data.
-9. ~~**No feature flags table**~~ — ✅ RESOLVED: feature_flags + organization_feature_flags tables created.
+9. ~~**No feature flags table**~~ — ✅ RESOLVED: feature_flags + company_feature_flags tables created.
 10. ~~**No country/currency/timezone config tables**~~ — ✅ RESOLVED: 6 global config tables created.
 11. **`vendor-pdf` chunk is 1,467 kB** — `@react-pdf/renderer` is massive. Consider lazy loading or alternative for payslips.
 12. **RBAC guard not yet wired to routes** — permissionService exists but existing AuthGuard not yet updated to use it.

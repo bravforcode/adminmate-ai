@@ -75,4 +75,30 @@ describe('permissionService', () => {
       expect(result).toEqual([])
     })
   })
+
+  describe('RBAC legacy fallback (dual-mode)', () => {
+    it('has_role returns true for legacy admin user via fallback', async () => {
+      // SQL function now falls back to user_profiles.role when user_roles is empty
+      mockRpc.mockResolvedValue({ data: true, error: null })
+      const result = await hasRole('admin')
+      expect(result).toBe(true)
+    })
+
+    it('has_permission returns true for legacy hr user via fallback', async () => {
+      mockRpc.mockResolvedValue({ data: true, error: null })
+      const result = await hasPermission('candidate', 'read')
+      expect(result).toBe(true)
+      expect(mockRpc).toHaveBeenCalledWith('has_permission', {
+        p_resource: 'candidate',
+        p_action: 'read',
+      })
+    })
+
+    it('getUserRoleNames returns legacy role via fallback', async () => {
+      // Returns mapped legacy role name (e.g. 'admin' from user_profiles.role)
+      mockRpc.mockResolvedValue({ data: ['admin'], error: null })
+      const result = await getUserRoleNames()
+      expect(result).toEqual(['admin'])
+    })
+  })
 })

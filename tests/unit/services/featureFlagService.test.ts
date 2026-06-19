@@ -20,7 +20,7 @@ describe('featureFlagService', () => {
       expect(result).toBe(true)
       expect(mockRpc).toHaveBeenCalledWith('is_feature_enabled', {
         p_feature_key: 'payroll_enabled',
-        p_org_id: null,
+        p_company_id: null,
       })
     })
 
@@ -30,12 +30,12 @@ describe('featureFlagService', () => {
       expect(result).toBe(false)
     })
 
-    it('passes org_id when provided', async () => {
+    it('passes company_id when provided', async () => {
       mockRpc.mockResolvedValue({ data: true, error: null })
       await isFeatureEnabled('payroll_enabled', 'org-123')
       expect(mockRpc).toHaveBeenCalledWith('is_feature_enabled', {
         p_feature_key: 'payroll_enabled',
-        p_org_id: 'org-123',
+        p_company_id: 'org-123',
       })
     })
 
@@ -58,6 +58,27 @@ describe('featureFlagService', () => {
       clearFlagCache()
       mockRpc.mockResolvedValue({ data: false, error: null })
       await isFeatureEnabled('payroll_enabled')
+      expect(mockRpc).toHaveBeenCalledTimes(2)
+    })
+
+    it('uses company_id scoping (not organization_id)', async () => {
+      mockRpc.mockResolvedValue({ data: true, error: null })
+      await isFeatureEnabled('payroll_enabled', 'company-abc')
+      expect(mockRpc).toHaveBeenCalledWith('is_feature_enabled', {
+        p_feature_key: 'payroll_enabled',
+        p_company_id: 'company-abc',
+      })
+      // Verify no org_id parameter leaks through
+      expect(mockRpc).not.toHaveBeenCalledWith(
+        expect.objectContaining({ p_org_id: expect.anything() })
+      )
+    })
+
+    it('different company IDs produce separate cache entries', async () => {
+      mockRpc.mockResolvedValue({ data: true, error: null })
+      await isFeatureEnabled('payroll_enabled', 'company-1')
+      await isFeatureEnabled('payroll_enabled', 'company-2')
+      // Two calls: different cache keys
       expect(mockRpc).toHaveBeenCalledTimes(2)
     })
   })

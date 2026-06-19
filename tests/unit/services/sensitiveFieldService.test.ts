@@ -63,4 +63,14 @@ describe('sensitiveFieldService', () => {
       expect(isSensitiveFieldSync('age')).toBe(false)
     })
   })
+
+  describe('sensitive_field_registry naming', () => {
+    it('calls RPC function matching migration table name (sensitive_field_registry)', async () => {
+      mockRpc.mockResolvedValue({ data: ['age', 'gender'], error: null })
+      const { getSensitiveFieldNames } = await loadService()
+      await getSensitiveFieldNames()
+      // The SQL function is get_sensitive_field_names() which queries sensitive_field_registry
+      expect(mockRpc).toHaveBeenCalledWith('get_sensitive_field_names', {})
+    })
+  })
 })

@@ -29,8 +29,8 @@
 - `timezone_configs` (9 timezones)
 - `locale_configs` (10 locales incl RTL ar-SA)
 - `data_residency_regions` (3 regions: SEA, EU, US)
-- `feature_flags` (11 flags) + `organization_feature_flags` (org-level overrides)
-- SQL function: `is_feature_enabled(p_feature_key, p_org_id)`
+- `feature_flags` (11 flags) + `company_feature_flags` (company-level overrides)
+- SQL function: `is_feature_enabled(p_feature_key, p_company_id)`
 
 ### Frontend
 - `permissionService.ts` — RPC wrappers for permission checks
@@ -62,6 +62,13 @@
 3. `user_profiles.role` string column kept for backward compat
 4. `is_admin_or_hr()` still used by some existing RLS policies
 5. Role-aware navigation not yet implemented
+
+## RBAC Transition Strategy (Dual-Mode)
+- **New path:** If user has entries in `user_roles` → use RBAC tables
+- **Legacy fallback:** If user has NO `user_roles` entries → fall back to `user_profiles.role` via `map_legacy_role()`
+- `migrate_legacy_roles(p_company_id)` provided for per-company one-time migration
+- **No user loses access** — dual-mode ensures continuity until migration completes
+- Migration 000007 adds fallback to `has_role()`, `has_permission()`, `has_any_role()`, `user_role_names()`
 
 ## Next Steps
 - Wire `permissionService` into `AuthGuard` and route definitions

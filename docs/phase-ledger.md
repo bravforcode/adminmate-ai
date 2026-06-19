@@ -7,7 +7,7 @@
 | Release | Name | Status | Date | Notes |
 |---------|------|--------|------|-------|
 | 0 | Repo Audit + Production Baseline | ✅ COMPLETE | 2026-06-20 | Full audit. 408/417 tests pass. Build/typecheck/lint clean. |
-| 1 | Multi-Tenant Core + RBAC + Audit + i18n + Global Country Framework | ✅ COMPLETE | 2026-06-20 | Security hotfix, RBAC, sensitive fields, global config. 429/438 tests pass. |
+| 1 | Multi-Tenant Core + RBAC + Audit + i18n + Global Country Framework | ✅ COMPLETE | 2026-06-20 | Security hotfix, RBAC with legacy fallback, sensitive fields, global config. 429/438 tests pass. Stabilized: company_id naming, docs consistency, dual-mode RBAC. |
 | 1B | Legal Entity & Organizational Hierarchy | ⏳ PENDING | — | Blocked by Release 1 |
 | 2 | Recruiting Core + Employee Referral | ⏳ PENDING | — | Partially exists (jobs, candidates, applications) |
 | 3 | Candidate Portal + Application Forms | ⏳ PENDING | — | |

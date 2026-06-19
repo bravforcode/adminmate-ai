@@ -70,15 +70,15 @@ CREATE TABLE feature_flags (
     updated_at TIMESTAMPTZ DEFAULT NOW()
 );
 
--- ============== ORGANIZATION_FEATURE_FLAGS ==============
--- Per-org override of feature flags
-CREATE TABLE organization_feature_flags (
+-- ============== COMPANY_FEATURE_FLAGS ==============
+-- Per-company override of feature flags (uses company_id, NOT organization_id)
+CREATE TABLE company_feature_flags (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-    organization_id UUID NOT NULL REFERENCES companies(id) ON DELETE CASCADE,
+    company_id UUID NOT NULL REFERENCES companies(id) ON DELETE CASCADE,
     feature_flag_id UUID NOT NULL REFERENCES feature_flags(id) ON DELETE CASCADE,
     is_enabled BOOLEAN NOT NULL,
     created_at TIMESTAMPTZ DEFAULT NOW(),
-    UNIQUE(organization_id, feature_flag_id)
+    UNIQUE(company_id, feature_flag_id)
 );
 
 -- ============== INDEXES ==============
@@ -87,7 +87,7 @@ CREATE INDEX idx_currency_configs_code ON currency_configs(code);
 CREATE INDEX idx_timezone_configs_name ON timezone_configs(name);
 CREATE INDEX idx_locale_configs_code ON locale_configs(code);
 CREATE INDEX idx_feature_flags_key ON feature_flags(key);
-CREATE INDEX idx_org_feature_flags_org ON organization_feature_flags(organization_id);
+CREATE INDEX idx_company_feature_flags_company ON company_feature_flags(company_id);
 
 -- ============== RLS ==============
 ALTER TABLE country_configs ENABLE ROW LEVEL SECURITY;
@@ -96,7 +96,7 @@ ALTER TABLE timezone_configs ENABLE ROW LEVEL SECURITY;
 ALTER TABLE locale_configs ENABLE ROW LEVEL SECURITY;
 ALTER TABLE data_residency_regions ENABLE ROW LEVEL SECURITY;
 ALTER TABLE feature_flags ENABLE ROW LEVEL SECURITY;
-ALTER TABLE organization_feature_flags ENABLE ROW LEVEL SECURITY;
+ALTER TABLE company_feature_flags ENABLE ROW LEVEL SECURITY;
 
 -- Config tables: readable by all authenticated users (needed for UI dropdowns)
 CREATE POLICY "country_configs_read" ON country_configs FOR SELECT TO authenticated USING (true);
@@ -112,12 +112,12 @@ CREATE POLICY "feature_flags_write" ON feature_flags FOR ALL TO authenticated
   USING (safe_user_role() = 'admin')
   WITH CHECK (safe_user_role() = 'admin');
 
--- Org feature flags: org-scoped read, admin-scoped write
-CREATE POLICY "org_feature_flags_read" ON organization_feature_flags FOR SELECT TO authenticated
-  USING (organization_id = safe_user_company_id());
-CREATE POLICY "org_feature_flags_write" ON organization_feature_flags FOR ALL TO authenticated
-  USING (organization_id = safe_user_company_id() AND safe_user_role() = 'admin')
-  WITH CHECK (organization_id = safe_user_company_id() AND safe_user_role() = 'admin');
+-- Company feature flags: company-scoped read, admin-scoped write
+CREATE POLICY "company_feature_flags_read" ON company_feature_flags FOR SELECT TO authenticated
+  USING (company_id = safe_user_company_id());
+CREATE POLICY "company_feature_flags_write" ON company_feature_flags FOR ALL TO authenticated
+  USING (company_id = safe_user_company_id() AND safe_user_role() = 'admin')
+  WITH CHECK (company_id = safe_user_company_id() AND safe_user_role() = 'admin');
 
 -- ============== SEED: Countries ==============
 INSERT INTO country_configs (code, name, name_local, default_currency, default_timezone, default_locale, phone_code) VALUES
@@ -188,8 +188,8 @@ INSERT INTO feature_flags (key, name, description, is_enabled) VALUES
   ('onboarding_enabled',   'Onboarding Module',    'Enable onboarding workflows', true),
   ('recruitment_enabled',  'Recruitment Module',   'Enable recruiting features', true);
 
--- ============== HELPER: Check if feature is enabled for an org ==============
-CREATE OR REPLACE FUNCTION is_feature_enabled(p_feature_key TEXT, p_org_id UUID DEFAULT NULL)
+-- ============== HELPER: Check if feature is enabled for a company ==============
+CREATE OR REPLACE FUNCTION is_feature_enabled(p_feature_key TEXT, p_company_id UUID DEFAULT NULL)
 RETURNS BOOLEAN
 LANGUAGE sql
 SECURITY DEFINER
@@ -197,12 +197,12 @@ SET search_path = public
 STABLE
 AS $$
   SELECT COALESCE(
-    -- Check org-level override first
-    (SELECT OFF.is_enabled
-     FROM organization_feature_flags OFF
-     JOIN feature_flags FF ON FF.id = OFF.feature_flag_id
+    -- Check company-level override first
+    (SELECT CFF.is_enabled
+     FROM company_feature_flags CFF
+     JOIN feature_flags FF ON FF.id = CFF.feature_flag_id
      WHERE FF.key = p_feature_key
-       AND OFF.organization_id = p_org_id
+       AND CFF.company_id = p_company_id
      LIMIT 1),
     -- Fall back to global default
     (SELECT FF.is_enabled
