@@ -11,7 +11,7 @@
 | 1B | Legal Entity & Organizational Hierarchy | ✅ COMPLETE | 2026-06-20 | 10 tables, 12 new permissions, 4 services, 8 tests. 443/452 tests pass. |
 | 2 | Recruiting Core + Employee Referral | ✅ COMPLETE | 2026-06-20 | Employee referral system (table + service + RBAC + auto-hire trigger), audit fixes for cv_documents + interviews. 458/467 tests pass. |
 | 3 | Candidate Portal + Application Forms | ✅ COMPLETE | 2026-06-20 | Public apply page, service-role edge functions, tracking, consent logging, 16 security tests. 474/483 tests pass. |
-| 4 | AI Recruiting Layer | ⏳ PENDING | — | AI features already partially exist |
+| 4 | AI Recruiting Layer | ✅ COMPLETE | 2026-06-20 | Evidence-based scoring, sensitive field exclusion, HR override, prompt versioning, 19 safety tests. 493/502 tests pass. |
 | 5 | Messaging + Approval Workflow | ⏳ PENDING | — | Messaging infrastructure exists |
 | 6 | Onboarding + Documents + Contract Templates | ⏳ PENDING | — | Onboarding tables exist |
 | 6B | Offboarding + Exit Management | ⏳ PENDING | — | |

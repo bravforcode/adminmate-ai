@@ -13,6 +13,7 @@ import {
 } from '../_shared/utils.ts'
 import { errorResponse } from '../_shared/errorHandler.ts'
 import { checkAIMonthlyLimit, limitExceededResponse } from '../_shared/limits.ts'
+import { excludeSensitiveFieldsForAI } from '../_shared/sensitiveFields.ts'
 
 const FN = 'screen-resume'
 
@@ -69,6 +70,11 @@ serve(async (req) => {
     const cvContent = cv?.parsed_content || cv?.raw_text || 'No CV content available'
     const jobContent = `Job: ${job?.title}\nDepartment: ${job?.department}\nDescription: ${job?.description}\nRequirements: ${(job?.requirements || []).join('\n')}\nSkills: ${(job?.skills_required || []).join(', ')}`
 
+    // SENSITIVE FIELD EXCLUSION: remove protected attributes before AI
+    const { sanitized: cleanCv, excluded } = excludeSensitiveFieldsForAI(
+      typeof cvContent === 'object' ? cvContent : { raw_text: String(cvContent) }
+    )
+
     const ai = new GoogleGenAI({ apiKey: getGeminiKey() })
     const response = await ai.models.generateContent({
       model: 'gemini-2.5-flash',
@@ -84,7 +90,7 @@ You are an expert AI recruiter. Analyze this candidate against the job requireme
         temperature: 0.3,
         maxOutputTokens: 4096,
       },
-      contents: `${jobContent}\n\nCandidate CV Data:\n${JSON.stringify(cvContent)}`,
+      contents: `${jobContent}\n\nCandidate CV Data:\n${JSON.stringify(cleanCv)}`,
     })
 
     const text = response.text ?? ''
@@ -108,6 +114,20 @@ You are an expert AI recruiter. Analyze this candidate against the job requireme
         screened_at: new Date().toISOString(),
       })
       .eq('id', applicationId)
+
+    // Log AI run for audit trail
+    await supabase.from('ai_recruiting_runs').insert({
+      company_id: job.company_id,
+      job_id: jobId,
+      application_id: applicationId,
+      run_type: 'resume_screening',
+      status: 'completed',
+      model_name: 'gemini-2.5-flash',
+      prompt_version: '1.0.0',
+      output_summary: `Score: ${analysis.match_score}, Skills matched: ${analysis.skill_match?.length ?? 0}`,
+      created_by: userId,
+      completed_at: new Date().toISOString(),
+    })
 
     logRequest({ function: FN, userId, durationMs: Date.now() - start, status: 200 })
     return new Response(JSON.stringify({ success: true, data: analysis }), { headers: getJsonHeaders(req) })
