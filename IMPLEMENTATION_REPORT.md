@@ -10,6 +10,7 @@
 - **Release 5** — Messaging + Approval Workflow ✅
 - **Release 6** — Onboarding + Documents + Contract Templates ✅
 - **Release 6B** — Offboarding + Exit Management ✅
+- **Release 7** — HRIS Core + Employee Directory + Org Chart ✅
 
 ## Release 0 Summary
 
