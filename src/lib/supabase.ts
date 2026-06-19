@@ -14,7 +14,7 @@ export const SUPABASE_AUTH_OPTIONS = {
   autoRefreshToken: false,
   persistSession: true,
   detectSessionInUrl: true,
-  flowType: 'pkce' as const,
+  flowType: 'implicit' as const,
   storageKey: 'adminmate-auth-token',
 }
 
