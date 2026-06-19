@@ -5,6 +5,7 @@ const ALLOWED_ORIGINS = [
   'http://localhost:3000',
   'https://adminmate.ai',
   'https://www.adminmate.ai',
+  'https://adminmate-ejlj6q10v-phirawits-projects.vercel.app',
 ]
 
 function getAllowedOrigin(req: Request): string {
