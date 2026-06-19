@@ -29,9 +29,7 @@ export function MobileNav() {
     })
 
   // Primary items: first 4 routes with paths
-  const primaryPaths = userRole === 'applicant'
-    ? ['/applicant/dashboard', '/applicant/jobs', '/applicant/status', '/my-profile']
-    : ['/dashboard', '/recruitment/jobs', '/recruitment/candidates', '/onboarding']
+  const primaryPaths = ['/dashboard', '/recruitment/jobs', '/recruitment/candidates', '/onboarding']
 
   const primaryItems = primaryPaths
     .map(path => visibleItems.find(item => item.path === path))

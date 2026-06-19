@@ -27,7 +27,7 @@ export function useChat() {
 
       setIsLoading(true)
       const lang = useAuthStore.getState().userLanguage()
-      const role = profile?.role ?? 'applicant'
+      const role = profile?.role ?? 'hr'
       const result = await chatService.getAIResponse(text, company.id, lang, role)
       const aiText = result?.data?.response || 'ขออภัย ไม่สามารถตอบคำถามได้ในขณะนี้'
 

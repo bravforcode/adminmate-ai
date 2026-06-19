@@ -43,27 +43,6 @@ const HR_TOUR_STEPS: TourStep[] = [
   },
 ]
 
-const APPLICANT_TOUR_STEPS: TourStep[] = [
-  {
-    target: '[data-tour="sidebar"]',
-    titleKey: 'tour.sidebar.title',
-    contentKey: 'tour.sidebar.content.applicant',
-    placement: 'right',
-  },
-  {
-    target: '[data-tour="language"]',
-    titleKey: 'tour.language.title',
-    contentKey: 'tour.language.content',
-    placement: 'bottom',
-  },
-  {
-    target: '[data-tour="chatbot"]',
-    titleKey: 'tour.chatbot.title',
-    contentKey: 'tour.chatbot.content',
-    placement: 'left',
-  },
-]
-
 const TOUR_KEY = 'adminmate_onboarding_tour_completed'
 
 export function OnboardingTour() {
@@ -73,9 +52,7 @@ export function OnboardingTour() {
   const [currentStep, setCurrentStep] = useState(0)
   const [targetRect, setTargetRect] = useState<DOMRect | null>(null)
 
-  const role = profile?.role ?? 'hr'
-  const isApplicant = role === 'applicant'
-  const allSteps = isApplicant ? APPLICANT_TOUR_STEPS : HR_TOUR_STEPS
+  const allSteps = HR_TOUR_STEPS
 
   const findNextValidStep = useCallback((stepIndex: number, steps: TourStep[]): number => {
     for (let i = stepIndex; i < steps.length; i++) {

@@ -1,12 +1,11 @@
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useUIStore } from '../../stores/uiStore'
-import { ArrowLeft, Users, User } from 'lucide-react'
+import { ArrowLeft, Users } from 'lucide-react'
 import { Logo } from '../../components/brand/Logo'
 import { RoleCard } from '../../components/auth/RoleCard'
 import { LoginForm } from '../../components/auth/LoginForm'
 
-type SelectedRole = 'hr' | 'applicant' | null
 type LoginStep = 'role-select' | 'login-form'
 
 const LANGS = [
@@ -23,6 +22,7 @@ const LANGS = [
  * - Inline styles replaced with Tailwind + CSS variables
  * - JS hover handlers replaced with CSS :hover classes
  * - Dark mode via semantic tokens
+ * - Applicant role selection removed (HR-only)
  */
 export function LoginPage() {
   const { t } = useTranslation('common')
@@ -31,24 +31,19 @@ export function LoginPage() {
   const currentLang = useUIStore(s => s.language) || 'th'
 
   const [step, setStep] = useState<LoginStep>('role-select')
-  const [selectedRole, setSelectedRole] = useState<SelectedRole>(null)
 
   const switchLang = (code: string) => {
     i18n.changeLanguage(code)
     setLanguage(code)
   }
 
-  const handleRoleSelect = (role: SelectedRole) => {
-    setSelectedRole(role)
+  const handleRoleSelect = () => {
     setStep('login-form')
   }
 
   const handleBack = () => {
     setStep('role-select')
-    setSelectedRole(null)
   }
-
-  const roleTitle = selectedRole === 'hr' ? t('auth.login_hr_title') : t('auth.login_ap_title')
 
   return (
     <div className="min-h-screen flex flex-col font-sans bg-gradient-to-br from-[#f0f5ff] via-[#e8f0fe] to-[#dce8fa] relative overflow-hidden animate-gradient dark:from-surface-container-lowest dark:via-surface dark:to-surface-container-lowest">
@@ -99,8 +94,8 @@ export function LoginPage() {
               </p>
             </div>
 
-            {/* Role cards */}
-            <div className="grid grid-cols-[repeat(auto-fit,minmax(300px,1fr))] gap-6 items-start">
+            {/* Role cards — HR only */}
+            <div className="flex justify-center">
               <RoleCard
                 id="role-card-hr"
                 title={t('auth.login_hr_title')}
@@ -110,18 +105,7 @@ export function LoginPage() {
                 icon={<Users size={20} strokeWidth={1.8} className="text-white" />}
                 accentColor="primary"
                 staggerClass="stagger-1"
-                onSelect={() => handleRoleSelect('hr')}
-              />
-              <RoleCard
-                id="role-card-applicant"
-                title={t('auth.login_ap_title')}
-                subtitle={t('auth.login_ap_sub')}
-                features={[t('auth.login_ap_f1'), t('auth.login_ap_f2')]}
-                ctaLabel={t('auth.sign_in')}
-                icon={<User size={20} strokeWidth={1.8} className="text-accent" />}
-                accentColor="secondary"
-                staggerClass="stagger-2"
-                onSelect={() => handleRoleSelect('applicant')}
+                onSelect={handleRoleSelect}
               />
             </div>
           </div>
@@ -141,7 +125,7 @@ export function LoginPage() {
             {/* Role badge + heading */}
             <div className="mb-7">
               <p className="text-[11px] font-semibold text-text-muted dark:text-outline-variant tracking-[0.12em] uppercase mb-2">
-                {t('auth.login_signing_as')} — {roleTitle}
+                {t('auth.login_signing_as')} — {t('auth.login_hr_title')}
               </p>
               <h1 className="font-serif text-[clamp(26px,3.5vw,36px)] font-normal text-on-surface dark:text-on-surface tracking-[-0.03em] leading-tight m-0">
                 {t('auth.sign_in')}
@@ -150,7 +134,7 @@ export function LoginPage() {
 
             {/* Login Form Card */}
             <div className="bg-surface dark:bg-surface rounded-[20px] p-9 shadow-[0_4px_24px_rgba(37,99,235,0.06),0_1px_2px_rgba(37,99,235,0.03)] dark:shadow-[0_4px_24px_rgba(0,0,0,0.3)]">
-              <LoginForm selectedRole={selectedRole ?? undefined} />
+              <LoginForm />
             </div>
           </div>
         )}

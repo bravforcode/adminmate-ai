@@ -1,7 +1,7 @@
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2'
 import { getJsonHeaders, logRequest } from '../_shared/utils.ts'
 import { errorResponse } from '../_shared/errorHandler.ts'
-import { parseCookies, createRefreshCookie, clearRefreshCookie } from './cookies.ts'
+import { parseCookies, createRefreshCookie, clearRefreshCookie, COOKIE_NAME } from './cookies.ts'
 
 export async function handleStatus(req: Request): Promise<Response> {
   const fn = 'auth-session/status'
@@ -13,7 +13,8 @@ export async function handleStatus(req: Request): Promise<Response> {
       Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!
     )
 
-    const refreshToken = parseCookies(req.headers.get('Cookie') || '')['sb-auth-refresh']
+    const cookies = parseCookies(req.headers.get('Cookie') || '')
+    const refreshToken = cookies[`__Host-${COOKIE_NAME}`] ?? cookies[COOKIE_NAME]
     if (!refreshToken) {
       logRequest({ function: fn, durationMs: Date.now() - start, status: 200 })
       return new Response(

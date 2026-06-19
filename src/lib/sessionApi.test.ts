@@ -36,8 +36,23 @@ describe('fetchSessionStatus', () => {
     expect(result.valid).toBe(false)
   })
 
+  it('should return valid false when upstream returns non-json content', async () => {
+    mockFetch.mockResolvedValueOnce({
+      headers: {
+        get: () => 'text/html',
+      },
+    })
+
+    const { fetchSessionStatus } = await import('./sessionApi')
+    const result = await fetchSessionStatus()
+    expect(result.valid).toBe(false)
+  })
+
   it('should return valid true with tokens when successful', async () => {
     mockFetch.mockResolvedValueOnce({
+      headers: {
+        get: () => 'application/json; charset=utf-8',
+      },
       json: () => Promise.resolve({
         success: true,
         data: {
@@ -59,6 +74,9 @@ describe('fetchSessionStatus', () => {
 describe('refreshAccessToken', () => {
   it('should return success true with tokens when valid', async () => {
     mockFetch.mockResolvedValueOnce({
+      headers: {
+        get: () => 'application/json; charset=utf-8',
+      },
       json: () => Promise.resolve({
         success: true,
         data: {
@@ -86,6 +104,9 @@ describe('refreshAccessToken', () => {
 describe('loginViaEdge', () => {
   it('should send email and password to login endpoint', async () => {
     mockFetch.mockResolvedValueOnce({
+      headers: {
+        get: () => 'application/json; charset=utf-8',
+      },
       json: () => Promise.resolve({
         success: true,
         data: {
@@ -122,6 +143,9 @@ describe('loginViaEdge', () => {
 describe('logoutViaEdge', () => {
   it('should call logout endpoint', async () => {
     mockFetch.mockResolvedValueOnce({
+      headers: {
+        get: () => 'application/json; charset=utf-8',
+      },
       json: () => Promise.resolve({ success: true }),
     })
 

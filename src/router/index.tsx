@@ -43,16 +43,7 @@ const HealthPage = lazy(() => import('../pages/HealthPage'))
 const GeminiMonitoringPage = lazy(() => import('../pages/GeminiMonitoringPage'))
 const NotFoundPage = lazy(() => import('../pages/NotFoundPage'))
 
-// Applicant pages
-const MyProfilePage = lazy(() => import('../pages/applicant/MyProfilePage'))
-const MyTasksPage = lazy(() => import('../pages/applicant/MyTasksPage'))
-const ApplicantDashboardPage = lazy(() => import('../pages/applicant/ApplicantDashboardPage'))
-const BrowseJobsPage = lazy(() => import('../pages/applicant/BrowseJobsPage'))
-const ApplicantJobDetailPage = lazy(() => import('../pages/applicant/JobDetailPage'))
-const ApplicationStatusPage = lazy(() => import('../pages/applicant/ApplicationStatusPage'))
-
 const HR_ROLES = ['admin', 'hr', 'manager']
-const APPLICANT_ROLES = ['applicant']
 
 function PublicRoot() {
   const profile = useAuthStore(s => s.profile)
@@ -185,7 +176,7 @@ export const router = createBrowserRouter([
       {
         path: '/documents/sign/:id',
         element: (
-          <AuthGuard callInitSession={false} requireCompany={false} requiredRoles={[...HR_ROLES, ...APPLICANT_ROLES]}>
+          <AuthGuard callInitSession={false} requireCompany={false} requiredRoles={HR_ROLES}>
             <AnimatedPage><DocumentSigningPage /></AnimatedPage>
           </AuthGuard>
         ),
@@ -291,58 +282,6 @@ export const router = createBrowserRouter([
         element: (
           <AuthGuard callInitSession={false} requiredRoles={HR_ROLES}>
             <AnimatedPage><BillingPage /></AnimatedPage>
-          </AuthGuard>
-        ),
-      },
-
-      // ── Shared (all roles) ────────────────────────────────────────
-
-      // ── Applicant routes ──────────────────────────────────────────
-      {
-        path: '/applicant/dashboard',
-        element: (
-          <AuthGuard callInitSession={false} requireCompany={false} requiredRoles={APPLICANT_ROLES}>
-            <AnimatedPage><ApplicantDashboardPage /></AnimatedPage>
-          </AuthGuard>
-        ),
-      },
-      {
-        path: '/applicant/jobs',
-        element: (
-          <AuthGuard callInitSession={false} requireCompany={false} requiredRoles={APPLICANT_ROLES}>
-            <AnimatedPage><BrowseJobsPage /></AnimatedPage>
-          </AuthGuard>
-        ),
-      },
-      {
-        path: '/applicant/jobs/:id',
-        element: (
-          <AuthGuard callInitSession={false} requireCompany={false} requiredRoles={APPLICANT_ROLES}>
-            <AnimatedPage><ApplicantJobDetailPage /></AnimatedPage>
-          </AuthGuard>
-        ),
-      },
-      {
-        path: '/applicant/status',
-        element: (
-          <AuthGuard callInitSession={false} requireCompany={false} requiredRoles={APPLICANT_ROLES}>
-            <AnimatedPage><ApplicationStatusPage /></AnimatedPage>
-          </AuthGuard>
-        ),
-      },
-      {
-        path: '/my-profile',
-        element: (
-          <AuthGuard callInitSession={false} requireCompany={false} requiredRoles={APPLICANT_ROLES}>
-            <AnimatedPage><MyProfilePage /></AnimatedPage>
-          </AuthGuard>
-        ),
-      },
-      {
-        path: '/my-tasks',
-        element: (
-          <AuthGuard callInitSession={false} requireCompany={false} requiredRoles={APPLICANT_ROLES}>
-            <AnimatedPage><MyTasksPage /></AnimatedPage>
           </AuthGuard>
         ),
       },

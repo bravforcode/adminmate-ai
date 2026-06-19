@@ -9,9 +9,6 @@ import {
   Settings,
   CalendarCheck,
   FileText,
-  UserCircle,
-  ClipboardList,
-  ClipboardCheck,
   Shield,
   ScrollText,
   Bell,
@@ -61,36 +58,4 @@ export const navItems: NavItem[] = [
   { path: '/settings/audit-log', labelKey: 'nav.audit_log', icon: ScrollText, roles: ['admin', 'hr'] },
   { path: '/settings/import', labelKey: 'nav.import_export', icon: ArrowDownToLine, roles: HR_ROLES },
   { path: '/settings/pdpa', labelKey: 'nav.privacy_data', icon: Lock, roles: HR_ROLES },
-
-  // ── Applicant ─────────────────────────────────────────────────
-  {
-    path: '/applicant/dashboard',
-    labelKey: 'nav.applicant_dashboard',
-    icon: LayoutDashboard,
-    roles: ['applicant'],
-  },
-  {
-    path: '/applicant/jobs',
-    labelKey: 'nav.browse_jobs',
-    icon: Briefcase,
-    roles: ['applicant'],
-  },
-  {
-    path: '/applicant/status',
-    labelKey: 'nav.my_applications',
-    icon: ClipboardCheck,
-    roles: ['applicant'],
-  },
-  {
-    path: '/my-profile',
-    labelKey: 'nav.my_profile',
-    icon: UserCircle,
-    roles: ['applicant'],
-  },
-  {
-    path: '/my-tasks',
-    labelKey: 'nav.my_tasks',
-    icon: ClipboardList,
-    roles: ['applicant'],
-  },
 ]

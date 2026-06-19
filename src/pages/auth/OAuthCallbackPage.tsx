@@ -73,7 +73,7 @@ export default function OAuthCallbackPage() {
           id: authUser.id,
           email: authUser.email ?? '',
           full_name: authUser.user_metadata?.full_name ?? authUser.user_metadata?.name ?? authUser.email?.split('@')[0] ?? 'User',
-          role: 'applicant',
+          role: 'hr',
           language_preference: 'en',
           is_active: true,
         })

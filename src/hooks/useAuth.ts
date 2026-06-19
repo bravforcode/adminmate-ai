@@ -6,8 +6,7 @@ import { companyService } from '../services/companyService'
 import type { SignUpWithPasswordCredentials } from '@supabase/supabase-js'
 
 /** Returns the correct landing route based on user role from DB. */
-export function getDefaultRoute(role?: string | null): string {
-  if (role === 'applicant') return '/applicant/dashboard'
+export function getDefaultRoute(_role?: string | null): string {
   return '/dashboard'
 }
 

@@ -23,13 +23,9 @@ const loginSchema = z.object({
 
 type LoginFormData = z.infer<typeof loginSchema>
 
-interface LoginFormProps {
-  selectedRole?: 'hr' | 'applicant'
-}
-
-export function LoginForm({ selectedRole }: LoginFormProps) {
+export function LoginForm() {
   const { t } = useTranslation('common')
-  const { login, loginWithGoogle, logout } = useAuth()
+  const { login, loginWithGoogle } = useAuth()
   const navigate = useNavigate()
   const location = useLocation() as { state?: { from?: { pathname?: string } } }
   const [showPassword, setShowPassword] = useState(false)
@@ -55,21 +51,6 @@ export function LoginForm({ selectedRole }: LoginFormProps) {
     return getDefaultRoute(role)
   }
 
-  const roleMatchesWorkspace = useCallback((role?: string | null) => {
-    if (!selectedRole) return true
-    if (selectedRole === 'applicant') return role === 'applicant'
-    return ['admin', 'hr', 'manager'].includes(role ?? '')
-  }, [selectedRole])
-
-  const handleWrongWorkspace = useCallback(async () => {
-    await logout()
-    toast.error(
-      selectedRole === 'applicant'
-        ? t('auth.role_mismatch_applicant')
-        : t('auth.role_mismatch_hr'),
-    )
-  }, [logout, selectedRole, t])
-
   const checkMFAEnrollment = useCallback(async (): Promise<string | null> => {
     try {
       const { data: factors, error } = await supabase.auth.mfa.listFactors()
@@ -87,13 +68,7 @@ export function LoginForm({ selectedRole }: LoginFormProps) {
       if (typeof window !== 'undefined') {
         window.localStorage.setItem(REMEMBER_KEY, data.remember ? 'true' : 'false')
       }
-      // Read role from store after login completed
       const currentProfile = useAuthStore.getState().profile
-
-      if (!roleMatchesWorkspace(currentProfile?.role)) {
-        await handleWrongWorkspace()
-        return
-      }
 
       // Check if MFA is enabled
       if (currentProfile?.id) {
@@ -113,23 +88,6 @@ export function LoginForm({ selectedRole }: LoginFormProps) {
   const handleGoogleLogin = async () => {
     try {
       await loginWithGoogle()
-      const currentProfile = useAuthStore.getState().profile
-
-      if (!roleMatchesWorkspace(currentProfile?.role)) {
-        await handleWrongWorkspace()
-        return
-      }
-
-      // Check if MFA is enabled
-      if (currentProfile?.id) {
-        const factorId = await checkMFAEnrollment()
-        if (factorId) {
-          setPendingMFA({ factorId })
-          return
-        }
-      }
-
-      navigate(resolveRedirect(currentProfile?.role), { replace: true })
     } catch (err) {
       toast.error(translateAuthError(err, t))
     }

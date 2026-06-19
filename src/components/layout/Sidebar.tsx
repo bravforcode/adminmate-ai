@@ -16,7 +16,6 @@ export function Sidebar() {
   const { t } = useTranslation('common')
 
   const userRole = profile?.role ?? 'hr'
-  const isApplicant = userRole === 'applicant'
 
   // Filter items by role — items with no `roles` array are shown to all
   const visibleItems = navItems
@@ -30,11 +29,7 @@ export function Sidebar() {
     })
 
   const handlePrimaryAction = () => {
-    if (isApplicant) {
-      navigate('/applicant/jobs')
-    } else {
-      navigate('/recruitment/jobs', { state: { openCreateJob: true } })
-    }
+    navigate('/recruitment/jobs', { state: { openCreateJob: true } })
 
     if (sidebarOpen) toggleSidebar()
   }
@@ -92,7 +87,7 @@ export function Sidebar() {
             onClick={handlePrimaryAction}
           >
             <Plus size={15} />
-            {isApplicant ? t('nav.browse_jobs') : t('nav.new_request')}
+            {t('nav.new_request')}
           </Button>
         </div>
 

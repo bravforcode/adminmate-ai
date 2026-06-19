@@ -1,7 +1,20 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest'
-import { render, screen } from '@testing-library/react'
+import { render, screen, fireEvent, waitFor } from '@testing-library/react'
 import { BrowserRouter } from 'react-router-dom'
 import { LoginForm } from './LoginForm'
+
+const mockNavigate = vi.fn()
+const mockLogin = vi.fn().mockResolvedValue(undefined)
+const mockLoginWithGoogle = vi.fn().mockResolvedValue(undefined)
+const mockLogout = vi.fn().mockResolvedValue(undefined)
+
+vi.mock('react-router-dom', async () => {
+  const actual = await vi.importActual<typeof import('react-router-dom')>('react-router-dom')
+  return {
+    ...actual,
+    useNavigate: () => mockNavigate,
+  }
+})
 
 vi.mock('../../stores/authStore', () => ({
   useAuthStore: Object.assign(
@@ -27,8 +40,9 @@ vi.mock('../../stores/authStore', () => ({
 
 vi.mock('../../hooks/useAuth', () => ({
   useAuth: () => ({
-    login: vi.fn().mockResolvedValue(undefined),
-    loginWithGoogle: vi.fn().mockResolvedValue(undefined),
+    login: mockLogin,
+    loginWithGoogle: mockLoginWithGoogle,
+    logout: mockLogout,
   }),
   getDefaultRoute: () => '/dashboard',
 }))
@@ -56,6 +70,10 @@ vi.mock('../../lib/supabase', () => ({
 
 beforeEach(() => {
   vi.clearAllMocks()
+  mockNavigate.mockReset()
+  mockLogin.mockResolvedValue(undefined)
+  mockLoginWithGoogle.mockResolvedValue(undefined)
+  mockLogout.mockResolvedValue(undefined)
   mockListFactors = vi.fn().mockResolvedValue({
     data: { all: [], totp: [], phone: [] },
     error: null,
@@ -96,5 +114,15 @@ describe('LoginForm MFA check', () => {
       error: { message: 'Not authenticated' },
     })
     expect(mockListFactors).not.toHaveBeenCalled()
+  })
+
+  it('should start Google OAuth without local redirect checks', async () => {
+    renderLoginForm()
+
+    fireEvent.click(screen.getByText('auth.sign_in_google'))
+
+    await waitFor(() => expect(mockLoginWithGoogle).toHaveBeenCalledTimes(1))
+    expect(mockNavigate).not.toHaveBeenCalled()
+    expect(mockLogout).not.toHaveBeenCalled()
   })
 })

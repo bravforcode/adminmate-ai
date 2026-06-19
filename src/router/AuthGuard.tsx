@@ -10,8 +10,7 @@ interface AuthGuardProps {
 }
 
 /** Returns the default landing route for the given role. */
-export function getDefaultRoute(role?: string | null): string {
-  if (role === 'applicant') return '/applicant/dashboard'
+export function getDefaultRoute(_role?: string | null): string {
   return '/dashboard'
 }
 

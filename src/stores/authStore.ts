@@ -2,7 +2,6 @@ import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
 import type { User } from '@supabase/supabase-js'
 import { supabase } from '../lib/supabase'
-import { fetchSessionStatus } from '../lib/sessionApi'
 
 interface UserProfile {
   id: string
@@ -78,29 +77,11 @@ export const useAuthStore = create<AuthState>()(
         _sessionInitPromise = (async () => {
           set({ isLoading: true, error: null })
           try {
-            let user: User | null = null
-
-            // Try Edge Function session restore (httpOnly cookie)
-            const status = await fetchSessionStatus()
-            if (status.valid && status.access_token) {
-              const { error: sessionError } = await supabase.auth.setSession({
-                access_token: status.access_token,
-                refresh_token: '',
-                user: status.user,
-                token_type: 'bearer',
-                expires_in: 3600,
-                expires_at: Math.floor(Date.now() / 1000) + 3600,
-              } as never)
-              if (!sessionError && status.user) {
-                user = { ...status.user, id: status.user.id } as User
-              }
+            const { data: { session }, error: sessionError } = await supabase.auth.getSession()
+            if (sessionError) {
+              throw sessionError
             }
-
-            // Fall back to standard getSession()
-            if (!user) {
-              const { data: { session } } = await supabase.auth.getSession()
-              user = session?.user ?? null
-            }
+            const user = session?.user ?? null
 
             if (!user) {
               set({ user: null, profile: null, company: null, isLoading: false })
