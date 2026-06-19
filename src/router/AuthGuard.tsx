@@ -47,12 +47,33 @@ export function AuthGuard({ children, requiredRoles, requireCompany = true, call
       if (!error && data?.session?.user) {
         // Manually update store since subscribeAuth might not fire in time
         useAuthStore.getState().setUser(data.session.user)
-        // Load profile
-        const { data: profile } = await supabase
+        // Load profile — create one if missing (new Google OAuth user)
+        let { data: profile } = await supabase
           .from('user_profiles')
           .select('id, email, full_name, full_name_th, avatar_url, role, company_id, language_preference, is_active, phone')
           .eq('id', data.session.user.id)
           .maybeSingle()
+
+        if (!profile) {
+          // First-time Google login — create applicant profile
+          await supabase
+            .from('user_profiles')
+            .insert({
+              id: data.session.user.id,
+              email: data.session.user.email ?? '',
+              full_name: data.session.user.user_metadata?.full_name ?? data.session.user.user_metadata?.name ?? data.session.user.email?.split('@')[0] ?? 'User',
+              role: 'applicant',
+              language_preference: 'en',
+              is_active: true,
+            })
+          const { data: newProfile } = await supabase
+            .from('user_profiles')
+            .select('id, email, full_name, full_name_th, avatar_url, role, company_id, language_preference, is_active, phone')
+            .eq('id', data.session.user.id)
+            .maybeSingle()
+          if (newProfile) profile = newProfile
+        }
+
         if (profile) {
           useAuthStore.getState().setProfile(profile)
           if (profile.company_id) {
@@ -63,6 +84,10 @@ export function AuthGuard({ children, requiredRoles, requireCompany = true, call
               .maybeSingle()
             if (company) useAuthStore.getState().setCompany(company)
           }
+          // Redirect to correct dashboard based on role
+          const target = getDefaultRoute(profile.role)
+          window.location.replace(target)
+          return
         }
       }
       setExchanging(false)
