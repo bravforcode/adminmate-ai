@@ -1358,3 +1358,21 @@ body {
     transition-delay: 0s !important;
   }
 }
+
+/* ============================================================
+   RTL SUPPORT
+   ============================================================ */
+[dir="rtl"] {
+  direction: rtl;
+  text-align: right;
+}
+
+[dir="rtl"] .md\:ml-\[260px\] {
+  margin-left: 0;
+  margin-right: 260px;
+}
+
+[dir="rtl"] .sr-only:focus {
+  left: auto;
+  right: 0.5rem;
+}

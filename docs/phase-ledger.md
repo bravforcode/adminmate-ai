@@ -1,0 +1,67 @@
+# AdminMate AI — Phase Ledger
+
+**Last updated:** 2026-06-20
+
+## Release History
+
+| Release | Name | Status | Date | Notes |
+|---------|------|--------|------|-------|
+| 0 | Repo Audit + Production Baseline | ✅ COMPLETE | 2026-06-20 | Full audit. 408/417 tests pass. Build/typecheck/lint clean. |
+| 1 | Multi-Tenant Core + RBAC + Audit + i18n + Global Country Framework | ✅ COMPLETE | 2026-06-20 | Security hotfix, RBAC, sensitive fields, global config. 429/438 tests pass. |
+| 1B | Legal Entity & Organizational Hierarchy | ⏳ PENDING | — | Blocked by Release 1 |
+| 2 | Recruiting Core + Employee Referral | ⏳ PENDING | — | Partially exists (jobs, candidates, applications) |
+| 3 | Candidate Portal + Application Forms | ⏳ PENDING | — | |
+| 4 | AI Recruiting Layer | ⏳ PENDING | — | AI features already partially exist |
+| 5 | Messaging + Approval Workflow | ⏳ PENDING | — | Messaging infrastructure exists |
+| 6 | Onboarding + Documents + Contract Templates | ⏳ PENDING | — | Onboarding tables exist |
+| 6B | Offboarding + Exit Management | ⏳ PENDING | — | |
+| 7 | HRIS Core + Directory + Org Chart | ⏳ PENDING | — | |
+| 7B | Global Mobility, Visa & Work Permit | ⏳ PENDING | — | |
+| 8 | Attendance + Leave Core | ⏳ PENDING | — | |
+| 8B | Workforce Scheduling & Shift Marketplace | ⏳ PENDING | — | |
+| 9A | Thailand Payroll Pack | ⏳ PENDING | — | |
+| 9C | Data Import/Export & Migration Tooling | ⏳ PENDING | — | BulkImport page exists |
+
+## Release 1 Adaptation Notes
+
+### Stack Corrections
+- Build Plan says Next.js 14 → Reality: **Vite 6.4**
+- Build Plan says React 18 → Reality: **React 19**
+- Build Plan says App Router → Reality: **React Router v7 (client-side)**
+- Build Plan says Prisma → Reality: **Raw SQL migrations via Supabase CLI**
+- Build Plan says Tailwind v3 → Reality: **Tailwind v4 (CSS-based config)**
+- Build Plan says `organization_id` → Reality: **`company_id`** (decide: rename or alias)
+
+### What Already Exists (Skip in Release 1)
+- ✅ Company model (as `companies`)
+- ✅ User profiles (as `user_profiles`)
+- ✅ Audit logs (as `audit_logs`)
+- ✅ File metadata (as `documents`, `cv_documents`)
+- ✅ Notification shell (as `notifications`)
+- ✅ English/Thai i18n (plus vi, zh, id)
+- ✅ Dark mode (CSS variables exist)
+- ✅ Responsive app shell (Tailwind responsive classes)
+- ✅ PDPA consent (as `pdpa_compliance`, `consent_logs`)
+- ✅ Subscription model (as `subscriptions`)
+- ✅ Rate limiting (as `rate_limits`)
+
+### What Must Be Built in Release 1
+- ✅ Roles table (replace string column) — DONE
+- ✅ Permissions table — DONE
+- ✅ User_roles junction table — DONE
+- ✅ Server-side permission helper — DONE (SQL functions + frontend service)
+- ✅ Sensitive field registry — DONE
+- ✅ Country config table — DONE
+- ✅ Currency config table — DONE
+- ✅ Timezone config table — DONE
+- ✅ Locale config table — DONE (incl RTL ar-SA)
+- ✅ Data residency regions table — DONE
+- ✅ Feature flags table — DONE
+- ✅ RTL-ready layout — DONE (CSS logical properties + dir attribute)
+- ✅ Fix notifications RLS vulnerability — DONE
+- ✅ Permission-denied page — DONE
+- ✅ Needs-configuration state component — DONE
+- ❌ Role-aware navigation updates — NOT YET (depends on wiring AuthGuard to RBAC)
+
+### Migration Strategy
+Since `company_id` is deeply embedded (100+ references across 44 migrations), **do not rename**. Use `company_id` as the tenant scope throughout. The Build Plan's `organization_id` terminology should be interpreted as `company_id` in this codebase.
