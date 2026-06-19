@@ -10,16 +10,13 @@ if (!supabaseUrl || !supabaseAnonKey) {
   )
 }
 
-export const SUPABASE_AUTH_OPTIONS = {
-  autoRefreshToken: false,
-  persistSession: true,
-  detectSessionInUrl: true,
-  flowType: 'implicit' as const,
-  storageKey: 'adminmate-auth-token',
-}
-
 export const supabase = createClient(supabaseUrl, supabaseAnonKey, {
-  auth: SUPABASE_AUTH_OPTIONS,
+  auth: {
+    autoRefreshToken: true,
+    persistSession: true,
+    detectSessionInUrl: true,
+    storageKey: 'adminmate-auth-token',
+  },
   realtime: {
     params: { eventsPerSecond: 10 },
   },

@@ -6,59 +6,69 @@ import { getDefaultRoute } from '../../router/AuthGuard'
 
 /**
  * Handles OAuth callback after Google login.
- * With implicit flow, Supabase extracts tokens from URL hash fragment.
- * This page loads profile and redirects to the correct dashboard.
+ * Supabase auto-extracts tokens from URL hash/query params.
+ * This page waits for session, loads profile, then redirects.
  */
 export default function OAuthCallbackPage() {
   const [error, setError] = useState<string | null>(null)
+  const [ready, setReady] = useState(false)
   const user = useAuthStore(s => s.user)
   const profile = useAuthStore(s => s.profile)
 
   useEffect(() => {
-    ;(async () => {
-      try {
-        // With implicit flow + detectSessionInUrl, Supabase auto-extracts
-        // the token from URL hash fragment. Get the session.
-        const { data: { session }, error: sessionError } = await supabase.auth.getSession()
+    let cancelled = false
 
-        if (sessionError) {
-          console.error('[OAuth] Session error:', sessionError.message)
-          setError(sessionError.message)
-          return
-        }
+    async function handleCallback() {
+      // Wait a moment for Supabase to process the URL
+      await new Promise(r => setTimeout(r, 500))
+      if (cancelled) return
 
-        if (!session?.user) {
-          // Try waiting a bit for the session to be set
-          await new Promise(r => setTimeout(r, 1000))
-          const { data: { session: retrySession } } = await supabase.auth.getSession()
-          if (!retrySession?.user) {
-            setError('No session found after OAuth')
-            return
-          }
-          await loadProfile(retrySession.user.id)
-          return
-        }
+      // Check for session
+      const { data: { session }, error: sessionError } = await supabase.auth.getSession()
 
-        await loadProfile(session.user.id)
-      } catch (e) {
-        console.error('[OAuth] Unexpected error:', e)
-        setError(String(e))
+      if (sessionError) {
+        if (!cancelled) setError(sessionError.message)
+        return
       }
-    })()
-  }, [])
 
-  async function loadProfile(userId: string) {
-    useAuthStore.getState().setUser((await supabase.auth.getUser()).data.user!)
+      if (!session?.user) {
+        // Try one more time after a delay
+        await new Promise(r => setTimeout(r, 1500))
+        if (cancelled) return
 
-    let { data: profile } = await supabase
-      .from('user_profiles')
-      .select('id, email, full_name, full_name_th, avatar_url, role, company_id, language_preference, is_active, phone')
-      .eq('id', userId)
-      .maybeSingle()
+        const { data: { session: retry } } = await supabase.auth.getSession()
+        if (!retry?.user) {
+          if (!cancelled) setError('No session found. Please try logging in again.')
+          return
+        }
+        await setupUser(retry.user.id)
+        return
+      }
 
-    if (!profile) {
+      await setupUser(session.user.id)
+    }
+
+    async function setupUser(userId: string) {
+      if (cancelled) return
+
+      // Get fresh user data
       const { data: { user: authUser } } = await supabase.auth.getUser()
-      if (authUser) {
+      if (!authUser) {
+        if (!cancelled) setError('Failed to get user')
+        return
+      }
+
+      useAuthStore.getState().setUser(authUser)
+
+      // Load profile
+      let { data: profile } = await supabase
+        .from('user_profiles')
+        .select('id, email, full_name, full_name_th, avatar_url, role, company_id, language_preference, is_active, phone')
+        .eq('id', userId)
+        .maybeSingle()
+
+      // Create profile if missing (new Google user)
+      if (!profile) {
         await supabase.from('user_profiles').insert({
           id: authUser.id,
           email: authUser.email ?? '',
@@ -74,34 +84,39 @@ export default function OAuthCallbackPage() {
           .maybeSingle()
         if (newProfile) profile = newProfile
       }
-    }
 
-    if (profile) {
-      useAuthStore.getState().setProfile(profile)
-      if (profile.company_id) {
-        const { data: company } = await supabase
-          .from('companies')
-          .select('id, name, name_th, tax_id, phone, email, city, website_url, industry, country, currency, locale, subscription_tier')
-          .eq('id', profile.company_id)
-          .maybeSingle()
-        if (company) useAuthStore.getState().setCompany(company)
+      if (profile) {
+        useAuthStore.getState().setProfile(profile)
+        if (profile.company_id) {
+          const { data: company } = await supabase
+            .from('companies')
+            .select('id, name, name_th, tax_id, phone, email, city, website_url, industry, country, currency, locale, subscription_tier')
+            .eq('id', profile.company_id)
+            .maybeSingle()
+          if (company) useAuthStore.getState().setCompany(company)
+        }
       }
+
+      // Clean URL
+      window.history.replaceState({}, '', getDefaultRoute(profile?.role))
+      if (!cancelled) setReady(true)
     }
 
-    // Clean hash from URL
-    window.history.replaceState({}, '', '/auth/callback')
-  }
+    handleCallback()
+
+    return () => { cancelled = true }
+  }, [])
 
   if (error) {
     return (
       <div className="flex flex-col items-center justify-center h-screen gap-4">
-        <p className="text-red-500">Login failed: {error}</p>
+        <p className="text-red-500 text-center px-4">Login failed: {error}</p>
         <a href="/login" className="text-primary underline">Try again</a>
       </div>
     )
   }
 
-  if (user && profile) {
+  if (ready && user && profile) {
     return <Navigate to={getDefaultRoute(profile.role)} replace />
   }
 
