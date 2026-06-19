@@ -12,6 +12,7 @@ const TermsPage = lazy(() => import('../pages/public/TermsPage'))
 const PrivacyPage = lazy(() => import('../pages/public/PrivacyPage'))
 const CookiesPage = lazy(() => import('../pages/public/CookiesPage'))
 const LoginPage = lazy(() => import('../pages/auth/LoginPage'))
+const OAuthCallbackPage = lazy(() => import('../pages/auth/OAuthCallbackPage'))
 const RegisterPage = lazy(() => import('../pages/auth/RegisterPage'))
 const ForgotPasswordPage = lazy(() => import('../pages/auth/ForgotPasswordPage'))
 const ResetPasswordPage = lazy(() => import('../pages/auth/ResetPasswordPage'))
@@ -98,6 +99,10 @@ export const router = createBrowserRouter([
   {
     path: '/cookies',
     element: <AnimatedPage><CookiesPage /></AnimatedPage>,
+  },
+  {
+    path: '/auth/callback',
+    element: <OAuthCallbackPage />,
   },
   {
     path: '/setup-company',
