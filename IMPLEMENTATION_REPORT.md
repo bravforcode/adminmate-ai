@@ -9,6 +9,7 @@
 - **Release 4** — AI Recruiting Layer ✅
 - **Release 5** — Messaging + Approval Workflow ✅
 - **Release 6** — Onboarding + Documents + Contract Templates ✅
+- **Release 6B** — Offboarding + Exit Management ✅
 
 ## Release 0 Summary
 
