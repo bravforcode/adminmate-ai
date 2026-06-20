@@ -3,7 +3,7 @@
 -- All company_id. No organization_id.
 
 -- ============== BUSINESS_UNITS ==============
-CREATE TABLE business_units (
+CREATE TABLE IF NOT EXISTS business_units (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     company_id UUID NOT NULL REFERENCES companies(id) ON DELETE CASCADE,
     legal_entity_id UUID REFERENCES legal_entities(id) ON DELETE SET NULL,
@@ -16,7 +16,7 @@ CREATE TABLE business_units (
 );
 
 -- ============== COST_CENTERS ==============
-CREATE TABLE cost_centers (
+CREATE TABLE IF NOT EXISTS cost_centers (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     company_id UUID NOT NULL REFERENCES companies(id) ON DELETE CASCADE,
     legal_entity_id UUID REFERENCES legal_entities(id) ON DELETE SET NULL,
@@ -30,7 +30,7 @@ CREATE TABLE cost_centers (
 );
 
 -- ============== LOCATIONS ==============
-CREATE TABLE locations (
+CREATE TABLE IF NOT EXISTS locations (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     company_id UUID NOT NULL REFERENCES companies(id) ON DELETE CASCADE,
     legal_entity_id UUID REFERENCES legal_entities(id) ON DELETE SET NULL,
@@ -52,7 +52,7 @@ CREATE TABLE locations (
 );
 
 -- ============== DEPARTMENTS ==============
-CREATE TABLE departments (
+CREATE TABLE IF NOT EXISTS departments (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     company_id UUID NOT NULL REFERENCES companies(id) ON DELETE CASCADE,
     legal_entity_id UUID REFERENCES legal_entities(id) ON DELETE SET NULL,
@@ -67,7 +67,7 @@ CREATE TABLE departments (
 );
 
 -- ============== TEAMS ==============
-CREATE TABLE teams (
+CREATE TABLE IF NOT EXISTS teams (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     company_id UUID NOT NULL REFERENCES companies(id) ON DELETE CASCADE,
     department_id UUID REFERENCES departments(id) ON DELETE SET NULL,
@@ -81,7 +81,7 @@ CREATE TABLE teams (
 );
 
 -- ============== REPORTING_LINES ==============
-CREATE TABLE reporting_lines (
+CREATE TABLE IF NOT EXISTS reporting_lines (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     company_id UUID NOT NULL REFERENCES companies(id) ON DELETE CASCADE,
     employee_user_id UUID NOT NULL REFERENCES auth.users(id) ON DELETE CASCADE,
@@ -94,20 +94,20 @@ CREATE TABLE reporting_lines (
 );
 
 -- ============== INDEXES ==============
-CREATE INDEX idx_business_units_company ON business_units(company_id);
-CREATE INDEX idx_cost_centers_company ON cost_centers(company_id);
-CREATE INDEX idx_cost_centers_bu ON cost_centers(business_unit_id);
-CREATE INDEX idx_locations_company ON locations(company_id);
-CREATE INDEX idx_locations_entity ON locations(legal_entity_id);
-CREATE INDEX idx_departments_company ON departments(company_id);
-CREATE INDEX idx_departments_parent ON departments(parent_department_id);
-CREATE INDEX idx_departments_bu ON departments(business_unit_id);
-CREATE INDEX idx_teams_company ON teams(company_id);
-CREATE INDEX idx_teams_department ON teams(department_id);
-CREATE INDEX idx_teams_manager ON teams(manager_user_id);
-CREATE INDEX idx_reporting_lines_company ON reporting_lines(company_id);
-CREATE INDEX idx_reporting_lines_employee ON reporting_lines(employee_user_id);
-CREATE INDEX idx_reporting_lines_manager ON reporting_lines(manager_user_id);
+CREATE INDEX IF NOT EXISTS idx_business_units_company ON business_units(company_id);
+CREATE INDEX IF NOT EXISTS idx_cost_centers_company ON cost_centers(company_id);
+CREATE INDEX IF NOT EXISTS idx_cost_centers_bu ON cost_centers(business_unit_id);
+CREATE INDEX IF NOT EXISTS idx_locations_company ON locations(company_id);
+CREATE INDEX IF NOT EXISTS idx_locations_entity ON locations(legal_entity_id);
+CREATE INDEX IF NOT EXISTS idx_departments_company ON departments(company_id);
+CREATE INDEX IF NOT EXISTS idx_departments_parent ON departments(parent_department_id);
+CREATE INDEX IF NOT EXISTS idx_departments_bu ON departments(business_unit_id);
+CREATE INDEX IF NOT EXISTS idx_teams_company ON teams(company_id);
+CREATE INDEX IF NOT EXISTS idx_teams_department ON teams(department_id);
+CREATE INDEX IF NOT EXISTS idx_teams_manager ON teams(manager_user_id);
+CREATE INDEX IF NOT EXISTS idx_reporting_lines_company ON reporting_lines(company_id);
+CREATE INDEX IF NOT EXISTS idx_reporting_lines_employee ON reporting_lines(employee_user_id);
+CREATE INDEX IF NOT EXISTS idx_reporting_lines_manager ON reporting_lines(manager_user_id);
 
 -- ============== RLS ==============
 ALTER TABLE business_units ENABLE ROW LEVEL SECURITY;

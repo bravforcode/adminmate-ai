@@ -47,11 +47,11 @@ CREATE POLICY sal_update ON security_audit_log FOR UPDATE
     )
   );
 
-CREATE INDEX idx_sal_company ON security_audit_log(company_id);
-CREATE INDEX idx_sal_event_type ON security_audit_log(event_type);
-CREATE INDEX idx_sal_severity ON security_audit_log(severity);
-CREATE INDEX idx_sal_detected_at ON security_audit_log(detected_at);
-CREATE INDEX idx_sal_resource ON security_audit_log(resource_type, resource_id);
+CREATE INDEX IF NOT EXISTS idx_sal_company ON security_audit_log(company_id);
+CREATE INDEX IF NOT EXISTS idx_sal_event_type ON security_audit_log(event_type);
+CREATE INDEX IF NOT EXISTS idx_sal_severity ON security_audit_log(severity);
+CREATE INDEX IF NOT EXISTS idx_sal_detected_at ON security_audit_log(detected_at);
+CREATE INDEX IF NOT EXISTS idx_sal_resource ON security_audit_log(resource_type, resource_id);
 
 -- 2. RLS Verification Results
 CREATE TABLE IF NOT EXISTS rls_verification_results (
@@ -72,9 +72,9 @@ CREATE POLICY rvr_insert ON rls_verification_results FOR INSERT
 CREATE POLICY rvr_read ON rls_verification_results FOR SELECT
   USING (true);
 
-CREATE INDEX idx_rvr_table ON rls_verification_results(table_name);
-CREATE INDEX idx_rvr_status ON rls_verification_results(verification_status);
-CREATE INDEX idx_rvr_checked_at ON rls_verification_results(checked_at);
+CREATE INDEX IF NOT EXISTS idx_rvr_table ON rls_verification_results(table_name);
+CREATE INDEX IF NOT EXISTS idx_rvr_status ON rls_verification_results(verification_status);
+CREATE INDEX IF NOT EXISTS idx_rvr_checked_at ON rls_verification_results(checked_at);
 
 -- 3. RBAC Matrix Snapshots
 CREATE TABLE IF NOT EXISTS rbac_matrix_snapshots (
@@ -104,10 +104,10 @@ CREATE POLICY rbac_ms_read ON rbac_matrix_snapshots FOR SELECT
     )
   );
 
-CREATE INDEX idx_rbac_ms_company ON rbac_matrix_snapshots(company_id);
-CREATE INDEX idx_rbac_ms_role ON rbac_matrix_snapshots(role);
-CREATE INDEX idx_rbac_ms_date ON rbac_matrix_snapshots(snapshot_date);
-CREATE INDEX idx_rbac_ms_unique ON rbac_matrix_snapshots(company_id, role, resource, action, snapshot_date);
+CREATE INDEX IF NOT EXISTS idx_rbac_ms_company ON rbac_matrix_snapshots(company_id);
+CREATE INDEX IF NOT EXISTS idx_rbac_ms_role ON rbac_matrix_snapshots(role);
+CREATE INDEX IF NOT EXISTS idx_rbac_ms_date ON rbac_matrix_snapshots(snapshot_date);
+CREATE INDEX IF NOT EXISTS idx_rbac_ms_unique ON rbac_matrix_snapshots(company_id, role, resource, action, snapshot_date);
 
 -- 4. Fix missing RLS on tables caught by audit
 ALTER TABLE document_type_configs ENABLE ROW LEVEL SECURITY;

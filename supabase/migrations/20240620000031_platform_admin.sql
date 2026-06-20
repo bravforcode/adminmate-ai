@@ -3,7 +3,7 @@
 -- Critical: All impersonation is visible to customer Owner/Admin audit log. No silent impersonation.
 
 -- ============== PLATFORM_ADMIN_USERS ==============
-CREATE TABLE platform_admin_users (
+CREATE TABLE IF NOT EXISTS platform_admin_users (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     user_id UUID NOT NULL REFERENCES user_profiles(id) ON DELETE CASCADE,
     role VARCHAR(50) NOT NULL DEFAULT 'support' CHECK (role IN ('owner', 'support')),
@@ -13,11 +13,11 @@ CREATE TABLE platform_admin_users (
     UNIQUE(user_id)
 );
 
-CREATE INDEX idx_platform_admin_users_user_id ON platform_admin_users(user_id);
-CREATE INDEX idx_platform_admin_users_active ON platform_admin_users(is_active) WHERE is_active = true;
+CREATE INDEX IF NOT EXISTS idx_platform_admin_users_user_id ON platform_admin_users(user_id);
+CREATE INDEX IF NOT EXISTS idx_platform_admin_users_active ON platform_admin_users(is_active) WHERE is_active = true;
 
 -- ============== SUPPORT_ACCESS_GRANTS ==============
-CREATE TABLE support_access_grants (
+CREATE TABLE IF NOT EXISTS support_access_grants (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     admin_user_id UUID NOT NULL REFERENCES platform_admin_users(id) ON DELETE CASCADE,
     company_id UUID NOT NULL REFERENCES companies(id) ON DELETE CASCADE,
@@ -31,13 +31,13 @@ CREATE TABLE support_access_grants (
     created_at TIMESTAMPTZ DEFAULT NOW()
 );
 
-CREATE INDEX idx_support_access_grants_company ON support_access_grants(company_id);
-CREATE INDEX idx_support_access_grants_admin ON support_access_grants(admin_user_id);
-CREATE INDEX idx_support_access_grants_active ON support_access_grants(company_id, is_active)
+CREATE INDEX IF NOT EXISTS idx_support_access_grants_company ON support_access_grants(company_id);
+CREATE INDEX IF NOT EXISTS idx_support_access_grants_admin ON support_access_grants(admin_user_id);
+CREATE INDEX IF NOT EXISTS idx_support_access_grants_active ON support_access_grants(company_id, is_active)
     WHERE is_active = true;
 
 -- ============== TENANT_SUPPORT_NOTES ==============
-CREATE TABLE tenant_support_notes (
+CREATE TABLE IF NOT EXISTS tenant_support_notes (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     company_id UUID NOT NULL REFERENCES companies(id) ON DELETE CASCADE,
     admin_user_id UUID NOT NULL REFERENCES platform_admin_users(id),
@@ -45,10 +45,10 @@ CREATE TABLE tenant_support_notes (
     created_at TIMESTAMPTZ DEFAULT NOW()
 );
 
-CREATE INDEX idx_tenant_support_notes_company ON tenant_support_notes(company_id);
+CREATE INDEX IF NOT EXISTS idx_tenant_support_notes_company ON tenant_support_notes(company_id);
 
 -- ============== PLATFORM_AUDIT_LOGS ==============
-CREATE TABLE platform_audit_logs (
+CREATE TABLE IF NOT EXISTS platform_audit_logs (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     admin_user_id UUID NOT NULL REFERENCES platform_admin_users(id),
     company_id UUID NOT NULL REFERENCES companies(id) ON DELETE CASCADE,
@@ -57,10 +57,10 @@ CREATE TABLE platform_audit_logs (
     created_at TIMESTAMPTZ DEFAULT NOW()
 );
 
-CREATE INDEX idx_platform_audit_logs_company ON platform_audit_logs(company_id);
-CREATE INDEX idx_platform_audit_logs_admin ON platform_audit_logs(admin_user_id);
-CREATE INDEX idx_platform_audit_logs_action ON platform_audit_logs(action);
-CREATE INDEX idx_platform_audit_logs_created ON platform_audit_logs(created_at DESC);
+CREATE INDEX IF NOT EXISTS idx_platform_audit_logs_company ON platform_audit_logs(company_id);
+CREATE INDEX IF NOT EXISTS idx_platform_audit_logs_admin ON platform_audit_logs(admin_user_id);
+CREATE INDEX IF NOT EXISTS idx_platform_audit_logs_action ON platform_audit_logs(action);
+CREATE INDEX IF NOT EXISTS idx_platform_audit_logs_created ON platform_audit_logs(created_at DESC);
 
 -- ============== RLS POLICIES ==============
 ALTER TABLE platform_admin_users ENABLE ROW LEVEL SECURITY;

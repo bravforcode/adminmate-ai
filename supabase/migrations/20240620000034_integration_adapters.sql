@@ -74,19 +74,19 @@ CREATE POLICY integration_configs_read ON integration_configs
 CREATE POLICY integration_configs_insert ON integration_configs
   FOR INSERT WITH CHECK (
     company_id = safe_user_company_id()
-    AND safe_user_has_permission('integration', 'write')
+    AND has_permission('integration', 'write')
   );
 
 CREATE POLICY integration_configs_update ON integration_configs
   FOR UPDATE USING (
     company_id = safe_user_company_id()
-    AND safe_user_has_permission('integration', 'write')
+    AND has_permission('integration', 'write')
   );
 
 CREATE POLICY integration_configs_delete ON integration_configs
   FOR DELETE USING (
     company_id = safe_user_company_id()
-    AND safe_user_has_permission('integration', 'write')
+    AND has_permission('integration', 'write')
   );
 
 -- integration_sync_jobs: company members read; integration_write roles insert
@@ -96,13 +96,13 @@ CREATE POLICY integration_sync_jobs_read ON integration_sync_jobs
 CREATE POLICY integration_sync_jobs_insert ON integration_sync_jobs
   FOR INSERT WITH CHECK (
     company_id = safe_user_company_id()
-    AND safe_user_has_permission('integration', 'write')
+    AND has_permission('integration', 'write')
   );
 
 CREATE POLICY integration_sync_jobs_update ON integration_sync_jobs
   FOR UPDATE USING (
     company_id = safe_user_company_id()
-    AND safe_user_has_permission('integration', 'write')
+    AND has_permission('integration', 'write')
   );
 
 -- integration_event_logs: company members read; integration_write roles insert
@@ -112,24 +112,24 @@ CREATE POLICY integration_event_logs_read ON integration_event_logs
 CREATE POLICY integration_event_logs_insert ON integration_event_logs
   FOR INSERT WITH CHECK (
     company_id = safe_user_company_id()
-    AND safe_user_has_permission('integration', 'write')
+    AND has_permission('integration', 'write')
   );
 
 -- ============================================================
 -- Indexes
 -- ============================================================
 
-CREATE INDEX idx_integration_providers_key ON integration_providers(provider_key);
-CREATE INDEX idx_integration_providers_category ON integration_providers(category);
-CREATE INDEX idx_integration_configs_company ON integration_configs(company_id);
-CREATE INDEX idx_integration_configs_company_provider ON integration_configs(company_id, provider_id);
-CREATE INDEX idx_integration_configs_status ON integration_configs(config_status);
-CREATE INDEX idx_integration_sync_jobs_company ON integration_sync_jobs(company_id);
-CREATE INDEX idx_integration_sync_jobs_company_provider ON integration_sync_jobs(company_id, provider_id);
-CREATE INDEX idx_integration_sync_jobs_status ON integration_sync_jobs(status);
-CREATE INDEX idx_integration_event_logs_company ON integration_event_logs(company_id);
-CREATE INDEX idx_integration_event_logs_company_provider ON integration_event_logs(company_id, provider_id);
-CREATE INDEX idx_integration_event_logs_hash ON integration_event_logs(payload_hash);
+CREATE INDEX IF NOT EXISTS idx_integration_providers_key ON integration_providers(provider_key);
+CREATE INDEX IF NOT EXISTS idx_integration_providers_category ON integration_providers(category);
+CREATE INDEX IF NOT EXISTS idx_integration_configs_company ON integration_configs(company_id);
+CREATE INDEX IF NOT EXISTS idx_integration_configs_company_provider ON integration_configs(company_id, provider_id);
+CREATE INDEX IF NOT EXISTS idx_integration_configs_status ON integration_configs(config_status);
+CREATE INDEX IF NOT EXISTS idx_integration_sync_jobs_company ON integration_sync_jobs(company_id);
+CREATE INDEX IF NOT EXISTS idx_integration_sync_jobs_company_provider ON integration_sync_jobs(company_id, provider_id);
+CREATE INDEX IF NOT EXISTS idx_integration_sync_jobs_status ON integration_sync_jobs(status);
+CREATE INDEX IF NOT EXISTS idx_integration_event_logs_company ON integration_event_logs(company_id);
+CREATE INDEX IF NOT EXISTS idx_integration_event_logs_company_provider ON integration_event_logs(company_id, provider_id);
+CREATE INDEX IF NOT EXISTS idx_integration_event_logs_hash ON integration_event_logs(payload_hash);
 
 -- ============================================================
 -- Triggers

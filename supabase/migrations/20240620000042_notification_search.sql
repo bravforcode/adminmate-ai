@@ -35,10 +35,10 @@ CREATE POLICY nv2_delete ON notifications_v2 FOR DELETE USING (
   company_id = safe_user_company_id() AND user_id = auth.uid()
 );
 
-CREATE INDEX idx_nv2_company_user ON notifications_v2(company_id, user_id);
-CREATE INDEX idx_nv2_user_read ON notifications_v2(user_id, is_read);
-CREATE INDEX idx_nv2_created ON notifications_v2(created_at DESC);
-CREATE INDEX idx_nv2_type ON notifications_v2(notification_type);
+CREATE INDEX IF NOT EXISTS idx_nv2_company_user ON notifications_v2(company_id, user_id);
+CREATE INDEX IF NOT EXISTS idx_nv2_user_read ON notifications_v2(user_id, is_read);
+CREATE INDEX IF NOT EXISTS idx_nv2_created ON notifications_v2(created_at DESC);
+CREATE INDEX IF NOT EXISTS idx_nv2_type ON notifications_v2(notification_type);
 
 -- ============== 2. NOTIFICATION PREFERENCES V2 ==============
 CREATE TABLE IF NOT EXISTS notification_preferences_v2 (
@@ -68,8 +68,8 @@ CREATE POLICY npv2_delete ON notification_preferences_v2 FOR DELETE USING (
   company_id = safe_user_company_id() AND user_id = auth.uid()
 );
 
-CREATE INDEX idx_npv2_user ON notification_preferences_v2(user_id);
-CREATE INDEX idx_npv2_user_type ON notification_preferences_v2(user_id, notification_type);
+CREATE INDEX IF NOT EXISTS idx_npv2_user ON notification_preferences_v2(user_id);
+CREATE INDEX IF NOT EXISTS idx_npv2_user_type ON notification_preferences_v2(user_id, notification_type);
 
 CREATE TRIGGER update_npv2_updated_at BEFORE UPDATE ON notification_preferences_v2
   FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
@@ -102,11 +102,11 @@ CREATE POLICY gsi_delete ON global_search_index FOR DELETE USING (
   company_id = safe_user_company_id()
 );
 
-CREATE INDEX idx_gsi_company_entity ON global_search_index(company_id, entity_type);
-CREATE INDEX idx_gsi_company_search ON global_search_index USING gin(
+CREATE INDEX IF NOT EXISTS idx_gsi_company_entity ON global_search_index(company_id, entity_type);
+CREATE INDEX IF NOT EXISTS idx_gsi_company_search ON global_search_index USING gin(
   to_tsvector('english', searchable_text)
 );
-CREATE INDEX idx_gsi_entity_id ON global_search_index(entity_type, entity_id);
+CREATE INDEX IF NOT EXISTS idx_gsi_entity_id ON global_search_index(entity_type, entity_id);
 
 CREATE TRIGGER update_gsi_updated_at BEFORE UPDATE ON global_search_index
   FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();

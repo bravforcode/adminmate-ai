@@ -28,9 +28,9 @@ CREATE POLICY lc_insert ON learning_courses FOR INSERT WITH CHECK (company_id = 
 CREATE POLICY lc_update ON learning_courses FOR UPDATE USING (company_id = safe_user_company_id());
 CREATE POLICY lc_delete ON learning_courses FOR DELETE USING (company_id = safe_user_company_id());
 
-CREATE INDEX idx_lc_company ON learning_courses(company_id);
-CREATE INDEX idx_lc_mandatory ON learning_courses(is_mandatory);
-CREATE INDEX idx_lc_active ON learning_courses(is_active);
+CREATE INDEX IF NOT EXISTS idx_lc_company ON learning_courses(company_id);
+CREATE INDEX IF NOT EXISTS idx_lc_mandatory ON learning_courses(is_mandatory);
+CREATE INDEX IF NOT EXISTS idx_lc_active ON learning_courses(is_active);
 
 CREATE TRIGGER update_lc_updated_at BEFORE UPDATE ON learning_courses
   FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
@@ -53,8 +53,8 @@ CREATE POLICY lm_insert ON learning_modules FOR INSERT WITH CHECK (company_id = 
 CREATE POLICY lm_update ON learning_modules FOR UPDATE USING (company_id = safe_user_company_id());
 CREATE POLICY lm_delete ON learning_modules FOR DELETE USING (company_id = safe_user_company_id());
 
-CREATE INDEX idx_lm_company ON learning_modules(company_id);
-CREATE INDEX idx_lm_course ON learning_modules(course_id);
+CREATE INDEX IF NOT EXISTS idx_lm_company ON learning_modules(company_id);
+CREATE INDEX IF NOT EXISTS idx_lm_course ON learning_modules(course_id);
 
 -- 3. Learning Enrollments
 CREATE TABLE IF NOT EXISTS learning_enrollments (
@@ -78,10 +78,10 @@ CREATE POLICY le_insert ON learning_enrollments FOR INSERT WITH CHECK (company_i
 CREATE POLICY le_update ON learning_enrollments FOR UPDATE USING (company_id = safe_user_company_id());
 CREATE POLICY le_delete ON learning_enrollments FOR DELETE USING (company_id = safe_user_company_id());
 
-CREATE INDEX idx_le_company ON learning_enrollments(company_id);
-CREATE INDEX idx_le_employee ON learning_enrollments(employee_id);
-CREATE INDEX idx_le_course ON learning_enrollments(course_id);
-CREATE INDEX idx_le_status ON learning_enrollments(status);
+CREATE INDEX IF NOT EXISTS idx_le_company ON learning_enrollments(company_id);
+CREATE INDEX IF NOT EXISTS idx_le_employee ON learning_enrollments(employee_id);
+CREATE INDEX IF NOT EXISTS idx_le_course ON learning_enrollments(course_id);
+CREATE INDEX IF NOT EXISTS idx_le_status ON learning_enrollments(status);
 
 CREATE TRIGGER update_le_updated_at BEFORE UPDATE ON learning_enrollments
   FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
@@ -107,11 +107,11 @@ CREATE POLICY ta_insert ON training_assignments FOR INSERT WITH CHECK (company_i
 CREATE POLICY ta_update ON training_assignments FOR UPDATE USING (company_id = safe_user_company_id());
 CREATE POLICY ta_delete ON training_assignments FOR DELETE USING (company_id = safe_user_company_id());
 
-CREATE INDEX idx_ta_company ON training_assignments(company_id);
-CREATE INDEX idx_ta_employee ON training_assignments(employee_id);
-CREATE INDEX idx_ta_course ON training_assignments(course_id);
-CREATE INDEX idx_ta_status ON training_assignments(status);
-CREATE INDEX idx_ta_due ON training_assignments(due_date);
+CREATE INDEX IF NOT EXISTS idx_ta_company ON training_assignments(company_id);
+CREATE INDEX IF NOT EXISTS idx_ta_employee ON training_assignments(employee_id);
+CREATE INDEX IF NOT EXISTS idx_ta_course ON training_assignments(course_id);
+CREATE INDEX IF NOT EXISTS idx_ta_status ON training_assignments(status);
+CREATE INDEX IF NOT EXISTS idx_ta_due ON training_assignments(due_date);
 
 CREATE TRIGGER update_ta_updated_at BEFORE UPDATE ON training_assignments
   FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
@@ -138,10 +138,10 @@ CREATE POLICY cert_insert ON certifications FOR INSERT WITH CHECK (company_id = 
 CREATE POLICY cert_update ON certifications FOR UPDATE USING (company_id = safe_user_company_id());
 CREATE POLICY cert_delete ON certifications FOR DELETE USING (company_id = safe_user_company_id());
 
-CREATE INDEX idx_cert_company ON certifications(company_id);
-CREATE INDEX idx_cert_employee ON certifications(employee_id);
-CREATE INDEX idx_cert_status ON certifications(status);
-CREATE INDEX idx_cert_expiry ON certifications(expiry_date);
+CREATE INDEX IF NOT EXISTS idx_cert_company ON certifications(company_id);
+CREATE INDEX IF NOT EXISTS idx_cert_employee ON certifications(employee_id);
+CREATE INDEX IF NOT EXISTS idx_cert_status ON certifications(status);
+CREATE INDEX IF NOT EXISTS idx_cert_expiry ON certifications(expiry_date);
 
 CREATE TRIGGER update_cert_updated_at BEFORE UPDATE ON certifications
   FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
@@ -190,9 +190,9 @@ CREATE POLICY sp_delete ON skill_profiles FOR DELETE USING (
   AND safe_user_role() IN ('admin', 'hr_manager')
 );
 
-CREATE INDEX idx_sp_company ON skill_profiles(company_id);
-CREATE INDEX idx_sp_employee ON skill_profiles(employee_id);
-CREATE INDEX idx_sp_skills ON skill_profiles USING GIN (skills);
+CREATE INDEX IF NOT EXISTS idx_sp_company ON skill_profiles(company_id);
+CREATE INDEX IF NOT EXISTS idx_sp_employee ON skill_profiles(employee_id);
+CREATE INDEX IF NOT EXISTS idx_sp_skills ON skill_profiles USING GIN (skills);
 
 CREATE TRIGGER update_sp_updated_at BEFORE UPDATE ON skill_profiles
   FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();

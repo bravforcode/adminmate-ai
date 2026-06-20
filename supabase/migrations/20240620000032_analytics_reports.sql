@@ -164,15 +164,15 @@ CREATE POLICY report_exports_insert ON report_exports
 -- Indexes
 -- ============================================================
 
-CREATE INDEX idx_report_definitions_company ON report_definitions(company_id);
-CREATE INDEX idx_report_definitions_key ON report_definitions(company_id, report_key);
-CREATE INDEX idx_dashboard_layouts_company ON dashboard_layouts(company_id);
-CREATE INDEX idx_dashboard_layouts_user ON dashboard_layouts(user_id);
-CREATE INDEX idx_scheduled_reports_company ON scheduled_reports(company_id);
-CREATE INDEX idx_scheduled_reports_next_run ON scheduled_reports(next_run_at) WHERE is_active = true;
-CREATE INDEX idx_report_exports_company ON report_exports(company_id);
-CREATE INDEX idx_report_exports_status ON report_exports(status);
-CREATE INDEX idx_report_exports_created_by ON report_exports(created_by);
+CREATE INDEX IF NOT EXISTS idx_report_definitions_company ON report_definitions(company_id);
+CREATE INDEX IF NOT EXISTS idx_report_definitions_key ON report_definitions(company_id, report_key);
+CREATE INDEX IF NOT EXISTS idx_dashboard_layouts_company ON dashboard_layouts(company_id);
+CREATE INDEX IF NOT EXISTS idx_dashboard_layouts_user ON dashboard_layouts(user_id);
+CREATE INDEX IF NOT EXISTS idx_scheduled_reports_company ON scheduled_reports(company_id);
+CREATE INDEX IF NOT EXISTS idx_scheduled_reports_next_run ON scheduled_reports(next_run_at) WHERE is_active = true;
+CREATE INDEX IF NOT EXISTS idx_report_exports_company ON report_exports(company_id);
+CREATE INDEX IF NOT EXISTS idx_report_exports_status ON report_exports(status);
+CREATE INDEX IF NOT EXISTS idx_report_exports_created_by ON report_exports(created_by);
 
 -- ============================================================
 -- Triggers

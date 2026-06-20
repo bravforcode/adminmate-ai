@@ -149,22 +149,22 @@ CREATE POLICY predictive_insights_update ON predictive_insights
 -- Indexes
 -- ============================================================
 
-CREATE INDEX idx_people_analytics_models_company ON people_analytics_models(company_id);
-CREATE INDEX idx_people_analytics_models_key ON people_analytics_models(company_id, model_key);
-CREATE INDEX idx_people_analytics_runs_company ON people_analytics_runs(company_id);
-CREATE INDEX idx_people_analytics_runs_model ON people_analytics_runs(model_id);
-CREATE INDEX idx_people_analytics_runs_status ON people_analytics_runs(status);
-CREATE INDEX idx_people_analytics_runs_created_by ON people_analytics_runs(created_by);
-CREATE INDEX idx_risk_indicators_company ON risk_indicators(company_id);
-CREATE INDEX idx_risk_indicators_employee ON risk_indicators(employee_id);
-CREATE INDEX idx_risk_indicators_type ON risk_indicators(indicator_type);
-CREATE INDEX idx_risk_indicators_model_run ON risk_indicators(model_run_id);
-CREATE INDEX idx_risk_indicators_score ON risk_indicators(risk_score DESC);
-CREATE INDEX idx_predictive_insights_company ON predictive_insights(company_id);
-CREATE INDEX idx_predictive_insights_employee ON predictive_insights(employee_id);
-CREATE INDEX idx_predictive_insights_type ON predictive_insights(insight_type);
-CREATE INDEX idx_predictive_insights_model_run ON predictive_insights(model_run_id);
-CREATE INDEX idx_predictive_insights_review ON predictive_insights(requires_review) WHERE requires_review = true;
+CREATE INDEX IF NOT EXISTS idx_people_analytics_models_company ON people_analytics_models(company_id);
+CREATE INDEX IF NOT EXISTS idx_people_analytics_models_key ON people_analytics_models(company_id, model_key);
+CREATE INDEX IF NOT EXISTS idx_people_analytics_runs_company ON people_analytics_runs(company_id);
+CREATE INDEX IF NOT EXISTS idx_people_analytics_runs_model ON people_analytics_runs(model_id);
+CREATE INDEX IF NOT EXISTS idx_people_analytics_runs_status ON people_analytics_runs(status);
+CREATE INDEX IF NOT EXISTS idx_people_analytics_runs_created_by ON people_analytics_runs(created_by);
+CREATE INDEX IF NOT EXISTS idx_risk_indicators_company ON risk_indicators(company_id);
+CREATE INDEX IF NOT EXISTS idx_risk_indicators_employee ON risk_indicators(employee_id);
+CREATE INDEX IF NOT EXISTS idx_risk_indicators_type ON risk_indicators(indicator_type);
+CREATE INDEX IF NOT EXISTS idx_risk_indicators_model_run ON risk_indicators(model_run_id);
+CREATE INDEX IF NOT EXISTS idx_risk_indicators_score ON risk_indicators(risk_score DESC);
+CREATE INDEX IF NOT EXISTS idx_predictive_insights_company ON predictive_insights(company_id);
+CREATE INDEX IF NOT EXISTS idx_predictive_insights_employee ON predictive_insights(employee_id);
+CREATE INDEX IF NOT EXISTS idx_predictive_insights_type ON predictive_insights(insight_type);
+CREATE INDEX IF NOT EXISTS idx_predictive_insights_model_run ON predictive_insights(model_run_id);
+CREATE INDEX IF NOT EXISTS idx_predictive_insights_review ON predictive_insights(requires_review) WHERE requires_review = true;
 
 -- ============================================================
 -- Triggers

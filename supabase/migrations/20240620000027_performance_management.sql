@@ -26,8 +26,8 @@ CREATE POLICY perf_cycle_insert ON performance_cycles FOR INSERT WITH CHECK (com
 CREATE POLICY perf_cycle_update ON performance_cycles FOR UPDATE USING (company_id = safe_user_company_id());
 CREATE POLICY perf_cycle_delete ON performance_cycles FOR DELETE USING (company_id = safe_user_company_id());
 
-CREATE INDEX idx_perf_cycle_company ON performance_cycles(company_id);
-CREATE INDEX idx_perf_cycle_status ON performance_cycles(status);
+CREATE INDEX IF NOT EXISTS idx_perf_cycle_company ON performance_cycles(company_id);
+CREATE INDEX IF NOT EXISTS idx_perf_cycle_status ON performance_cycles(status);
 
 CREATE TRIGGER update_perf_cycle_updated_at BEFORE UPDATE ON performance_cycles
   FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
@@ -51,7 +51,7 @@ CREATE POLICY perf_tpl_insert ON performance_templates FOR INSERT WITH CHECK (co
 CREATE POLICY perf_tpl_update ON performance_templates FOR UPDATE USING (company_id = safe_user_company_id());
 CREATE POLICY perf_tpl_delete ON performance_templates FOR DELETE USING (company_id = safe_user_company_id());
 
-CREATE INDEX idx_perf_tpl_company ON performance_templates(company_id);
+CREATE INDEX IF NOT EXISTS idx_perf_tpl_company ON performance_templates(company_id);
 
 CREATE TRIGGER update_perf_tpl_updated_at BEFORE UPDATE ON performance_templates
   FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
@@ -76,9 +76,9 @@ CREATE POLICY okr_obj_insert ON okr_objectives FOR INSERT WITH CHECK (company_id
 CREATE POLICY okr_obj_update ON okr_objectives FOR UPDATE USING (company_id = safe_user_company_id());
 CREATE POLICY okr_obj_delete ON okr_objectives FOR DELETE USING (company_id = safe_user_company_id());
 
-CREATE INDEX idx_okr_obj_company ON okr_objectives(company_id);
-CREATE INDEX idx_okr_obj_employee ON okr_objectives(employee_id);
-CREATE INDEX idx_okr_obj_cycle ON okr_objectives(cycle_id);
+CREATE INDEX IF NOT EXISTS idx_okr_obj_company ON okr_objectives(company_id);
+CREATE INDEX IF NOT EXISTS idx_okr_obj_employee ON okr_objectives(employee_id);
+CREATE INDEX IF NOT EXISTS idx_okr_obj_cycle ON okr_objectives(cycle_id);
 
 CREATE TRIGGER update_okr_obj_updated_at BEFORE UPDATE ON okr_objectives
   FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
@@ -103,8 +103,8 @@ CREATE POLICY okr_kr_insert ON okr_key_results FOR INSERT WITH CHECK (company_id
 CREATE POLICY okr_kr_update ON okr_key_results FOR UPDATE USING (company_id = safe_user_company_id());
 CREATE POLICY okr_kr_delete ON okr_key_results FOR DELETE USING (company_id = safe_user_company_id());
 
-CREATE INDEX idx_okr_kr_company ON okr_key_results(company_id);
-CREATE INDEX idx_okr_kr_objective ON okr_key_results(objective_id);
+CREATE INDEX IF NOT EXISTS idx_okr_kr_company ON okr_key_results(company_id);
+CREATE INDEX IF NOT EXISTS idx_okr_kr_objective ON okr_key_results(objective_id);
 
 CREATE TRIGGER update_okr_kr_updated_at BEFORE UPDATE ON okr_key_results
   FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
@@ -132,11 +132,11 @@ CREATE POLICY perf_rev_insert ON performance_reviews FOR INSERT WITH CHECK (comp
 CREATE POLICY perf_rev_update ON performance_reviews FOR UPDATE USING (company_id = safe_user_company_id());
 CREATE POLICY perf_rev_delete ON performance_reviews FOR DELETE USING (company_id = safe_user_company_id());
 
-CREATE INDEX idx_perf_rev_company ON performance_reviews(company_id);
-CREATE INDEX idx_perf_rev_employee ON performance_reviews(employee_id);
-CREATE INDEX idx_perf_rev_cycle ON performance_reviews(cycle_id);
-CREATE INDEX idx_perf_rev_reviewer ON performance_reviews(reviewer_id);
-CREATE INDEX idx_perf_rev_status ON performance_reviews(status);
+CREATE INDEX IF NOT EXISTS idx_perf_rev_company ON performance_reviews(company_id);
+CREATE INDEX IF NOT EXISTS idx_perf_rev_employee ON performance_reviews(employee_id);
+CREATE INDEX IF NOT EXISTS idx_perf_rev_cycle ON performance_reviews(cycle_id);
+CREATE INDEX IF NOT EXISTS idx_perf_rev_reviewer ON performance_reviews(reviewer_id);
+CREATE INDEX IF NOT EXISTS idx_perf_rev_status ON performance_reviews(status);
 
 CREATE TRIGGER update_perf_rev_updated_at BEFORE UPDATE ON performance_reviews
   FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
@@ -159,8 +159,8 @@ CREATE POLICY perf_resp_read ON review_responses FOR SELECT USING (company_id = 
 CREATE POLICY perf_resp_insert ON review_responses FOR INSERT WITH CHECK (company_id = safe_user_company_id());
 CREATE POLICY perf_resp_update ON review_responses FOR UPDATE USING (company_id = safe_user_company_id());
 
-CREATE INDEX idx_perf_resp_company ON review_responses(company_id);
-CREATE INDEX idx_perf_resp_review ON review_responses(review_id);
+CREATE INDEX IF NOT EXISTS idx_perf_resp_company ON review_responses(company_id);
+CREATE INDEX IF NOT EXISTS idx_perf_resp_review ON review_responses(review_id);
 
 -- 7. PIP Cases
 CREATE TABLE IF NOT EXISTS pip_cases (
@@ -184,10 +184,10 @@ CREATE POLICY pip_read ON pip_cases FOR SELECT USING (company_id = safe_user_com
 CREATE POLICY pip_insert ON pip_cases FOR INSERT WITH CHECK (company_id = safe_user_company_id());
 CREATE POLICY pip_update ON pip_cases FOR UPDATE USING (company_id = safe_user_company_id());
 
-CREATE INDEX idx_pip_company ON pip_cases(company_id);
-CREATE INDEX idx_pip_employee ON pip_cases(employee_id);
-CREATE INDEX idx_pip_manager ON pip_cases(manager_id);
-CREATE INDEX idx_pip_status ON pip_cases(status);
+CREATE INDEX IF NOT EXISTS idx_pip_company ON pip_cases(company_id);
+CREATE INDEX IF NOT EXISTS idx_pip_employee ON pip_cases(employee_id);
+CREATE INDEX IF NOT EXISTS idx_pip_manager ON pip_cases(manager_id);
+CREATE INDEX IF NOT EXISTS idx_pip_status ON pip_cases(status);
 
 CREATE TRIGGER update_pip_updated_at BEFORE UPDATE ON pip_cases
   FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
@@ -213,9 +213,9 @@ CREATE POLICY nine_box_read ON nine_box_assessments FOR SELECT USING (company_id
 CREATE POLICY nine_box_insert ON nine_box_assessments FOR INSERT WITH CHECK (company_id = safe_user_company_id());
 CREATE POLICY nine_box_update ON nine_box_assessments FOR UPDATE USING (company_id = safe_user_company_id());
 
-CREATE INDEX idx_nine_box_company ON nine_box_assessments(company_id);
-CREATE INDEX idx_nine_box_employee ON nine_box_assessments(employee_id);
-CREATE INDEX idx_nine_box_cycle ON nine_box_assessments(cycle_id);
+CREATE INDEX IF NOT EXISTS idx_nine_box_company ON nine_box_assessments(company_id);
+CREATE INDEX IF NOT EXISTS idx_nine_box_employee ON nine_box_assessments(employee_id);
+CREATE INDEX IF NOT EXISTS idx_nine_box_cycle ON nine_box_assessments(cycle_id);
 
 -- ============================================================
 -- RBAC: Performance, PIP, 9-Box Permissions

@@ -42,10 +42,10 @@ CREATE POLICY sb_delete ON salary_bands FOR DELETE USING (
   AND safe_user_role() IN ('owner', 'admin')
 );
 
-CREATE INDEX idx_sb_company ON salary_bands(company_id);
-CREATE INDEX idx_sb_job_family ON salary_bands(job_family);
-CREATE INDEX idx_sb_level ON salary_bands(level);
-CREATE INDEX idx_sb_effective ON salary_bands(effective_from, effective_to);
+CREATE INDEX IF NOT EXISTS idx_sb_company ON salary_bands(company_id);
+CREATE INDEX IF NOT EXISTS idx_sb_job_family ON salary_bands(job_family);
+CREATE INDEX IF NOT EXISTS idx_sb_level ON salary_bands(level);
+CREATE INDEX IF NOT EXISTS idx_sb_effective ON salary_bands(effective_from, effective_to);
 
 CREATE TRIGGER update_sb_updated_at BEFORE UPDATE ON salary_bands
   FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
@@ -82,9 +82,9 @@ CREATE POLICY cc_delete ON compensation_cycles FOR DELETE USING (
   AND safe_user_role() IN ('owner', 'admin')
 );
 
-CREATE INDEX idx_cc_company ON compensation_cycles(company_id);
-CREATE INDEX idx_cc_year ON compensation_cycles(cycle_year);
-CREATE INDEX idx_cc_status ON compensation_cycles(status);
+CREATE INDEX IF NOT EXISTS idx_cc_company ON compensation_cycles(company_id);
+CREATE INDEX IF NOT EXISTS idx_cc_year ON compensation_cycles(cycle_year);
+CREATE INDEX IF NOT EXISTS idx_cc_status ON compensation_cycles(status);
 
 CREATE TRIGGER update_cc_updated_at BEFORE UPDATE ON compensation_cycles
   FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
@@ -126,10 +126,10 @@ CREATE POLICY cr_delete ON compensation_reviews FOR DELETE USING (
   AND safe_user_role() IN ('owner', 'admin')
 );
 
-CREATE INDEX idx_cr_company ON compensation_reviews(company_id);
-CREATE INDEX idx_cr_cycle ON compensation_reviews(cycle_id);
-CREATE INDEX idx_cr_employee ON compensation_reviews(employee_id);
-CREATE INDEX idx_cr_status ON compensation_reviews(status);
+CREATE INDEX IF NOT EXISTS idx_cr_company ON compensation_reviews(company_id);
+CREATE INDEX IF NOT EXISTS idx_cr_cycle ON compensation_reviews(cycle_id);
+CREATE INDEX IF NOT EXISTS idx_cr_employee ON compensation_reviews(employee_id);
+CREATE INDEX IF NOT EXISTS idx_cr_status ON compensation_reviews(status);
 
 CREATE TRIGGER update_cr_updated_at BEFORE UPDATE ON compensation_reviews
   FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
@@ -167,9 +167,9 @@ CREATE POLICY hp_delete ON headcount_plans FOR DELETE USING (
   AND safe_user_role() IN ('owner', 'admin')
 );
 
-CREATE INDEX idx_hp_company ON headcount_plans(company_id);
-CREATE INDEX idx_hp_department ON headcount_plans(department_id);
-CREATE INDEX idx_hp_year ON headcount_plans(plan_year);
+CREATE INDEX IF NOT EXISTS idx_hp_company ON headcount_plans(company_id);
+CREATE INDEX IF NOT EXISTS idx_hp_department ON headcount_plans(department_id);
+CREATE INDEX IF NOT EXISTS idx_hp_year ON headcount_plans(plan_year);
 
 CREATE TRIGGER update_hp_updated_at BEFORE UPDATE ON headcount_plans
   FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();

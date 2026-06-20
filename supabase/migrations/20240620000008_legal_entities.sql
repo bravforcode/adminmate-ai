@@ -2,7 +2,7 @@
 -- All company_id. No organization_id.
 
 -- ============== LEGAL_ENTITIES ==============
-CREATE TABLE legal_entities (
+CREATE TABLE IF NOT EXISTS legal_entities (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     company_id UUID NOT NULL REFERENCES companies(id) ON DELETE CASCADE,
     name VARCHAR(255) NOT NULL,
@@ -23,7 +23,7 @@ CREATE TABLE legal_entities (
 );
 
 -- ============== ENTITY_ADDRESSES ==============
-CREATE TABLE entity_addresses (
+CREATE TABLE IF NOT EXISTS entity_addresses (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     company_id UUID NOT NULL REFERENCES companies(id) ON DELETE CASCADE,
     legal_entity_id UUID NOT NULL REFERENCES legal_entities(id) ON DELETE CASCADE,
@@ -40,7 +40,7 @@ CREATE TABLE entity_addresses (
 );
 
 -- ============== ENTITY_REGISTRATION_NUMBERS ==============
-CREATE TABLE entity_registration_numbers (
+CREATE TABLE IF NOT EXISTS entity_registration_numbers (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     company_id UUID NOT NULL REFERENCES companies(id) ON DELETE CASCADE,
     legal_entity_id UUID NOT NULL REFERENCES legal_entities(id) ON DELETE CASCADE,
@@ -53,7 +53,7 @@ CREATE TABLE entity_registration_numbers (
 );
 
 -- ============== ENTITY_TAX_PROFILES ==============
-CREATE TABLE entity_tax_profiles (
+CREATE TABLE IF NOT EXISTS entity_tax_profiles (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     company_id UUID NOT NULL REFERENCES companies(id) ON DELETE CASCADE,
     legal_entity_id UUID NOT NULL REFERENCES legal_entities(id) ON DELETE CASCADE,
@@ -68,11 +68,11 @@ CREATE TABLE entity_tax_profiles (
 );
 
 -- ============== INDEXES ==============
-CREATE INDEX idx_legal_entities_company ON legal_entities(company_id);
-CREATE INDEX idx_legal_entities_country ON legal_entities(country_code);
-CREATE INDEX idx_entity_addresses_entity ON entity_addresses(legal_entity_id);
-CREATE INDEX idx_entity_reg_numbers_entity ON entity_registration_numbers(legal_entity_id);
-CREATE INDEX idx_entity_tax_profiles_entity ON entity_tax_profiles(legal_entity_id);
+CREATE INDEX IF NOT EXISTS idx_legal_entities_company ON legal_entities(company_id);
+CREATE INDEX IF NOT EXISTS idx_legal_entities_country ON legal_entities(country_code);
+CREATE INDEX IF NOT EXISTS idx_entity_addresses_entity ON entity_addresses(legal_entity_id);
+CREATE INDEX IF NOT EXISTS idx_entity_reg_numbers_entity ON entity_registration_numbers(legal_entity_id);
+CREATE INDEX IF NOT EXISTS idx_entity_tax_profiles_entity ON entity_tax_profiles(legal_entity_id);
 
 -- ============== RLS ==============
 ALTER TABLE legal_entities ENABLE ROW LEVEL SECURITY;

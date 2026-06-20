@@ -92,30 +92,30 @@ CREATE TABLE IF NOT EXISTS health_safety_incidents (
 -- ============================================================
 -- Indexes
 -- ============================================================
-CREATE INDEX idx_privacy_requests_company ON privacy_requests(company_id);
-CREATE INDEX idx_privacy_requests_employee ON privacy_requests(employee_id);
-CREATE INDEX idx_privacy_requests_status ON privacy_requests(status);
-CREATE INDEX idx_privacy_requests_type ON privacy_requests(request_type);
+CREATE INDEX IF NOT EXISTS idx_privacy_requests_company ON privacy_requests(company_id);
+CREATE INDEX IF NOT EXISTS idx_privacy_requests_employee ON privacy_requests(employee_id);
+CREATE INDEX IF NOT EXISTS idx_privacy_requests_status ON privacy_requests(status);
+CREATE INDEX IF NOT EXISTS idx_privacy_requests_type ON privacy_requests(request_type);
 
-CREATE INDEX idx_data_retention_company ON data_retention_policies(company_id);
-CREATE INDEX idx_data_retention_active ON data_retention_policies(is_active) WHERE is_active = true;
+CREATE INDEX IF NOT EXISTS idx_data_retention_company ON data_retention_policies(company_id);
+CREATE INDEX IF NOT EXISTS idx_data_retention_active ON data_retention_policies(is_active) WHERE is_active = true;
 
-CREATE INDEX idx_legal_holds_company ON legal_holds(company_id);
-CREATE INDEX idx_legal_holds_entity ON legal_holds(entity_type, entity_id);
-CREATE INDEX idx_legal_holds_active ON legal_holds(status) WHERE status = 'active';
+CREATE INDEX IF NOT EXISTS idx_legal_holds_company ON legal_holds(company_id);
+CREATE INDEX IF NOT EXISTS idx_legal_holds_entity ON legal_holds(entity_type, entity_id);
+CREATE INDEX IF NOT EXISTS idx_legal_holds_active ON legal_holds(status) WHERE status = 'active';
 
-CREATE INDEX idx_grievance_cases_company ON grievance_cases(company_id);
-CREATE INDEX idx_grievance_cases_reporter ON grievance_cases(reporter_id);
-CREATE INDEX idx_grievance_cases_status ON grievance_cases(status);
+CREATE INDEX IF NOT EXISTS idx_grievance_cases_company ON grievance_cases(company_id);
+CREATE INDEX IF NOT EXISTS idx_grievance_cases_reporter ON grievance_cases(reporter_id);
+CREATE INDEX IF NOT EXISTS idx_grievance_cases_status ON grievance_cases(status);
 
-CREATE INDEX idx_whistleblower_company ON whistleblower_reports(company_id);
-CREATE INDEX idx_whistleblower_status ON whistleblower_reports(status);
-CREATE INDEX idx_whistleblower_anonymous ON whistleblower_reports(anonymous_id);
+CREATE INDEX IF NOT EXISTS idx_whistleblower_company ON whistleblower_reports(company_id);
+CREATE INDEX IF NOT EXISTS idx_whistleblower_status ON whistleblower_reports(status);
+CREATE INDEX IF NOT EXISTS idx_whistleblower_anonymous ON whistleblower_reports(anonymous_id);
 
-CREATE INDEX idx_safety_incidents_company ON health_safety_incidents(company_id);
-CREATE INDEX idx_safety_incidents_reporter ON health_safety_incidents(reporter_id);
-CREATE INDEX idx_safety_incidents_status ON health_safety_incidents(status);
-CREATE INDEX idx_safety_incidents_date ON health_safety_incidents(incident_date);
+CREATE INDEX IF NOT EXISTS idx_safety_incidents_company ON health_safety_incidents(company_id);
+CREATE INDEX IF NOT EXISTS idx_safety_incidents_reporter ON health_safety_incidents(reporter_id);
+CREATE INDEX IF NOT EXISTS idx_safety_incidents_status ON health_safety_incidents(status);
+CREATE INDEX IF NOT EXISTS idx_safety_incidents_date ON health_safety_incidents(incident_date);
 
 -- ============================================================
 -- RLS Policies

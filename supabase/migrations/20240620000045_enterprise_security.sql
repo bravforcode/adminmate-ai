@@ -39,9 +39,9 @@ CREATE POLICY sso_delete ON sso_provider_configs
     AND has_permission('sso', 'write')
   );
 
-CREATE INDEX idx_sso_company ON sso_provider_configs(company_id);
-CREATE INDEX idx_sso_enabled ON sso_provider_configs(is_enabled);
-CREATE INDEX idx_sso_status ON sso_provider_configs(config_status);
+CREATE INDEX IF NOT EXISTS idx_sso_company ON sso_provider_configs(company_id);
+CREATE INDEX IF NOT EXISTS idx_sso_enabled ON sso_provider_configs(is_enabled);
+CREATE INDEX IF NOT EXISTS idx_sso_status ON sso_provider_configs(config_status);
 
 CREATE TRIGGER update_sso_updated_at BEFORE UPDATE ON sso_provider_configs
   FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
@@ -84,11 +84,11 @@ CREATE POLICY scim_delete ON scim_tokens
     AND has_permission('sso', 'write')
   );
 
-CREATE INDEX idx_scim_company ON scim_tokens(company_id);
-CREATE INDEX idx_scim_provider ON scim_tokens(provider_config_id);
-CREATE INDEX idx_scim_active ON scim_tokens(is_active) WHERE is_active = true;
-CREATE INDEX idx_scim_hash ON scim_tokens(token_hash);
-CREATE INDEX idx_scim_expires ON scim_tokens(expires_at);
+CREATE INDEX IF NOT EXISTS idx_scim_company ON scim_tokens(company_id);
+CREATE INDEX IF NOT EXISTS idx_scim_provider ON scim_tokens(provider_config_id);
+CREATE INDEX IF NOT EXISTS idx_scim_active ON scim_tokens(is_active) WHERE is_active = true;
+CREATE INDEX IF NOT EXISTS idx_scim_hash ON scim_tokens(token_hash);
+CREATE INDEX IF NOT EXISTS idx_scim_expires ON scim_tokens(expires_at);
 
 -- 3. Session Policies
 CREATE TABLE IF NOT EXISTS session_policies (
@@ -123,7 +123,7 @@ CREATE POLICY sp_delete ON session_policies
     AND has_permission('session_policy', 'write')
   );
 
-CREATE INDEX idx_sp_company ON session_policies(company_id);
+CREATE INDEX IF NOT EXISTS idx_sp_company ON session_policies(company_id);
 
 CREATE TRIGGER update_sp_updated_at BEFORE UPDATE ON session_policies
   FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
@@ -152,11 +152,11 @@ CREATE POLICY se_read ON security_events
 CREATE POLICY se_insert ON security_events
   FOR INSERT WITH CHECK (company_id = safe_user_company_id());
 
-CREATE INDEX idx_se_company ON security_events(company_id);
-CREATE INDEX idx_se_user ON security_events(user_id);
-CREATE INDEX idx_se_type ON security_events(event_type);
-CREATE INDEX idx_se_created ON security_events(created_at DESC);
-CREATE INDEX idx_se_company_type ON security_events(company_id, event_type);
+CREATE INDEX IF NOT EXISTS idx_se_company ON security_events(company_id);
+CREATE INDEX IF NOT EXISTS idx_se_user ON security_events(user_id);
+CREATE INDEX IF NOT EXISTS idx_se_type ON security_events(event_type);
+CREATE INDEX IF NOT EXISTS idx_se_created ON security_events(created_at DESC);
+CREATE INDEX IF NOT EXISTS idx_se_company_type ON security_events(company_id, event_type);
 
 -- ============================================================
 -- RBAC Permissions: sso_read, sso_write, session_policy_read, session_policy_write

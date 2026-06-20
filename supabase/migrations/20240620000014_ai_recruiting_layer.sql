@@ -32,11 +32,11 @@ CREATE POLICY ai_runs_insert ON ai_recruiting_runs
 CREATE POLICY ai_runs_update ON ai_recruiting_runs
   FOR UPDATE USING (company_id = safe_user_company_id());
 
-CREATE INDEX idx_ai_runs_company ON ai_recruiting_runs(company_id);
-CREATE INDEX idx_ai_runs_job ON ai_recruiting_runs(job_id);
-CREATE INDEX idx_ai_runs_candidate ON ai_recruiting_runs(candidate_id);
-CREATE INDEX idx_ai_runs_type ON ai_recruiting_runs(run_type);
-CREATE INDEX idx_ai_runs_status ON ai_recruiting_runs(status);
+CREATE INDEX IF NOT EXISTS idx_ai_runs_company ON ai_recruiting_runs(company_id);
+CREATE INDEX IF NOT EXISTS idx_ai_runs_job ON ai_recruiting_runs(job_id);
+CREATE INDEX IF NOT EXISTS idx_ai_runs_candidate ON ai_recruiting_runs(candidate_id);
+CREATE INDEX IF NOT EXISTS idx_ai_runs_type ON ai_recruiting_runs(run_type);
+CREATE INDEX IF NOT EXISTS idx_ai_runs_status ON ai_recruiting_runs(status);
 
 -- 2. Candidate AI Summaries
 CREATE TABLE IF NOT EXISTS candidate_ai_summaries (
@@ -74,8 +74,8 @@ CREATE POLICY ai_summaries_delete ON candidate_ai_summaries
     AND safe_user_role() IN ('admin', 'hr_manager')
   );
 
-CREATE INDEX idx_ai_summaries_company ON candidate_ai_summaries(company_id);
-CREATE INDEX idx_ai_summaries_candidate ON candidate_ai_summaries(candidate_id);
+CREATE INDEX IF NOT EXISTS idx_ai_summaries_company ON candidate_ai_summaries(company_id);
+CREATE INDEX IF NOT EXISTS idx_ai_summaries_candidate ON candidate_ai_summaries(candidate_id);
 
 CREATE TRIGGER update_ai_summaries_updated_at
   BEFORE UPDATE ON candidate_ai_summaries
@@ -127,9 +127,9 @@ CREATE POLICY ai_scores_delete ON candidate_match_scores
     AND safe_user_role() IN ('admin', 'hr_manager')
   );
 
-CREATE INDEX idx_ai_scores_company ON candidate_match_scores(company_id);
-CREATE INDEX idx_ai_scores_candidate ON candidate_match_scores(candidate_id);
-CREATE INDEX idx_ai_scores_job ON candidate_match_scores(job_id);
+CREATE INDEX IF NOT EXISTS idx_ai_scores_company ON candidate_match_scores(company_id);
+CREATE INDEX IF NOT EXISTS idx_ai_scores_candidate ON candidate_match_scores(candidate_id);
+CREATE INDEX IF NOT EXISTS idx_ai_scores_job ON candidate_match_scores(job_id);
 CREATE UNIQUE INDEX idx_ai_scores_unique ON candidate_match_scores(company_id, candidate_id, job_id);
 
 CREATE TRIGGER update_ai_scores_updated_at
@@ -166,5 +166,5 @@ CREATE POLICY ai_prompts_update ON ai_prompt_versions
     AND safe_user_role() IN ('admin')
   );
 
-CREATE INDEX idx_ai_prompts_feature ON ai_prompt_versions(feature_key);
-CREATE INDEX idx_ai_prompts_company ON ai_prompt_versions(company_id);
+CREATE INDEX IF NOT EXISTS idx_ai_prompts_feature ON ai_prompt_versions(feature_key);
+CREATE INDEX IF NOT EXISTS idx_ai_prompts_company ON ai_prompt_versions(company_id);

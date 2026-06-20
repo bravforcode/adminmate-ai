@@ -2,6 +2,35 @@
 -- Release 2: Employee Referral System + Recruiting Audit Fixes
 -- ============================================================
 
+-- Ensure update_updated_at_column() exists (may not be created yet)
+-- This function is also defined in 000023_triggers.sql as update_updated_at()
+-- Using CREATE OR REPLACE so it's safe if already exists
+CREATE OR REPLACE FUNCTION update_updated_at_column()
+RETURNS TRIGGER AS $$
+BEGIN
+  NEW.updated_at = NOW();
+  RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+-- Ensure log_audit_changes() exists for audit triggers
+CREATE OR REPLACE FUNCTION log_audit_changes()
+RETURNS TRIGGER AS $$
+BEGIN
+  IF TG_OP = 'INSERT' THEN
+    INSERT INTO audit_logs (company_id, action, resource_type, resource_id, details)
+    VALUES (NEW.company_id, TG_OP || '_' || TG_TABLE_NAME, TG_TABLE_NAME::text, NEW.id::text, row_to_json(NEW)::jsonb);
+  ELSIF TG_OP = 'UPDATE' THEN
+    INSERT INTO audit_logs (company_id, action, resource_type, resource_id, details)
+    VALUES (NEW.company_id, TG_OP || '_' || TG_TABLE_NAME, TG_TABLE_NAME::text, NEW.id::text, jsonb_build_object('old', row_to_json(OLD), 'new', row_to_json(NEW)));
+  ELSIF TG_OP = 'DELETE' THEN
+    INSERT INTO audit_logs (company_id, action, resource_type, resource_id, details)
+    VALUES (OLD.company_id, TG_OP || '_' || TG_TABLE_NAME, TG_TABLE_NAME::text, OLD.id::text, row_to_json(OLD)::jsonb);
+  END IF;
+  RETURN COALESCE(NEW, OLD);
+END;
+$$ LANGUAGE plpgsql SECURITY DEFINER SET search_path = public;
+
 -- 1. Employee Referrals table
 CREATE TABLE IF NOT EXISTS employee_referrals (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
@@ -54,10 +83,10 @@ CREATE POLICY employee_referrals_delete ON employee_referrals
     AND safe_user_role() IN ('admin', 'hr_manager')
   );
 
-CREATE INDEX idx_referrals_company ON employee_referrals(company_id);
-CREATE INDEX idx_referrals_referrer ON employee_referrals(referrer_user_id);
-CREATE INDEX idx_referrals_job ON employee_referrals(job_id);
-CREATE INDEX idx_referrals_status ON employee_referrals(status);
+CREATE INDEX IF NOT EXISTS idx_referrals_company ON employee_referrals(company_id);
+CREATE INDEX IF NOT EXISTS idx_referrals_referrer ON employee_referrals(referrer_user_id);
+CREATE INDEX IF NOT EXISTS idx_referrals_job ON employee_referrals(job_id);
+CREATE INDEX IF NOT EXISTS idx_referrals_status ON employee_referrals(status);
 CREATE UNIQUE INDEX idx_referrals_unique_referral ON employee_referrals(company_id, job_id, candidate_email);
 
 -- updated_at trigger

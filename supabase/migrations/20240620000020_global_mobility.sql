@@ -52,9 +52,9 @@ CREATE POLICY ic_read ON immigration_cases FOR SELECT USING (company_id = safe_u
 CREATE POLICY ic_insert ON immigration_cases FOR INSERT WITH CHECK (company_id = safe_user_company_id());
 CREATE POLICY ic_update ON immigration_cases FOR UPDATE USING (company_id = safe_user_company_id());
 
-CREATE INDEX idx_ic_company ON immigration_cases(company_id);
-CREATE INDEX idx_ic_employee ON immigration_cases(employee_id);
-CREATE INDEX idx_ic_status ON immigration_cases(status);
+CREATE INDEX IF NOT EXISTS idx_ic_company ON immigration_cases(company_id);
+CREATE INDEX IF NOT EXISTS idx_ic_employee ON immigration_cases(employee_id);
+CREATE INDEX IF NOT EXISTS idx_ic_status ON immigration_cases(status);
 
 CREATE TRIGGER update_ic_updated_at BEFORE UPDATE ON immigration_cases
   FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
@@ -84,8 +84,8 @@ CREATE POLICY va_read ON visa_applications FOR SELECT USING (company_id = safe_u
 CREATE POLICY va_insert ON visa_applications FOR INSERT WITH CHECK (company_id = safe_user_company_id());
 CREATE POLICY va_update ON visa_applications FOR UPDATE USING (company_id = safe_user_company_id());
 
-CREATE INDEX idx_va_company ON visa_applications(company_id);
-CREATE INDEX idx_va_case ON visa_applications(immigration_case_id);
+CREATE INDEX IF NOT EXISTS idx_va_company ON visa_applications(company_id);
+CREATE INDEX IF NOT EXISTS idx_va_case ON visa_applications(immigration_case_id);
 
 CREATE TRIGGER update_va_updated_at BEFORE UPDATE ON visa_applications
   FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
@@ -114,8 +114,8 @@ CREATE POLICY wp_read ON work_permits FOR SELECT USING (company_id = safe_user_c
 CREATE POLICY wp_insert ON work_permits FOR INSERT WITH CHECK (company_id = safe_user_company_id());
 CREATE POLICY wp_update ON work_permits FOR UPDATE USING (company_id = safe_user_company_id());
 
-CREATE INDEX idx_wp_company ON work_permits(company_id);
-CREATE INDEX idx_wp_employee ON work_permits(employee_id);
+CREATE INDEX IF NOT EXISTS idx_wp_company ON work_permits(company_id);
+CREATE INDEX IF NOT EXISTS idx_wp_employee ON work_permits(employee_id);
 
 CREATE TRIGGER update_wp_updated_at BEFORE UPDATE ON work_permits
   FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
@@ -144,8 +144,8 @@ CREATE POLICY idoc_read ON immigration_documents FOR SELECT USING (company_id = 
 CREATE POLICY idoc_insert ON immigration_documents FOR INSERT WITH CHECK (company_id = safe_user_company_id());
 CREATE POLICY idoc_update ON immigration_documents FOR UPDATE USING (company_id = safe_user_company_id());
 
-CREATE INDEX idx_idoc_company ON immigration_documents(company_id);
-CREATE INDEX idx_idoc_case ON immigration_documents(immigration_case_id);
+CREATE INDEX IF NOT EXISTS idx_idoc_company ON immigration_documents(company_id);
+CREATE INDEX IF NOT EXISTS idx_idoc_case ON immigration_documents(immigration_case_id);
 
 CREATE TRIGGER update_idoc_updated_at BEFORE UPDATE ON immigration_documents
   FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
@@ -178,9 +178,9 @@ CREATE POLICY btr_read ON business_travel_requests FOR SELECT USING (company_id 
 CREATE POLICY btr_insert ON business_travel_requests FOR INSERT WITH CHECK (company_id = safe_user_company_id());
 CREATE POLICY btr_update ON business_travel_requests FOR UPDATE USING (company_id = safe_user_company_id());
 
-CREATE INDEX idx_btr_company ON business_travel_requests(company_id);
-CREATE INDEX idx_btr_employee ON business_travel_requests(employee_id);
-CREATE INDEX idx_btr_status ON business_travel_requests(approval_status);
+CREATE INDEX IF NOT EXISTS idx_btr_company ON business_travel_requests(company_id);
+CREATE INDEX IF NOT EXISTS idx_btr_employee ON business_travel_requests(employee_id);
+CREATE INDEX IF NOT EXISTS idx_btr_status ON business_travel_requests(approval_status);
 
 CREATE TRIGGER update_btr_updated_at BEFORE UPDATE ON business_travel_requests
   FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
@@ -202,8 +202,8 @@ ALTER TABLE business_travel_day_counts ENABLE ROW LEVEL SECURITY;
 CREATE POLICY btcd_read ON business_travel_day_counts FOR SELECT USING (company_id = safe_user_company_id());
 CREATE POLICY btcd_insert ON business_travel_day_counts FOR INSERT WITH CHECK (company_id = safe_user_company_id());
 
-CREATE INDEX idx_btcd_employee ON business_travel_day_counts(employee_id);
-CREATE INDEX idx_btcd_country ON business_travel_day_counts(country_code);
+CREATE INDEX IF NOT EXISTS idx_btcd_employee ON business_travel_day_counts(employee_id);
+CREATE INDEX IF NOT EXISTS idx_btcd_country ON business_travel_day_counts(country_code);
 
 -- 8. Global Assignments
 CREATE TABLE IF NOT EXISTS global_assignments (
@@ -231,8 +231,8 @@ CREATE POLICY ga_read ON global_assignments FOR SELECT USING (company_id = safe_
 CREATE POLICY ga_insert ON global_assignments FOR INSERT WITH CHECK (company_id = safe_user_company_id());
 CREATE POLICY ga_update ON global_assignments FOR UPDATE USING (company_id = safe_user_company_id());
 
-CREATE INDEX idx_ga_company ON global_assignments(company_id);
-CREATE INDEX idx_ga_employee ON global_assignments(employee_id);
+CREATE INDEX IF NOT EXISTS idx_ga_company ON global_assignments(company_id);
+CREATE INDEX IF NOT EXISTS idx_ga_employee ON global_assignments(employee_id);
 
 CREATE TRIGGER update_ga_updated_at BEFORE UPDATE ON global_assignments
   FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
@@ -259,7 +259,7 @@ CREATE POLICY eorp_read ON eor_providers FOR SELECT USING (company_id = safe_use
 CREATE POLICY eorp_insert ON eor_providers FOR INSERT WITH CHECK (company_id = safe_user_company_id());
 CREATE POLICY eorp_update ON eor_providers FOR UPDATE USING (company_id = safe_user_company_id());
 
-CREATE INDEX idx_eorp_company ON eor_providers(company_id);
+CREATE INDEX IF NOT EXISTS idx_eorp_company ON eor_providers(company_id);
 
 CREATE TRIGGER update_eorp_updated_at BEFORE UPDATE ON eor_providers
   FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
@@ -287,8 +287,8 @@ CREATE POLICY ewe_read ON eor_worker_engagements FOR SELECT USING (company_id = 
 CREATE POLICY ewe_insert ON eor_worker_engagements FOR INSERT WITH CHECK (company_id = safe_user_company_id());
 CREATE POLICY ewe_update ON eor_worker_engagements FOR UPDATE USING (company_id = safe_user_company_id());
 
-CREATE INDEX idx_ewe_company ON eor_worker_engagements(company_id);
-CREATE INDEX idx_ewe_provider ON eor_worker_engagements(eor_provider_id);
+CREATE INDEX IF NOT EXISTS idx_ewe_company ON eor_worker_engagements(company_id);
+CREATE INDEX IF NOT EXISTS idx_ewe_provider ON eor_worker_engagements(eor_provider_id);
 
 CREATE TRIGGER update_ewe_updated_at BEFORE UPDATE ON eor_worker_engagements
   FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
@@ -315,9 +315,9 @@ CREATE POLICY ma_read ON mobility_alerts FOR SELECT USING (company_id = safe_use
 CREATE POLICY ma_insert ON mobility_alerts FOR INSERT WITH CHECK (company_id = safe_user_company_id());
 CREATE POLICY ma_update ON mobility_alerts FOR UPDATE USING (company_id = safe_user_company_id());
 
-CREATE INDEX idx_ma_company ON mobility_alerts(company_id);
-CREATE INDEX idx_ma_employee ON mobility_alerts(employee_id);
-CREATE INDEX idx_ma_date ON mobility_alerts(alert_date);
+CREATE INDEX IF NOT EXISTS idx_ma_company ON mobility_alerts(company_id);
+CREATE INDEX IF NOT EXISTS idx_ma_employee ON mobility_alerts(employee_id);
+CREATE INDEX IF NOT EXISTS idx_ma_date ON mobility_alerts(alert_date);
 
 -- 12. Mobility Country Rules (reference data)
 CREATE TABLE IF NOT EXISTS mobility_country_rules (
@@ -338,34 +338,128 @@ CREATE POLICY mcr_read ON mobility_country_rules FOR SELECT USING (company_id = 
 CREATE POLICY mcr_insert ON mobility_country_rules FOR INSERT WITH CHECK (company_id = safe_user_company_id());
 CREATE POLICY mcr_update ON mobility_country_rules FOR UPDATE USING (company_id = safe_user_company_id());
 
-CREATE INDEX idx_mcr_company ON mobility_country_rules(company_id);
+CREATE INDEX IF NOT EXISTS idx_mcr_company ON mobility_country_rules(company_id);
 
 CREATE TRIGGER update_mcr_updated_at BEFORE UPDATE ON mobility_country_rules
   FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
 
 -- 13. RBAC Permissions for mobility
-INSERT INTO permissions (id, resource, action, description) VALUES
-  ('mobility_read', 'mobility', 'read', 'View mobility cases'),
-  ('mobility_write', 'mobility', 'write', 'Create and edit mobility cases'),
-  ('mobility_approve', 'mobility', 'approve', 'Approve travel and mobility requests'),
-  ('mobility_document_read', 'mobility_document', 'read', 'View immigration documents'),
-  ('mobility_document_write', 'mobility_document', 'write', 'Upload immigration documents'),
-  ('mobility_eor_manage', 'mobility_eor', 'manage', 'Manage EOR providers and engagements'),
-  ('mobility_export', 'mobility', 'export', 'Export mobility data')
-ON CONFLICT (id) DO NOTHING;
+INSERT INTO permissions (resource, action, description) VALUES
+  ('mobility', 'read', 'View mobility cases'),
+  ('mobility', 'write', 'Create and edit mobility cases'),
+  ('mobility', 'approve', 'Approve travel and mobility requests'),
+  ('mobility_document', 'read', 'View immigration documents'),
+  ('mobility_document', 'write', 'Upload immigration documents'),
+  ('mobility_eor', 'manage', 'Manage EOR providers and engagements'),
+  ('mobility', 'export', 'Export mobility data')
+ON CONFLICT (resource, action) DO NOTHING;
 
-INSERT INTO role_permissions (role_id, permission_id) VALUES
-  ('owner', 'mobility_read'), ('owner', 'mobility_write'), ('owner', 'mobility_approve'),
-  ('owner', 'mobility_document_read'), ('owner', 'mobility_document_write'),
-  ('owner', 'mobility_eor_manage'), ('owner', 'mobility_export'),
-  ('admin', 'mobility_read'), ('admin', 'mobility_write'), ('admin', 'mobility_approve'),
-  ('admin', 'mobility_document_read'), ('admin', 'mobility_document_write'),
-  ('admin', 'mobility_eor_manage'), ('admin', 'mobility_export'),
-  ('hr_manager', 'mobility_read'), ('hr_manager', 'mobility_write'), ('hr_manager', 'mobility_approve'),
-  ('hr_manager', 'mobility_document_read'), ('hr_manager', 'mobility_document_write'),
-  ('hr_manager', 'mobility_eor_manage'),
-  ('hr_staff', 'mobility_read'), ('hr_staff', 'mobility_write'),
-  ('hr_staff', 'mobility_document_read'), ('hr_staff', 'mobility_document_write'),
-  ('manager', 'mobility_read'),
-  ('employee', 'mobility_read')
+INSERT INTO role_permissions (role_id, permission_id)
+SELECT r.id, p.id FROM roles r, permissions p
+WHERE r.name = 'owner' AND p.resource = 'mobility' AND p.action = 'read'
+ON CONFLICT (role_id, permission_id) DO NOTHING;
+INSERT INTO role_permissions (role_id, permission_id)
+SELECT r.id, p.id FROM roles r, permissions p
+WHERE r.name = 'owner' AND p.resource = 'mobility' AND p.action = 'write'
+ON CONFLICT (role_id, permission_id) DO NOTHING;
+INSERT INTO role_permissions (role_id, permission_id)
+SELECT r.id, p.id FROM roles r, permissions p
+WHERE r.name = 'owner' AND p.resource = 'mobility' AND p.action = 'approve'
+ON CONFLICT (role_id, permission_id) DO NOTHING;
+INSERT INTO role_permissions (role_id, permission_id)
+SELECT r.id, p.id FROM roles r, permissions p
+WHERE r.name = 'owner' AND p.resource = 'mobility_document' AND p.action = 'read'
+ON CONFLICT (role_id, permission_id) DO NOTHING;
+INSERT INTO role_permissions (role_id, permission_id)
+SELECT r.id, p.id FROM roles r, permissions p
+WHERE r.name = 'owner' AND p.resource = 'mobility_document' AND p.action = 'write'
+ON CONFLICT (role_id, permission_id) DO NOTHING;
+INSERT INTO role_permissions (role_id, permission_id)
+SELECT r.id, p.id FROM roles r, permissions p
+WHERE r.name = 'owner' AND p.resource = 'mobility_eor' AND p.action = 'manage'
+ON CONFLICT (role_id, permission_id) DO NOTHING;
+INSERT INTO role_permissions (role_id, permission_id)
+SELECT r.id, p.id FROM roles r, permissions p
+WHERE r.name = 'owner' AND p.resource = 'mobility' AND p.action = 'export'
+ON CONFLICT (role_id, permission_id) DO NOTHING;
+
+INSERT INTO role_permissions (role_id, permission_id)
+SELECT r.id, p.id FROM roles r, permissions p
+WHERE r.name = 'admin' AND p.resource = 'mobility' AND p.action = 'read'
+ON CONFLICT (role_id, permission_id) DO NOTHING;
+INSERT INTO role_permissions (role_id, permission_id)
+SELECT r.id, p.id FROM roles r, permissions p
+WHERE r.name = 'admin' AND p.resource = 'mobility' AND p.action = 'write'
+ON CONFLICT (role_id, permission_id) DO NOTHING;
+INSERT INTO role_permissions (role_id, permission_id)
+SELECT r.id, p.id FROM roles r, permissions p
+WHERE r.name = 'admin' AND p.resource = 'mobility' AND p.action = 'approve'
+ON CONFLICT (role_id, permission_id) DO NOTHING;
+INSERT INTO role_permissions (role_id, permission_id)
+SELECT r.id, p.id FROM roles r, permissions p
+WHERE r.name = 'admin' AND p.resource = 'mobility_document' AND p.action = 'read'
+ON CONFLICT (role_id, permission_id) DO NOTHING;
+INSERT INTO role_permissions (role_id, permission_id)
+SELECT r.id, p.id FROM roles r, permissions p
+WHERE r.name = 'admin' AND p.resource = 'mobility_document' AND p.action = 'write'
+ON CONFLICT (role_id, permission_id) DO NOTHING;
+INSERT INTO role_permissions (role_id, permission_id)
+SELECT r.id, p.id FROM roles r, permissions p
+WHERE r.name = 'admin' AND p.resource = 'mobility_eor' AND p.action = 'manage'
+ON CONFLICT (role_id, permission_id) DO NOTHING;
+INSERT INTO role_permissions (role_id, permission_id)
+SELECT r.id, p.id FROM roles r, permissions p
+WHERE r.name = 'admin' AND p.resource = 'mobility' AND p.action = 'export'
+ON CONFLICT (role_id, permission_id) DO NOTHING;
+
+INSERT INTO role_permissions (role_id, permission_id)
+SELECT r.id, p.id FROM roles r, permissions p
+WHERE r.name = 'hr_manager' AND p.resource = 'mobility' AND p.action = 'read'
+ON CONFLICT (role_id, permission_id) DO NOTHING;
+INSERT INTO role_permissions (role_id, permission_id)
+SELECT r.id, p.id FROM roles r, permissions p
+WHERE r.name = 'hr_manager' AND p.resource = 'mobility' AND p.action = 'write'
+ON CONFLICT (role_id, permission_id) DO NOTHING;
+INSERT INTO role_permissions (role_id, permission_id)
+SELECT r.id, p.id FROM roles r, permissions p
+WHERE r.name = 'hr_manager' AND p.resource = 'mobility' AND p.action = 'approve'
+ON CONFLICT (role_id, permission_id) DO NOTHING;
+INSERT INTO role_permissions (role_id, permission_id)
+SELECT r.id, p.id FROM roles r, permissions p
+WHERE r.name = 'hr_manager' AND p.resource = 'mobility_document' AND p.action = 'read'
+ON CONFLICT (role_id, permission_id) DO NOTHING;
+INSERT INTO role_permissions (role_id, permission_id)
+SELECT r.id, p.id FROM roles r, permissions p
+WHERE r.name = 'hr_manager' AND p.resource = 'mobility_document' AND p.action = 'write'
+ON CONFLICT (role_id, permission_id) DO NOTHING;
+INSERT INTO role_permissions (role_id, permission_id)
+SELECT r.id, p.id FROM roles r, permissions p
+WHERE r.name = 'hr_manager' AND p.resource = 'mobility_eor' AND p.action = 'manage'
+ON CONFLICT (role_id, permission_id) DO NOTHING;
+
+INSERT INTO role_permissions (role_id, permission_id)
+SELECT r.id, p.id FROM roles r, permissions p
+WHERE r.name = 'hr_staff' AND p.resource = 'mobility' AND p.action = 'read'
+ON CONFLICT (role_id, permission_id) DO NOTHING;
+INSERT INTO role_permissions (role_id, permission_id)
+SELECT r.id, p.id FROM roles r, permissions p
+WHERE r.name = 'hr_staff' AND p.resource = 'mobility' AND p.action = 'write'
+ON CONFLICT (role_id, permission_id) DO NOTHING;
+INSERT INTO role_permissions (role_id, permission_id)
+SELECT r.id, p.id FROM roles r, permissions p
+WHERE r.name = 'hr_staff' AND p.resource = 'mobility_document' AND p.action = 'read'
+ON CONFLICT (role_id, permission_id) DO NOTHING;
+INSERT INTO role_permissions (role_id, permission_id)
+SELECT r.id, p.id FROM roles r, permissions p
+WHERE r.name = 'hr_staff' AND p.resource = 'mobility_document' AND p.action = 'write'
+ON CONFLICT (role_id, permission_id) DO NOTHING;
+
+INSERT INTO role_permissions (role_id, permission_id)
+SELECT r.id, p.id FROM roles r, permissions p
+WHERE r.name = 'manager' AND p.resource = 'mobility' AND p.action = 'read'
+ON CONFLICT (role_id, permission_id) DO NOTHING;
+
+INSERT INTO role_permissions (role_id, permission_id)
+SELECT r.id, p.id FROM roles r, permissions p
+WHERE r.name = 'employee' AND p.resource = 'mobility' AND p.action = 'read'
 ON CONFLICT (role_id, permission_id) DO NOTHING;

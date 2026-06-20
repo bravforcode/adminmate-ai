@@ -2,7 +2,7 @@
 -- Central registry of fields that must never be used in AI scoring/prediction.
 -- AI and scoring services MUST query this table before processing candidate data.
 
-CREATE TABLE sensitive_field_registry (
+CREATE TABLE IF NOT EXISTS sensitive_field_registry (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     field_name VARCHAR(255) NOT NULL UNIQUE,
     field_category VARCHAR(100) NOT NULL,  -- e.g. 'demographic', 'health', 'immigration', 'financial'
@@ -14,9 +14,9 @@ CREATE TABLE sensitive_field_registry (
 );
 
 -- ============== INDEXES ==============
-CREATE INDEX idx_sensitive_fields_name ON sensitive_field_registry(field_name);
-CREATE INDEX idx_sensitive_fields_category ON sensitive_field_registry(field_category);
-CREATE INDEX idx_sensitive_fields_active ON sensitive_field_registry(is_active) WHERE is_active = true;
+CREATE INDEX IF NOT EXISTS idx_sensitive_fields_name ON sensitive_field_registry(field_name);
+CREATE INDEX IF NOT EXISTS idx_sensitive_fields_category ON sensitive_field_registry(field_category);
+CREATE INDEX IF NOT EXISTS idx_sensitive_fields_active ON sensitive_field_registry(is_active) WHERE is_active = true;
 
 -- ============== RLS ==============
 ALTER TABLE sensitive_field_registry ENABLE ROW LEVEL SECURITY;

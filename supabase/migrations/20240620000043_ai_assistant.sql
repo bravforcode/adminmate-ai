@@ -36,9 +36,9 @@ CREATE POLICY ai_assistant_conversations_delete ON ai_assistant_conversations
     AND user_id = auth.uid()
   );
 
-CREATE INDEX idx_ai_assistant_conv_company ON ai_assistant_conversations(company_id);
-CREATE INDEX idx_ai_assistant_conv_user ON ai_assistant_conversations(user_id);
-CREATE INDEX idx_ai_assistant_conv_status ON ai_assistant_conversations(status);
+CREATE INDEX IF NOT EXISTS idx_ai_assistant_conv_company ON ai_assistant_conversations(company_id);
+CREATE INDEX IF NOT EXISTS idx_ai_assistant_conv_user ON ai_assistant_conversations(user_id);
+CREATE INDEX IF NOT EXISTS idx_ai_assistant_conv_status ON ai_assistant_conversations(status);
 
 CREATE TRIGGER update_ai_assistant_conversations_updated_at
   BEFORE UPDATE ON ai_assistant_conversations
@@ -70,9 +70,9 @@ CREATE POLICY ai_assistant_messages_delete ON ai_assistant_messages
     AND safe_user_role() IN ('admin', 'hr_manager')
   );
 
-CREATE INDEX idx_ai_assistant_msg_company ON ai_assistant_messages(company_id);
-CREATE INDEX idx_ai_assistant_msg_conversation ON ai_assistant_messages(conversation_id);
-CREATE INDEX idx_ai_assistant_msg_role ON ai_assistant_messages(role);
+CREATE INDEX IF NOT EXISTS idx_ai_assistant_msg_company ON ai_assistant_messages(company_id);
+CREATE INDEX IF NOT EXISTS idx_ai_assistant_msg_conversation ON ai_assistant_messages(conversation_id);
+CREATE INDEX IF NOT EXISTS idx_ai_assistant_msg_role ON ai_assistant_messages(role);
 
 -- 3. AI Knowledge Sources
 CREATE TABLE IF NOT EXISTS ai_knowledge_sources (
@@ -110,9 +110,9 @@ CREATE POLICY ai_knowledge_sources_delete ON ai_knowledge_sources
     AND safe_user_role() IN ('admin', 'hr_manager')
   );
 
-CREATE INDEX idx_ai_knowledge_company ON ai_knowledge_sources(company_id);
-CREATE INDEX idx_ai_knowledge_type ON ai_knowledge_sources(source_type);
-CREATE INDEX idx_ai_knowledge_active ON ai_knowledge_sources(is_active);
+CREATE INDEX IF NOT EXISTS idx_ai_knowledge_company ON ai_knowledge_sources(company_id);
+CREATE INDEX IF NOT EXISTS idx_ai_knowledge_type ON ai_knowledge_sources(source_type);
+CREATE INDEX IF NOT EXISTS idx_ai_knowledge_active ON ai_knowledge_sources(is_active);
 
 CREATE TRIGGER update_ai_knowledge_sources_updated_at
   BEFORE UPDATE ON ai_knowledge_sources

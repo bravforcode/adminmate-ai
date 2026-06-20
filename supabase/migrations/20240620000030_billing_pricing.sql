@@ -2,7 +2,7 @@
 -- Plans, plan features, subscriptions, usage tracking, invoices, module entitlements.
 
 -- ============== PLANS ==============
-CREATE TABLE plans (
+CREATE TABLE IF NOT EXISTS plans (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     name VARCHAR(100) NOT NULL,
     tier VARCHAR(50) NOT NULL UNIQUE,
@@ -15,7 +15,7 @@ CREATE TABLE plans (
 );
 
 -- ============== PLAN FEATURES ==============
-CREATE TABLE plan_features (
+CREATE TABLE IF NOT EXISTS plan_features (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     plan_id UUID NOT NULL REFERENCES plans(id) ON DELETE CASCADE,
     feature_key VARCHAR(100) NOT NULL,
@@ -26,7 +26,12 @@ CREATE TABLE plan_features (
 );
 
 -- ============== SUBSCRIPTIONS ==============
-CREATE TABLE subscriptions (
+-- Drop old subscriptions table if it exists (different schema from 000018)
+-- Safe on clean DB; on existing DB, old table had tier/max_employees columns
+-- that are replaced by the billing-aware schema below
+DROP TABLE IF EXISTS subscriptions CASCADE;
+
+CREATE TABLE IF NOT EXISTS subscriptions (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     company_id UUID NOT NULL REFERENCES companies(id) ON DELETE CASCADE,
     plan_id UUID NOT NULL REFERENCES plans(id) ON DELETE RESTRICT,
@@ -41,7 +46,7 @@ CREATE TABLE subscriptions (
 );
 
 -- ============== USAGE RECORDS ==============
-CREATE TABLE usage_records (
+CREATE TABLE IF NOT EXISTS usage_records (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     company_id UUID NOT NULL REFERENCES companies(id) ON DELETE CASCADE,
     feature_key VARCHAR(100) NOT NULL,
@@ -52,7 +57,7 @@ CREATE TABLE usage_records (
 );
 
 -- ============== INVOICES ==============
-CREATE TABLE invoices (
+CREATE TABLE IF NOT EXISTS invoices (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     company_id UUID NOT NULL REFERENCES companies(id) ON DELETE CASCADE,
     subscription_id UUID REFERENCES subscriptions(id) ON DELETE SET NULL,
@@ -66,7 +71,7 @@ CREATE TABLE invoices (
 );
 
 -- ============== MODULE ENTITLEMENTS ==============
-CREATE TABLE module_entitlements (
+CREATE TABLE IF NOT EXISTS module_entitlements (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     company_id UUID NOT NULL REFERENCES companies(id) ON DELETE CASCADE,
     module_key VARCHAR(100) NOT NULL,
@@ -79,21 +84,21 @@ CREATE TABLE module_entitlements (
 );
 
 -- ============== INDEXES ==============
-CREATE INDEX idx_plans_tier ON plans(tier);
-CREATE INDEX idx_plans_active ON plans(is_active);
-CREATE INDEX idx_plan_features_plan ON plan_features(plan_id);
-CREATE INDEX idx_plan_features_key ON plan_features(feature_key);
-CREATE INDEX idx_subscriptions_company ON subscriptions(company_id);
-CREATE INDEX idx_subscriptions_plan ON subscriptions(plan_id);
-CREATE INDEX idx_subscriptions_status ON subscriptions(status);
-CREATE INDEX idx_usage_records_company ON usage_records(company_id);
-CREATE INDEX idx_usage_records_feature ON usage_records(feature_key);
-CREATE INDEX idx_usage_records_period ON usage_records(period_start, period_end);
-CREATE INDEX idx_invoices_company ON invoices(company_id);
-CREATE INDEX idx_invoices_subscription ON invoices(subscription_id);
-CREATE INDEX idx_invoices_status ON invoices(status);
-CREATE INDEX idx_module_entitlements_company ON module_entitlements(company_id);
-CREATE INDEX idx_module_entitlements_key ON module_entitlements(module_key);
+CREATE INDEX IF NOT EXISTS idx_plans_tier ON plans(tier);
+CREATE INDEX IF NOT EXISTS idx_plans_active ON plans(is_active);
+CREATE INDEX IF NOT EXISTS idx_plan_features_plan ON plan_features(plan_id);
+CREATE INDEX IF NOT EXISTS idx_plan_features_key ON plan_features(feature_key);
+CREATE INDEX IF NOT EXISTS idx_subscriptions_company ON subscriptions(company_id);
+CREATE INDEX IF NOT EXISTS idx_subscriptions_plan ON subscriptions(plan_id);
+CREATE INDEX IF NOT EXISTS idx_subscriptions_status ON subscriptions(status);
+CREATE INDEX IF NOT EXISTS idx_usage_records_company ON usage_records(company_id);
+CREATE INDEX IF NOT EXISTS idx_usage_records_feature ON usage_records(feature_key);
+CREATE INDEX IF NOT EXISTS idx_usage_records_period ON usage_records(period_start, period_end);
+CREATE INDEX IF NOT EXISTS idx_invoices_company ON invoices(company_id);
+CREATE INDEX IF NOT EXISTS idx_invoices_subscription ON invoices(subscription_id);
+CREATE INDEX IF NOT EXISTS idx_invoices_status ON invoices(status);
+CREATE INDEX IF NOT EXISTS idx_module_entitlements_company ON module_entitlements(company_id);
+CREATE INDEX IF NOT EXISTS idx_module_entitlements_key ON module_entitlements(module_key);
 
 -- ============== RLS ==============
 ALTER TABLE plans ENABLE ROW LEVEL SECURITY;

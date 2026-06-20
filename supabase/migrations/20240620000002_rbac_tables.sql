@@ -3,7 +3,7 @@
 -- Legacy user_profiles.role column kept for backward compatibility during transition.
 
 -- ============== ROLES ==============
-CREATE TABLE roles (
+CREATE TABLE IF NOT EXISTS roles (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     name VARCHAR(100) NOT NULL UNIQUE,
     display_name VARCHAR(255) NOT NULL,
@@ -14,7 +14,7 @@ CREATE TABLE roles (
 );
 
 -- ============== PERMISSIONS ==============
-CREATE TABLE permissions (
+CREATE TABLE IF NOT EXISTS permissions (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     resource VARCHAR(100) NOT NULL,       -- e.g. 'candidate', 'job', 'payroll'
     action VARCHAR(50) NOT NULL,          -- e.g. 'read', 'write', 'export', 'approve'
@@ -25,7 +25,7 @@ CREATE TABLE permissions (
 );
 
 -- ============== ROLE_PERMISSIONS ==============
-CREATE TABLE role_permissions (
+CREATE TABLE IF NOT EXISTS role_permissions (
     role_id UUID NOT NULL REFERENCES roles(id) ON DELETE CASCADE,
     permission_id UUID NOT NULL REFERENCES permissions(id) ON DELETE CASCADE,
     created_at TIMESTAMPTZ DEFAULT NOW(),
@@ -33,7 +33,7 @@ CREATE TABLE role_permissions (
 );
 
 -- ============== USER_ROLES ==============
-CREATE TABLE user_roles (
+CREATE TABLE IF NOT EXISTS user_roles (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     user_id UUID NOT NULL REFERENCES auth.users(id) ON DELETE CASCADE,
     role_id UUID NOT NULL REFERENCES roles(id) ON DELETE CASCADE,
@@ -45,13 +45,13 @@ CREATE TABLE user_roles (
 );
 
 -- ============== INDEXES ==============
-CREATE INDEX idx_roles_name ON roles(name);
-CREATE INDEX idx_permissions_resource ON permissions(resource);
-CREATE INDEX idx_role_permissions_role ON role_permissions(role_id);
-CREATE INDEX idx_user_roles_user ON user_roles(user_id);
-CREATE INDEX idx_user_roles_company ON user_roles(company_id);
-CREATE INDEX idx_user_roles_role ON user_roles(role_id);
-CREATE INDEX idx_user_roles_user_company ON user_roles(user_id, company_id);
+CREATE INDEX IF NOT EXISTS idx_roles_name ON roles(name);
+CREATE INDEX IF NOT EXISTS idx_permissions_resource ON permissions(resource);
+CREATE INDEX IF NOT EXISTS idx_role_permissions_role ON role_permissions(role_id);
+CREATE INDEX IF NOT EXISTS idx_user_roles_user ON user_roles(user_id);
+CREATE INDEX IF NOT EXISTS idx_user_roles_company ON user_roles(company_id);
+CREATE INDEX IF NOT EXISTS idx_user_roles_role ON user_roles(role_id);
+CREATE INDEX IF NOT EXISTS idx_user_roles_user_company ON user_roles(user_id, company_id);
 
 -- ============== RLS ==============
 ALTER TABLE roles ENABLE ROW LEVEL SECURITY;

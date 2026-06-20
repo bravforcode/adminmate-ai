@@ -28,8 +28,8 @@ CREATE POLICY vc_insert ON vendor_companies FOR INSERT WITH CHECK (company_id = 
 CREATE POLICY vc_update ON vendor_companies FOR UPDATE USING (company_id = safe_user_company_id());
 CREATE POLICY vc_delete ON vendor_companies FOR DELETE USING (company_id = safe_user_company_id());
 
-CREATE INDEX idx_vc_company ON vendor_companies(company_id);
-CREATE INDEX idx_vc_status ON vendor_companies(status);
+CREATE INDEX IF NOT EXISTS idx_vc_company ON vendor_companies(company_id);
+CREATE INDEX IF NOT EXISTS idx_vc_status ON vendor_companies(status);
 
 CREATE TRIGGER update_vc_updated_at BEFORE UPDATE ON vendor_companies
   FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
@@ -56,9 +56,9 @@ CREATE POLICY vw_insert ON vendor_workers FOR INSERT WITH CHECK (company_id = sa
 CREATE POLICY vw_update ON vendor_workers FOR UPDATE USING (company_id = safe_user_company_id());
 CREATE POLICY vw_delete ON vendor_workers FOR DELETE USING (company_id = safe_user_company_id());
 
-CREATE INDEX idx_vw_company ON vendor_workers(company_id);
-CREATE INDEX idx_vw_vendor ON vendor_workers(vendor_id);
-CREATE INDEX idx_vw_status ON vendor_workers(status);
+CREATE INDEX IF NOT EXISTS idx_vw_company ON vendor_workers(company_id);
+CREATE INDEX IF NOT EXISTS idx_vw_vendor ON vendor_workers(vendor_id);
+CREATE INDEX IF NOT EXISTS idx_vw_status ON vendor_workers(status);
 
 CREATE TRIGGER update_vw_updated_at BEFORE UPDATE ON vendor_workers
   FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
@@ -88,10 +88,10 @@ CREATE POLICY ce_insert ON contractor_engagements FOR INSERT WITH CHECK (company
 CREATE POLICY ce_update ON contractor_engagements FOR UPDATE USING (company_id = safe_user_company_id());
 CREATE POLICY ce_delete ON contractor_engagements FOR DELETE USING (company_id = safe_user_company_id());
 
-CREATE INDEX idx_ce_company ON contractor_engagements(company_id);
-CREATE INDEX idx_ce_vendor ON contractor_engagements(vendor_id);
-CREATE INDEX idx_ce_status ON contractor_engagements(status);
-CREATE INDEX idx_ce_dates ON contractor_engagements(start_date, end_date);
+CREATE INDEX IF NOT EXISTS idx_ce_company ON contractor_engagements(company_id);
+CREATE INDEX IF NOT EXISTS idx_ce_vendor ON contractor_engagements(vendor_id);
+CREATE INDEX IF NOT EXISTS idx_ce_status ON contractor_engagements(status);
+CREATE INDEX IF NOT EXISTS idx_ce_dates ON contractor_engagements(start_date, end_date);
 
 CREATE TRIGGER update_ce_updated_at BEFORE UPDATE ON contractor_engagements
   FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
@@ -119,10 +119,10 @@ CREATE POLICY ci_insert ON contractor_invoices FOR INSERT WITH CHECK (company_id
 CREATE POLICY ci_update ON contractor_invoices FOR UPDATE USING (company_id = safe_user_company_id());
 CREATE POLICY ci_delete ON contractor_invoices FOR DELETE USING (company_id = safe_user_company_id());
 
-CREATE INDEX idx_ci_company ON contractor_invoices(company_id);
-CREATE INDEX idx_ci_engagement ON contractor_invoices(engagement_id);
-CREATE INDEX idx_ci_status ON contractor_invoices(status);
-CREATE INDEX idx_ci_invoice_number ON contractor_invoices(invoice_number);
+CREATE INDEX IF NOT EXISTS idx_ci_company ON contractor_invoices(company_id);
+CREATE INDEX IF NOT EXISTS idx_ci_engagement ON contractor_invoices(engagement_id);
+CREATE INDEX IF NOT EXISTS idx_ci_status ON contractor_invoices(status);
+CREATE INDEX IF NOT EXISTS idx_ci_invoice_number ON contractor_invoices(invoice_number);
 
 CREATE TRIGGER update_ci_updated_at BEFORE UPDATE ON contractor_invoices
   FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();

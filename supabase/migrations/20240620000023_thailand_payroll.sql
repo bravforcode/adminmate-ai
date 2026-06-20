@@ -26,9 +26,9 @@ CREATE POLICY pc_read ON payroll_cycles FOR SELECT USING (company_id = safe_user
 CREATE POLICY pc_insert ON payroll_cycles FOR INSERT WITH CHECK (company_id = safe_user_company_id());
 CREATE POLICY pc_update ON payroll_cycles FOR UPDATE USING (company_id = safe_user_company_id());
 
-CREATE INDEX idx_pc_company ON payroll_cycles(company_id);
-CREATE INDEX idx_pc_status ON payroll_cycles(company_id, status);
-CREATE INDEX idx_pc_period ON payroll_cycles(company_id, period_start, period_end);
+CREATE INDEX IF NOT EXISTS idx_pc_company ON payroll_cycles(company_id);
+CREATE INDEX IF NOT EXISTS idx_pc_status ON payroll_cycles(company_id, status);
+CREATE INDEX IF NOT EXISTS idx_pc_period ON payroll_cycles(company_id, period_start, period_end);
 
 CREATE TRIGGER update_pc_updated_at BEFORE UPDATE ON payroll_cycles
   FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
@@ -53,9 +53,9 @@ CREATE POLICY ss_read ON salary_structures FOR SELECT USING (company_id = safe_u
 CREATE POLICY ss_insert ON salary_structures FOR INSERT WITH CHECK (company_id = safe_user_company_id());
 CREATE POLICY ss_update ON salary_structures FOR UPDATE USING (company_id = safe_user_company_id());
 
-CREATE INDEX idx_ss_company ON salary_structures(company_id);
-CREATE INDEX idx_ss_employee ON salary_structures(company_id, employee_id);
-CREATE INDEX idx_ss_effective ON salary_structures(company_id, effective_from, effective_to);
+CREATE INDEX IF NOT EXISTS idx_ss_company ON salary_structures(company_id);
+CREATE INDEX IF NOT EXISTS idx_ss_employee ON salary_structures(company_id, employee_id);
+CREATE INDEX IF NOT EXISTS idx_ss_effective ON salary_structures(company_id, effective_from, effective_to);
 
 CREATE TRIGGER update_ss_updated_at BEFORE UPDATE ON salary_structures
   FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
@@ -82,8 +82,8 @@ CREATE POLICY salcomp_read ON salary_components FOR SELECT USING (company_id = s
 CREATE POLICY salcomp_insert ON salary_components FOR INSERT WITH CHECK (company_id = safe_user_company_id());
 CREATE POLICY salcomp_update ON salary_components FOR UPDATE USING (company_id = safe_user_company_id());
 
-CREATE INDEX idx_salcomp_company ON salary_components(company_id);
-CREATE INDEX idx_salcomp_type ON salary_components(company_id, component_type);
+CREATE INDEX IF NOT EXISTS idx_salcomp_company ON salary_components(company_id);
+CREATE INDEX IF NOT EXISTS idx_salcomp_type ON salary_components(company_id, component_type);
 
 CREATE TRIGGER update_salcomp_updated_at BEFORE UPDATE ON salary_components
   FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
@@ -110,9 +110,9 @@ CREATE POLICY pr_read ON payroll_runs FOR SELECT USING (company_id = safe_user_c
 CREATE POLICY pr_insert ON payroll_runs FOR INSERT WITH CHECK (company_id = safe_user_company_id());
 CREATE POLICY pr_update ON payroll_runs FOR UPDATE USING (company_id = safe_user_company_id());
 
-CREATE INDEX idx_pr_company ON payroll_runs(company_id);
-CREATE INDEX idx_pr_cycle ON payroll_runs(company_id, cycle_id);
-CREATE INDEX idx_pr_status ON payroll_runs(company_id, status);
+CREATE INDEX IF NOT EXISTS idx_pr_company ON payroll_runs(company_id);
+CREATE INDEX IF NOT EXISTS idx_pr_cycle ON payroll_runs(company_id, cycle_id);
+CREATE INDEX IF NOT EXISTS idx_pr_status ON payroll_runs(company_id, status);
 
 CREATE TRIGGER update_pr_updated_at BEFORE UPDATE ON payroll_runs
   FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
@@ -144,10 +144,10 @@ CREATE POLICY pri_read ON payroll_run_items FOR SELECT USING (company_id = safe_
 CREATE POLICY pri_insert ON payroll_run_items FOR INSERT WITH CHECK (company_id = safe_user_company_id());
 CREATE POLICY pri_update ON payroll_run_items FOR UPDATE USING (company_id = safe_user_company_id());
 
-CREATE INDEX idx_pri_company ON payroll_run_items(company_id);
-CREATE INDEX idx_pri_run ON payroll_run_items(company_id, run_id);
-CREATE INDEX idx_pri_employee ON payroll_run_items(company_id, employee_id);
-CREATE INDEX idx_pri_status ON payroll_run_items(company_id, status);
+CREATE INDEX IF NOT EXISTS idx_pri_company ON payroll_run_items(company_id);
+CREATE INDEX IF NOT EXISTS idx_pri_run ON payroll_run_items(company_id, run_id);
+CREATE INDEX IF NOT EXISTS idx_pri_employee ON payroll_run_items(company_id, employee_id);
+CREATE INDEX IF NOT EXISTS idx_pri_status ON payroll_run_items(company_id, status);
 
 CREATE TRIGGER update_pri_updated_at BEFORE UPDATE ON payroll_run_items
   FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
@@ -172,9 +172,9 @@ CREATE POLICY payslip_read ON payslips FOR SELECT USING (company_id = safe_user_
 CREATE POLICY payslip_insert ON payslips FOR INSERT WITH CHECK (company_id = safe_user_company_id());
 CREATE POLICY payslip_update ON payslips FOR UPDATE USING (company_id = safe_user_company_id());
 
-CREATE INDEX idx_payslip_company ON payslips(company_id);
-CREATE INDEX idx_payslip_employee ON payslips(company_id, employee_id);
-CREATE INDEX idx_payslip_run_item ON payslips(company_id, run_item_id);
+CREATE INDEX IF NOT EXISTS idx_payslip_company ON payslips(company_id);
+CREATE INDEX IF NOT EXISTS idx_payslip_employee ON payslips(company_id, employee_id);
+CREATE INDEX IF NOT EXISTS idx_payslip_run_item ON payslips(company_id, run_item_id);
 
 -- 7. Thailand Tax Brackets (per-year lookup)
 CREATE TABLE IF NOT EXISTS th_tax_brackets (
@@ -188,7 +188,7 @@ CREATE TABLE IF NOT EXISTS th_tax_brackets (
   CONSTRAINT valid_income_range CHECK (max_income IS NULL OR max_income > min_income)
 );
 
-CREATE INDEX idx_tax_year ON th_tax_brackets(year);
+CREATE INDEX IF NOT EXISTS idx_tax_year ON th_tax_brackets(year);
 CREATE UNIQUE INDEX idx_tax_year_bracket ON th_tax_brackets(year, min_income);
 
 -- 8. Thailand Social Security Rules (per-year lookup)
@@ -204,7 +204,7 @@ CREATE TABLE IF NOT EXISTS th_social_security_rules (
   CONSTRAINT valid_ss_salary_range CHECK (max_salary > min_salary)
 );
 
-CREATE INDEX idx_ss_year ON th_social_security_rules(year);
+CREATE INDEX IF NOT EXISTS idx_ss_year ON th_social_security_rules(year);
 CREATE UNIQUE INDEX idx_ss_year_range ON th_social_security_rules(year, min_salary);
 
 -- 9. Payroll Audit Events
@@ -223,9 +223,9 @@ ALTER TABLE payroll_audit_events ENABLE ROW LEVEL SECURITY;
 CREATE POLICY pae_read ON payroll_audit_events FOR SELECT USING (company_id = safe_user_company_id());
 CREATE POLICY pae_insert ON payroll_audit_events FOR INSERT WITH CHECK (company_id = safe_user_company_id());
 
-CREATE INDEX idx_pae_company ON payroll_audit_events(company_id);
-CREATE INDEX idx_pae_run ON payroll_audit_events(company_id, run_id);
-CREATE INDEX idx_pae_action ON payroll_audit_events(company_id, action);
+CREATE INDEX IF NOT EXISTS idx_pae_company ON payroll_audit_events(company_id);
+CREATE INDEX IF NOT EXISTS idx_pae_run ON payroll_audit_events(company_id, run_id);
+CREATE INDEX IF NOT EXISTS idx_pae_action ON payroll_audit_events(company_id, action);
 
 -- ============================================================
 -- SEED: Thailand Tax Brackets 2024
@@ -235,8 +235,8 @@ CREATE INDEX idx_pae_action ON payroll_audit_events(company_id, action);
 
 INSERT INTO th_tax_brackets (year, min_income, max_income, tax_rate) VALUES
   (2024, 0,        150000,    0.00),
-  (2024, 150001,   1800000,   NULL),  -- NULL = requires_accounting_review (progressive calculation)
-  (2024, 1800001,  NULL,      NULL);  -- NULL = requires_accounting_review (progressive + surcharge)
+  (2024, 150001,   1800000,   0.10),  -- placeholder 10% — requires_accounting_review for progressive calc
+  (2024, 1800001,  99999999,  0.15);  -- placeholder 15% — requires_accounting_review
 
 -- ============================================================
 -- SEED: Thailand Social Security 2024

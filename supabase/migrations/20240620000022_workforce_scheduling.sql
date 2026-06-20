@@ -23,8 +23,8 @@ CREATE POLICY st_read ON shift_templates FOR SELECT USING (company_id = safe_use
 CREATE POLICY st_insert ON shift_templates FOR INSERT WITH CHECK (company_id = safe_user_company_id());
 CREATE POLICY st_update ON shift_templates FOR UPDATE USING (company_id = safe_user_company_id());
 
-CREATE INDEX idx_st_company ON shift_templates(company_id);
-CREATE INDEX idx_st_active ON shift_templates(company_id, is_active);
+CREATE INDEX IF NOT EXISTS idx_st_company ON shift_templates(company_id);
+CREATE INDEX IF NOT EXISTS idx_st_active ON shift_templates(company_id, is_active);
 
 CREATE TRIGGER update_st_updated_at BEFORE UPDATE ON shift_templates
   FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
@@ -48,9 +48,9 @@ CREATE POLICY ss_read ON shift_schedules FOR SELECT USING (company_id = safe_use
 CREATE POLICY ss_insert ON shift_schedules FOR INSERT WITH CHECK (company_id = safe_user_company_id());
 CREATE POLICY ss_update ON shift_schedules FOR UPDATE USING (company_id = safe_user_company_id());
 
-CREATE INDEX idx_ss_company ON shift_schedules(company_id);
-CREATE INDEX idx_ss_dates ON shift_schedules(company_id, start_date, end_date);
-CREATE INDEX idx_ss_status ON shift_schedules(company_id, status);
+CREATE INDEX IF NOT EXISTS idx_ss_company ON shift_schedules(company_id);
+CREATE INDEX IF NOT EXISTS idx_ss_dates ON shift_schedules(company_id, start_date, end_date);
+CREATE INDEX IF NOT EXISTS idx_ss_status ON shift_schedules(company_id, status);
 
 CREATE TRIGGER update_ss_updated_at BEFORE UPDATE ON shift_schedules
   FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
@@ -74,10 +74,10 @@ CREATE POLICY sa_read ON shift_assignments FOR SELECT USING (company_id = safe_u
 CREATE POLICY sa_insert ON shift_assignments FOR INSERT WITH CHECK (company_id = safe_user_company_id());
 CREATE POLICY sa_update ON shift_assignments FOR UPDATE USING (company_id = safe_user_company_id());
 
-CREATE INDEX idx_sa_company ON shift_assignments(company_id);
-CREATE INDEX idx_sa_schedule ON shift_assignments(schedule_id);
-CREATE INDEX idx_sa_employee ON shift_assignments(employee_id);
-CREATE INDEX idx_sa_date ON shift_assignments(company_id, work_date);
+CREATE INDEX IF NOT EXISTS idx_sa_company ON shift_assignments(company_id);
+CREATE INDEX IF NOT EXISTS idx_sa_schedule ON shift_assignments(schedule_id);
+CREATE INDEX IF NOT EXISTS idx_sa_employee ON shift_assignments(employee_id);
+CREATE INDEX IF NOT EXISTS idx_sa_date ON shift_assignments(company_id, work_date);
 CREATE UNIQUE INDEX idx_sa_no_overlap ON shift_assignments(employee_id, work_date) WHERE status != 'cancelled';
 
 CREATE TRIGGER update_sa_updated_at BEFORE UPDATE ON shift_assignments
@@ -102,8 +102,8 @@ CREATE POLICY ea_read ON employee_availability FOR SELECT USING (company_id = sa
 CREATE POLICY ea_insert ON employee_availability FOR INSERT WITH CHECK (company_id = safe_user_company_id());
 CREATE POLICY ea_update ON employee_availability FOR UPDATE USING (company_id = safe_user_company_id());
 
-CREATE INDEX idx_ea_company ON employee_availability(company_id);
-CREATE INDEX idx_ea_employee ON employee_availability(employee_id);
+CREATE INDEX IF NOT EXISTS idx_ea_company ON employee_availability(company_id);
+CREATE INDEX IF NOT EXISTS idx_ea_employee ON employee_availability(employee_id);
 CREATE UNIQUE INDEX idx_ea_emp_day ON employee_availability(employee_id, day_of_week);
 
 CREATE TRIGGER update_ea_updated_at BEFORE UPDATE ON employee_availability
@@ -127,9 +127,9 @@ CREATE POLICY sr_read ON staffing_requirements FOR SELECT USING (company_id = sa
 CREATE POLICY sr_insert ON staffing_requirements FOR INSERT WITH CHECK (company_id = safe_user_company_id());
 CREATE POLICY sr_update ON staffing_requirements FOR UPDATE USING (company_id = safe_user_company_id());
 
-CREATE INDEX idx_sr_company ON staffing_requirements(company_id);
-CREATE INDEX idx_sr_location ON staffing_requirements(location_id);
-CREATE INDEX idx_sr_template ON staffing_requirements(shift_template_id);
+CREATE INDEX IF NOT EXISTS idx_sr_company ON staffing_requirements(company_id);
+CREATE INDEX IF NOT EXISTS idx_sr_location ON staffing_requirements(location_id);
+CREATE INDEX IF NOT EXISTS idx_sr_template ON staffing_requirements(shift_template_id);
 CREATE UNIQUE INDEX idx_sr_loc_shift_day ON staffing_requirements(location_id, shift_template_id, day_of_week);
 
 CREATE TRIGGER update_sr_updated_at BEFORE UPDATE ON staffing_requirements
@@ -156,9 +156,9 @@ CREATE POLICY sss_read ON shift_swap_requests FOR SELECT USING (company_id = saf
 CREATE POLICY sss_insert ON shift_swap_requests FOR INSERT WITH CHECK (company_id = safe_user_company_id());
 CREATE POLICY sss_update ON shift_swap_requests FOR UPDATE USING (company_id = safe_user_company_id());
 
-CREATE INDEX idx_sss_company ON shift_swap_requests(company_id);
-CREATE INDEX idx_sss_requester ON shift_swap_requests(requester_id);
-CREATE INDEX idx_sss_status ON shift_swap_requests(company_id, status);
+CREATE INDEX IF NOT EXISTS idx_sss_company ON shift_swap_requests(company_id);
+CREATE INDEX IF NOT EXISTS idx_sss_requester ON shift_swap_requests(requester_id);
+CREATE INDEX IF NOT EXISTS idx_sss_status ON shift_swap_requests(company_id, status);
 
 CREATE TRIGGER update_sss_updated_at BEFORE UPDATE ON shift_swap_requests
   FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
@@ -183,9 +183,9 @@ CREATE POLICY ot_read ON overtime_requests FOR SELECT USING (company_id = safe_u
 CREATE POLICY ot_insert ON overtime_requests FOR INSERT WITH CHECK (company_id = safe_user_company_id());
 CREATE POLICY ot_update ON overtime_requests FOR UPDATE USING (company_id = safe_user_company_id());
 
-CREATE INDEX idx_ot_company ON overtime_requests(company_id);
-CREATE INDEX idx_ot_employee ON overtime_requests(employee_id);
-CREATE INDEX idx_ot_status ON overtime_requests(company_id, status);
+CREATE INDEX IF NOT EXISTS idx_oreq_company ON overtime_requests(company_id);
+CREATE INDEX IF NOT EXISTS idx_ot_employee ON overtime_requests(employee_id);
+CREATE INDEX IF NOT EXISTS idx_ot_status ON overtime_requests(company_id, status);
 
 CREATE TRIGGER update_ot_updated_at BEFORE UPDATE ON overtime_requests
   FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();

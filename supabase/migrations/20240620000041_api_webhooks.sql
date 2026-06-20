@@ -22,8 +22,8 @@ CREATE POLICY ac_insert ON api_clients FOR INSERT WITH CHECK (company_id = safe_
 CREATE POLICY ac_update ON api_clients FOR UPDATE USING (company_id = safe_user_company_id());
 CREATE POLICY ac_delete ON api_clients FOR DELETE USING (company_id = safe_user_company_id());
 
-CREATE INDEX idx_ac_company ON api_clients(company_id);
-CREATE INDEX idx_ac_active ON api_clients(is_active);
+CREATE INDEX IF NOT EXISTS idx_ac_company ON api_clients(company_id);
+CREATE INDEX IF NOT EXISTS idx_ac_active ON api_clients(is_active);
 
 CREATE TRIGGER update_ac_updated_at BEFORE UPDATE ON api_clients
   FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
@@ -53,9 +53,9 @@ CREATE POLICY ak_update ON api_keys FOR UPDATE
 CREATE POLICY ak_delete ON api_keys FOR DELETE
   USING (client_id IN (SELECT id FROM api_clients WHERE company_id = safe_user_company_id()));
 
-CREATE INDEX idx_ak_client ON api_keys(client_id);
-CREATE INDEX idx_ak_hash ON api_keys(key_hash);
-CREATE INDEX idx_ak_active ON api_keys(is_active);
+CREATE INDEX IF NOT EXISTS idx_ak_client ON api_keys(client_id);
+CREATE INDEX IF NOT EXISTS idx_ak_hash ON api_keys(key_hash);
+CREATE INDEX IF NOT EXISTS idx_ak_active ON api_keys(is_active);
 
 -- 3. Webhook Subscriptions
 CREATE TABLE IF NOT EXISTS webhook_subscriptions (
@@ -77,9 +77,9 @@ CREATE POLICY ws_insert ON webhook_subscriptions FOR INSERT WITH CHECK (company_
 CREATE POLICY ws_update ON webhook_subscriptions FOR UPDATE USING (company_id = safe_user_company_id());
 CREATE POLICY ws_delete ON webhook_subscriptions FOR DELETE USING (company_id = safe_user_company_id());
 
-CREATE INDEX idx_ws_company ON webhook_subscriptions(company_id);
-CREATE INDEX idx_ws_client ON webhook_subscriptions(client_id);
-CREATE INDEX idx_ws_events ON webhook_subscriptions USING GIN (event_types);
+CREATE INDEX IF NOT EXISTS idx_ws_company ON webhook_subscriptions(company_id);
+CREATE INDEX IF NOT EXISTS idx_ws_client ON webhook_subscriptions(client_id);
+CREATE INDEX IF NOT EXISTS idx_ws_events ON webhook_subscriptions USING GIN (event_types);
 
 CREATE TRIGGER update_ws_updated_at BEFORE UPDATE ON webhook_subscriptions
   FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
@@ -106,9 +106,9 @@ CREATE POLICY wda_insert ON webhook_delivery_attempts FOR INSERT WITH CHECK (com
 CREATE POLICY wda_update ON webhook_delivery_attempts FOR UPDATE USING (company_id = safe_user_company_id());
 CREATE POLICY wda_delete ON webhook_delivery_attempts FOR DELETE USING (company_id = safe_user_company_id());
 
-CREATE INDEX idx_wda_company ON webhook_delivery_attempts(company_id);
-CREATE INDEX idx_wda_subscription ON webhook_delivery_attempts(subscription_id);
-CREATE INDEX idx_wda_status_retry ON webhook_delivery_attempts(status, next_retry_at);
+CREATE INDEX IF NOT EXISTS idx_wda_company ON webhook_delivery_attempts(company_id);
+CREATE INDEX IF NOT EXISTS idx_wda_subscription ON webhook_delivery_attempts(subscription_id);
+CREATE INDEX IF NOT EXISTS idx_wda_status_retry ON webhook_delivery_attempts(status, next_retry_at);
 
 -- 5. Workflow Definitions (no-code automation)
 CREATE TABLE IF NOT EXISTS workflow_definitions (
@@ -130,9 +130,9 @@ CREATE POLICY wd_insert ON workflow_definitions FOR INSERT WITH CHECK (company_i
 CREATE POLICY wd_update ON workflow_definitions FOR UPDATE USING (company_id = safe_user_company_id());
 CREATE POLICY wd_delete ON workflow_definitions FOR DELETE USING (company_id = safe_user_company_id());
 
-CREATE INDEX idx_wd_company ON workflow_definitions(company_id);
-CREATE INDEX idx_wd_trigger ON workflow_definitions(trigger_type);
-CREATE INDEX idx_wd_active ON workflow_definitions(is_active);
+CREATE INDEX IF NOT EXISTS idx_wd_company ON workflow_definitions(company_id);
+CREATE INDEX IF NOT EXISTS idx_wd_trigger ON workflow_definitions(trigger_type);
+CREATE INDEX IF NOT EXISTS idx_wd_active ON workflow_definitions(is_active);
 
 CREATE TRIGGER update_wd_updated_at BEFORE UPDATE ON workflow_definitions
   FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
@@ -157,9 +157,9 @@ CREATE POLICY wr_insert ON workflow_runs FOR INSERT WITH CHECK (company_id = saf
 CREATE POLICY wr_update ON workflow_runs FOR UPDATE USING (company_id = safe_user_company_id());
 CREATE POLICY wr_delete ON workflow_runs FOR DELETE USING (company_id = safe_user_company_id());
 
-CREATE INDEX idx_wr_company ON workflow_runs(company_id);
-CREATE INDEX idx_wr_workflow ON workflow_runs(workflow_id);
-CREATE INDEX idx_wr_status ON workflow_runs(status);
+CREATE INDEX IF NOT EXISTS idx_wr_company ON workflow_runs(company_id);
+CREATE INDEX IF NOT EXISTS idx_wr_workflow ON workflow_runs(workflow_id);
+CREATE INDEX IF NOT EXISTS idx_wr_status ON workflow_runs(status);
 
 -- ============================================================
 -- Expiry enforcement: expired keys cannot authenticate

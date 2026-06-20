@@ -10,8 +10,8 @@ ALTER TABLE jobs ADD COLUMN IF NOT EXISTS is_published BOOLEAN DEFAULT false;
 UPDATE jobs SET public_token = substring(gen_random_uuid()::text, 1, 32) WHERE public_token IS NULL;
 ALTER TABLE jobs ALTER COLUMN public_token SET NOT NULL;
 
-CREATE INDEX idx_jobs_public_token ON jobs(public_token);
-CREATE INDEX idx_jobs_published ON jobs(is_published) WHERE is_published = true;
+CREATE INDEX IF NOT EXISTS idx_jobs_public_token ON jobs(public_token);
+CREATE INDEX IF NOT EXISTS idx_jobs_published ON jobs(is_published) WHERE is_published = true;
 
 -- 2. Tracking token for applications (for /portal/track/:token links)
 ALTER TABLE applications ADD COLUMN IF NOT EXISTS tracking_token VARCHAR(32) UNIQUE;
@@ -20,7 +20,7 @@ ALTER TABLE applications ADD COLUMN IF NOT EXISTS cover_letter TEXT;
 -- Generate tracking_token for existing applications
 UPDATE applications SET tracking_token = substring(gen_random_uuid()::text, 1, 32) WHERE tracking_token IS NULL;
 
-CREATE INDEX idx_applications_tracking_token ON applications(tracking_token);
+CREATE INDEX IF NOT EXISTS idx_applications_tracking_token ON applications(tracking_token);
 
 -- 3. Public-safe job view function (anonymized, no sensitive data)
 CREATE OR REPLACE FUNCTION get_public_job(p_token VARCHAR)

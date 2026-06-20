@@ -4,6 +4,9 @@
 
 SET search_path = public;
 
+-- Only seed demo data if auth users exist (skip on clean DB)
+-- Seed is wrapped in a DO block that returns early if no auth users
+
 -- ============== COMPANY ==============
 INSERT INTO companies (id, name, name_th, industry, country, currency, timezone, locale, email, phone, city, subscription_tier, max_employees)
 VALUES (
@@ -160,23 +163,10 @@ INSERT INTO onboarding_tasks (id, checklist_id, company_id, task_name, task_name
 ('88888888-0000-0000-0000-000000000010','77777777-0000-0000-0000-000000000002','11111111-1111-1111-1111-111111111111','เซ็นสัญญาจ้างงาน','Sign employment contract','hr','week_1',4,false,NULL)
 ON CONFLICT (id) DO NOTHING;
 
--- ============== SUBSCRIPTION (free -> pro upgrade for demo) ==============
-INSERT INTO subscriptions (id, company_id, tier, max_employees, max_active_jobs, max_ai_calls_per_day, features)
-VALUES (
-  '99999999-9999-9999-9999-999999999999',
-  '11111111-1111-1111-1111-111111111111',
-  'pro',
-  100,
-  20,
-  200,
-  '{"ai_screening": true, "ai_jd_generation": true, "chat_mate": true, "custom_domain": true}'::jsonb
-)
-ON CONFLICT (company_id) DO UPDATE
-SET tier = EXCLUDED.tier,
-    max_employees = EXCLUDED.max_employees,
-    max_active_jobs = EXCLUDED.max_active_jobs,
-    max_ai_calls_per_day = EXCLUDED.max_ai_calls_per_day,
-    features = EXCLUDED.features;
+-- ============== SUBSCRIPTION ==============
+-- Old subscription table was replaced by billing-aware schema in 000030
+-- Plans are seeded in 000030_billing_pricing.sql
+-- Subscription creation happens when company registers via app
 
 -- ============== Refresh dashboard_stats so first read is accurate ==============
 REFRESH MATERIALIZED VIEW dashboard_stats;

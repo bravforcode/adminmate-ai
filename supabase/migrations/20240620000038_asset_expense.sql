@@ -28,10 +28,10 @@ CREATE POLICY ast_insert ON assets FOR INSERT WITH CHECK (company_id = safe_user
 CREATE POLICY ast_update ON assets FOR UPDATE USING (company_id = safe_user_company_id());
 CREATE POLICY ast_delete ON assets FOR DELETE USING (company_id = safe_user_company_id() AND safe_user_role() IN ('admin','hr_manager'));
 
-CREATE INDEX idx_ast_company ON assets(company_id);
-CREATE INDEX idx_ast_status ON assets(status);
-CREATE INDEX idx_ast_type ON assets(asset_type);
-CREATE INDEX idx_ast_serial ON assets(serial_number) WHERE serial_number IS NOT NULL;
+CREATE INDEX IF NOT EXISTS idx_ast_company ON assets(company_id);
+CREATE INDEX IF NOT EXISTS idx_ast_status ON assets(status);
+CREATE INDEX IF NOT EXISTS idx_ast_type ON assets(asset_type);
+CREATE INDEX IF NOT EXISTS idx_ast_serial ON assets(serial_number) WHERE serial_number IS NOT NULL;
 
 CREATE TRIGGER update_ast_updated_at BEFORE UPDATE ON assets
   FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
@@ -57,10 +57,10 @@ CREATE POLICY asga_insert ON asset_assignments FOR INSERT WITH CHECK (company_id
 CREATE POLICY asga_update ON asset_assignments FOR UPDATE USING (company_id = safe_user_company_id());
 CREATE POLICY asga_delete ON asset_assignments FOR DELETE USING (company_id = safe_user_company_id() AND safe_user_role() IN ('admin','hr_manager'));
 
-CREATE INDEX idx_asga_company ON asset_assignments(company_id);
-CREATE INDEX idx_asga_asset ON asset_assignments(asset_id);
-CREATE INDEX idx_asga_employee ON asset_assignments(employee_id);
-CREATE INDEX idx_asga_status ON asset_assignments(status);
+CREATE INDEX IF NOT EXISTS idx_asga_company ON asset_assignments(company_id);
+CREATE INDEX IF NOT EXISTS idx_asga_asset ON asset_assignments(asset_id);
+CREATE INDEX IF NOT EXISTS idx_asga_employee ON asset_assignments(employee_id);
+CREATE INDEX IF NOT EXISTS idx_asga_status ON asset_assignments(status);
 
 CREATE TRIGGER update_asga_updated_at BEFORE UPDATE ON asset_assignments
   FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
@@ -84,8 +84,8 @@ CREATE POLICY aml_insert ON asset_maintenance_logs FOR INSERT WITH CHECK (compan
 CREATE POLICY aml_update ON asset_maintenance_logs FOR UPDATE USING (company_id = safe_user_company_id());
 CREATE POLICY aml_delete ON asset_maintenance_logs FOR DELETE USING (company_id = safe_user_company_id() AND safe_user_role() IN ('admin','hr_manager'));
 
-CREATE INDEX idx_aml_company ON asset_maintenance_logs(company_id);
-CREATE INDEX idx_aml_asset ON asset_maintenance_logs(asset_id);
+CREATE INDEX IF NOT EXISTS idx_aml_company ON asset_maintenance_logs(company_id);
+CREATE INDEX IF NOT EXISTS idx_aml_asset ON asset_maintenance_logs(asset_id);
 
 -- 4. Expense Policies
 CREATE TABLE IF NOT EXISTS expense_policies (
@@ -107,8 +107,8 @@ CREATE POLICY ep_insert ON expense_policies FOR INSERT WITH CHECK (company_id = 
 CREATE POLICY ep_update ON expense_policies FOR UPDATE USING (company_id = safe_user_company_id());
 CREATE POLICY ep_delete ON expense_policies FOR DELETE USING (company_id = safe_user_company_id() AND safe_user_role() IN ('admin','hr_manager'));
 
-CREATE INDEX idx_ep_company ON expense_policies(company_id);
-CREATE INDEX idx_ep_active ON expense_policies(is_active);
+CREATE INDEX IF NOT EXISTS idx_ep_company ON expense_policies(company_id);
+CREATE INDEX IF NOT EXISTS idx_ep_active ON expense_policies(is_active);
 
 CREATE TRIGGER update_ep_updated_at BEFORE UPDATE ON expense_policies
   FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
@@ -136,10 +136,10 @@ CREATE POLICY ec_read ON expense_claims FOR SELECT USING (company_id = safe_user
 CREATE POLICY ec_insert ON expense_claims FOR INSERT WITH CHECK (company_id = safe_user_company_id());
 CREATE POLICY ec_update ON expense_claims FOR UPDATE USING (company_id = safe_user_company_id());
 
-CREATE INDEX idx_ec_company ON expense_claims(company_id);
-CREATE INDEX idx_ec_employee ON expense_claims(employee_id);
-CREATE INDEX idx_ec_status ON expense_claims(status);
-CREATE INDEX idx_ec_policy ON expense_claims(policy_id);
+CREATE INDEX IF NOT EXISTS idx_ec_company ON expense_claims(company_id);
+CREATE INDEX IF NOT EXISTS idx_ec_employee ON expense_claims(employee_id);
+CREATE INDEX IF NOT EXISTS idx_ec_status ON expense_claims(status);
+CREATE INDEX IF NOT EXISTS idx_ec_policy ON expense_claims(policy_id);
 
 CREATE TRIGGER update_ec_updated_at BEFORE UPDATE ON expense_claims
   FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
@@ -163,8 +163,8 @@ CREATE POLICY er_insert ON expense_receipts FOR INSERT WITH CHECK (company_id = 
 CREATE POLICY er_update ON expense_receipts FOR UPDATE USING (company_id = safe_user_company_id());
 CREATE POLICY er_delete ON expense_receipts FOR DELETE USING (company_id = safe_user_company_id());
 
-CREATE INDEX idx_er_company ON expense_receipts(company_id);
-CREATE INDEX idx_er_claim ON expense_receipts(claim_id);
+CREATE INDEX IF NOT EXISTS idx_er_company ON expense_receipts(company_id);
+CREATE INDEX IF NOT EXISTS idx_er_claim ON expense_receipts(claim_id);
 
 -- 7. Expense Reimbursements
 CREATE TABLE IF NOT EXISTS expense_reimbursements (
@@ -186,10 +186,10 @@ CREATE POLICY erre_read ON expense_reimbursements FOR SELECT USING (company_id =
 CREATE POLICY erre_insert ON expense_reimbursements FOR INSERT WITH CHECK (company_id = safe_user_company_id());
 CREATE POLICY erre_update ON expense_reimbursements FOR UPDATE USING (company_id = safe_user_company_id());
 
-CREATE INDEX idx_erre_company ON expense_reimbursements(company_id);
-CREATE INDEX idx_erre_claim ON expense_reimbursements(claim_id);
-CREATE INDEX idx_erre_employee ON expense_reimbursements(employee_id);
-CREATE INDEX idx_erre_payroll ON expense_reimbursements(payroll_run_id) WHERE payroll_run_id IS NOT NULL;
+CREATE INDEX IF NOT EXISTS idx_erre_company ON expense_reimbursements(company_id);
+CREATE INDEX IF NOT EXISTS idx_erre_claim ON expense_reimbursements(claim_id);
+CREATE INDEX IF NOT EXISTS idx_erre_employee ON expense_reimbursements(employee_id);
+CREATE INDEX IF NOT EXISTS idx_erre_payroll ON expense_reimbursements(payroll_run_id) WHERE payroll_run_id IS NOT NULL;
 
 CREATE TRIGGER update_erre_updated_at BEFORE UPDATE ON expense_reimbursements
   FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();

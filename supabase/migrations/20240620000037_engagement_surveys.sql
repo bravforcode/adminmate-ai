@@ -26,9 +26,9 @@ CREATE POLICY st_insert ON survey_templates FOR INSERT WITH CHECK (company_id = 
 CREATE POLICY st_update ON survey_templates FOR UPDATE USING (company_id = safe_user_company_id());
 CREATE POLICY st_delete ON survey_templates FOR DELETE USING (company_id = safe_user_company_id());
 
-CREATE INDEX idx_st_company ON survey_templates(company_id);
-CREATE INDEX idx_st_type ON survey_templates(company_id, template_type);
-CREATE INDEX idx_st_active ON survey_templates(company_id, is_active);
+CREATE INDEX IF NOT EXISTS idx_st_company ON survey_templates(company_id);
+CREATE INDEX IF NOT EXISTS idx_st_type ON survey_templates(company_id, template_type);
+CREATE INDEX IF NOT EXISTS idx_st_active ON survey_templates(company_id, is_active);
 
 CREATE TRIGGER update_st_updated_at BEFORE UPDATE ON survey_templates
   FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
@@ -59,10 +59,10 @@ CREATE POLICY sc_insert ON survey_campaigns FOR INSERT WITH CHECK (company_id = 
 CREATE POLICY sc_update ON survey_campaigns FOR UPDATE USING (company_id = safe_user_company_id());
 CREATE POLICY sc_delete ON survey_campaigns FOR DELETE USING (company_id = safe_user_company_id());
 
-CREATE INDEX idx_sc_company ON survey_campaigns(company_id);
-CREATE INDEX idx_sc_template ON survey_campaigns(company_id, template_id);
-CREATE INDEX idx_sc_status ON survey_campaigns(company_id, status);
-CREATE INDEX idx_sc_dates ON survey_campaigns(company_id, start_date, end_date);
+CREATE INDEX IF NOT EXISTS idx_sc_company ON survey_campaigns(company_id);
+CREATE INDEX IF NOT EXISTS idx_sc_template ON survey_campaigns(company_id, template_id);
+CREATE INDEX IF NOT EXISTS idx_sc_status ON survey_campaigns(company_id, status);
+CREATE INDEX IF NOT EXISTS idx_sc_dates ON survey_campaigns(company_id, start_date, end_date);
 
 CREATE TRIGGER update_sc_updated_at BEFORE UPDATE ON survey_campaigns
   FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
@@ -109,10 +109,10 @@ CREATE POLICY sr_delete ON survey_responses FOR DELETE USING (
   AND safe_user_role() IN ('admin', 'hr_manager')
 );
 
-CREATE INDEX idx_sr_company ON survey_responses(company_id);
-CREATE INDEX idx_sr_campaign ON survey_responses(company_id, campaign_id);
-CREATE INDEX idx_sr_respondent ON survey_responses(company_id, respondent_id);
-CREATE INDEX idx_sr_anonymous ON survey_responses(company_id, campaign_id, is_anonymous);
+CREATE INDEX IF NOT EXISTS idx_sr_company ON survey_responses(company_id);
+CREATE INDEX IF NOT EXISTS idx_sr_campaign ON survey_responses(company_id, campaign_id);
+CREATE INDEX IF NOT EXISTS idx_sr_respondent ON survey_responses(company_id, respondent_id);
+CREATE INDEX IF NOT EXISTS idx_sr_anonymous ON survey_responses(company_id, campaign_id, is_anonymous);
 
 -- 4. Engagement Scores (aggregated, no individual identity)
 CREATE TABLE IF NOT EXISTS engagement_scores (
@@ -132,9 +132,9 @@ CREATE POLICY es_insert ON engagement_scores FOR INSERT WITH CHECK (company_id =
 CREATE POLICY es_update ON engagement_scores FOR UPDATE USING (company_id = safe_user_company_id());
 CREATE POLICY es_delete ON engagement_scores FOR DELETE USING (company_id = safe_user_company_id());
 
-CREATE INDEX idx_es_company ON engagement_scores(company_id);
-CREATE INDEX idx_es_campaign ON engagement_scores(company_id, campaign_id);
-CREATE INDEX idx_es_department ON engagement_scores(company_id, department_id);
+CREATE INDEX IF NOT EXISTS idx_es_company ON engagement_scores(company_id);
+CREATE INDEX IF NOT EXISTS idx_es_campaign ON engagement_scores(company_id, campaign_id);
+CREATE INDEX IF NOT EXISTS idx_es_department ON engagement_scores(company_id, department_id);
 
 -- 5. Recognition Events
 CREATE TABLE IF NOT EXISTS recognition_events (
@@ -163,11 +163,11 @@ CREATE POLICY re_delete ON recognition_events FOR DELETE USING (
   AND safe_user_role() IN ('admin', 'hr_manager')
 );
 
-CREATE INDEX idx_re_company ON recognition_events(company_id);
-CREATE INDEX idx_re_sender ON recognition_events(company_id, sender_id);
-CREATE INDEX idx_re_recipient ON recognition_events(company_id, recipient_id);
-CREATE INDEX idx_re_type ON recognition_events(company_id, recognition_type);
-CREATE INDEX idx_re_public ON recognition_events(company_id, is_public);
+CREATE INDEX IF NOT EXISTS idx_re_company ON recognition_events(company_id);
+CREATE INDEX IF NOT EXISTS idx_re_sender ON recognition_events(company_id, sender_id);
+CREATE INDEX IF NOT EXISTS idx_re_recipient ON recognition_events(company_id, recipient_id);
+CREATE INDEX IF NOT EXISTS idx_re_type ON recognition_events(company_id, recognition_type);
+CREATE INDEX IF NOT EXISTS idx_re_public ON recognition_events(company_id, is_public);
 
 -- 6. Reward Points
 CREATE TABLE IF NOT EXISTS reward_points (
@@ -201,9 +201,9 @@ CREATE POLICY rp_delete ON reward_points FOR DELETE USING (
   AND safe_user_role() = 'admin'
 );
 
-CREATE INDEX idx_rp_company ON reward_points(company_id);
-CREATE INDEX idx_rp_employee ON reward_points(company_id, employee_id);
-CREATE INDEX idx_rp_balance ON reward_points(company_id, balance);
+CREATE INDEX IF NOT EXISTS idx_rp_company ON reward_points(company_id);
+CREATE INDEX IF NOT EXISTS idx_rp_employee ON reward_points(company_id, employee_id);
+CREATE INDEX IF NOT EXISTS idx_rp_balance ON reward_points(company_id, balance);
 
 CREATE TRIGGER update_rp_updated_at BEFORE UPDATE ON reward_points
   FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();

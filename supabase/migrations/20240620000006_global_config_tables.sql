@@ -2,7 +2,7 @@
 -- Country, currency, timezone, locale, data residency, and feature flags.
 
 -- ============== COUNTRY_CONFIGS ==============
-CREATE TABLE country_configs (
+CREATE TABLE IF NOT EXISTS country_configs (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     code VARCHAR(10) NOT NULL UNIQUE,           -- ISO 3166-1 alpha-2: TH, SG, VN, etc.
     name VARCHAR(255) NOT NULL,
@@ -16,7 +16,7 @@ CREATE TABLE country_configs (
 );
 
 -- ============== CURRENCY_CONFIGS ==============
-CREATE TABLE currency_configs (
+CREATE TABLE IF NOT EXISTS currency_configs (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     code VARCHAR(3) NOT NULL UNIQUE,            -- ISO 4217: THB, SGD, VND, USD, etc.
     name VARCHAR(255) NOT NULL,
@@ -27,7 +27,7 @@ CREATE TABLE currency_configs (
 );
 
 -- ============== TIMEZONE_CONFIGS ==============
-CREATE TABLE timezone_configs (
+CREATE TABLE IF NOT EXISTS timezone_configs (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     name VARCHAR(100) NOT NULL UNIQUE,          -- IANA: Asia/Bangkok
     utc_offset VARCHAR(10) NOT NULL,            -- +07:00
@@ -37,7 +37,7 @@ CREATE TABLE timezone_configs (
 );
 
 -- ============== LOCALE_CONFIGS ==============
-CREATE TABLE locale_configs (
+CREATE TABLE IF NOT EXISTS locale_configs (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     code VARCHAR(10) NOT NULL UNIQUE,           -- BCP 47: th-TH, en-US, vi-VN, etc.
     language_code VARCHAR(10) NOT NULL,          -- th, en, vi, etc.
@@ -49,7 +49,7 @@ CREATE TABLE locale_configs (
 );
 
 -- ============== DATA_RESIDENCY_REGIONS ==============
-CREATE TABLE data_residency_regions (
+CREATE TABLE IF NOT EXISTS data_residency_regions (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     code VARCHAR(50) NOT NULL UNIQUE,           -- e.g. 'ap-southeast-1', 'us-east-1'
     name VARCHAR(255) NOT NULL,
@@ -60,7 +60,7 @@ CREATE TABLE data_residency_regions (
 );
 
 -- ============== FEATURE_FLAGS ==============
-CREATE TABLE feature_flags (
+CREATE TABLE IF NOT EXISTS feature_flags (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     key VARCHAR(100) NOT NULL UNIQUE,           -- e.g. 'payroll_enabled', 'ai_matching'
     name VARCHAR(255) NOT NULL,
@@ -72,7 +72,7 @@ CREATE TABLE feature_flags (
 
 -- ============== COMPANY_FEATURE_FLAGS ==============
 -- Per-company override of feature flags (uses company_id, NOT organization_id)
-CREATE TABLE company_feature_flags (
+CREATE TABLE IF NOT EXISTS company_feature_flags (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     company_id UUID NOT NULL REFERENCES companies(id) ON DELETE CASCADE,
     feature_flag_id UUID NOT NULL REFERENCES feature_flags(id) ON DELETE CASCADE,
@@ -82,12 +82,12 @@ CREATE TABLE company_feature_flags (
 );
 
 -- ============== INDEXES ==============
-CREATE INDEX idx_country_configs_code ON country_configs(code);
-CREATE INDEX idx_currency_configs_code ON currency_configs(code);
-CREATE INDEX idx_timezone_configs_name ON timezone_configs(name);
-CREATE INDEX idx_locale_configs_code ON locale_configs(code);
-CREATE INDEX idx_feature_flags_key ON feature_flags(key);
-CREATE INDEX idx_company_feature_flags_company ON company_feature_flags(company_id);
+CREATE INDEX IF NOT EXISTS idx_country_configs_code ON country_configs(code);
+CREATE INDEX IF NOT EXISTS idx_currency_configs_code ON currency_configs(code);
+CREATE INDEX IF NOT EXISTS idx_timezone_configs_name ON timezone_configs(name);
+CREATE INDEX IF NOT EXISTS idx_locale_configs_code ON locale_configs(code);
+CREATE INDEX IF NOT EXISTS idx_feature_flags_key ON feature_flags(key);
+CREATE INDEX IF NOT EXISTS idx_company_feature_flags_company ON company_feature_flags(company_id);
 
 -- ============== RLS ==============
 ALTER TABLE country_configs ENABLE ROW LEVEL SECURITY;

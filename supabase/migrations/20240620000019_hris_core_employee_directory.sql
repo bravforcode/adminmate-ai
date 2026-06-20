@@ -46,12 +46,12 @@ CREATE POLICY emp_read ON employees FOR SELECT USING (company_id = safe_user_com
 CREATE POLICY emp_insert ON employees FOR INSERT WITH CHECK (company_id = safe_user_company_id());
 CREATE POLICY emp_update ON employees FOR UPDATE USING (company_id = safe_user_company_id());
 
-CREATE INDEX idx_emp_company ON employees(company_id);
-CREATE INDEX idx_emp_user ON employees(user_profile_id);
-CREATE INDEX idx_emp_candidate ON employees(candidate_id);
-CREATE INDEX idx_emp_manager ON employees(manager_employee_id);
-CREATE INDEX idx_emp_status ON employees(employment_status);
-CREATE INDEX idx_emp_number ON employees(company_id, employee_number);
+CREATE INDEX IF NOT EXISTS idx_emp_company ON employees(company_id);
+CREATE INDEX IF NOT EXISTS idx_emp_user ON employees(user_profile_id);
+CREATE INDEX IF NOT EXISTS idx_emp_candidate ON employees(candidate_id);
+CREATE INDEX IF NOT EXISTS idx_emp_manager ON employees(manager_employee_id);
+CREATE INDEX IF NOT EXISTS idx_emp_status ON employees(employment_status);
+CREATE INDEX IF NOT EXISTS idx_emp_number ON employees(company_id, employee_number);
 
 CREATE TRIGGER update_emp_updated_at BEFORE UPDATE ON employees
   FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
@@ -87,8 +87,8 @@ CREATE POLICY emp_prof_read ON employee_profiles FOR SELECT USING (company_id = 
 CREATE POLICY emp_prof_insert ON employee_profiles FOR INSERT WITH CHECK (company_id = safe_user_company_id());
 CREATE POLICY emp_prof_update ON employee_profiles FOR UPDATE USING (company_id = safe_user_company_id());
 
-CREATE INDEX idx_emp_prof_company ON employee_profiles(company_id);
-CREATE INDEX idx_emp_prof_employee ON employee_profiles(employee_id);
+CREATE INDEX IF NOT EXISTS idx_emp_prof_company ON employee_profiles(company_id);
+CREATE INDEX IF NOT EXISTS idx_emp_prof_employee ON employee_profiles(employee_id);
 
 CREATE TRIGGER update_emp_prof_updated_at BEFORE UPDATE ON employee_profiles
   FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
@@ -112,9 +112,9 @@ ALTER TABLE employee_timeline_events ENABLE ROW LEVEL SECURITY;
 CREATE POLICY emp_timeline_read ON employee_timeline_events FOR SELECT USING (company_id = safe_user_company_id());
 CREATE POLICY emp_timeline_insert ON employee_timeline_events FOR INSERT WITH CHECK (company_id = safe_user_company_id());
 
-CREATE INDEX idx_emp_timeline_company ON employee_timeline_events(company_id);
-CREATE INDEX idx_emp_timeline_employee ON employee_timeline_events(employee_id);
-CREATE INDEX idx_emp_timeline_type ON employee_timeline_events(event_type);
+CREATE INDEX IF NOT EXISTS idx_emp_timeline_company ON employee_timeline_events(company_id);
+CREATE INDEX IF NOT EXISTS idx_emp_timeline_employee ON employee_timeline_events(employee_id);
+CREATE INDEX IF NOT EXISTS idx_emp_timeline_type ON employee_timeline_events(event_type);
 
 -- 4. Employee Change Requests
 CREATE TABLE IF NOT EXISTS employee_change_requests (
@@ -141,9 +141,9 @@ CREATE POLICY emp_cr_read ON employee_change_requests FOR SELECT USING (company_
 CREATE POLICY emp_cr_insert ON employee_change_requests FOR INSERT WITH CHECK (company_id = safe_user_company_id());
 CREATE POLICY emp_cr_update ON employee_change_requests FOR UPDATE USING (company_id = safe_user_company_id());
 
-CREATE INDEX idx_emp_cr_company ON employee_change_requests(company_id);
-CREATE INDEX idx_emp_cr_employee ON employee_change_requests(employee_id);
-CREATE INDEX idx_emp_cr_status ON employee_change_requests(status);
+CREATE INDEX IF NOT EXISTS idx_emp_cr_company ON employee_change_requests(company_id);
+CREATE INDEX IF NOT EXISTS idx_emp_cr_employee ON employee_change_requests(employee_id);
+CREATE INDEX IF NOT EXISTS idx_emp_cr_status ON employee_change_requests(status);
 
 CREATE TRIGGER update_emp_cr_updated_at BEFORE UPDATE ON employee_change_requests
   FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
@@ -172,7 +172,7 @@ CREATE POLICY emp_cf_def_read ON employee_custom_field_definitions FOR SELECT US
 CREATE POLICY emp_cf_def_insert ON employee_custom_field_definitions FOR INSERT WITH CHECK (company_id = safe_user_company_id());
 CREATE POLICY emp_cf_def_update ON employee_custom_field_definitions FOR UPDATE USING (company_id = safe_user_company_id());
 
-CREATE INDEX idx_emp_cf_def_company ON employee_custom_field_definitions(company_id);
+CREATE INDEX IF NOT EXISTS idx_emp_cf_def_company ON employee_custom_field_definitions(company_id);
 
 CREATE TRIGGER update_emp_cf_def_updated_at BEFORE UPDATE ON employee_custom_field_definitions
   FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
@@ -195,8 +195,8 @@ CREATE POLICY emp_cf_val_read ON employee_custom_field_values FOR SELECT USING (
 CREATE POLICY emp_cf_val_insert ON employee_custom_field_values FOR INSERT WITH CHECK (company_id = safe_user_company_id());
 CREATE POLICY emp_cf_val_update ON employee_custom_field_values FOR UPDATE USING (company_id = safe_user_company_id());
 
-CREATE INDEX idx_emp_cf_val_company ON employee_custom_field_values(company_id);
-CREATE INDEX idx_emp_cf_val_employee ON employee_custom_field_values(employee_id);
+CREATE INDEX IF NOT EXISTS idx_emp_cf_val_company ON employee_custom_field_values(company_id);
+CREATE INDEX IF NOT EXISTS idx_emp_cf_val_employee ON employee_custom_field_values(employee_id);
 
 CREATE TRIGGER update_emp_cf_val_updated_at BEFORE UPDATE ON employee_custom_field_values
   FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
@@ -223,9 +223,9 @@ CREATE POLICY ocn_read ON org_chart_nodes FOR SELECT USING (company_id = safe_us
 CREATE POLICY ocn_insert ON org_chart_nodes FOR INSERT WITH CHECK (company_id = safe_user_company_id());
 CREATE POLICY ocn_update ON org_chart_nodes FOR UPDATE USING (company_id = safe_user_company_id());
 
-CREATE INDEX idx_ocn_company ON org_chart_nodes(company_id);
-CREATE INDEX idx_ocn_employee ON org_chart_nodes(employee_id);
-CREATE INDEX idx_ocn_manager ON org_chart_nodes(manager_employee_id);
+CREATE INDEX IF NOT EXISTS idx_ocn_company ON org_chart_nodes(company_id);
+CREATE INDEX IF NOT EXISTS idx_ocn_employee ON org_chart_nodes(employee_id);
+CREATE INDEX IF NOT EXISTS idx_ocn_manager ON org_chart_nodes(manager_employee_id);
 
 CREATE TRIGGER update_ocn_updated_at BEFORE UPDATE ON org_chart_nodes
   FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
@@ -253,73 +253,297 @@ CREATE POLICY emp_doc_read ON employee_documents FOR SELECT USING (company_id = 
 CREATE POLICY emp_doc_insert ON employee_documents FOR INSERT WITH CHECK (company_id = safe_user_company_id());
 CREATE POLICY emp_doc_update ON employee_documents FOR UPDATE USING (company_id = safe_user_company_id());
 
-CREATE INDEX idx_emp_doc_company ON employee_documents(company_id);
-CREATE INDEX idx_emp_doc_employee ON employee_documents(employee_id);
+CREATE INDEX IF NOT EXISTS idx_emp_doc_company ON employee_documents(company_id);
+CREATE INDEX IF NOT EXISTS idx_emp_doc_employee ON employee_documents(employee_id);
 
 CREATE TRIGGER update_emp_doc_updated_at BEFORE UPDATE ON employee_documents
   FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
 
 -- 9. Add sensitive fields to sensitive_field_registry
-INSERT INTO sensitive_field_registry (company_id, field_name, description, is_active)
-SELECT c.id, f.field_name, f.description, true
-FROM companies c
-CROSS JOIN (VALUES
-  ('date_of_birth', 'Employee date of birth'),
-  ('gender', 'Employee gender'),
-  ('nationality', 'Employee nationality'),
-  ('marital_status', 'Employee marital status'),
-  ('emergency_contact_name', 'Emergency contact name'),
-  ('emergency_contact_phone', 'Emergency contact phone')
-) AS f(field_name, description)
-WHERE NOT EXISTS (
-  SELECT 1 FROM sensitive_field_registry sfr
-  WHERE sfr.company_id = c.id AND sfr.field_name = f.field_name
-);
+-- sensitive_field_registry is a global reference table (no company_id)
+INSERT INTO sensitive_field_registry (field_name, field_category, description, is_active) VALUES
+  ('date_of_birth', 'demographic', 'Employee date of birth', true),
+  ('gender', 'demographic', 'Employee gender', true),
+  ('nationality', 'demographic', 'Employee nationality', true),
+  ('marital_status', 'demographic', 'Employee marital status', true),
+  ('emergency_contact_name', 'contact', 'Emergency contact name', true),
+  ('emergency_contact_phone', 'contact', 'Emergency contact phone', true)
+ON CONFLICT (field_name) DO NOTHING;
 
 -- 10. RBAC Permissions for HRIS
-INSERT INTO permissions (id, resource, action, description) VALUES
-  ('employee_read', 'employee', 'read', 'View employees'),
-  ('employee_write', 'employee', 'write', 'Create and edit employees'),
-  ('employee_create', 'employee', 'create', 'Create new employees'),
-  ('employee_sensitive_read', 'employee', 'sensitive_read', 'View sensitive employee fields'),
-  ('employee_timeline_read', 'employee_timeline', 'read', 'View employee timeline'),
-  ('employee_timeline_write', 'employee_timeline', 'write', 'Create timeline events'),
-  ('employee_change_request_read', 'employee_change_request', 'read', 'View change requests'),
-  ('employee_change_request_write', 'employee_change_request', 'write', 'Create change requests'),
-  ('employee_change_request_approve', 'employee_change_request', 'approve', 'Approve change requests'),
-  ('org_chart_read', 'org_chart', 'read', 'View org chart'),
-  ('org_chart_write', 'org_chart', 'write', 'Edit org chart'),
-  ('employee_document_read', 'employee_document', 'read', 'View employee documents'),
-  ('employee_document_write', 'employee_document', 'write', 'Upload employee documents'),
-  ('employee_document_verify', 'employee_document', 'verify', 'Verify employee documents'),
-  ('employee_custom_field_read', 'employee_custom_field', 'read', 'View custom fields'),
-  ('employee_custom_field_write', 'employee_custom_field', 'write', 'Manage custom fields')
-ON CONFLICT (id) DO NOTHING;
+INSERT INTO permissions (resource, action, description) VALUES
+  ('employee', 'read', 'View employees'),
+  ('employee', 'write', 'Create and edit employees'),
+  ('employee', 'create', 'Create new employees'),
+  ('employee', 'sensitive_read', 'View sensitive employee fields'),
+  ('employee_timeline', 'read', 'View employee timeline'),
+  ('employee_timeline', 'write', 'Create timeline events'),
+  ('employee_change_request', 'read', 'View change requests'),
+  ('employee_change_request', 'write', 'Create change requests'),
+  ('employee_change_request', 'approve', 'Approve change requests'),
+  ('org_chart', 'read', 'View org chart'),
+  ('org_chart', 'write', 'Edit org chart'),
+  ('employee_document', 'read', 'View employee documents'),
+  ('employee_document', 'write', 'Upload employee documents'),
+  ('employee_document', 'verify', 'Verify employee documents'),
+  ('employee_custom_field', 'read', 'View custom fields'),
+  ('employee_custom_field', 'write', 'Manage custom fields')
+ON CONFLICT (resource, action) DO NOTHING;
 
-INSERT INTO role_permissions (role_id, permission_id) VALUES
-  ('owner', 'employee_read'), ('owner', 'employee_write'), ('owner', 'employee_create'),
-  ('owner', 'employee_sensitive_read'), ('owner', 'employee_timeline_read'), ('owner', 'employee_timeline_write'),
-  ('owner', 'employee_change_request_read'), ('owner', 'employee_change_request_write'), ('owner', 'employee_change_request_approve'),
-  ('owner', 'org_chart_read'), ('owner', 'org_chart_write'),
-  ('owner', 'employee_document_read'), ('owner', 'employee_document_write'), ('owner', 'employee_document_verify'),
-  ('owner', 'employee_custom_field_read'), ('owner', 'employee_custom_field_write'),
-  ('admin', 'employee_read'), ('admin', 'employee_write'), ('admin', 'employee_create'),
-  ('admin', 'employee_sensitive_read'), ('admin', 'employee_timeline_read'), ('admin', 'employee_timeline_write'),
-  ('admin', 'employee_change_request_read'), ('admin', 'employee_change_request_write'), ('admin', 'employee_change_request_approve'),
-  ('admin', 'org_chart_read'), ('admin', 'org_chart_write'),
-  ('admin', 'employee_document_read'), ('admin', 'employee_document_write'), ('admin', 'employee_document_verify'),
-  ('admin', 'employee_custom_field_read'), ('admin', 'employee_custom_field_write'),
-  ('hr_manager', 'employee_read'), ('hr_manager', 'employee_write'), ('hr_manager', 'employee_create'),
-  ('hr_manager', 'employee_sensitive_read'), ('hr_manager', 'employee_timeline_read'), ('hr_manager', 'employee_timeline_write'),
-  ('hr_manager', 'employee_change_request_read'), ('hr_manager', 'employee_change_request_write'), ('hr_manager', 'employee_change_request_approve'),
-  ('hr_manager', 'org_chart_read'), ('hr_manager', 'org_chart_write'),
-  ('hr_manager', 'employee_document_read'), ('hr_manager', 'employee_document_write'), ('hr_manager', 'employee_document_verify'),
-  ('hr_manager', 'employee_custom_field_read'), ('hr_manager', 'employee_custom_field_write'),
-  ('hr_staff', 'employee_read'), ('hr_staff', 'employee_write'), ('hr_staff', 'employee_create'),
-  ('hr_staff', 'employee_timeline_read'), ('hr_staff', 'employee_timeline_write'),
-  ('hr_staff', 'employee_change_request_read'), ('hr_staff', 'employee_change_request_approve'),
-  ('hr_staff', 'employee_document_read'), ('hr_staff', 'employee_document_write'), ('hr_staff', 'employee_document_verify'),
-  ('hr_staff', 'employee_custom_field_read'),
-  ('manager', 'employee_read'), ('manager', 'org_chart_read'),
-  ('employee', 'employee_read'), ('employee', 'employee_change_request_write')
+INSERT INTO role_permissions (role_id, permission_id)
+SELECT r.id, p.id FROM roles r, permissions p
+WHERE r.name = 'owner' AND p.resource = 'employee' AND p.action = 'read'
+ON CONFLICT (role_id, permission_id) DO NOTHING;
+INSERT INTO role_permissions (role_id, permission_id)
+SELECT r.id, p.id FROM roles r, permissions p
+WHERE r.name = 'owner' AND p.resource = 'employee' AND p.action = 'write'
+ON CONFLICT (role_id, permission_id) DO NOTHING;
+INSERT INTO role_permissions (role_id, permission_id)
+SELECT r.id, p.id FROM roles r, permissions p
+WHERE r.name = 'owner' AND p.resource = 'employee' AND p.action = 'create'
+ON CONFLICT (role_id, permission_id) DO NOTHING;
+INSERT INTO role_permissions (role_id, permission_id)
+SELECT r.id, p.id FROM roles r, permissions p
+WHERE r.name = 'owner' AND p.resource = 'employee' AND p.action = 'sensitive_read'
+ON CONFLICT (role_id, permission_id) DO NOTHING;
+INSERT INTO role_permissions (role_id, permission_id)
+SELECT r.id, p.id FROM roles r, permissions p
+WHERE r.name = 'owner' AND p.resource = 'employee_timeline' AND p.action = 'read'
+ON CONFLICT (role_id, permission_id) DO NOTHING;
+INSERT INTO role_permissions (role_id, permission_id)
+SELECT r.id, p.id FROM roles r, permissions p
+WHERE r.name = 'owner' AND p.resource = 'employee_timeline' AND p.action = 'write'
+ON CONFLICT (role_id, permission_id) DO NOTHING;
+INSERT INTO role_permissions (role_id, permission_id)
+SELECT r.id, p.id FROM roles r, permissions p
+WHERE r.name = 'owner' AND p.resource = 'employee_change_request' AND p.action = 'read'
+ON CONFLICT (role_id, permission_id) DO NOTHING;
+INSERT INTO role_permissions (role_id, permission_id)
+SELECT r.id, p.id FROM roles r, permissions p
+WHERE r.name = 'owner' AND p.resource = 'employee_change_request' AND p.action = 'write'
+ON CONFLICT (role_id, permission_id) DO NOTHING;
+INSERT INTO role_permissions (role_id, permission_id)
+SELECT r.id, p.id FROM roles r, permissions p
+WHERE r.name = 'owner' AND p.resource = 'employee_change_request' AND p.action = 'approve'
+ON CONFLICT (role_id, permission_id) DO NOTHING;
+INSERT INTO role_permissions (role_id, permission_id)
+SELECT r.id, p.id FROM roles r, permissions p
+WHERE r.name = 'owner' AND p.resource = 'org_chart' AND p.action = 'read'
+ON CONFLICT (role_id, permission_id) DO NOTHING;
+INSERT INTO role_permissions (role_id, permission_id)
+SELECT r.id, p.id FROM roles r, permissions p
+WHERE r.name = 'owner' AND p.resource = 'org_chart' AND p.action = 'write'
+ON CONFLICT (role_id, permission_id) DO NOTHING;
+INSERT INTO role_permissions (role_id, permission_id)
+SELECT r.id, p.id FROM roles r, permissions p
+WHERE r.name = 'owner' AND p.resource = 'employee_document' AND p.action = 'read'
+ON CONFLICT (role_id, permission_id) DO NOTHING;
+INSERT INTO role_permissions (role_id, permission_id)
+SELECT r.id, p.id FROM roles r, permissions p
+WHERE r.name = 'owner' AND p.resource = 'employee_document' AND p.action = 'write'
+ON CONFLICT (role_id, permission_id) DO NOTHING;
+INSERT INTO role_permissions (role_id, permission_id)
+SELECT r.id, p.id FROM roles r, permissions p
+WHERE r.name = 'owner' AND p.resource = 'employee_document' AND p.action = 'verify'
+ON CONFLICT (role_id, permission_id) DO NOTHING;
+INSERT INTO role_permissions (role_id, permission_id)
+SELECT r.id, p.id FROM roles r, permissions p
+WHERE r.name = 'owner' AND p.resource = 'employee_custom_field' AND p.action = 'read'
+ON CONFLICT (role_id, permission_id) DO NOTHING;
+INSERT INTO role_permissions (role_id, permission_id)
+SELECT r.id, p.id FROM roles r, permissions p
+WHERE r.name = 'owner' AND p.resource = 'employee_custom_field' AND p.action = 'write'
+ON CONFLICT (role_id, permission_id) DO NOTHING;
+
+INSERT INTO role_permissions (role_id, permission_id)
+SELECT r.id, p.id FROM roles r, permissions p
+WHERE r.name = 'admin' AND p.resource = 'employee' AND p.action = 'read'
+ON CONFLICT (role_id, permission_id) DO NOTHING;
+INSERT INTO role_permissions (role_id, permission_id)
+SELECT r.id, p.id FROM roles r, permissions p
+WHERE r.name = 'admin' AND p.resource = 'employee' AND p.action = 'write'
+ON CONFLICT (role_id, permission_id) DO NOTHING;
+INSERT INTO role_permissions (role_id, permission_id)
+SELECT r.id, p.id FROM roles r, permissions p
+WHERE r.name = 'admin' AND p.resource = 'employee' AND p.action = 'create'
+ON CONFLICT (role_id, permission_id) DO NOTHING;
+INSERT INTO role_permissions (role_id, permission_id)
+SELECT r.id, p.id FROM roles r, permissions p
+WHERE r.name = 'admin' AND p.resource = 'employee' AND p.action = 'sensitive_read'
+ON CONFLICT (role_id, permission_id) DO NOTHING;
+INSERT INTO role_permissions (role_id, permission_id)
+SELECT r.id, p.id FROM roles r, permissions p
+WHERE r.name = 'admin' AND p.resource = 'employee_timeline' AND p.action = 'read'
+ON CONFLICT (role_id, permission_id) DO NOTHING;
+INSERT INTO role_permissions (role_id, permission_id)
+SELECT r.id, p.id FROM roles r, permissions p
+WHERE r.name = 'admin' AND p.resource = 'employee_timeline' AND p.action = 'write'
+ON CONFLICT (role_id, permission_id) DO NOTHING;
+INSERT INTO role_permissions (role_id, permission_id)
+SELECT r.id, p.id FROM roles r, permissions p
+WHERE r.name = 'admin' AND p.resource = 'employee_change_request' AND p.action = 'read'
+ON CONFLICT (role_id, permission_id) DO NOTHING;
+INSERT INTO role_permissions (role_id, permission_id)
+SELECT r.id, p.id FROM roles r, permissions p
+WHERE r.name = 'admin' AND p.resource = 'employee_change_request' AND p.action = 'write'
+ON CONFLICT (role_id, permission_id) DO NOTHING;
+INSERT INTO role_permissions (role_id, permission_id)
+SELECT r.id, p.id FROM roles r, permissions p
+WHERE r.name = 'admin' AND p.resource = 'employee_change_request' AND p.action = 'approve'
+ON CONFLICT (role_id, permission_id) DO NOTHING;
+INSERT INTO role_permissions (role_id, permission_id)
+SELECT r.id, p.id FROM roles r, permissions p
+WHERE r.name = 'admin' AND p.resource = 'org_chart' AND p.action = 'read'
+ON CONFLICT (role_id, permission_id) DO NOTHING;
+INSERT INTO role_permissions (role_id, permission_id)
+SELECT r.id, p.id FROM roles r, permissions p
+WHERE r.name = 'admin' AND p.resource = 'org_chart' AND p.action = 'write'
+ON CONFLICT (role_id, permission_id) DO NOTHING;
+INSERT INTO role_permissions (role_id, permission_id)
+SELECT r.id, p.id FROM roles r, permissions p
+WHERE r.name = 'admin' AND p.resource = 'employee_document' AND p.action = 'read'
+ON CONFLICT (role_id, permission_id) DO NOTHING;
+INSERT INTO role_permissions (role_id, permission_id)
+SELECT r.id, p.id FROM roles r, permissions p
+WHERE r.name = 'admin' AND p.resource = 'employee_document' AND p.action = 'write'
+ON CONFLICT (role_id, permission_id) DO NOTHING;
+INSERT INTO role_permissions (role_id, permission_id)
+SELECT r.id, p.id FROM roles r, permissions p
+WHERE r.name = 'admin' AND p.resource = 'employee_document' AND p.action = 'verify'
+ON CONFLICT (role_id, permission_id) DO NOTHING;
+INSERT INTO role_permissions (role_id, permission_id)
+SELECT r.id, p.id FROM roles r, permissions p
+WHERE r.name = 'admin' AND p.resource = 'employee_custom_field' AND p.action = 'read'
+ON CONFLICT (role_id, permission_id) DO NOTHING;
+INSERT INTO role_permissions (role_id, permission_id)
+SELECT r.id, p.id FROM roles r, permissions p
+WHERE r.name = 'admin' AND p.resource = 'employee_custom_field' AND p.action = 'write'
+ON CONFLICT (role_id, permission_id) DO NOTHING;
+
+INSERT INTO role_permissions (role_id, permission_id)
+SELECT r.id, p.id FROM roles r, permissions p
+WHERE r.name = 'hr_manager' AND p.resource = 'employee' AND p.action = 'read'
+ON CONFLICT (role_id, permission_id) DO NOTHING;
+INSERT INTO role_permissions (role_id, permission_id)
+SELECT r.id, p.id FROM roles r, permissions p
+WHERE r.name = 'hr_manager' AND p.resource = 'employee' AND p.action = 'write'
+ON CONFLICT (role_id, permission_id) DO NOTHING;
+INSERT INTO role_permissions (role_id, permission_id)
+SELECT r.id, p.id FROM roles r, permissions p
+WHERE r.name = 'hr_manager' AND p.resource = 'employee' AND p.action = 'create'
+ON CONFLICT (role_id, permission_id) DO NOTHING;
+INSERT INTO role_permissions (role_id, permission_id)
+SELECT r.id, p.id FROM roles r, permissions p
+WHERE r.name = 'hr_manager' AND p.resource = 'employee' AND p.action = 'sensitive_read'
+ON CONFLICT (role_id, permission_id) DO NOTHING;
+INSERT INTO role_permissions (role_id, permission_id)
+SELECT r.id, p.id FROM roles r, permissions p
+WHERE r.name = 'hr_manager' AND p.resource = 'employee_timeline' AND p.action = 'read'
+ON CONFLICT (role_id, permission_id) DO NOTHING;
+INSERT INTO role_permissions (role_id, permission_id)
+SELECT r.id, p.id FROM roles r, permissions p
+WHERE r.name = 'hr_manager' AND p.resource = 'employee_timeline' AND p.action = 'write'
+ON CONFLICT (role_id, permission_id) DO NOTHING;
+INSERT INTO role_permissions (role_id, permission_id)
+SELECT r.id, p.id FROM roles r, permissions p
+WHERE r.name = 'hr_manager' AND p.resource = 'employee_change_request' AND p.action = 'read'
+ON CONFLICT (role_id, permission_id) DO NOTHING;
+INSERT INTO role_permissions (role_id, permission_id)
+SELECT r.id, p.id FROM roles r, permissions p
+WHERE r.name = 'hr_manager' AND p.resource = 'employee_change_request' AND p.action = 'write'
+ON CONFLICT (role_id, permission_id) DO NOTHING;
+INSERT INTO role_permissions (role_id, permission_id)
+SELECT r.id, p.id FROM roles r, permissions p
+WHERE r.name = 'hr_manager' AND p.resource = 'employee_change_request' AND p.action = 'approve'
+ON CONFLICT (role_id, permission_id) DO NOTHING;
+INSERT INTO role_permissions (role_id, permission_id)
+SELECT r.id, p.id FROM roles r, permissions p
+WHERE r.name = 'hr_manager' AND p.resource = 'org_chart' AND p.action = 'read'
+ON CONFLICT (role_id, permission_id) DO NOTHING;
+INSERT INTO role_permissions (role_id, permission_id)
+SELECT r.id, p.id FROM roles r, permissions p
+WHERE r.name = 'hr_manager' AND p.resource = 'org_chart' AND p.action = 'write'
+ON CONFLICT (role_id, permission_id) DO NOTHING;
+INSERT INTO role_permissions (role_id, permission_id)
+SELECT r.id, p.id FROM roles r, permissions p
+WHERE r.name = 'hr_manager' AND p.resource = 'employee_document' AND p.action = 'read'
+ON CONFLICT (role_id, permission_id) DO NOTHING;
+INSERT INTO role_permissions (role_id, permission_id)
+SELECT r.id, p.id FROM roles r, permissions p
+WHERE r.name = 'hr_manager' AND p.resource = 'employee_document' AND p.action = 'write'
+ON CONFLICT (role_id, permission_id) DO NOTHING;
+INSERT INTO role_permissions (role_id, permission_id)
+SELECT r.id, p.id FROM roles r, permissions p
+WHERE r.name = 'hr_manager' AND p.resource = 'employee_document' AND p.action = 'verify'
+ON CONFLICT (role_id, permission_id) DO NOTHING;
+INSERT INTO role_permissions (role_id, permission_id)
+SELECT r.id, p.id FROM roles r, permissions p
+WHERE r.name = 'hr_manager' AND p.resource = 'employee_custom_field' AND p.action = 'read'
+ON CONFLICT (role_id, permission_id) DO NOTHING;
+INSERT INTO role_permissions (role_id, permission_id)
+SELECT r.id, p.id FROM roles r, permissions p
+WHERE r.name = 'hr_manager' AND p.resource = 'employee_custom_field' AND p.action = 'write'
+ON CONFLICT (role_id, permission_id) DO NOTHING;
+
+INSERT INTO role_permissions (role_id, permission_id)
+SELECT r.id, p.id FROM roles r, permissions p
+WHERE r.name = 'hr_staff' AND p.resource = 'employee' AND p.action = 'read'
+ON CONFLICT (role_id, permission_id) DO NOTHING;
+INSERT INTO role_permissions (role_id, permission_id)
+SELECT r.id, p.id FROM roles r, permissions p
+WHERE r.name = 'hr_staff' AND p.resource = 'employee' AND p.action = 'write'
+ON CONFLICT (role_id, permission_id) DO NOTHING;
+INSERT INTO role_permissions (role_id, permission_id)
+SELECT r.id, p.id FROM roles r, permissions p
+WHERE r.name = 'hr_staff' AND p.resource = 'employee' AND p.action = 'create'
+ON CONFLICT (role_id, permission_id) DO NOTHING;
+INSERT INTO role_permissions (role_id, permission_id)
+SELECT r.id, p.id FROM roles r, permissions p
+WHERE r.name = 'hr_staff' AND p.resource = 'employee_timeline' AND p.action = 'read'
+ON CONFLICT (role_id, permission_id) DO NOTHING;
+INSERT INTO role_permissions (role_id, permission_id)
+SELECT r.id, p.id FROM roles r, permissions p
+WHERE r.name = 'hr_staff' AND p.resource = 'employee_timeline' AND p.action = 'write'
+ON CONFLICT (role_id, permission_id) DO NOTHING;
+INSERT INTO role_permissions (role_id, permission_id)
+SELECT r.id, p.id FROM roles r, permissions p
+WHERE r.name = 'hr_staff' AND p.resource = 'employee_change_request' AND p.action = 'read'
+ON CONFLICT (role_id, permission_id) DO NOTHING;
+INSERT INTO role_permissions (role_id, permission_id)
+SELECT r.id, p.id FROM roles r, permissions p
+WHERE r.name = 'hr_staff' AND p.resource = 'employee_change_request' AND p.action = 'approve'
+ON CONFLICT (role_id, permission_id) DO NOTHING;
+INSERT INTO role_permissions (role_id, permission_id)
+SELECT r.id, p.id FROM roles r, permissions p
+WHERE r.name = 'hr_staff' AND p.resource = 'employee_document' AND p.action = 'read'
+ON CONFLICT (role_id, permission_id) DO NOTHING;
+INSERT INTO role_permissions (role_id, permission_id)
+SELECT r.id, p.id FROM roles r, permissions p
+WHERE r.name = 'hr_staff' AND p.resource = 'employee_document' AND p.action = 'write'
+ON CONFLICT (role_id, permission_id) DO NOTHING;
+INSERT INTO role_permissions (role_id, permission_id)
+SELECT r.id, p.id FROM roles r, permissions p
+WHERE r.name = 'hr_staff' AND p.resource = 'employee_document' AND p.action = 'verify'
+ON CONFLICT (role_id, permission_id) DO NOTHING;
+INSERT INTO role_permissions (role_id, permission_id)
+SELECT r.id, p.id FROM roles r, permissions p
+WHERE r.name = 'hr_staff' AND p.resource = 'employee_custom_field' AND p.action = 'read'
+ON CONFLICT (role_id, permission_id) DO NOTHING;
+
+INSERT INTO role_permissions (role_id, permission_id)
+SELECT r.id, p.id FROM roles r, permissions p
+WHERE r.name = 'manager' AND p.resource = 'employee' AND p.action = 'read'
+ON CONFLICT (role_id, permission_id) DO NOTHING;
+INSERT INTO role_permissions (role_id, permission_id)
+SELECT r.id, p.id FROM roles r, permissions p
+WHERE r.name = 'manager' AND p.resource = 'org_chart' AND p.action = 'read'
+ON CONFLICT (role_id, permission_id) DO NOTHING;
+
+INSERT INTO role_permissions (role_id, permission_id)
+SELECT r.id, p.id FROM roles r, permissions p
+WHERE r.name = 'employee' AND p.resource = 'employee' AND p.action = 'read'
+ON CONFLICT (role_id, permission_id) DO NOTHING;
+INSERT INTO role_permissions (role_id, permission_id)
+SELECT r.id, p.id FROM roles r, permissions p
+WHERE r.name = 'employee' AND p.resource = 'employee_change_request' AND p.action = 'write'
 ON CONFLICT (role_id, permission_id) DO NOTHING;

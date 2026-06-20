@@ -181,19 +181,19 @@ CREATE POLICY internal_transfer_requests_update ON internal_transfer_requests
 -- Indexes
 -- ============================================================
 
-CREATE INDEX idx_internal_jobs_company ON internal_jobs(company_id);
-CREATE INDEX idx_internal_jobs_status ON internal_jobs(status);
-CREATE INDEX idx_internal_jobs_department ON internal_jobs(department_id);
-CREATE INDEX idx_internal_applications_company ON internal_applications(company_id);
-CREATE INDEX idx_internal_applications_job ON internal_applications(job_id);
-CREATE INDEX idx_internal_applications_employee ON internal_applications(employee_id);
-CREATE INDEX idx_internal_applications_status ON internal_applications(status);
-CREATE INDEX idx_internal_mobility_prefs_company ON internal_mobility_preferences(company_id);
-CREATE INDEX idx_internal_mobility_prefs_employee ON internal_mobility_preferences(employee_id);
-CREATE INDEX idx_internal_transfer_requests_company ON internal_transfer_requests(company_id);
-CREATE INDEX idx_internal_transfer_requests_employee ON internal_transfer_requests(employee_id);
-CREATE INDEX idx_internal_transfer_requests_status ON internal_transfer_requests(status);
-CREATE INDEX idx_internal_transfer_requests_application ON internal_transfer_requests(application_id);
+CREATE INDEX IF NOT EXISTS idx_internal_jobs_company ON internal_jobs(company_id);
+CREATE INDEX IF NOT EXISTS idx_internal_jobs_status ON internal_jobs(status);
+CREATE INDEX IF NOT EXISTS idx_internal_jobs_department ON internal_jobs(department_id);
+CREATE INDEX IF NOT EXISTS idx_internal_applications_company ON internal_applications(company_id);
+CREATE INDEX IF NOT EXISTS idx_internal_applications_job ON internal_applications(job_id);
+CREATE INDEX IF NOT EXISTS idx_internal_applications_employee ON internal_applications(employee_id);
+CREATE INDEX IF NOT EXISTS idx_internal_applications_status ON internal_applications(status);
+CREATE INDEX IF NOT EXISTS idx_internal_mobility_prefs_company ON internal_mobility_preferences(company_id);
+CREATE INDEX IF NOT EXISTS idx_internal_mobility_prefs_employee ON internal_mobility_preferences(employee_id);
+CREATE INDEX IF NOT EXISTS idx_internal_transfer_requests_company ON internal_transfer_requests(company_id);
+CREATE INDEX IF NOT EXISTS idx_internal_transfer_requests_employee ON internal_transfer_requests(employee_id);
+CREATE INDEX IF NOT EXISTS idx_internal_transfer_requests_status ON internal_transfer_requests(status);
+CREATE INDEX IF NOT EXISTS idx_internal_transfer_requests_application ON internal_transfer_requests(application_id);
 
 -- ============================================================
 -- Triggers

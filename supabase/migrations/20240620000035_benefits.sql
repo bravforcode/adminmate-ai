@@ -28,9 +28,9 @@ CREATE POLICY bp_insert ON benefit_plans FOR INSERT WITH CHECK (company_id = saf
 CREATE POLICY bp_update ON benefit_plans FOR UPDATE USING (company_id = safe_user_company_id());
 CREATE POLICY bp_delete ON benefit_plans FOR DELETE USING (company_id = safe_user_company_id());
 
-CREATE INDEX idx_bp_company ON benefit_plans(company_id);
-CREATE INDEX idx_bp_type ON benefit_plans(company_id, plan_type);
-CREATE INDEX idx_bp_active ON benefit_plans(company_id, is_active);
+CREATE INDEX IF NOT EXISTS idx_bp_company ON benefit_plans(company_id);
+CREATE INDEX IF NOT EXISTS idx_bp_type ON benefit_plans(company_id, plan_type);
+CREATE INDEX IF NOT EXISTS idx_bp_active ON benefit_plans(company_id, is_active);
 
 CREATE TRIGGER update_bp_updated_at BEFORE UPDATE ON benefit_plans
   FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
@@ -54,9 +54,9 @@ CREATE POLICY ber_insert ON benefit_eligibility_rules FOR INSERT WITH CHECK (com
 CREATE POLICY ber_update ON benefit_eligibility_rules FOR UPDATE USING (company_id = safe_user_company_id());
 CREATE POLICY ber_delete ON benefit_eligibility_rules FOR DELETE USING (company_id = safe_user_company_id());
 
-CREATE INDEX idx_ber_company ON benefit_eligibility_rules(company_id);
-CREATE INDEX idx_ber_plan ON benefit_eligibility_rules(company_id, plan_id);
-CREATE INDEX idx_ber_employment ON benefit_eligibility_rules(company_id, employment_type);
+CREATE INDEX IF NOT EXISTS idx_ber_company ON benefit_eligibility_rules(company_id);
+CREATE INDEX IF NOT EXISTS idx_ber_plan ON benefit_eligibility_rules(company_id, plan_id);
+CREATE INDEX IF NOT EXISTS idx_ber_employment ON benefit_eligibility_rules(company_id, employment_type);
 
 -- 3. Benefit Enrollments
 CREATE TABLE IF NOT EXISTS benefit_enrollments (
@@ -83,10 +83,10 @@ CREATE POLICY be_insert ON benefit_enrollments FOR INSERT WITH CHECK (company_id
 CREATE POLICY be_update ON benefit_enrollments FOR UPDATE USING (company_id = safe_user_company_id());
 CREATE POLICY be_delete ON benefit_enrollments FOR DELETE USING (company_id = safe_user_company_id());
 
-CREATE INDEX idx_be_company ON benefit_enrollments(company_id);
-CREATE INDEX idx_be_plan ON benefit_enrollments(company_id, plan_id);
-CREATE INDEX idx_be_employee ON benefit_enrollments(company_id, employee_id);
-CREATE INDEX idx_be_status ON benefit_enrollments(company_id, status);
+CREATE INDEX IF NOT EXISTS idx_be_company ON benefit_enrollments(company_id);
+CREATE INDEX IF NOT EXISTS idx_be_plan ON benefit_enrollments(company_id, plan_id);
+CREATE INDEX IF NOT EXISTS idx_be_employee ON benefit_enrollments(company_id, employee_id);
+CREATE INDEX IF NOT EXISTS idx_be_status ON benefit_enrollments(company_id, status);
 
 CREATE TRIGGER update_be_updated_at BEFORE UPDATE ON benefit_enrollments
   FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
@@ -112,9 +112,9 @@ CREATE POLICY bd_insert ON benefit_dependents FOR INSERT WITH CHECK (company_id 
 CREATE POLICY bd_update ON benefit_dependents FOR UPDATE USING (company_id = safe_user_company_id());
 CREATE POLICY bd_delete ON benefit_dependents FOR DELETE USING (company_id = safe_user_company_id());
 
-CREATE INDEX idx_bd_company ON benefit_dependents(company_id);
-CREATE INDEX idx_bd_enrollment ON benefit_dependents(company_id, enrollment_id);
-CREATE INDEX idx_bd_relationship ON benefit_dependents(company_id, relationship);
+CREATE INDEX IF NOT EXISTS idx_bd_company ON benefit_dependents(company_id);
+CREATE INDEX IF NOT EXISTS idx_bd_enrollment ON benefit_dependents(company_id, enrollment_id);
+CREATE INDEX IF NOT EXISTS idx_bd_relationship ON benefit_dependents(company_id, relationship);
 
 CREATE TRIGGER update_bd_updated_at BEFORE UPDATE ON benefit_dependents
   FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
@@ -140,9 +140,9 @@ CREATE POLICY boep_insert ON benefit_open_enrollment_periods FOR INSERT WITH CHE
 CREATE POLICY boep_update ON benefit_open_enrollment_periods FOR UPDATE USING (company_id = safe_user_company_id());
 CREATE POLICY boep_delete ON benefit_open_enrollment_periods FOR DELETE USING (company_id = safe_user_company_id());
 
-CREATE INDEX idx_boep_company ON benefit_open_enrollment_periods(company_id);
-CREATE INDEX idx_boep_dates ON benefit_open_enrollment_periods(company_id, start_date, end_date);
-CREATE INDEX idx_boep_status ON benefit_open_enrollment_periods(company_id, status);
+CREATE INDEX IF NOT EXISTS idx_boep_company ON benefit_open_enrollment_periods(company_id);
+CREATE INDEX IF NOT EXISTS idx_boep_dates ON benefit_open_enrollment_periods(company_id, start_date, end_date);
+CREATE INDEX IF NOT EXISTS idx_boep_status ON benefit_open_enrollment_periods(company_id, status);
 
 CREATE TRIGGER update_boep_updated_at BEFORE UPDATE ON benefit_open_enrollment_periods
   FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();

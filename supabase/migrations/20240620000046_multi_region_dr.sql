@@ -62,22 +62,22 @@ CREATE TABLE IF NOT EXISTS disaster_recovery_plans (
 -- ============================================================
 -- Indexes
 -- ============================================================
-CREATE INDEX idx_data_residency_company ON data_residency_policies(company_id);
-CREATE INDEX idx_data_residency_region ON data_residency_policies(region);
-CREATE INDEX idx_data_residency_active ON data_residency_policies(is_active) WHERE is_active = true;
+CREATE INDEX IF NOT EXISTS idx_data_residency_company ON data_residency_policies(company_id);
+CREATE INDEX IF NOT EXISTS idx_data_residency_region ON data_residency_policies(region);
+CREATE INDEX IF NOT EXISTS idx_data_residency_active ON data_residency_policies(is_active) WHERE is_active = true;
 
-CREATE INDEX idx_backup_jobs_company ON backup_jobs(company_id);
-CREATE INDEX idx_backup_jobs_status ON backup_jobs(status);
-CREATE INDEX idx_backup_jobs_type ON backup_jobs(backup_type);
-CREATE INDEX idx_backup_jobs_created ON backup_jobs(created_at DESC);
+CREATE INDEX IF NOT EXISTS idx_backup_jobs_company ON backup_jobs(company_id);
+CREATE INDEX IF NOT EXISTS idx_backup_jobs_status ON backup_jobs(status);
+CREATE INDEX IF NOT EXISTS idx_backup_jobs_type ON backup_jobs(backup_type);
+CREATE INDEX IF NOT EXISTS idx_backup_jobs_created ON backup_jobs(created_at DESC);
 
-CREATE INDEX idx_restore_test_company ON restore_test_runs(company_id);
-CREATE INDEX idx_restore_test_backup ON restore_test_runs(backup_job_id);
-CREATE INDEX idx_restore_test_status ON restore_test_runs(status);
+CREATE INDEX IF NOT EXISTS idx_restore_test_company ON restore_test_runs(company_id);
+CREATE INDEX IF NOT EXISTS idx_restore_test_backup ON restore_test_runs(backup_job_id);
+CREATE INDEX IF NOT EXISTS idx_restore_test_status ON restore_test_runs(status);
 
-CREATE INDEX idx_dr_plans_company ON disaster_recovery_plans(company_id);
-CREATE INDEX idx_dr_plans_status ON disaster_recovery_plans(status);
-CREATE INDEX idx_dr_plans_next_test ON disaster_recovery_plans(next_test_due);
+CREATE INDEX IF NOT EXISTS idx_dr_plans_company ON disaster_recovery_plans(company_id);
+CREATE INDEX IF NOT EXISTS idx_dr_plans_status ON disaster_recovery_plans(status);
+CREATE INDEX IF NOT EXISTS idx_dr_plans_next_test ON disaster_recovery_plans(next_test_due);
 
 -- ============================================================
 -- RLS Policies

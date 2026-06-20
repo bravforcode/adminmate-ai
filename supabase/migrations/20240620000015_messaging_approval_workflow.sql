@@ -45,9 +45,9 @@ CREATE POLICY templates_delete ON message_templates
     AND safe_user_role() IN ('admin', 'hr_manager')
   );
 
-CREATE INDEX idx_templates_company ON message_templates(company_id);
-CREATE INDEX idx_templates_key ON message_templates(template_key);
-CREATE INDEX idx_templates_active ON message_templates(is_active) WHERE is_active = true;
+CREATE INDEX IF NOT EXISTS idx_templates_company ON message_templates(company_id);
+CREATE INDEX IF NOT EXISTS idx_templates_key ON message_templates(template_key);
+CREATE INDEX IF NOT EXISTS idx_templates_active ON message_templates(is_active) WHERE is_active = true;
 
 CREATE TRIGGER update_templates_updated_at
   BEFORE UPDATE ON message_templates
@@ -74,7 +74,7 @@ CREATE POLICY template_versions_read ON message_template_versions
 CREATE POLICY template_versions_insert ON message_template_versions
   FOR INSERT WITH CHECK (company_id = safe_user_company_id());
 
-CREATE INDEX idx_template_versions_template ON message_template_versions(template_id);
+CREATE INDEX IF NOT EXISTS idx_template_versions_template ON message_template_versions(template_id);
 
 -- 3. Message Drafts (approval workflow core)
 CREATE TABLE IF NOT EXISTS message_drafts (
@@ -128,10 +128,10 @@ CREATE POLICY drafts_delete ON message_drafts
     )
   );
 
-CREATE INDEX idx_drafts_company ON message_drafts(company_id);
-CREATE INDEX idx_drafts_status ON message_drafts(status);
-CREATE INDEX idx_drafts_candidate ON message_drafts(candidate_id);
-CREATE INDEX idx_drafts_created_by ON message_drafts(created_by);
+CREATE INDEX IF NOT EXISTS idx_drafts_company ON message_drafts(company_id);
+CREATE INDEX IF NOT EXISTS idx_drafts_status ON message_drafts(status);
+CREATE INDEX IF NOT EXISTS idx_drafts_candidate ON message_drafts(candidate_id);
+CREATE INDEX IF NOT EXISTS idx_drafts_created_by ON message_drafts(created_by);
 
 CREATE TRIGGER update_drafts_updated_at
   BEFORE UPDATE ON message_drafts
@@ -169,9 +169,9 @@ CREATE POLICY approvals_update ON message_approvals
     AND safe_user_role() IN ('admin', 'hr_manager')
   );
 
-CREATE INDEX idx_approvals_company ON message_approvals(company_id);
-CREATE INDEX idx_approvals_draft ON message_approvals(message_draft_id);
-CREATE INDEX idx_approvals_status ON message_approvals(approval_status);
+CREATE INDEX IF NOT EXISTS idx_approvals_company ON message_approvals(company_id);
+CREATE INDEX IF NOT EXISTS idx_approvals_draft ON message_approvals(message_draft_id);
+CREATE INDEX IF NOT EXISTS idx_approvals_status ON message_approvals(approval_status);
 
 -- 5. Message Logs (every send attempt logged)
 CREATE TABLE IF NOT EXISTS message_logs (
@@ -201,10 +201,10 @@ CREATE POLICY logs_read ON message_logs
 CREATE POLICY logs_insert ON message_logs
   FOR INSERT WITH CHECK (company_id = safe_user_company_id());
 
-CREATE INDEX idx_logs_company ON message_logs(company_id);
-CREATE INDEX idx_logs_draft ON message_logs(message_draft_id);
-CREATE INDEX idx_logs_status ON message_logs(delivery_status);
-CREATE INDEX idx_logs_created ON message_logs(created_at DESC);
+CREATE INDEX IF NOT EXISTS idx_logs_company ON message_logs(company_id);
+CREATE INDEX IF NOT EXISTS idx_logs_draft ON message_logs(message_draft_id);
+CREATE INDEX IF NOT EXISTS idx_logs_status ON message_logs(delivery_status);
+CREATE INDEX IF NOT EXISTS idx_logs_created ON message_logs(created_at DESC);
 
 -- 6. Messaging Provider Configs (non-secret metadata only)
 CREATE TABLE IF NOT EXISTS messaging_provider_configs (
@@ -236,7 +236,7 @@ CREATE POLICY provider_configs_update ON messaging_provider_configs
     AND safe_user_role() IN ('admin')
   );
 
-CREATE INDEX idx_provider_configs_company ON messaging_provider_configs(company_id);
+CREATE INDEX IF NOT EXISTS idx_provider_configs_company ON messaging_provider_configs(company_id);
 
 CREATE TRIGGER update_provider_configs_updated_at
   BEFORE UPDATE ON messaging_provider_configs

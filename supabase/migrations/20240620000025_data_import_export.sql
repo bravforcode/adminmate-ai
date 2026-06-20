@@ -24,9 +24,9 @@ CREATE POLICY ij_read ON import_jobs FOR SELECT USING (company_id = safe_user_co
 CREATE POLICY ij_insert ON import_jobs FOR INSERT WITH CHECK (company_id = safe_user_company_id());
 CREATE POLICY ij_update ON import_jobs FOR UPDATE USING (company_id = safe_user_company_id());
 
-CREATE INDEX idx_ij_company ON import_jobs(company_id);
-CREATE INDEX idx_ij_status ON import_jobs(company_id, status);
-CREATE INDEX idx_ij_entity ON import_jobs(company_id, entity_type);
+CREATE INDEX IF NOT EXISTS idx_ij_company ON import_jobs(company_id);
+CREATE INDEX IF NOT EXISTS idx_ij_status ON import_jobs(company_id, status);
+CREATE INDEX IF NOT EXISTS idx_ij_entity ON import_jobs(company_id, entity_type);
 
 CREATE TRIGGER update_ij_updated_at BEFORE UPDATE ON import_jobs
   FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
@@ -48,7 +48,7 @@ CREATE POLICY ifile_read ON import_files FOR SELECT
 CREATE POLICY ifile_insert ON import_files FOR INSERT
   WITH CHECK (import_job_id IN (SELECT id FROM import_jobs WHERE company_id = safe_user_company_id()));
 
-CREATE INDEX idx_ifile_job ON import_files(import_job_id);
+CREATE INDEX IF NOT EXISTS idx_ifile_job ON import_files(import_job_id);
 
 -- 3. Import Column Mappings
 CREATE TABLE IF NOT EXISTS import_column_mappings (
@@ -68,7 +68,7 @@ CREATE POLICY icm_insert ON import_column_mappings FOR INSERT
 CREATE POLICY icm_delete ON import_column_mappings FOR DELETE
   USING (import_job_id IN (SELECT id FROM import_jobs WHERE company_id = safe_user_company_id()));
 
-CREATE INDEX idx_icm_job ON import_column_mappings(import_job_id);
+CREATE INDEX IF NOT EXISTS idx_icm_job ON import_column_mappings(import_job_id);
 
 -- 4. Import Validation Errors
 CREATE TABLE IF NOT EXISTS import_validation_errors (
@@ -87,8 +87,8 @@ CREATE POLICY ive_read ON import_validation_errors FOR SELECT
 CREATE POLICY ive_insert ON import_validation_errors FOR INSERT
   WITH CHECK (import_job_id IN (SELECT id FROM import_jobs WHERE company_id = safe_user_company_id()));
 
-CREATE INDEX idx_ive_job ON import_validation_errors(import_job_id);
-CREATE INDEX idx_ive_row ON import_validation_errors(import_job_id, row_number);
+CREATE INDEX IF NOT EXISTS idx_ive_job ON import_validation_errors(import_job_id);
+CREATE INDEX IF NOT EXISTS idx_ive_row ON import_validation_errors(import_job_id, row_number);
 
 -- 5. Import Row Results
 CREATE TABLE IF NOT EXISTS import_row_results (
@@ -107,8 +107,8 @@ CREATE POLICY irr_read ON import_row_results FOR SELECT
 CREATE POLICY irr_insert ON import_row_results FOR INSERT
   WITH CHECK (import_job_id IN (SELECT id FROM import_jobs WHERE company_id = safe_user_company_id()));
 
-CREATE INDEX idx_irr_job ON import_row_results(import_job_id);
-CREATE INDEX idx_irr_status ON import_row_results(import_job_id, status);
+CREATE INDEX IF NOT EXISTS idx_irr_job ON import_row_results(import_job_id);
+CREATE INDEX IF NOT EXISTS idx_irr_status ON import_row_results(import_job_id, status);
 
 -- 6. Export Jobs
 CREATE TABLE IF NOT EXISTS export_jobs (
@@ -128,8 +128,8 @@ CREATE POLICY ej_read ON export_jobs FOR SELECT USING (company_id = safe_user_co
 CREATE POLICY ej_insert ON export_jobs FOR INSERT WITH CHECK (company_id = safe_user_company_id());
 CREATE POLICY ej_update ON export_jobs FOR UPDATE USING (company_id = safe_user_company_id());
 
-CREATE INDEX idx_ej_company ON export_jobs(company_id);
-CREATE INDEX idx_ej_status ON export_jobs(company_id, status);
+CREATE INDEX IF NOT EXISTS idx_ej_company ON export_jobs(company_id);
+CREATE INDEX IF NOT EXISTS idx_ej_status ON export_jobs(company_id, status);
 
 -- ============================================================
 -- RBAC Permissions: import/export

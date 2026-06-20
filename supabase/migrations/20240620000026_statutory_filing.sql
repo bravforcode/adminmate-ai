@@ -27,9 +27,9 @@ CREATE POLICY srd_read ON statutory_report_definitions FOR SELECT USING (company
 CREATE POLICY srd_insert ON statutory_report_definitions FOR INSERT WITH CHECK (company_id = safe_user_company_id());
 CREATE POLICY srd_update ON statutory_report_definitions FOR UPDATE USING (company_id = safe_user_company_id());
 
-CREATE INDEX idx_srd_company ON statutory_report_definitions(company_id);
-CREATE INDEX idx_srd_country ON statutory_report_definitions(country_code);
-CREATE INDEX idx_srd_active ON statutory_report_definitions(company_id, is_active);
+CREATE INDEX IF NOT EXISTS idx_srd_company ON statutory_report_definitions(company_id);
+CREATE INDEX IF NOT EXISTS idx_srd_country ON statutory_report_definitions(country_code);
+CREATE INDEX IF NOT EXISTS idx_srd_active ON statutory_report_definitions(company_id, is_active);
 
 CREATE TRIGGER update_srd_updated_at BEFORE UPDATE ON statutory_report_definitions
   FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
@@ -54,10 +54,10 @@ CREATE POLICY sfp_read ON statutory_filing_periods FOR SELECT USING (company_id 
 CREATE POLICY sfp_insert ON statutory_filing_periods FOR INSERT WITH CHECK (company_id = safe_user_company_id());
 CREATE POLICY sfp_update ON statutory_filing_periods FOR UPDATE USING (company_id = safe_user_company_id());
 
-CREATE INDEX idx_sfp_company ON statutory_filing_periods(company_id);
-CREATE INDEX idx_sfp_report_def ON statutory_filing_periods(report_def_id);
-CREATE INDEX idx_sfp_status ON statutory_filing_periods(company_id, status);
-CREATE INDEX idx_sfp_due ON statutory_filing_periods(due_date);
+CREATE INDEX IF NOT EXISTS idx_sfp_company ON statutory_filing_periods(company_id);
+CREATE INDEX IF NOT EXISTS idx_sfp_report_def ON statutory_filing_periods(report_def_id);
+CREATE INDEX IF NOT EXISTS idx_sfp_status ON statutory_filing_periods(company_id, status);
+CREATE INDEX IF NOT EXISTS idx_sfp_due ON statutory_filing_periods(due_date);
 
 CREATE TRIGGER update_sfp_updated_at BEFORE UPDATE ON statutory_filing_periods
   FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
@@ -82,9 +82,9 @@ CREATE POLICY sf_read ON statutory_filings FOR SELECT USING (company_id = safe_u
 CREATE POLICY sf_insert ON statutory_filings FOR INSERT WITH CHECK (company_id = safe_user_company_id());
 CREATE POLICY sf_update ON statutory_filings FOR UPDATE USING (company_id = safe_user_company_id());
 
-CREATE INDEX idx_sf_company ON statutory_filings(company_id);
-CREATE INDEX idx_sf_period ON statutory_filings(period_id);
-CREATE INDEX idx_sf_status ON statutory_filings(company_id, status);
+CREATE INDEX IF NOT EXISTS idx_sf_company ON statutory_filings(company_id);
+CREATE INDEX IF NOT EXISTS idx_sf_period ON statutory_filings(period_id);
+CREATE INDEX IF NOT EXISTS idx_sf_status ON statutory_filings(company_id, status);
 
 CREATE TRIGGER update_sf_updated_at BEFORE UPDATE ON statutory_filings
   FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
@@ -108,9 +108,9 @@ CREATE POLICY sfd_read ON statutory_filing_documents FOR SELECT USING (company_i
 CREATE POLICY sfd_insert ON statutory_filing_documents FOR INSERT WITH CHECK (company_id = safe_user_company_id());
 CREATE POLICY sfd_update ON statutory_filing_documents FOR UPDATE USING (company_id = safe_user_company_id());
 
-CREATE INDEX idx_sfd_company ON statutory_filing_documents(company_id);
-CREATE INDEX idx_sfd_filing ON statutory_filing_documents(filing_id);
-CREATE INDEX idx_sfd_document ON statutory_filing_documents(document_id);
+CREATE INDEX IF NOT EXISTS idx_sfd_company ON statutory_filing_documents(company_id);
+CREATE INDEX IF NOT EXISTS idx_sfd_filing ON statutory_filing_documents(filing_id);
+CREATE INDEX IF NOT EXISTS idx_sfd_document ON statutory_filing_documents(document_id);
 
 CREATE TRIGGER update_sfd_updated_at BEFORE UPDATE ON statutory_filing_documents
   FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
@@ -173,8 +173,13 @@ WHERE r.name = 'auditor' AND p.resource = 'statutory_filing' AND p.action = 'rea
 -- company_id that must be replaced per-tenant at runtime.
 -- ============================================================
 
-INSERT INTO statutory_report_definitions (id, company_id, report_key, name, country_code, description, frequency, is_active) VALUES
-  (gen_random_uuid(), '00000000-0000-0000-0000-000000000000', 'social_security_monthly', 'Social Security Monthly Filing (สปส.)', 'TH', 'Monthly social security contribution report for the Social Security Office. Employee and employer 5% contributions.', 'monthly', true),
-  (gen_random_uuid(), '00000000-0000-0000-0000-000000000000', 'withholding_tax_monthly', 'Withholding Tax Monthly Filing (ภ.ง.ด.1)', 'TH', 'Monthly withholding tax remittance form for the Revenue Department. Covers employee income tax deductions.', 'monthly', true),
-  (gen_random_uuid(), '00000000-0000-0000-0000-000000000000', 'pink_card_annual', 'Pink Card Annual Filing (ประกันสังคม)', 'TH', 'Annual social security registration and employee census report.', 'annually', true)
-ON CONFLICT (company_id, report_key) DO NOTHING;
+DO $$
+BEGIN
+  IF EXISTS (SELECT 1 FROM companies LIMIT 1) THEN
+    INSERT INTO statutory_report_definitions (id, company_id, report_key, name, country_code, description, frequency, is_active) VALUES
+      (gen_random_uuid(), '00000000-0000-0000-0000-000000000000', 'social_security_monthly', 'Social Security Monthly Filing (สปส.)', 'TH', 'Monthly social security contribution report for the Social Security Office. Employee and employer 5% contributions.', 'monthly', true),
+      (gen_random_uuid(), '00000000-0000-0000-0000-000000000000', 'withholding_tax_monthly', 'Withholding Tax Monthly Filing (ภ.ง.ด.1)', 'TH', 'Monthly withholding tax remittance form for the Revenue Department. Covers employee income tax deductions.', 'monthly', true),
+      (gen_random_uuid(), '00000000-0000-0000-0000-000000000000', 'pink_card_annual', 'Pink Card Annual Filing (ประกันสังคม)', 'TH', 'Annual social security registration and employee census report.', 'annually', true)
+    ON CONFLICT (company_id, report_key) DO NOTHING;
+  END IF;
+END $$;

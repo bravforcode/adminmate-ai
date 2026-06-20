@@ -25,8 +25,8 @@ CREATE POLICY hcc_insert ON hr_case_categories FOR INSERT WITH CHECK (company_id
 CREATE POLICY hcc_update ON hr_case_categories FOR UPDATE USING (company_id = safe_user_company_id());
 CREATE POLICY hcc_delete ON hr_case_categories FOR DELETE USING (company_id = safe_user_company_id());
 
-CREATE INDEX idx_hcc_company ON hr_case_categories(company_id);
-CREATE INDEX idx_hcc_active ON hr_case_categories(is_active);
+CREATE INDEX IF NOT EXISTS idx_hcc_company ON hr_case_categories(company_id);
+CREATE INDEX IF NOT EXISTS idx_hcc_active ON hr_case_categories(is_active);
 
 -- 2. HR Helpdesk Cases
 CREATE TABLE IF NOT EXISTS hr_helpdesk_cases (
@@ -66,12 +66,12 @@ CREATE POLICY hhc_insert ON hr_helpdesk_cases FOR INSERT WITH CHECK (company_id 
 CREATE POLICY hhc_update ON hr_helpdesk_cases FOR UPDATE USING (company_id = safe_user_company_id());
 CREATE POLICY hhc_delete ON hr_helpdesk_cases FOR DELETE USING (company_id = safe_user_company_id());
 
-CREATE INDEX idx_hhc_company ON hr_helpdesk_cases(company_id);
-CREATE INDEX idx_hhc_requester ON hr_helpdesk_cases(requester_id);
-CREATE INDEX idx_hhc_assignee ON hr_helpdesk_cases(assignee_id);
-CREATE INDEX idx_hhc_status ON hr_helpdesk_cases(status);
-CREATE INDEX idx_hhc_priority ON hr_helpdesk_cases(priority);
-CREATE INDEX idx_hhc_sla ON hr_helpdesk_cases(sla_due_at);
+CREATE INDEX IF NOT EXISTS idx_hhc_company ON hr_helpdesk_cases(company_id);
+CREATE INDEX IF NOT EXISTS idx_hhc_requester ON hr_helpdesk_cases(requester_id);
+CREATE INDEX IF NOT EXISTS idx_hhc_assignee ON hr_helpdesk_cases(assignee_id);
+CREATE INDEX IF NOT EXISTS idx_hhc_status ON hr_helpdesk_cases(status);
+CREATE INDEX IF NOT EXISTS idx_hhc_priority ON hr_helpdesk_cases(priority);
+CREATE INDEX IF NOT EXISTS idx_hhc_sla ON hr_helpdesk_cases(sla_due_at);
 
 CREATE TRIGGER update_hhc_updated_at BEFORE UPDATE ON hr_helpdesk_cases
   FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
@@ -121,10 +121,10 @@ CREATE POLICY hccomm_insert ON hr_case_comments FOR INSERT
 CREATE POLICY hccomm_update ON hr_case_comments FOR UPDATE USING (company_id = safe_user_company_id());
 CREATE POLICY hccomm_delete ON hr_case_comments FOR DELETE USING (company_id = safe_user_company_id());
 
-CREATE INDEX idx_hccomm_company ON hr_case_comments(company_id);
-CREATE INDEX idx_hccomm_case ON hr_case_comments(case_id);
-CREATE INDEX idx_hccomm_author ON hr_case_comments(author_id);
-CREATE INDEX idx_hccomm_internal ON hr_case_comments(is_internal);
+CREATE INDEX IF NOT EXISTS idx_hccomm_company ON hr_case_comments(company_id);
+CREATE INDEX IF NOT EXISTS idx_hccomm_case ON hr_case_comments(case_id);
+CREATE INDEX IF NOT EXISTS idx_hccomm_author ON hr_case_comments(author_id);
+CREATE INDEX IF NOT EXISTS idx_hccomm_internal ON hr_case_comments(is_internal);
 
 -- 4. Knowledge Base Articles
 CREATE TABLE IF NOT EXISTS knowledge_base_articles (
@@ -147,10 +147,10 @@ CREATE POLICY kba_insert ON knowledge_base_articles FOR INSERT WITH CHECK (compa
 CREATE POLICY kba_update ON knowledge_base_articles FOR UPDATE USING (company_id = safe_user_company_id());
 CREATE POLICY kba_delete ON knowledge_base_articles FOR DELETE USING (company_id = safe_user_company_id());
 
-CREATE INDEX idx_kba_company ON knowledge_base_articles(company_id);
-CREATE INDEX idx_kba_category ON knowledge_base_articles(category);
-CREATE INDEX idx_kba_published ON knowledge_base_articles(is_published);
-CREATE INDEX idx_kba_tags ON knowledge_base_articles USING gin(tags);
+CREATE INDEX IF NOT EXISTS idx_kba_company ON knowledge_base_articles(company_id);
+CREATE INDEX IF NOT EXISTS idx_kba_category ON knowledge_base_articles(category);
+CREATE INDEX IF NOT EXISTS idx_kba_published ON knowledge_base_articles(is_published);
+CREATE INDEX IF NOT EXISTS idx_kba_tags ON knowledge_base_articles USING gin(tags);
 
 CREATE TRIGGER update_kba_updated_at BEFORE UPDATE ON knowledge_base_articles
   FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();

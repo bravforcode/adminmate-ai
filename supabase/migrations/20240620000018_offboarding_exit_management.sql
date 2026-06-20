@@ -26,7 +26,7 @@ CREATE POLICY obt_insert ON offboarding_templates FOR INSERT WITH CHECK (company
 CREATE POLICY obt_update ON offboarding_templates FOR UPDATE USING (company_id = safe_user_company_id());
 CREATE POLICY obt_delete ON offboarding_templates FOR DELETE USING (company_id = safe_user_company_id() AND safe_user_role() IN ('admin','hr_manager'));
 
-CREATE INDEX idx_obt_company ON offboarding_templates(company_id);
+CREATE INDEX IF NOT EXISTS idx_obt_company ON offboarding_templates(company_id);
 
 CREATE TRIGGER update_obt_updated_at BEFORE UPDATE ON offboarding_templates
   FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
@@ -55,7 +55,7 @@ CREATE POLICY obti_insert ON offboarding_template_items FOR INSERT WITH CHECK (c
 CREATE POLICY obti_update ON offboarding_template_items FOR UPDATE USING (company_id = safe_user_company_id());
 CREATE POLICY obti_delete ON offboarding_template_items FOR DELETE USING (company_id = safe_user_company_id());
 
-CREATE INDEX idx_obti_template ON offboarding_template_items(template_id);
+CREATE INDEX IF NOT EXISTS idx_obti_template ON offboarding_template_items(template_id);
 
 CREATE TRIGGER update_obti_updated_at BEFORE UPDATE ON offboarding_template_items
   FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
@@ -89,9 +89,9 @@ CREATE POLICY obc_read ON offboarding_cases FOR SELECT USING (company_id = safe_
 CREATE POLICY obc_insert ON offboarding_cases FOR INSERT WITH CHECK (company_id = safe_user_company_id());
 CREATE POLICY obc_update ON offboarding_cases FOR UPDATE USING (company_id = safe_user_company_id());
 
-CREATE INDEX idx_obc_company ON offboarding_cases(company_id);
-CREATE INDEX idx_obc_employee ON offboarding_cases(employee_user_id);
-CREATE INDEX idx_obc_status ON offboarding_cases(status);
+CREATE INDEX IF NOT EXISTS idx_obc_company ON offboarding_cases(company_id);
+CREATE INDEX IF NOT EXISTS idx_obc_employee ON offboarding_cases(employee_user_id);
+CREATE INDEX IF NOT EXISTS idx_obc_status ON offboarding_cases(status);
 
 CREATE TRIGGER update_obc_updated_at BEFORE UPDATE ON offboarding_cases
   FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
@@ -124,8 +124,8 @@ CREATE POLICY obci_read ON offboarding_case_items FOR SELECT USING (company_id =
 CREATE POLICY obci_insert ON offboarding_case_items FOR INSERT WITH CHECK (company_id = safe_user_company_id());
 CREATE POLICY obci_update ON offboarding_case_items FOR UPDATE USING (company_id = safe_user_company_id());
 
-CREATE INDEX idx_obci_case ON offboarding_case_items(offboarding_case_id);
-CREATE INDEX idx_obci_status ON offboarding_case_items(status);
+CREATE INDEX IF NOT EXISTS idx_obci_case ON offboarding_case_items(offboarding_case_id);
+CREATE INDEX IF NOT EXISTS idx_obci_status ON offboarding_case_items(status);
 
 CREATE TRIGGER update_obci_updated_at BEFORE UPDATE ON offboarding_case_items
   FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
@@ -152,7 +152,7 @@ CREATE POLICY obd_read ON offboarding_documents FOR SELECT USING (company_id = s
 CREATE POLICY obd_insert ON offboarding_documents FOR INSERT WITH CHECK (company_id = safe_user_company_id());
 CREATE POLICY obd_update ON offboarding_documents FOR UPDATE USING (company_id = safe_user_company_id());
 
-CREATE INDEX idx_obd_case ON offboarding_documents(offboarding_case_id);
+CREATE INDEX IF NOT EXISTS idx_obd_case ON offboarding_documents(offboarding_case_id);
 
 CREATE TRIGGER update_obd_updated_at BEFORE UPDATE ON offboarding_documents
   FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
@@ -184,7 +184,7 @@ CREATE POLICY obar_read ON offboarding_asset_returns FOR SELECT USING (company_i
 CREATE POLICY obar_insert ON offboarding_asset_returns FOR INSERT WITH CHECK (company_id = safe_user_company_id());
 CREATE POLICY obar_update ON offboarding_asset_returns FOR UPDATE USING (company_id = safe_user_company_id());
 
-CREATE INDEX idx_obar_case ON offboarding_asset_returns(offboarding_case_id);
+CREATE INDEX IF NOT EXISTS idx_obar_case ON offboarding_asset_returns(offboarding_case_id);
 
 CREATE TRIGGER update_obar_updated_at BEFORE UPDATE ON offboarding_asset_returns
   FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
@@ -213,7 +213,7 @@ CREATE POLICY obar2_read ON offboarding_access_revocations FOR SELECT USING (com
 CREATE POLICY obar2_insert ON offboarding_access_revocations FOR INSERT WITH CHECK (company_id = safe_user_company_id());
 CREATE POLICY obar2_update ON offboarding_access_revocations FOR UPDATE USING (company_id = safe_user_company_id());
 
-CREATE INDEX idx_obar2_case ON offboarding_access_revocations(offboarding_case_id);
+CREATE INDEX IF NOT EXISTS idx_obar2_case ON offboarding_access_revocations(offboarding_case_id);
 
 CREATE TRIGGER update_obar2_updated_at BEFORE UPDATE ON offboarding_access_revocations
   FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
@@ -242,7 +242,7 @@ CREATE POLICY ei_read ON exit_interviews FOR SELECT USING (company_id = safe_use
 CREATE POLICY ei_insert ON exit_interviews FOR INSERT WITH CHECK (company_id = safe_user_company_id());
 CREATE POLICY ei_update ON exit_interviews FOR UPDATE USING (company_id = safe_user_company_id());
 
-CREATE INDEX idx_ei_case ON exit_interviews(offboarding_case_id);
+CREATE INDEX IF NOT EXISTS idx_ei_case ON exit_interviews(offboarding_case_id);
 
 CREATE TRIGGER update_ei_updated_at BEFORE UPDATE ON exit_interviews
   FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
@@ -271,7 +271,7 @@ CREATE POLICY fsr_read ON final_settlement_readiness FOR SELECT USING (company_i
 CREATE POLICY fsr_insert ON final_settlement_readiness FOR INSERT WITH CHECK (company_id = safe_user_company_id());
 CREATE POLICY fsr_update ON final_settlement_readiness FOR UPDATE USING (company_id = safe_user_company_id());
 
-CREATE INDEX idx_fsr_case ON final_settlement_readiness(offboarding_case_id);
+CREATE INDEX IF NOT EXISTS idx_fsr_case ON final_settlement_readiness(offboarding_case_id);
 
 CREATE TRIGGER update_fsr_updated_at BEFORE UPDATE ON final_settlement_readiness
   FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
@@ -285,39 +285,203 @@ WHERE NOT EXISTS (
 );
 
 -- 11. RBAC Permissions for offboarding
-INSERT INTO permissions (id, resource, action, description) VALUES
-  ('offboarding_read', 'offboarding', 'read', 'View offboarding cases'),
-  ('offboarding_write', 'offboarding', 'write', 'Create and edit offboarding'),
-  ('offboarding_approve', 'offboarding', 'approve', 'Approve offboarding completion'),
-  ('offboarding_override', 'offboarding', 'override', 'Override offboarding completion requirements'),
-  ('offboarding_template_read', 'offboarding_template', 'read', 'View offboarding templates'),
-  ('offboarding_template_write', 'offboarding_template', 'write', 'Create and edit offboarding templates'),
-  ('offboarding_asset_return', 'offboarding_asset', 'return', 'Mark assets as returned'),
-  ('offboarding_access_revoke', 'offboarding_access', 'revoke', 'Revoke employee access'),
-  ('exit_interview_read', 'exit_interview', 'read', 'View exit interviews'),
-  ('exit_interview_write', 'exit_interview', 'write', 'Create and complete exit interviews'),
-  ('final_settlement_read', 'final_settlement', 'read', 'View final settlement readiness'),
-  ('final_settlement_write', 'final_settlement', 'write', 'Edit final settlement readiness'),
-  ('final_settlement_approve', 'final_settlement', 'approve', 'Approve final settlement readiness')
-ON CONFLICT (id) DO NOTHING;
+INSERT INTO permissions (resource, action, description) VALUES
+  ('offboarding', 'read', 'View offboarding cases'),
+  ('offboarding', 'write', 'Create and edit offboarding'),
+  ('offboarding', 'approve', 'Approve offboarding completion'),
+  ('offboarding', 'override', 'Override offboarding completion requirements'),
+  ('offboarding_template', 'read', 'View offboarding templates'),
+  ('offboarding_template', 'write', 'Create and edit offboarding templates'),
+  ('offboarding_asset', 'return', 'Mark assets as returned'),
+  ('offboarding_access', 'revoke', 'Revoke employee access'),
+  ('exit_interview', 'read', 'View exit interviews'),
+  ('exit_interview', 'write', 'Create and complete exit interviews'),
+  ('final_settlement', 'read', 'View final settlement readiness'),
+  ('final_settlement', 'write', 'Edit final settlement readiness'),
+  ('final_settlement', 'approve', 'Approve final settlement readiness')
+ON CONFLICT (resource, action) DO NOTHING;
 
-INSERT INTO role_permissions (role_id, permission_id) VALUES
-  ('owner', 'offboarding_read'), ('owner', 'offboarding_write'), ('owner', 'offboarding_approve'),
-  ('owner', 'offboarding_override'), ('owner', 'offboarding_template_read'), ('owner', 'offboarding_template_write'),
-  ('owner', 'offboarding_asset_return'), ('owner', 'offboarding_access_revoke'),
-  ('owner', 'exit_interview_read'), ('owner', 'exit_interview_write'),
-  ('owner', 'final_settlement_read'), ('owner', 'final_settlement_write'), ('owner', 'final_settlement_approve'),
-  ('admin', 'offboarding_read'), ('admin', 'offboarding_write'), ('admin', 'offboarding_approve'),
-  ('admin', 'offboarding_override'), ('admin', 'offboarding_template_read'), ('admin', 'offboarding_template_write'),
-  ('admin', 'offboarding_asset_return'), ('admin', 'offboarding_access_revoke'),
-  ('admin', 'exit_interview_read'), ('admin', 'exit_interview_write'),
-  ('admin', 'final_settlement_read'), ('admin', 'final_settlement_write'), ('admin', 'final_settlement_approve'),
-  ('hr_manager', 'offboarding_read'), ('hr_manager', 'offboarding_write'), ('hr_manager', 'offboarding_approve'),
-  ('hr_manager', 'offboarding_template_read'), ('hr_manager', 'offboarding_template_write'),
-  ('hr_manager', 'offboarding_asset_return'), ('hr_manager', 'offboarding_access_revoke'),
-  ('hr_manager', 'exit_interview_read'), ('hr_manager', 'exit_interview_write'),
-  ('hr_manager', 'final_settlement_read'), ('hr_manager', 'final_settlement_write'), ('hr_manager', 'final_settlement_approve'),
-  ('hr_staff', 'offboarding_read'), ('hr_staff', 'offboarding_write'),
-  ('hr_staff', 'offboarding_asset_return'), ('hr_staff', 'exit_interview_read'), ('hr_staff', 'exit_interview_write'),
-  ('manager', 'offboarding_read'), ('manager', 'exit_interview_read')
+INSERT INTO role_permissions (role_id, permission_id)
+SELECT r.id, p.id FROM roles r, permissions p
+WHERE r.name = 'owner' AND p.resource = 'offboarding' AND p.action = 'read'
+ON CONFLICT (role_id, permission_id) DO NOTHING;
+INSERT INTO role_permissions (role_id, permission_id)
+SELECT r.id, p.id FROM roles r, permissions p
+WHERE r.name = 'owner' AND p.resource = 'offboarding' AND p.action = 'write'
+ON CONFLICT (role_id, permission_id) DO NOTHING;
+INSERT INTO role_permissions (role_id, permission_id)
+SELECT r.id, p.id FROM roles r, permissions p
+WHERE r.name = 'owner' AND p.resource = 'offboarding' AND p.action = 'approve'
+ON CONFLICT (role_id, permission_id) DO NOTHING;
+INSERT INTO role_permissions (role_id, permission_id)
+SELECT r.id, p.id FROM roles r, permissions p
+WHERE r.name = 'owner' AND p.resource = 'offboarding' AND p.action = 'override'
+ON CONFLICT (role_id, permission_id) DO NOTHING;
+INSERT INTO role_permissions (role_id, permission_id)
+SELECT r.id, p.id FROM roles r, permissions p
+WHERE r.name = 'owner' AND p.resource = 'offboarding_template' AND p.action = 'read'
+ON CONFLICT (role_id, permission_id) DO NOTHING;
+INSERT INTO role_permissions (role_id, permission_id)
+SELECT r.id, p.id FROM roles r, permissions p
+WHERE r.name = 'owner' AND p.resource = 'offboarding_template' AND p.action = 'write'
+ON CONFLICT (role_id, permission_id) DO NOTHING;
+INSERT INTO role_permissions (role_id, permission_id)
+SELECT r.id, p.id FROM roles r, permissions p
+WHERE r.name = 'owner' AND p.resource = 'offboarding_asset' AND p.action = 'return'
+ON CONFLICT (role_id, permission_id) DO NOTHING;
+INSERT INTO role_permissions (role_id, permission_id)
+SELECT r.id, p.id FROM roles r, permissions p
+WHERE r.name = 'owner' AND p.resource = 'offboarding_access' AND p.action = 'revoke'
+ON CONFLICT (role_id, permission_id) DO NOTHING;
+INSERT INTO role_permissions (role_id, permission_id)
+SELECT r.id, p.id FROM roles r, permissions p
+WHERE r.name = 'owner' AND p.resource = 'exit_interview' AND p.action = 'read'
+ON CONFLICT (role_id, permission_id) DO NOTHING;
+INSERT INTO role_permissions (role_id, permission_id)
+SELECT r.id, p.id FROM roles r, permissions p
+WHERE r.name = 'owner' AND p.resource = 'exit_interview' AND p.action = 'write'
+ON CONFLICT (role_id, permission_id) DO NOTHING;
+INSERT INTO role_permissions (role_id, permission_id)
+SELECT r.id, p.id FROM roles r, permissions p
+WHERE r.name = 'owner' AND p.resource = 'final_settlement' AND p.action = 'read'
+ON CONFLICT (role_id, permission_id) DO NOTHING;
+INSERT INTO role_permissions (role_id, permission_id)
+SELECT r.id, p.id FROM roles r, permissions p
+WHERE r.name = 'owner' AND p.resource = 'final_settlement' AND p.action = 'write'
+ON CONFLICT (role_id, permission_id) DO NOTHING;
+INSERT INTO role_permissions (role_id, permission_id)
+SELECT r.id, p.id FROM roles r, permissions p
+WHERE r.name = 'owner' AND p.resource = 'final_settlement' AND p.action = 'approve'
+ON CONFLICT (role_id, permission_id) DO NOTHING;
+
+INSERT INTO role_permissions (role_id, permission_id)
+SELECT r.id, p.id FROM roles r, permissions p
+WHERE r.name = 'admin' AND p.resource = 'offboarding' AND p.action = 'read'
+ON CONFLICT (role_id, permission_id) DO NOTHING;
+INSERT INTO role_permissions (role_id, permission_id)
+SELECT r.id, p.id FROM roles r, permissions p
+WHERE r.name = 'admin' AND p.resource = 'offboarding' AND p.action = 'write'
+ON CONFLICT (role_id, permission_id) DO NOTHING;
+INSERT INTO role_permissions (role_id, permission_id)
+SELECT r.id, p.id FROM roles r, permissions p
+WHERE r.name = 'admin' AND p.resource = 'offboarding' AND p.action = 'approve'
+ON CONFLICT (role_id, permission_id) DO NOTHING;
+INSERT INTO role_permissions (role_id, permission_id)
+SELECT r.id, p.id FROM roles r, permissions p
+WHERE r.name = 'admin' AND p.resource = 'offboarding' AND p.action = 'override'
+ON CONFLICT (role_id, permission_id) DO NOTHING;
+INSERT INTO role_permissions (role_id, permission_id)
+SELECT r.id, p.id FROM roles r, permissions p
+WHERE r.name = 'admin' AND p.resource = 'offboarding_template' AND p.action = 'read'
+ON CONFLICT (role_id, permission_id) DO NOTHING;
+INSERT INTO role_permissions (role_id, permission_id)
+SELECT r.id, p.id FROM roles r, permissions p
+WHERE r.name = 'admin' AND p.resource = 'offboarding_template' AND p.action = 'write'
+ON CONFLICT (role_id, permission_id) DO NOTHING;
+INSERT INTO role_permissions (role_id, permission_id)
+SELECT r.id, p.id FROM roles r, permissions p
+WHERE r.name = 'admin' AND p.resource = 'offboarding_asset' AND p.action = 'return'
+ON CONFLICT (role_id, permission_id) DO NOTHING;
+INSERT INTO role_permissions (role_id, permission_id)
+SELECT r.id, p.id FROM roles r, permissions p
+WHERE r.name = 'admin' AND p.resource = 'offboarding_access' AND p.action = 'revoke'
+ON CONFLICT (role_id, permission_id) DO NOTHING;
+INSERT INTO role_permissions (role_id, permission_id)
+SELECT r.id, p.id FROM roles r, permissions p
+WHERE r.name = 'admin' AND p.resource = 'exit_interview' AND p.action = 'read'
+ON CONFLICT (role_id, permission_id) DO NOTHING;
+INSERT INTO role_permissions (role_id, permission_id)
+SELECT r.id, p.id FROM roles r, permissions p
+WHERE r.name = 'admin' AND p.resource = 'exit_interview' AND p.action = 'write'
+ON CONFLICT (role_id, permission_id) DO NOTHING;
+INSERT INTO role_permissions (role_id, permission_id)
+SELECT r.id, p.id FROM roles r, permissions p
+WHERE r.name = 'admin' AND p.resource = 'final_settlement' AND p.action = 'read'
+ON CONFLICT (role_id, permission_id) DO NOTHING;
+INSERT INTO role_permissions (role_id, permission_id)
+SELECT r.id, p.id FROM roles r, permissions p
+WHERE r.name = 'admin' AND p.resource = 'final_settlement' AND p.action = 'write'
+ON CONFLICT (role_id, permission_id) DO NOTHING;
+INSERT INTO role_permissions (role_id, permission_id)
+SELECT r.id, p.id FROM roles r, permissions p
+WHERE r.name = 'admin' AND p.resource = 'final_settlement' AND p.action = 'approve'
+ON CONFLICT (role_id, permission_id) DO NOTHING;
+
+INSERT INTO role_permissions (role_id, permission_id)
+SELECT r.id, p.id FROM roles r, permissions p
+WHERE r.name = 'hr_manager' AND p.resource = 'offboarding' AND p.action = 'read'
+ON CONFLICT (role_id, permission_id) DO NOTHING;
+INSERT INTO role_permissions (role_id, permission_id)
+SELECT r.id, p.id FROM roles r, permissions p
+WHERE r.name = 'hr_manager' AND p.resource = 'offboarding' AND p.action = 'write'
+ON CONFLICT (role_id, permission_id) DO NOTHING;
+INSERT INTO role_permissions (role_id, permission_id)
+SELECT r.id, p.id FROM roles r, permissions p
+WHERE r.name = 'hr_manager' AND p.resource = 'offboarding' AND p.action = 'approve'
+ON CONFLICT (role_id, permission_id) DO NOTHING;
+INSERT INTO role_permissions (role_id, permission_id)
+SELECT r.id, p.id FROM roles r, permissions p
+WHERE r.name = 'hr_manager' AND p.resource = 'offboarding_template' AND p.action = 'read'
+ON CONFLICT (role_id, permission_id) DO NOTHING;
+INSERT INTO role_permissions (role_id, permission_id)
+SELECT r.id, p.id FROM roles r, permissions p
+WHERE r.name = 'hr_manager' AND p.resource = 'offboarding_template' AND p.action = 'write'
+ON CONFLICT (role_id, permission_id) DO NOTHING;
+INSERT INTO role_permissions (role_id, permission_id)
+SELECT r.id, p.id FROM roles r, permissions p
+WHERE r.name = 'hr_manager' AND p.resource = 'offboarding_asset' AND p.action = 'return'
+ON CONFLICT (role_id, permission_id) DO NOTHING;
+INSERT INTO role_permissions (role_id, permission_id)
+SELECT r.id, p.id FROM roles r, permissions p
+WHERE r.name = 'hr_manager' AND p.resource = 'offboarding_access' AND p.action = 'revoke'
+ON CONFLICT (role_id, permission_id) DO NOTHING;
+INSERT INTO role_permissions (role_id, permission_id)
+SELECT r.id, p.id FROM roles r, permissions p
+WHERE r.name = 'hr_manager' AND p.resource = 'exit_interview' AND p.action = 'read'
+ON CONFLICT (role_id, permission_id) DO NOTHING;
+INSERT INTO role_permissions (role_id, permission_id)
+SELECT r.id, p.id FROM roles r, permissions p
+WHERE r.name = 'hr_manager' AND p.resource = 'exit_interview' AND p.action = 'write'
+ON CONFLICT (role_id, permission_id) DO NOTHING;
+INSERT INTO role_permissions (role_id, permission_id)
+SELECT r.id, p.id FROM roles r, permissions p
+WHERE r.name = 'hr_manager' AND p.resource = 'final_settlement' AND p.action = 'read'
+ON CONFLICT (role_id, permission_id) DO NOTHING;
+INSERT INTO role_permissions (role_id, permission_id)
+SELECT r.id, p.id FROM roles r, permissions p
+WHERE r.name = 'hr_manager' AND p.resource = 'final_settlement' AND p.action = 'write'
+ON CONFLICT (role_id, permission_id) DO NOTHING;
+INSERT INTO role_permissions (role_id, permission_id)
+SELECT r.id, p.id FROM roles r, permissions p
+WHERE r.name = 'hr_manager' AND p.resource = 'final_settlement' AND p.action = 'approve'
+ON CONFLICT (role_id, permission_id) DO NOTHING;
+
+INSERT INTO role_permissions (role_id, permission_id)
+SELECT r.id, p.id FROM roles r, permissions p
+WHERE r.name = 'hr_staff' AND p.resource = 'offboarding' AND p.action = 'read'
+ON CONFLICT (role_id, permission_id) DO NOTHING;
+INSERT INTO role_permissions (role_id, permission_id)
+SELECT r.id, p.id FROM roles r, permissions p
+WHERE r.name = 'hr_staff' AND p.resource = 'offboarding' AND p.action = 'write'
+ON CONFLICT (role_id, permission_id) DO NOTHING;
+INSERT INTO role_permissions (role_id, permission_id)
+SELECT r.id, p.id FROM roles r, permissions p
+WHERE r.name = 'hr_staff' AND p.resource = 'offboarding_asset' AND p.action = 'return'
+ON CONFLICT (role_id, permission_id) DO NOTHING;
+INSERT INTO role_permissions (role_id, permission_id)
+SELECT r.id, p.id FROM roles r, permissions p
+WHERE r.name = 'hr_staff' AND p.resource = 'exit_interview' AND p.action = 'read'
+ON CONFLICT (role_id, permission_id) DO NOTHING;
+INSERT INTO role_permissions (role_id, permission_id)
+SELECT r.id, p.id FROM roles r, permissions p
+WHERE r.name = 'hr_staff' AND p.resource = 'exit_interview' AND p.action = 'write'
+ON CONFLICT (role_id, permission_id) DO NOTHING;
+
+INSERT INTO role_permissions (role_id, permission_id)
+SELECT r.id, p.id FROM roles r, permissions p
+WHERE r.name = 'manager' AND p.resource = 'offboarding' AND p.action = 'read'
+ON CONFLICT (role_id, permission_id) DO NOTHING;
+INSERT INTO role_permissions (role_id, permission_id)
+SELECT r.id, p.id FROM roles r, permissions p
+WHERE r.name = 'manager' AND p.resource = 'exit_interview' AND p.action = 'read'
 ON CONFLICT (role_id, permission_id) DO NOTHING;

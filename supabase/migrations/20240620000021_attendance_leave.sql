@@ -30,10 +30,10 @@ CREATE POLICY att_read ON attendance_records FOR SELECT USING (company_id = safe
 CREATE POLICY att_insert ON attendance_records FOR INSERT WITH CHECK (company_id = safe_user_company_id());
 CREATE POLICY att_update ON attendance_records FOR UPDATE USING (company_id = safe_user_company_id());
 
-CREATE INDEX idx_att_company ON attendance_records(company_id);
-CREATE INDEX idx_att_employee ON attendance_records(employee_id);
-CREATE INDEX idx_att_work_date ON attendance_records(work_date);
-CREATE INDEX idx_att_company_date ON attendance_records(company_id, work_date);
+CREATE INDEX IF NOT EXISTS idx_att_company ON attendance_records(company_id);
+CREATE INDEX IF NOT EXISTS idx_att_employee ON attendance_records(employee_id);
+CREATE INDEX IF NOT EXISTS idx_att_work_date ON attendance_records(work_date);
+CREATE INDEX IF NOT EXISTS idx_att_company_date ON attendance_records(company_id, work_date);
 
 CREATE TRIGGER update_att_updated_at BEFORE UPDATE ON attendance_records
   FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
@@ -62,9 +62,9 @@ CREATE POLICY att_corr_read ON attendance_corrections FOR SELECT USING (company_
 CREATE POLICY att_corr_insert ON attendance_corrections FOR INSERT WITH CHECK (company_id = safe_user_company_id());
 CREATE POLICY att_corr_update ON attendance_corrections FOR UPDATE USING (company_id = safe_user_company_id());
 
-CREATE INDEX idx_att_corr_company ON attendance_corrections(company_id);
-CREATE INDEX idx_att_corr_record ON attendance_corrections(attendance_record_id);
-CREATE INDEX idx_att_corr_status ON attendance_corrections(status);
+CREATE INDEX IF NOT EXISTS idx_att_corr_company ON attendance_corrections(company_id);
+CREATE INDEX IF NOT EXISTS idx_att_corr_record ON attendance_corrections(attendance_record_id);
+CREATE INDEX IF NOT EXISTS idx_att_corr_status ON attendance_corrections(status);
 
 CREATE TRIGGER update_att_corr_updated_at BEFORE UPDATE ON attendance_corrections
   FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
@@ -93,8 +93,8 @@ CREATE POLICY lt_read ON leave_types FOR SELECT USING (company_id = safe_user_co
 CREATE POLICY lt_insert ON leave_types FOR INSERT WITH CHECK (company_id = safe_user_company_id());
 CREATE POLICY lt_update ON leave_types FOR UPDATE USING (company_id = safe_user_company_id());
 
-CREATE INDEX idx_lt_company ON leave_types(company_id);
-CREATE INDEX idx_lt_code ON leave_types(company_id, code);
+CREATE INDEX IF NOT EXISTS idx_lt_company ON leave_types(company_id);
+CREATE INDEX IF NOT EXISTS idx_lt_code ON leave_types(company_id, code);
 
 CREATE TRIGGER update_lt_updated_at BEFORE UPDATE ON leave_types
   FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
@@ -121,9 +121,9 @@ CREATE POLICY lb_read ON leave_balances FOR SELECT USING (company_id = safe_user
 CREATE POLICY lb_insert ON leave_balances FOR INSERT WITH CHECK (company_id = safe_user_company_id());
 CREATE POLICY lb_update ON leave_balances FOR UPDATE USING (company_id = safe_user_company_id());
 
-CREATE INDEX idx_lb_company ON leave_balances(company_id);
-CREATE INDEX idx_lb_employee ON leave_balances(employee_id);
-CREATE INDEX idx_lb_type ON leave_balances(leave_type_id);
+CREATE INDEX IF NOT EXISTS idx_lb_company ON leave_balances(company_id);
+CREATE INDEX IF NOT EXISTS idx_lb_employee ON leave_balances(employee_id);
+CREATE INDEX IF NOT EXISTS idx_lb_type ON leave_balances(leave_type_id);
 
 CREATE TRIGGER update_lb_updated_at BEFORE UPDATE ON leave_balances
   FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
@@ -154,11 +154,11 @@ CREATE POLICY lr_read ON leave_requests FOR SELECT USING (company_id = safe_user
 CREATE POLICY lr_insert ON leave_requests FOR INSERT WITH CHECK (company_id = safe_user_company_id());
 CREATE POLICY lr_update ON leave_requests FOR UPDATE USING (company_id = safe_user_company_id());
 
-CREATE INDEX idx_lr_company ON leave_requests(company_id);
-CREATE INDEX idx_lr_employee ON leave_requests(employee_id);
-CREATE INDEX idx_lr_type ON leave_requests(leave_type_id);
-CREATE INDEX idx_lr_status ON leave_requests(status);
-CREATE INDEX idx_lr_dates ON leave_requests(start_date, end_date);
+CREATE INDEX IF NOT EXISTS idx_lr_company ON leave_requests(company_id);
+CREATE INDEX IF NOT EXISTS idx_lr_employee ON leave_requests(employee_id);
+CREATE INDEX IF NOT EXISTS idx_lr_type ON leave_requests(leave_type_id);
+CREATE INDEX IF NOT EXISTS idx_lr_status ON leave_requests(status);
+CREATE INDEX IF NOT EXISTS idx_lr_dates ON leave_requests(start_date, end_date);
 
 CREATE TRIGGER update_lr_updated_at BEFORE UPDATE ON leave_requests
   FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
@@ -182,8 +182,8 @@ CREATE POLICY hc_read ON holiday_calendars FOR SELECT USING (company_id = safe_u
 CREATE POLICY hc_insert ON holiday_calendars FOR INSERT WITH CHECK (company_id = safe_user_company_id());
 CREATE POLICY hc_update ON holiday_calendars FOR UPDATE USING (company_id = safe_user_company_id());
 
-CREATE INDEX idx_hc_company ON holiday_calendars(company_id);
-CREATE INDEX idx_hc_year ON holiday_calendars(company_id, year);
+CREATE INDEX IF NOT EXISTS idx_hc_company ON holiday_calendars(company_id);
+CREATE INDEX IF NOT EXISTS idx_hc_year ON holiday_calendars(company_id, year);
 
 CREATE TRIGGER update_hc_updated_at BEFORE UPDATE ON holiday_calendars
   FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
@@ -207,9 +207,9 @@ CREATE POLICY hcd_read ON holiday_calendar_days FOR SELECT USING (company_id = s
 CREATE POLICY hcd_insert ON holiday_calendar_days FOR INSERT WITH CHECK (company_id = safe_user_company_id());
 CREATE POLICY hcd_delete ON holiday_calendar_days FOR DELETE USING (company_id = safe_user_company_id());
 
-CREATE INDEX idx_hcd_company ON holiday_calendar_days(company_id);
-CREATE INDEX idx_hcd_calendar ON holiday_calendar_days(calendar_id);
-CREATE INDEX idx_hcd_date ON holiday_calendar_days(holiday_date);
+CREATE INDEX IF NOT EXISTS idx_hcd_company ON holiday_calendar_days(company_id);
+CREATE INDEX IF NOT EXISTS idx_hcd_calendar ON holiday_calendar_days(calendar_id);
+CREATE INDEX IF NOT EXISTS idx_hcd_date ON holiday_calendar_days(holiday_date);
 
 -- 8. RBAC: add leave_approve permission
 INSERT INTO permissions (resource, action, display_name) VALUES
@@ -225,16 +225,21 @@ WHERE p.resource = 'leave' AND p.action = 'approve'
 ON CONFLICT DO NOTHING;
 
 -- 9. Seed Thailand public holidays 2024 for default calendar
-INSERT INTO leave_types (company_id, name, name_th, code, description, is_paid, max_days_per_year, carry_over_enabled, requires_approval)
-SELECT '00000000-0000-0000-0000-000000000000', v.name, v.name_th, v.code, v.description, v.is_paid, v.max_days, v.carry_over, v.requires_approval
-FROM (VALUES
-  ('Annual Leave',         'ลากิจ',          'annual_leave',   'Paid annual leave',            true,  15, false, true),
-  ('Sick Leave',           'ลาป่วย',         'sick_leave',     'Medical leave',                true,  30, false, false),
-  ('Personal Leave',       'ลากิจส่วนตัว',    'personal_leave', 'Personal affairs leave',       true,   3, false, true),
-  ('Maternity Leave',      'ลาคลอด',         'maternity_leave','Maternity leave',              true,  90, false, false),
-  ('Unpaid Leave',         'ลาไม่รับค่าจ้าง',  'unpaid_leave',   'Unpaid leave',                 false,  0, false, true),
-  ('Ordination Leave',     'ลาบวช',          'ordination_leave','Buddhist ordination leave',   true,  15, false, false)
-) AS v(name, name_th, code, description, is_paid, max_days, carry_over, requires_approval)
-WHERE NOT EXISTS (
-  SELECT 1 FROM leave_types WHERE company_id = '00000000-0000-0000-0000-000000000000'
-);
+DO $$
+BEGIN
+  IF EXISTS (SELECT 1 FROM companies LIMIT 1) THEN
+    INSERT INTO leave_types (company_id, name, name_th, code, description, is_paid, max_days_per_year, carry_over_enabled, requires_approval)
+    SELECT '00000000-0000-0000-0000-000000000000', v.name, v.name_th, v.code, v.description, v.is_paid, v.max_days, v.carry_over, v.requires_approval
+    FROM (VALUES
+      ('Annual Leave',         'ลากิจ',          'annual_leave',   'Paid annual leave',            true,  15, false, true),
+      ('Sick Leave',           'ลาป่วย',         'sick_leave',     'Medical leave',                true,  30, false, false),
+      ('Personal Leave',       'ลากิจส่วนตัว',    'personal_leave', 'Personal affairs leave',       true,   3, false, true),
+      ('Maternity Leave',      'ลาคลอด',         'maternity_leave','Maternity leave',              true,  90, false, false),
+      ('Unpaid Leave',         'ลาไม่รับค่าจ้าง',  'unpaid_leave',   'Unpaid leave',                 false,  0, false, true),
+      ('Ordination Leave',     'ลาบวช',          'ordination_leave','Buddhist ordination leave',   true,  15, false, false)
+    ) AS v(name, name_th, code, description, is_paid, max_days, carry_over, requires_approval)
+    WHERE NOT EXISTS (
+      SELECT 1 FROM leave_types WHERE company_id = '00000000-0000-0000-0000-000000000000'
+    );
+  END IF;
+END $$;

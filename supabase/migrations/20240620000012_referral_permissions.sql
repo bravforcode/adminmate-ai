@@ -1,46 +1,42 @@
 -- Release 2: Referral RBAC Permissions
+-- Fixed: permissions.id is UUID, cannot use string IDs
 -- ============================================================
 
--- New permissions for referrals
-INSERT INTO permissions (id, resource, action, description) VALUES
-  ('referral_read', 'referral', 'read', 'View referrals in company'),
-  ('referral_write', 'referral', 'write', 'Create and edit referrals'),
-  ('referral_delete', 'referral', 'delete', 'Delete referrals'),
-  ('referral_manage', 'referral', 'manage', 'Manage referral bonuses and status')
-ON CONFLICT (id) DO NOTHING;
+-- New permissions for referrals (no explicit id — let gen_random_uuid work)
+INSERT INTO permissions (resource, action, description) VALUES
+  ('referral', 'read', 'View referrals in company'),
+  ('referral', 'write', 'Create and edit referrals'),
+  ('referral', 'delete', 'Delete referrals'),
+  ('referral', 'manage', 'Manage referral bonuses and status')
+ON CONFLICT (resource, action) DO NOTHING;
 
--- Role mapping
--- owner: full access
-INSERT INTO role_permissions (role_id, permission_id) VALUES
-  ('owner', 'referral_read'), ('owner', 'referral_write'), ('owner', 'referral_delete'), ('owner', 'referral_manage')
+-- Role mapping using subquery to find permission UUIDs
+INSERT INTO role_permissions (role_id, permission_id)
+SELECT r.id, p.id FROM roles r, permissions p
+WHERE r.name IN ('owner', 'admin') AND p.resource = 'referral' AND p.action IN ('read', 'write', 'delete', 'manage')
 ON CONFLICT (role_id, permission_id) DO NOTHING;
 
--- admin: full access
-INSERT INTO role_permissions (role_id, permission_id) VALUES
-  ('admin', 'referral_read'), ('admin', 'referral_write'), ('admin', 'referral_delete'), ('admin', 'referral_manage')
+INSERT INTO role_permissions (role_id, permission_id)
+SELECT r.id, p.id FROM roles r, permissions p
+WHERE r.name = 'hr_manager' AND p.resource = 'referral' AND p.action IN ('read', 'write', 'manage')
 ON CONFLICT (role_id, permission_id) DO NOTHING;
 
--- hr_manager: full access
-INSERT INTO role_permissions (role_id, permission_id) VALUES
-  ('hr_manager', 'referral_read'), ('hr_manager', 'referral_write'), ('hr_manager', 'referral_manage')
+INSERT INTO role_permissions (role_id, permission_id)
+SELECT r.id, p.id FROM roles r, permissions p
+WHERE r.name IN ('hr_staff', 'recruiter') AND p.resource = 'referral' AND p.action IN ('read', 'write')
 ON CONFLICT (role_id, permission_id) DO NOTHING;
 
--- hr_staff: read + write
-INSERT INTO role_permissions (role_id, permission_id) VALUES
-  ('hr_staff', 'referral_read'), ('hr_staff', 'referral_write')
+INSERT INTO role_permissions (role_id, permission_id)
+SELECT r.id, p.id FROM roles r, permissions p
+WHERE r.name = 'manager' AND p.resource = 'referral' AND p.action = 'read'
 ON CONFLICT (role_id, permission_id) DO NOTHING;
 
--- manager: read + write (can refer their team)
-INSERT INTO role_permissions (role_id, permission_id) VALUES
-  ('manager', 'referral_read'), ('manager', 'referral_write')
+INSERT INTO role_permissions (role_id, permission_id)
+SELECT r.id, p.id FROM roles r, permissions p
+WHERE r.name = 'employee' AND p.resource = 'referral' AND p.action IN ('read', 'write')
 ON CONFLICT (role_id, permission_id) DO NOTHING;
 
--- employee: read + write (can refer, view own referrals)
-INSERT INTO role_permissions (role_id, permission_id) VALUES
-  ('employee', 'referral_read'), ('employee', 'referral_write')
-ON CONFLICT (role_id, permission_id) DO NOTHING;
-
--- auditor: read only
-INSERT INTO role_permissions (role_id, permission_id) VALUES
-  ('auditor', 'referral_read')
+INSERT INTO role_permissions (role_id, permission_id)
+SELECT r.id, p.id FROM roles r, permissions p
+WHERE r.name = 'auditor' AND p.resource = 'referral' AND p.action = 'read'
 ON CONFLICT (role_id, permission_id) DO NOTHING;

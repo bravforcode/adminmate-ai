@@ -26,8 +26,8 @@ CREATE POLICY ot_insert ON onboarding_templates FOR INSERT WITH CHECK (company_i
 CREATE POLICY ot_update ON onboarding_templates FOR UPDATE USING (company_id = safe_user_company_id());
 CREATE POLICY ot_delete ON onboarding_templates FOR DELETE USING (company_id = safe_user_company_id() AND safe_user_role() IN ('admin','hr_manager'));
 
-CREATE INDEX idx_ot_company ON onboarding_templates(company_id);
-CREATE INDEX idx_ot_country ON onboarding_templates(country_code);
+CREATE INDEX IF NOT EXISTS idx_ot_company ON onboarding_templates(company_id);
+CREATE INDEX IF NOT EXISTS idx_ot_country ON onboarding_templates(country_code);
 
 CREATE TRIGGER update_ot_updated_at BEFORE UPDATE ON onboarding_templates
   FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
@@ -55,7 +55,7 @@ CREATE POLICY oti_insert ON onboarding_template_items FOR INSERT WITH CHECK (com
 CREATE POLICY oti_update ON onboarding_template_items FOR UPDATE USING (company_id = safe_user_company_id());
 CREATE POLICY oti_delete ON onboarding_template_items FOR DELETE USING (company_id = safe_user_company_id());
 
-CREATE INDEX idx_oti_template ON onboarding_template_items(template_id);
+CREATE INDEX IF NOT EXISTS idx_oti_template ON onboarding_template_items(template_id);
 
 CREATE TRIGGER update_oti_updated_at BEFORE UPDATE ON onboarding_template_items
   FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
@@ -86,9 +86,9 @@ CREATE POLICY oi_read ON onboarding_instances FOR SELECT USING (company_id = saf
 CREATE POLICY oi_insert ON onboarding_instances FOR INSERT WITH CHECK (company_id = safe_user_company_id());
 CREATE POLICY oi_update ON onboarding_instances FOR UPDATE USING (company_id = safe_user_company_id());
 
-CREATE INDEX idx_oi_company ON onboarding_instances(company_id);
-CREATE INDEX idx_oi_candidate ON onboarding_instances(candidate_id);
-CREATE INDEX idx_oi_status ON onboarding_instances(status);
+CREATE INDEX IF NOT EXISTS idx_oi_company ON onboarding_instances(company_id);
+CREATE INDEX IF NOT EXISTS idx_oi_candidate ON onboarding_instances(candidate_id);
+CREATE INDEX IF NOT EXISTS idx_oi_status ON onboarding_instances(status);
 
 CREATE TRIGGER update_oi_updated_at BEFORE UPDATE ON onboarding_instances
   FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
@@ -120,8 +120,8 @@ CREATE POLICY oii_read ON onboarding_instance_items FOR SELECT USING (company_id
 CREATE POLICY oii_insert ON onboarding_instance_items FOR INSERT WITH CHECK (company_id = safe_user_company_id());
 CREATE POLICY oii_update ON onboarding_instance_items FOR UPDATE USING (company_id = safe_user_company_id());
 
-CREATE INDEX idx_oii_instance ON onboarding_instance_items(onboarding_instance_id);
-CREATE INDEX idx_oii_status ON onboarding_instance_items(status);
+CREATE INDEX IF NOT EXISTS idx_oii_instance ON onboarding_instance_items(onboarding_instance_id);
+CREATE INDEX IF NOT EXISTS idx_oii_status ON onboarding_instance_items(status);
 
 CREATE TRIGGER update_oii_updated_at BEFORE UPDATE ON onboarding_instance_items
   FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
@@ -156,8 +156,8 @@ CREATE POLICY odr_read ON onboarding_document_requests FOR SELECT USING (company
 CREATE POLICY odr_insert ON onboarding_document_requests FOR INSERT WITH CHECK (company_id = safe_user_company_id());
 CREATE POLICY odr_update ON onboarding_document_requests FOR UPDATE USING (company_id = safe_user_company_id());
 
-CREATE INDEX idx_odr_instance ON onboarding_document_requests(onboarding_instance_id);
-CREATE INDEX idx_odr_token ON onboarding_document_requests(secure_upload_token_hash);
+CREATE INDEX IF NOT EXISTS idx_odr_instance ON onboarding_document_requests(onboarding_instance_id);
+CREATE INDEX IF NOT EXISTS idx_odr_token ON onboarding_document_requests(secure_upload_token_hash);
 
 CREATE TRIGGER update_odr_updated_at BEFORE UPDATE ON onboarding_document_requests
   FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
@@ -188,7 +188,7 @@ CREATE POLICY ct_insert ON contract_templates FOR INSERT WITH CHECK (company_id 
 CREATE POLICY ct_update ON contract_templates FOR UPDATE USING (company_id = safe_user_company_id());
 CREATE POLICY ct_delete ON contract_templates FOR DELETE USING (company_id = safe_user_company_id() AND safe_user_role() IN ('admin','hr_manager'));
 
-CREATE INDEX idx_ct_company ON contract_templates(company_id);
+CREATE INDEX IF NOT EXISTS idx_ct_company ON contract_templates(company_id);
 
 CREATE TRIGGER update_ct_updated_at BEFORE UPDATE ON contract_templates
   FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
@@ -223,8 +223,8 @@ CREATE POLICY gc_read ON generated_contracts FOR SELECT USING (company_id = safe
 CREATE POLICY gc_insert ON generated_contracts FOR INSERT WITH CHECK (company_id = safe_user_company_id());
 CREATE POLICY gc_update ON generated_contracts FOR UPDATE USING (company_id = safe_user_company_id());
 
-CREATE INDEX idx_gc_company ON generated_contracts(company_id);
-CREATE INDEX idx_gc_status ON generated_contracts(status);
+CREATE INDEX IF NOT EXISTS idx_gc_company ON generated_contracts(company_id);
+CREATE INDEX IF NOT EXISTS idx_gc_status ON generated_contracts(status);
 
 CREATE TRIGGER update_gc_updated_at BEFORE UPDATE ON generated_contracts
   FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
@@ -253,8 +253,8 @@ CREATE POLICY esr_read ON esignature_requests FOR SELECT USING (company_id = saf
 CREATE POLICY esr_insert ON esignature_requests FOR INSERT WITH CHECK (company_id = safe_user_company_id());
 CREATE POLICY esr_update ON esignature_requests FOR UPDATE USING (company_id = safe_user_company_id());
 
-CREATE INDEX idx_esr_company ON esignature_requests(company_id);
-CREATE INDEX idx_esr_contract ON esignature_requests(generated_contract_id);
+CREATE INDEX IF NOT EXISTS idx_esr_company ON esignature_requests(company_id);
+CREATE INDEX IF NOT EXISTS idx_esr_contract ON esignature_requests(generated_contract_id);
 
 CREATE TRIGGER update_esr_updated_at BEFORE UPDATE ON esignature_requests
   FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
@@ -313,40 +313,199 @@ CREATE POLICY "onboarding_docs_insert_company" ON storage.objects
   );
 
 -- 11. RBAC Permissions for onboarding + contracts
-INSERT INTO permissions (id, resource, action, description) VALUES
-  ('onboarding_read', 'onboarding', 'read', 'View onboarding instances'),
-  ('onboarding_write', 'onboarding', 'write', 'Create and edit onboarding'),
-  ('onboarding_approve', 'onboarding', 'approve', 'Approve onboarding completion'),
-  ('onboarding_override', 'onboarding', 'override', 'Override onboarding completion requirements'),
-  ('document_request', 'document', 'request', 'Request documents from candidates/employees'),
-  ('document_verify', 'document', 'verify', 'Verify uploaded documents'),
-  ('document_reject', 'document', 'reject', 'Reject uploaded documents'),
-  ('contract_template_read', 'contract_template', 'read', 'View contract templates'),
-  ('contract_template_write', 'contract_template', 'write', 'Create and edit contract templates'),
-  ('contract_generate', 'contract', 'generate', 'Generate contracts from templates'),
-  ('contract_approve', 'contract', 'approve', 'Approve generated contracts'),
-  ('contract_send_signature', 'contract', 'send_signature', 'Send contracts for e-signature'),
-  ('esignature_send', 'esignature', 'send', 'Send e-signature requests')
-ON CONFLICT (id) DO NOTHING;
+INSERT INTO permissions (resource, action, description) VALUES
+  ('onboarding', 'read', 'View onboarding instances'),
+  ('onboarding', 'write', 'Create and edit onboarding'),
+  ('onboarding', 'approve', 'Approve onboarding completion'),
+  ('onboarding', 'override', 'Override onboarding completion requirements'),
+  ('document', 'request', 'Request documents from candidates/employees'),
+  ('document', 'verify', 'Verify uploaded documents'),
+  ('document', 'reject', 'Reject uploaded documents'),
+  ('contract_template', 'read', 'View contract templates'),
+  ('contract_template', 'write', 'Create and edit contract templates'),
+  ('contract', 'generate', 'Generate contracts from templates'),
+  ('contract', 'approve', 'Approve generated contracts'),
+  ('contract', 'send_signature', 'Send contracts for e-signature'),
+  ('esignature', 'send', 'Send e-signature requests')
+ON CONFLICT (resource, action) DO NOTHING;
 
 -- Role mapping for onboarding permissions
-INSERT INTO role_permissions (role_id, permission_id) VALUES
-  ('owner', 'onboarding_read'), ('owner', 'onboarding_write'), ('owner', 'onboarding_approve'),
-  ('owner', 'onboarding_override'), ('owner', 'document_request'), ('owner', 'document_verify'),
-  ('owner', 'document_reject'), ('owner', 'contract_template_read'), ('owner', 'contract_template_write'),
-  ('owner', 'contract_generate'), ('owner', 'contract_approve'), ('owner', 'contract_send_signature'),
-  ('owner', 'esignature_send'),
-  ('admin', 'onboarding_read'), ('admin', 'onboarding_write'), ('admin', 'onboarding_approve'),
-  ('admin', 'onboarding_override'), ('admin', 'document_request'), ('admin', 'document_verify'),
-  ('admin', 'document_reject'), ('admin', 'contract_template_read'), ('admin', 'contract_template_write'),
-  ('admin', 'contract_generate'), ('admin', 'contract_approve'), ('admin', 'contract_send_signature'),
-  ('admin', 'esignature_send'),
-  ('hr_manager', 'onboarding_read'), ('hr_manager', 'onboarding_write'), ('hr_manager', 'onboarding_approve'),
-  ('hr_manager', 'document_request'), ('hr_manager', 'document_verify'), ('hr_manager', 'document_reject'),
-  ('hr_manager', 'contract_template_read'), ('hr_manager', 'contract_template_write'),
-  ('hr_manager', 'contract_generate'), ('hr_manager', 'contract_approve'), ('hr_manager', 'contract_send_signature'),
-  ('hr_manager', 'esignature_send'),
-  ('hr_staff', 'onboarding_read'), ('hr_staff', 'onboarding_write'),
-  ('hr_staff', 'document_request'), ('hr_staff', 'document_verify'),
-  ('hr_staff', 'contract_template_read'), ('hr_staff', 'contract_generate')
+INSERT INTO role_permissions (role_id, permission_id)
+SELECT r.id, p.id FROM roles r, permissions p
+WHERE r.name = 'owner' AND p.resource = 'onboarding' AND p.action = 'read'
+ON CONFLICT (role_id, permission_id) DO NOTHING;
+INSERT INTO role_permissions (role_id, permission_id)
+SELECT r.id, p.id FROM roles r, permissions p
+WHERE r.name = 'owner' AND p.resource = 'onboarding' AND p.action = 'write'
+ON CONFLICT (role_id, permission_id) DO NOTHING;
+INSERT INTO role_permissions (role_id, permission_id)
+SELECT r.id, p.id FROM roles r, permissions p
+WHERE r.name = 'owner' AND p.resource = 'onboarding' AND p.action = 'approve'
+ON CONFLICT (role_id, permission_id) DO NOTHING;
+INSERT INTO role_permissions (role_id, permission_id)
+SELECT r.id, p.id FROM roles r, permissions p
+WHERE r.name = 'owner' AND p.resource = 'onboarding' AND p.action = 'override'
+ON CONFLICT (role_id, permission_id) DO NOTHING;
+INSERT INTO role_permissions (role_id, permission_id)
+SELECT r.id, p.id FROM roles r, permissions p
+WHERE r.name = 'owner' AND p.resource = 'document' AND p.action = 'request'
+ON CONFLICT (role_id, permission_id) DO NOTHING;
+INSERT INTO role_permissions (role_id, permission_id)
+SELECT r.id, p.id FROM roles r, permissions p
+WHERE r.name = 'owner' AND p.resource = 'document' AND p.action = 'verify'
+ON CONFLICT (role_id, permission_id) DO NOTHING;
+INSERT INTO role_permissions (role_id, permission_id)
+SELECT r.id, p.id FROM roles r, permissions p
+WHERE r.name = 'owner' AND p.resource = 'document' AND p.action = 'reject'
+ON CONFLICT (role_id, permission_id) DO NOTHING;
+INSERT INTO role_permissions (role_id, permission_id)
+SELECT r.id, p.id FROM roles r, permissions p
+WHERE r.name = 'owner' AND p.resource = 'contract_template' AND p.action = 'read'
+ON CONFLICT (role_id, permission_id) DO NOTHING;
+INSERT INTO role_permissions (role_id, permission_id)
+SELECT r.id, p.id FROM roles r, permissions p
+WHERE r.name = 'owner' AND p.resource = 'contract_template' AND p.action = 'write'
+ON CONFLICT (role_id, permission_id) DO NOTHING;
+INSERT INTO role_permissions (role_id, permission_id)
+SELECT r.id, p.id FROM roles r, permissions p
+WHERE r.name = 'owner' AND p.resource = 'contract' AND p.action = 'generate'
+ON CONFLICT (role_id, permission_id) DO NOTHING;
+INSERT INTO role_permissions (role_id, permission_id)
+SELECT r.id, p.id FROM roles r, permissions p
+WHERE r.name = 'owner' AND p.resource = 'contract' AND p.action = 'approve'
+ON CONFLICT (role_id, permission_id) DO NOTHING;
+INSERT INTO role_permissions (role_id, permission_id)
+SELECT r.id, p.id FROM roles r, permissions p
+WHERE r.name = 'owner' AND p.resource = 'contract' AND p.action = 'send_signature'
+ON CONFLICT (role_id, permission_id) DO NOTHING;
+INSERT INTO role_permissions (role_id, permission_id)
+SELECT r.id, p.id FROM roles r, permissions p
+WHERE r.name = 'owner' AND p.resource = 'esignature' AND p.action = 'send'
+ON CONFLICT (role_id, permission_id) DO NOTHING;
+
+INSERT INTO role_permissions (role_id, permission_id)
+SELECT r.id, p.id FROM roles r, permissions p
+WHERE r.name = 'admin' AND p.resource = 'onboarding' AND p.action = 'read'
+ON CONFLICT (role_id, permission_id) DO NOTHING;
+INSERT INTO role_permissions (role_id, permission_id)
+SELECT r.id, p.id FROM roles r, permissions p
+WHERE r.name = 'admin' AND p.resource = 'onboarding' AND p.action = 'write'
+ON CONFLICT (role_id, permission_id) DO NOTHING;
+INSERT INTO role_permissions (role_id, permission_id)
+SELECT r.id, p.id FROM roles r, permissions p
+WHERE r.name = 'admin' AND p.resource = 'onboarding' AND p.action = 'approve'
+ON CONFLICT (role_id, permission_id) DO NOTHING;
+INSERT INTO role_permissions (role_id, permission_id)
+SELECT r.id, p.id FROM roles r, permissions p
+WHERE r.name = 'admin' AND p.resource = 'onboarding' AND p.action = 'override'
+ON CONFLICT (role_id, permission_id) DO NOTHING;
+INSERT INTO role_permissions (role_id, permission_id)
+SELECT r.id, p.id FROM roles r, permissions p
+WHERE r.name = 'admin' AND p.resource = 'document' AND p.action = 'request'
+ON CONFLICT (role_id, permission_id) DO NOTHING;
+INSERT INTO role_permissions (role_id, permission_id)
+SELECT r.id, p.id FROM roles r, permissions p
+WHERE r.name = 'admin' AND p.resource = 'document' AND p.action = 'verify'
+ON CONFLICT (role_id, permission_id) DO NOTHING;
+INSERT INTO role_permissions (role_id, permission_id)
+SELECT r.id, p.id FROM roles r, permissions p
+WHERE r.name = 'admin' AND p.resource = 'document' AND p.action = 'reject'
+ON CONFLICT (role_id, permission_id) DO NOTHING;
+INSERT INTO role_permissions (role_id, permission_id)
+SELECT r.id, p.id FROM roles r, permissions p
+WHERE r.name = 'admin' AND p.resource = 'contract_template' AND p.action = 'read'
+ON CONFLICT (role_id, permission_id) DO NOTHING;
+INSERT INTO role_permissions (role_id, permission_id)
+SELECT r.id, p.id FROM roles r, permissions p
+WHERE r.name = 'admin' AND p.resource = 'contract_template' AND p.action = 'write'
+ON CONFLICT (role_id, permission_id) DO NOTHING;
+INSERT INTO role_permissions (role_id, permission_id)
+SELECT r.id, p.id FROM roles r, permissions p
+WHERE r.name = 'admin' AND p.resource = 'contract' AND p.action = 'generate'
+ON CONFLICT (role_id, permission_id) DO NOTHING;
+INSERT INTO role_permissions (role_id, permission_id)
+SELECT r.id, p.id FROM roles r, permissions p
+WHERE r.name = 'admin' AND p.resource = 'contract' AND p.action = 'approve'
+ON CONFLICT (role_id, permission_id) DO NOTHING;
+INSERT INTO role_permissions (role_id, permission_id)
+SELECT r.id, p.id FROM roles r, permissions p
+WHERE r.name = 'admin' AND p.resource = 'contract' AND p.action = 'send_signature'
+ON CONFLICT (role_id, permission_id) DO NOTHING;
+INSERT INTO role_permissions (role_id, permission_id)
+SELECT r.id, p.id FROM roles r, permissions p
+WHERE r.name = 'admin' AND p.resource = 'esignature' AND p.action = 'send'
+ON CONFLICT (role_id, permission_id) DO NOTHING;
+
+INSERT INTO role_permissions (role_id, permission_id)
+SELECT r.id, p.id FROM roles r, permissions p
+WHERE r.name = 'hr_manager' AND p.resource = 'onboarding' AND p.action = 'read'
+ON CONFLICT (role_id, permission_id) DO NOTHING;
+INSERT INTO role_permissions (role_id, permission_id)
+SELECT r.id, p.id FROM roles r, permissions p
+WHERE r.name = 'hr_manager' AND p.resource = 'onboarding' AND p.action = 'write'
+ON CONFLICT (role_id, permission_id) DO NOTHING;
+INSERT INTO role_permissions (role_id, permission_id)
+SELECT r.id, p.id FROM roles r, permissions p
+WHERE r.name = 'hr_manager' AND p.resource = 'onboarding' AND p.action = 'approve'
+ON CONFLICT (role_id, permission_id) DO NOTHING;
+INSERT INTO role_permissions (role_id, permission_id)
+SELECT r.id, p.id FROM roles r, permissions p
+WHERE r.name = 'hr_manager' AND p.resource = 'document' AND p.action = 'request'
+ON CONFLICT (role_id, permission_id) DO NOTHING;
+INSERT INTO role_permissions (role_id, permission_id)
+SELECT r.id, p.id FROM roles r, permissions p
+WHERE r.name = 'hr_manager' AND p.resource = 'document' AND p.action = 'verify'
+ON CONFLICT (role_id, permission_id) DO NOTHING;
+INSERT INTO role_permissions (role_id, permission_id)
+SELECT r.id, p.id FROM roles r, permissions p
+WHERE r.name = 'hr_manager' AND p.resource = 'document' AND p.action = 'reject'
+ON CONFLICT (role_id, permission_id) DO NOTHING;
+INSERT INTO role_permissions (role_id, permission_id)
+SELECT r.id, p.id FROM roles r, permissions p
+WHERE r.name = 'hr_manager' AND p.resource = 'contract_template' AND p.action = 'read'
+ON CONFLICT (role_id, permission_id) DO NOTHING;
+INSERT INTO role_permissions (role_id, permission_id)
+SELECT r.id, p.id FROM roles r, permissions p
+WHERE r.name = 'hr_manager' AND p.resource = 'contract_template' AND p.action = 'write'
+ON CONFLICT (role_id, permission_id) DO NOTHING;
+INSERT INTO role_permissions (role_id, permission_id)
+SELECT r.id, p.id FROM roles r, permissions p
+WHERE r.name = 'hr_manager' AND p.resource = 'contract' AND p.action = 'generate'
+ON CONFLICT (role_id, permission_id) DO NOTHING;
+INSERT INTO role_permissions (role_id, permission_id)
+SELECT r.id, p.id FROM roles r, permissions p
+WHERE r.name = 'hr_manager' AND p.resource = 'contract' AND p.action = 'approve'
+ON CONFLICT (role_id, permission_id) DO NOTHING;
+INSERT INTO role_permissions (role_id, permission_id)
+SELECT r.id, p.id FROM roles r, permissions p
+WHERE r.name = 'hr_manager' AND p.resource = 'contract' AND p.action = 'send_signature'
+ON CONFLICT (role_id, permission_id) DO NOTHING;
+INSERT INTO role_permissions (role_id, permission_id)
+SELECT r.id, p.id FROM roles r, permissions p
+WHERE r.name = 'hr_manager' AND p.resource = 'esignature' AND p.action = 'send'
+ON CONFLICT (role_id, permission_id) DO NOTHING;
+
+INSERT INTO role_permissions (role_id, permission_id)
+SELECT r.id, p.id FROM roles r, permissions p
+WHERE r.name = 'hr_staff' AND p.resource = 'onboarding' AND p.action = 'read'
+ON CONFLICT (role_id, permission_id) DO NOTHING;
+INSERT INTO role_permissions (role_id, permission_id)
+SELECT r.id, p.id FROM roles r, permissions p
+WHERE r.name = 'hr_staff' AND p.resource = 'onboarding' AND p.action = 'write'
+ON CONFLICT (role_id, permission_id) DO NOTHING;
+INSERT INTO role_permissions (role_id, permission_id)
+SELECT r.id, p.id FROM roles r, permissions p
+WHERE r.name = 'hr_staff' AND p.resource = 'document' AND p.action = 'request'
+ON CONFLICT (role_id, permission_id) DO NOTHING;
+INSERT INTO role_permissions (role_id, permission_id)
+SELECT r.id, p.id FROM roles r, permissions p
+WHERE r.name = 'hr_staff' AND p.resource = 'document' AND p.action = 'verify'
+ON CONFLICT (role_id, permission_id) DO NOTHING;
+INSERT INTO role_permissions (role_id, permission_id)
+SELECT r.id, p.id FROM roles r, permissions p
+WHERE r.name = 'hr_staff' AND p.resource = 'contract_template' AND p.action = 'read'
+ON CONFLICT (role_id, permission_id) DO NOTHING;
+INSERT INTO role_permissions (role_id, permission_id)
+SELECT r.id, p.id FROM roles r, permissions p
+WHERE r.name = 'hr_staff' AND p.resource = 'contract' AND p.action = 'generate'
 ON CONFLICT (role_id, permission_id) DO NOTHING;
