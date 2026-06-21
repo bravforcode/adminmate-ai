@@ -51,11 +51,11 @@
 | safe_user_company_id exists | T79 |
 | chat_messages immutable trigger exists | T80 |
 
-## Totals
+## Summary
 
-- **Tenant tables tested:** 7/7
-- **Global reference tables tested:** 4/4
-- **Service-only tables tested:** 3/3
-- **Total affected tables:** 14/14
-- **Total CRUD tests:** 80
-- **pgTAP total across all files:** 140
+- **11 unique tables** across 3 access classes:
+  - 4 tenant-interactive tables (chat_messages, chat_platform_connections, messages, conversation_threads)
+  - 3 service-only tenant operational tables (message_queue, platform_sync_log, system_health)
+  - 4 global-reference tables (document_type_configs, immigration_case_types, th_tax_brackets, th_social_security_rules)
+- **80 CRUD tests** covering all operations
+- **140 pgTAP total** across all test files

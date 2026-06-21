@@ -25,13 +25,22 @@ npx supabase test db:
 
 ## Scope Reconciliation
 
-### All 14 affected tables explicitly tested
+### All 11 unique affected tables explicitly tested
 
-| Category | Tables | Status |
-|----------|--------|--------|
-| Tenant data (7) | chat_messages, chat_platform_connections, messages, conversation_threads, message_queue, platform_sync_log, system_health | All tested |
-| Global reference (4) | document_type_configs, immigration_case_types, th_tax_brackets, th_social_security_rules | All tested |
-| Service-only (3) | message_queue, platform_sync_log, system_health | All tested |
+7 tenant-scoped tables, including 3 service-only operational tables:
+- chat_messages
+- chat_platform_connections
+- messages
+- conversation_threads
+- message_queue (service-only)
+- platform_sync_log (service-only)
+- system_health (service-only)
+
+4 global-reference tables:
+- document_type_configs
+- immigration_case_types
+- th_tax_brackets
+- th_social_security_rules
 
 ### All CRUD operations tested (not inferred)
 

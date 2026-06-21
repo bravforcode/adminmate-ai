@@ -1,0 +1,10 @@
+
+[1m[7m[36m RUN [39m[27m[22m [36mv2.1.9 [39m[90mC:/Users/menum/Downloads/adminmate-ai[39m
+
+ [32mΓ£ô[39m tests/integration/release26a5.supabase-rls.integration.test.ts [2m([22m[2m19 tests[22m[2m)[22m[33m 934[2mms[22m[39m
+
+[2m Test Files [22m [1m[32m1 passed[39m[22m[90m (1)[39m
+[2m      Tests [22m [1m[32m19 passed[39m[22m[90m (19)[39m
+[2m   Start at [22m 13:01:09
+[2m   Duration [22m 3.43s[2m (transform 138ms, setup 277ms, collect 47ms, tests 934ms, environment 1.32s, prepare 338ms)[22m
+
