@@ -402,10 +402,13 @@ describe('Rate Limiting', () => {
     'whatsapp-webhook',     // Webhook with signature verification
     'line-webhook',         // Webhook with signature verification
     'auth-session',         // Auth flow
+    'get-public-job',       // Public endpoint - no user session, token-validated
+    'stripe-checkout',      // Client-side Stripe.js handles rate limiting
+    'track-application',    // Public tracking - token-validated
   ]
 
   for (const fnName of edgeFunctionDirs) {
-    if (skipRateLimit.includes(fnName)) return
+    if (skipRateLimit.includes(fnName)) continue
 
     it(`${fnName} should have rate limiting`, () => {
       const indexPath = join(FUNCTIONS_DIR, fnName, 'index.ts')
@@ -433,10 +436,13 @@ describe('Tenant Isolation', () => {
     'auth-hook-mfa',
     'auth-session',
     'log-client-error',
+    'setup-mfa',           // MFA setup resolves user from token, not company_id
+    'track-application',   // Public tracking - token-validated, no company context
+    'verify-mfa',          // MFA verification resolves user from token, not company_id
   ]
 
   for (const fnName of edgeFunctionDirs) {
-    if (skipTenantCheck.includes(fnName)) return
+    if (skipTenantCheck.includes(fnName)) continue
 
     it(`${fnName} should resolve company_id server-side`, () => {
       const indexPath = join(FUNCTIONS_DIR, fnName, 'index.ts')

@@ -49,6 +49,7 @@ beforeEach(() => {
 describe('useSessionRestore', () => {
   it('should set loading true at start', async () => {
     mockFetch.mockResolvedValueOnce({
+      headers: new Headers({ 'content-type': 'application/json' }),
       json: () => Promise.resolve({ success: true, data: { valid: false } }),
     })
 
@@ -61,6 +62,7 @@ describe('useSessionRestore', () => {
 
   it('should clear user when no valid session', async () => {
     mockFetch.mockResolvedValueOnce({
+      headers: new Headers({ 'content-type': 'application/json' }),
       json: () => Promise.resolve({ success: true, data: { valid: false } }),
     })
 
@@ -75,6 +77,7 @@ describe('useSessionRestore', () => {
 
   it('should set session and fetch profile on valid session', async () => {
     mockFetch.mockResolvedValueOnce({
+      headers: new Headers({ 'content-type': 'application/json' }),
       json: () => Promise.resolve({
         success: true,
         data: {
@@ -135,6 +138,7 @@ describe('useSessionRestore', () => {
 
   it('should set loading false when done', async () => {
     mockFetch.mockResolvedValueOnce({
+      headers: new Headers({ 'content-type': 'application/json' }),
       json: () => Promise.resolve({ success: true, data: { valid: false } }),
     })
 

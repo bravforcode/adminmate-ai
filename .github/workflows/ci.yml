@@ -1,48 +1,150 @@
-name: CI
+name: Application CI
+
 on:
   push:
     branches: [main, develop]
   pull_request:
-    branches: [main]
+    branches: [main, develop]
+  workflow_dispatch:
 
 jobs:
-  quality:
+  # ------------------------------------------------------------------
+  # 1. Install dependencies (cached)
+  # ------------------------------------------------------------------
+  install:
+    name: "Install"
     runs-on: ubuntu-latest
+    timeout-minutes: 5
     steps:
       - uses: actions/checkout@v4
+
       - uses: actions/setup-node@v4
         with:
-          node-version: '20'
-          cache: 'npm'
+          node-version: 20
+          cache: npm
+
       - run: npm ci
-      - run: npm run type-check
-      - run: npm run lint
-      - run: npm run test -- --run
 
-  deploy-preview:
-    needs: quality
-    if: github.ref != 'refs/heads/main'
+      - name: Cache node_modules
+        uses: actions/cache/save@v4
+        with:
+          path: node_modules
+          key: deps-${{ runner.os }}-${{ hashFiles('package-lock.json') }}
+
+  # ------------------------------------------------------------------
+  # 2. TypeCheck
+  # ------------------------------------------------------------------
+  typecheck:
+    name: "TypeCheck"
     runs-on: ubuntu-latest
-    environment: preview
+    needs: install
+    timeout-minutes: 10
     steps:
       - uses: actions/checkout@v4
-      - uses: amondnet/vercel-action@v25
-        with:
-          vercel-token: ${{ secrets.VERCEL_TOKEN }}
-          vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
-          vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
-          vercel-args: '--yes'
 
-  deploy-production:
-    needs: quality
-    if: github.ref == 'refs/heads/main'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - uses: actions/cache/restore@v4
+        with:
+          path: node_modules
+          key: deps-${{ runner.os }}-${{ hashFiles('package-lock.json') }}
+
+      - run: npx tsc --noEmit
+
+  # ------------------------------------------------------------------
+  # 3. Lint
+  # ------------------------------------------------------------------
+  lint:
+    name: "Lint"
     runs-on: ubuntu-latest
-    environment: production
+    needs: install
+    timeout-minutes: 5
     steps:
       - uses: actions/checkout@v4
-      - uses: amondnet/vercel-action@v25
+
+      - uses: actions/setup-node@v4
         with:
-          vercel-token: ${{ secrets.VERCEL_TOKEN }}
-          vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
-          vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
-          vercel-args: '--prod --yes'
+          node-version: 20
+          cache: npm
+
+      - uses: actions/cache/restore@v4
+        with:
+          path: node_modules
+          key: deps-${{ runner.os }}-${{ hashFiles('package-lock.json') }}
+
+      - run: npx eslint src/ --ext .ts,.tsx
+
+  # ------------------------------------------------------------------
+  # 4. Build
+  # ------------------------------------------------------------------
+  build:
+    name: "Build"
+    runs-on: ubuntu-latest
+    needs: install
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - uses: actions/cache/restore@v4
+        with:
+          path: node_modules
+          key: deps-${{ runner.os }}-${{ hashFiles('package-lock.json') }}
+
+      - run: npx vite build
+        env:
+          VITE_SUPABASE_URL: "https://placeholder.supabase.co"
+          VITE_SUPABASE_ANON_KEY: "placeholder-anon-key"
+
+  # ------------------------------------------------------------------
+  # 5. Unit Tests
+  # ------------------------------------------------------------------
+  unit-tests:
+    name: "Unit Tests"
+    runs-on: ubuntu-latest
+    needs: install
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - uses: actions/cache/restore@v4
+        with:
+          path: node_modules
+          key: deps-${{ runner.os }}-${{ hashFiles('package-lock.json') }}
+
+      - run: npx vitest run --reporter=verbose
+
+  # ------------------------------------------------------------------
+  # 6. Integration Tests
+  # ------------------------------------------------------------------
+  integration-tests:
+    name: "Integration Tests"
+    runs-on: ubuntu-latest
+    needs: install
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - uses: actions/cache/restore@v4
+        with:
+          path: node_modules
+          key: deps-${{ runner.os }}-${{ hashFiles('package-lock.json') }}
+
+      - run: npx vitest run tests/integration/ --reporter=verbose

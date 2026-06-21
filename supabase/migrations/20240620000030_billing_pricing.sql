@@ -287,7 +287,7 @@ BEGIN
   is_unlimited := false;
   RETURN NEXT;
 END;
-$$ LANGUAGE plpgsql SECURITY DEFINER;
+$$ LANGUAGE plpgsql SECURITY DEFINER SET search_path = public;
 
 -- ============== MODULE ENTITLEMENT CHECK FUNCTION ==============
 CREATE OR REPLACE FUNCTION check_module_entitlement(

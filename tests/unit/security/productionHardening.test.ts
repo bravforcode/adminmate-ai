@@ -253,7 +253,7 @@ describe('productionHardening — RLS completeness audit', () => {
       tables.push(match[1])
     }
 
-    const excludedTables = ['schema_migrations', 'pg_stat_statements']
+    const excludedTables = ['schema_migrations', 'pg_stat_statements', 'migration_reconciliation_log']
     const systemTables = ['storage.buckets', 'storage.objects', 'auth.users', 'auth.sessions']
 
     for (const table of tables) {

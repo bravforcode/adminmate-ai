@@ -1,0 +1,166 @@
+name: Database Test Pipeline
+
+on:
+  push:
+    paths:
+      - "supabase/migrations/**"
+      - "supabase/tests/**"
+      - "supabase/config.toml"
+      - ".github/workflows/db-test.yml"
+  pull_request:
+    paths:
+      - "supabase/migrations/**"
+      - "supabase/tests/**"
+      - "supabase/config.toml"
+  workflow_dispatch:
+
+env:
+  SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
+  SUPABASE_PROJECT_REF: ${{ secrets.SUPABASE_PROJECT_REF }}
+
+jobs:
+  # ------------------------------------------------------------------
+  # 1. Reset the local Supabase DB and run all migrations
+  # ------------------------------------------------------------------
+  db-reset:
+    name: "Supabase DB Reset"
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    services:
+      postgres:
+        image: supabase/postgres:15.6.1.78
+        env:
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: postgres
+        ports:
+          - 54322:5432
+        options: >-
+          --health-cmd="pg_isready -U postgres"
+          --health-interval=5s
+          --health-timeout=5s
+          --health-retries=10
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Supabase CLI
+        run: |
+          curl -fsSL https://supabase.com/install.sh | sudo bash
+          supabase --version
+
+      - name: Reset database & run migrations
+        run: |
+          supabase db reset --db-url postgresql://postgres:postgres@localhost:54322/postgres
+        env:
+          SUPABASE_DB_URL: postgresql://postgres:postgres@localhost:54322/postgres
+
+      - name: Verify migrations applied
+        run: |
+          PGPASSWORD=postgres psql -h localhost -p 54322 -U postgres -d postgres \
+            -c "SELECT count(*) FROM information_schema.tables WHERE table_schema = 'public';"
+
+  # ------------------------------------------------------------------
+  # 2. Run pgTAP tests against the reset database
+  # ------------------------------------------------------------------
+  pgtap:
+    name: "pgTAP RLS & Policy Tests"
+    runs-on: ubuntu-latest
+    needs: db-reset
+    timeout-minutes: 15
+    services:
+      postgres:
+        image: supabase/postgres:15.6.1.78
+        env:
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: postgres
+        ports:
+          - 54322:5432
+        options: >-
+          --health-cmd="pg_isready -U postgres"
+          --health-interval=5s
+          --health-timeout=5s
+          --health-retries=10
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Supabase CLI
+        run: |
+          curl -fsSL https://supabase.com/install.sh | sudo bash
+
+      - name: Reset database
+        run: |
+          supabase db reset --db-url postgresql://postgres:postgres@localhost:54322/postgres
+        env:
+          SUPABASE_DB_URL: postgresql://postgres:postgres@localhost:54322/postgres
+
+      - name: Enable pgTAP extension
+        run: |
+          PGPASSWORD=postgres psql -h localhost -p 54322 -U postgres -d postgres \
+            -c "CREATE EXTENSION IF NOT EXISTS pgtap;"
+
+      - name: Run pgTAP tests
+        run: |
+          for f in supabase/tests/*.sql; do
+            echo "::group::Running $f"
+            PGPASSWORD=postgres psql -h localhost -p 54322 -U postgres -d postgres \
+              -v ON_ERROR_STOP=1 -f "$f" || exit 1
+            echo "::endgroup::"
+          done
+
+  # ------------------------------------------------------------------
+  # 3. Policy inventory — enumerate all RLS policies and output report
+  # ------------------------------------------------------------------
+  policy-inventory:
+    name: "RLS Policy Inventory"
+    runs-on: ubuntu-latest
+    needs: db-reset
+    timeout-minutes: 5
+    services:
+      postgres:
+        image: supabase/postgres:15.6.1.78
+        env:
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: postgres
+        ports:
+          - 54322:5432
+        options: >-
+          --health-cmd="pg_isready -U postgres"
+          --health-interval=5s
+          --health-timeout=5s
+          --health-retries=10
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Supabase CLI
+        run: |
+          curl -fsSL https://supabase.com/install.sh | sudo bash
+
+      - name: Reset database
+        run: |
+          supabase db reset --db-url postgresql://postgres:postgres@localhost:54322/postgres
+        env:
+          SUPABASE_DB_URL: postgresql://postgres:postgres@localhost:54322/postgres
+
+      - name: Generate policy inventory
+        run: |
+          PGPASSWORD=postgres psql -h localhost -p 54322 -U postgres -d postgres \
+            -c "
+            SELECT
+              schemaname,
+              tablename,
+              policyname,
+              permissive,
+              roles,
+              cmd,
+              qual IS NOT NULL AS has_using,
+              with_check IS NOT NULL AS has_check
+            FROM pg_policies
+            WHERE schemaname = 'public'
+            ORDER BY tablename, policyname;
+            " | tee policy-inventory.txt
+
+      - name: Upload policy inventory artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: policy-inventory
+          path: policy-inventory.txt
+          retention-days: 30

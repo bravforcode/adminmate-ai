@@ -128,7 +128,7 @@ describe('authService', () => {
 
       expect(mockSupabase.auth.signInWithOAuth).toHaveBeenCalledWith({
         provider: 'google',
-        options: { redirectTo: 'http://localhost/dashboard' },
+        options: { redirectTo: 'http://localhost/auth/callback' },
       })
     })
   })

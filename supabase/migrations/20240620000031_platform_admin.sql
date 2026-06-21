@@ -165,7 +165,7 @@ RETURNS BOOLEAN AS $$
         SELECT 1 FROM platform_admin_users
         WHERE user_id = p_user_id AND is_active = true
     );
-$$ LANGUAGE sql SECURITY DEFINER STABLE;
+$ LANGUAGE sql SECURITY DEFINER STABLE SET search_path = public;
 
 -- Check if a user has platform owner role
 CREATE OR REPLACE FUNCTION is_platform_owner(p_user_id UUID DEFAULT auth.uid())
@@ -174,7 +174,7 @@ RETURNS BOOLEAN AS $$
         SELECT 1 FROM platform_admin_users
         WHERE user_id = p_user_id AND role = 'owner' AND is_active = true
     );
-$$ LANGUAGE sql SECURITY DEFINER STABLE;
+$ LANGUAGE sql SECURITY DEFINER STABLE SET search_path = public;
 
 -- Check if a user has active support access to a specific company
 CREATE OR REPLACE FUNCTION has_support_access(p_company_id UUID, p_user_id UUID DEFAULT auth.uid())
@@ -187,7 +187,7 @@ RETURNS BOOLEAN AS $$
           AND sag.is_active = true
           AND sag.expires_at > NOW()
     );
-$$ LANGUAGE sql SECURITY DEFINER STABLE;
+$ LANGUAGE sql SECURITY DEFINER STABLE SET search_path = public;
 
 -- Revoke expired support grants (run periodically or via cron)
 CREATE OR REPLACE FUNCTION revoke_expired_support_grants()

@@ -27,6 +27,7 @@ vi.mock('https://esm.sh/@supabase/supabase-js@2', () => ({
         signOut: (...args: any[]) => mockAdminSignOut(...args),
       },
     },
+    rpc: vi.fn().mockResolvedValue({ data: null, error: null }),
   }),
 }))
 

@@ -70,7 +70,7 @@ BEGIN
     AND j.is_published = true
     AND c.status = 'active';
 END;
-$$ LANGUAGE plpgsql SECURITY DEFINER;
+$$ LANGUAGE plpgsql SECURITY DEFINER SET search_path = public;
 
 -- 4. Public application tracking view (limited fields)
 CREATE OR REPLACE FUNCTION get_public_application(p_token VARCHAR)

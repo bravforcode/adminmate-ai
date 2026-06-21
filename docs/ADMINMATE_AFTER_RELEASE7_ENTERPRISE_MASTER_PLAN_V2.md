@@ -1,43 +1,47 @@
 # AdminMate AI — Master Plan หลัง Release 7
 
-**Version:** v2 — Enterprise Production Roadmap หลัง HRIS Core  
-**วันที่จัดทำ:** 2026-06-20  
-**ใช้สำหรับ:** ส่งให้ Codex 5.5 / AI coding agent / auditor ใช้รันต่อแบบเป็น release train  
-**สถานะปัจจุบัน:** Release 7 ผ่านตามรายงานผู้ใช้ commit `ae81ae3`  
+**Version:** v2 — Enterprise Production Roadmap หลัง HRIS Core
+**วันที่จัดทำ:** 2026-06-20
+**Last updated:** 2026-06-22
+**ใช้สำหรับ:** ส่งให้ Codex 5.5 / AI coding agent / auditor ใช้รันต่อแบบเป็น release train
+**สถานะปัจจุบัน:** Gates A–H + Feature Releases complete. Gate L (Lifecycle Governance) in planning.
 
 ---
 
 ## 0. สรุปสถานะปัจจุบัน
 
-ระบบ AdminMate AI ตอนนี้มีแกนหลักของ HR platform แล้ว:
+ระบบ AdminMate AI ตอนนี้มีแกนหลักของ HR platform แล้ว + enterprise foundation:
 
 ```text
-Recruiting
-→ Candidate Portal
-→ AI Recruiting / Evidence-based scoring
-→ Hiring
-→ Messaging Approval
-→ Onboarding
-→ Document Request / Secure Upload
-→ Contract Templates
-→ E-Signature Adapter
-→ HRIS Core
-→ Employee Directory
-→ Org Chart
-→ Offboarding
-→ Asset Return
-→ Access Revocation
-→ Exit Interview
-→ Final Settlement Readiness
+Core HR Platform (Complete):
+→ Recruiting → Candidate Portal → AI Recruiting → Hiring
+→ Messaging Approval → Onboarding → Documents → Contracts → E-Signature
+→ HRIS Core → Employee Directory → Org Chart
+→ Offboarding → Asset Return → Access Revocation → Exit Interview
+
+Enterprise Foundation (Complete):
+→ Gate A: Tenant Isolation & RLS (8 releases)
+→ Gate B: Platform Foundation (10 releases)
+→ Gate C: Configuration & Demo (8 releases)
+→ Gate D: Observability & Recovery (12 releases)
+→ Gate E: Quality & E2E (12 releases)
+→ Gate F: Provider & Integration (14 releases)
+
+HR Suite (Complete):
+→ 26 modules: Benefits, L&D, Engagement, Compensation, Contractor, etc.
+
+Thailand Validation (Complete):
+→ Gate H: 10 releases covering compliance, legal, payroll, privacy
+
+Lifecycle Governance (Planning):
+→ Gate L: 6 releases (32A–32F) for operational maturity
 ```
 
-สิ่งที่มีแล้วถือว่าเป็นฐานที่ดีมาก แต่ยังไม่ใช่ full enterprise HR platform เพราะยังขาด 5 แกนใหญ่:
+สิ่งที่มีแล้วถือว่าเป็นฐานที่ดีมาก แต่ยังไม่ใช่ full enterprise HR platform เพราะยังขาด:
 
-1. **Global workforce operations** — mobility, visa, work permit, remote work, travel compliance
-2. **Time, attendance, leave, scheduling** — ใช้จริงกับ SME/โรงงาน/ร้านค้า/คลินิก
-3. **Payroll** — Thailand pack ก่อน แล้วค่อย global payroll framework
-4. **Employee development & retention** — performance, internal mobility, L&D, engagement, benefits, compensation
-5. **Enterprise platform layer** — compliance, billing, analytics, integrations, API, SSO, SCIM, DR/BCP, production hardening
+1. **Pending feature modules** — Attendance, Payroll, Data Import/Export, Performance, Internal Mobility, Compliance, Billing, Analytics, Integrations
+2. **Lifecycle Governance (Gate L)** — Continuous security monitoring, policy review, DR exercises, provider governance, quality regression, annual review
+3. **Operational maturity** — Automated monitoring, governance workflows, compliance frameworks
 
 ---
 
@@ -1609,6 +1613,81 @@ incident_response_events
 
 ---
 
+# Gate L — Lifecycle Governance & Operational Maturity
+
+**Status:** ⬜ Planning — 6 releases (32A–32F)
+**Added:** 2026-06-22
+
+Gate L closes the operational maturity gap — ensuring the platform has continuous monitoring, governance processes, and review frameworks beyond feature delivery.
+
+## 32A — Continuous Security Monitoring
+- RLS drift detection (pg_policies vs migration baseline)
+- Privilege escalation monitor (role grant anomalies)
+- Secret-scan CI gate (pre-commit + pipeline)
+- Anomaly detection rules (login patterns, API volumes, export rates)
+- Tables: `security_monitor_rules`, `security_alerts`, `rls_audit_log`
+- Edge function: `security-scan` (pg_cron every 6h)
+- Dashboard: Security Monitor page
+
+## 32B — Rule Review & Policy Governance
+- Policy review registry (RLS, RBAC, compliance rules)
+- Automated review reminders (weekly pg_cron)
+- Structured review workflow (approve / needs_change / deprecated / escalate)
+- Change audit trail (immutable `policy_review_history`)
+- Tables: `policy_review_registry`, `policy_review_history`
+- Dashboard: Policy Review page
+
+## 32C — Restore & DR Exercise Automation
+- DR exercise registry (tabletop / partial restore / full DR)
+- Step-by-step runbook with pass/fail checkpoints
+- RTO/RPO actual vs. target measurement
+- Exercise reports (auto-generated markdown)
+- Tables: `dr_exercises`, `dr_exercise_checkpoints`, `dr_exercise_findings`
+- Dashboard: DR Exercise page
+
+## 32D — Provider Governance & Credential Lifecycle
+- Provider registry (all third-party integrations)
+- Credential lifecycle (expiry tracking, rotation reminders)
+- Provider health dashboard (latency, error rate, last success)
+- Cost tracking (API call volumes, estimated costs)
+- Contract management (renewal dates, SLAs, compliance)
+- Kill-switch inventory (centralized toggle view)
+- Tables: `provider_registry`, `provider_credentials`, `provider_health_log`, `provider_cost_log`, `provider_contracts`
+- Dashboard: Provider Governance page
+
+## 32E — Quality Regression Shield
+- Quality baselines (test pass rate, build health, bundle size, perf metrics, a11y scores)
+- Regression detection engine (configurable tolerance thresholds)
+- Trend tracking (30-day historical metrics)
+- PR gate integration (CI fails on regression)
+- Weekly regression digest reports
+- Tables: `quality_baselines`, `quality_measurements`, `quality_regression_alerts`
+- CI step: `quality-gate.yml`
+- Dashboard: Quality Regression page
+
+## 32F — Annual Security & Compliance Review
+- Structured review framework (security, privacy, compliance, operational, vendor, data protection)
+- Compliance mapping (PDPA, GDPR, SOC 2, ISO 27001)
+- Risk register refresh (all prior gates)
+- Remediation roadmap (prioritized, owner-assigned, target-dated)
+- Executive summary report (auto-generated)
+- Annual review reminders (pg_cron)
+- Tables: `annual_reviews`, `review_checklist_items`, `compliance_mappings`, `remediation_items`
+- Dashboard: Annual Review page
+
+### Gate L Evidence Documents
+
+| Release | Document | Status |
+|---------|----------|--------|
+| 32A | `docs/RELEASE_32A_CONTINUOUS_SECURITY.md` | ⬜ Planning |
+| 32B | `docs/RELEASE_32B_RULE_REVIEW.md` | ⬜ Planning |
+| 32C | `docs/RELEASE_32C_RESTORE_DR_EXERCISES.md` | ⬜ Planning |
+| 32D | `docs/RELEASE_32D_PROVIDER_GOVERNANCE.md` | ⬜ Planning |
+| 32E | `docs/RELEASE_32E_QUALITY_REGRESSION.md` | ⬜ Planning |
+| 32F | `docs/RELEASE_32F_ANNUAL_REVIEW.md` | ⬜ Planning |
+
+---
+
 # Codex Master Prompt สำหรับ Release ถัดไป
 
 ใช้ prompt นี้เป็นหัวทุกครั้ง แล้วเติม release-specific section จากเอกสารนี้:
@@ -1667,9 +1746,9 @@ After implementation, report:
 # Recommended immediate next command for Codex
 
 ```text
-Proceed to Release 7B — Global Mobility, Visa & Work Permit Tracking only.
+Proceed to Release 32A — Continuous Security Monitoring only.
 Use this master plan as the source of truth.
-Do not start Release 8 yet.
+Do not start Release 32B yet.
 ```
 
 ---

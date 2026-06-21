@@ -9,6 +9,6 @@ vi.mock('react-i18next', () => ({ useTranslation: () => ({ t: (k: string) => k }
 describe('JobForm', () => {
   it('renders step 1 with title and department inputs', () => {
     render(<JobForm onClose={vi.fn()} />)
-    expect(screen.getByPlaceholderText('Senior Frontend Developer')).toBeTruthy()
+    expect(screen.getByPlaceholderText('jobs.title_placeholder')).toBeTruthy()
   })
 })

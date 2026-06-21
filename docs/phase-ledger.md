@@ -1,6 +1,6 @@
 # AdminMate AI — Phase Ledger
 
-**Last updated:** 2026-06-20
+**Last updated:** 2026-06-22
 
 ## Release History
 
@@ -21,6 +21,12 @@
 | 8B | Workforce Scheduling & Shift Marketplace | ⏳ PENDING | — | |
 | 9A | Thailand Payroll Pack | ⏳ PENDING | — | |
 | 9C | Data Import/Export & Migration Tooling | ⏳ PENDING | — | BulkImport page exists |
+| 32A | Continuous Security Monitoring | ⬜ PLANNING | 2026-06-22 | RLS drift detection, privilege escalation monitor, secret-scan CI gate, anomaly detection rules. 3 tables, edge function, dashboard. |
+| 32B | Rule Review & Policy Governance | ⬜ PLANNING | 2026-06-22 | Policy review registry, automated reminders, review workflow, change audit trail, policy diff viewer. 2 tables, dashboard. |
+| 32C | Restore & DR Exercise Automation | ⬜ PLANNING | 2026-06-22 | DR exercise registry, RTO/RPO measurement, evidence collection, exercise templates (tabletop/partial/full). 3 tables, dashboard. |
+| 32D | Provider Governance & Credential Lifecycle | ⬜ PLANNING | 2026-06-22 | Provider registry, credential lifecycle, health dashboard, cost tracking, kill-switch inventory, contract management. 5 tables, dashboard. |
+| 32E | Quality Regression Shield | ⬜ PLANNING | 2026-06-22 | Quality baselines (test/build/perf/a11y/security), regression detection, trend tracking, PR gate integration, weekly digests. 3 tables, CI step, dashboard. |
+| 32F | Annual Security & Compliance Review | ⬜ PLANNING | 2026-06-22 | Review framework, compliance mapping (PDPA/GDPR/SOC2), remediation roadmap, executive reports, annual reminders. 4 tables, dashboard. |
 
 ## Release 1 Adaptation Notes
 
