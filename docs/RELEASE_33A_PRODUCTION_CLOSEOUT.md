@@ -21,6 +21,7 @@
 Command: npx vitest run
 Result: 102 test files passed, 1777 tests passed, 0 failures
 Duration: ~32s
+Note: Includes 102 REST API integration tests (subset of total)
 ```
 
 ### pgTAP Database Tests
@@ -37,11 +38,11 @@ Result: 40/40 PASS
 Total pgTAP: 140/140 PASS
 ```
 
-### REST API Integration Tests
+### Unique Verified Test Executions
 ```
-Command: npx vitest run tests/integration/
-Result: 102/102 PASS (0 failures, 0 skipped)
-Note: Previous "89/91" claim was stale. Actual current state is 102/102.
+Vitest: 1777 (includes 102 REST integration tests)
+pgTAP: 140
+Minimum unique test executions: 1917
 ```
 
 ### Pre-existing Failures

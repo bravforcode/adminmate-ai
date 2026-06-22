@@ -25,6 +25,9 @@ rg-out.txt
 rg-pattern.txt
 test-results.txt
 
+# Audit artifacts and state files (may contain credentials/references)
+Meta/states/
+audit_artifacts/
 
 lancedb/
 

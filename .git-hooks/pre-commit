@@ -1,0 +1,38 @@
+#!/bin/bash
+# Pre-commit hook: Secret scanning
+# Blocks commits containing potential secrets
+
+SECRETS_PATTERNS=(
+  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9'  # JWT tokens
+  'sk_live_'                                   # Stripe live keys
+  'sk_test_'                                   # Stripe test keys (should use env var)
+  'pk_live_'                                   # Stripe live publishable keys
+  'SG\.'                                       # SendGrid API keys
+  'AKIA'                                       # AWS access keys
+  'AIza'                                       # Google API keys
+  'rk_live_'                                   # Razorpay live keys
+  'supabase_service_role_key'                  # Service role key references
+)
+
+FOUND_SECRETS=0
+
+for pattern in "${SECRETS_PATTERNS[@]}"; do
+  # Search staged files for the pattern
+  if git diff --cached --name-only | xargs grep -l "$pattern" 2>/dev/null; then
+    echo "⚠️  POTENTIAL SECRET FOUND: pattern '$pattern'"
+    FOUND_SECRETS=1
+  fi
+done
+
+if [ $FOUND_SECRETS -eq 1 ]; then
+  echo ""
+  echo "❌ Commit blocked: potential secrets detected in staged files."
+  echo ""
+  echo "If these are false positives (e.g., test fixtures with local dev keys),"
+  echo "you can bypass with: git commit --no-verify"
+  echo ""
+  echo "BUT: Verify the secrets are not production credentials."
+  exit 1
+fi
+
+exit 0

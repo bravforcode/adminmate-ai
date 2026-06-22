@@ -27,14 +27,13 @@
 
 ## Test Evidence (Fresh)
 
-| Suite | Count | Status | Command |
-|-------|-------|--------|---------|
-| Vitest (unit/integration) | 1777 | ✅ ALL PASS | `npx vitest run` |
-| pgTAP (RLS structural) | 20 | ✅ ALL PASS | `npx supabase test db supabase/tests/rls_runtime_proof.sql` |
-| pgTAP (CRUD scope) | 80 | ✅ ALL PASS | `npx supabase test db supabase/tests/26a41_crud_scope_closure.sql` |
-| pgTAP (behavioral) | 40 | ✅ ALL PASS | `npx supabase test db supabase/tests/26a4_runtime_rls_behavioral_test.sql` |
-| REST API integration | 102 | ✅ ALL PASS | `npx vitest run tests/integration/` |
-| **Total** | **2019** | **✅** | |
+| Suite | Count | Status | Command | Notes |
+|-------|-------|--------|---------|-------|
+| Vitest (unit/integration) | 1777 | ✅ ALL PASS | `npx vitest run` | Includes 102 REST integration tests |
+| pgTAP (RLS structural) | 20 | ✅ ALL PASS | `npx supabase test db supabase/tests/rls_runtime_proof.sql` | |
+| pgTAP (CRUD scope) | 80 | ✅ ALL PASS | `npx supabase test db supabase/tests/26a41_crud_scope_closure.sql` | |
+| pgTAP (behavioral) | 40 | ✅ ALL PASS | `npx supabase test db supabase/tests/26a4_runtime_rls_behavioral_test.sql` | |
+| **Unique verified test executions** | **1917 minimum** | | Vitest 1777 + pgTAP 140 | REST 102 included in Vitest total |
 
 ---
 
