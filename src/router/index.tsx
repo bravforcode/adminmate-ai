@@ -40,8 +40,12 @@ const BulkImportPage = lazy(() => import('../pages/settings/BulkImportPage'))
 const BillingPage = lazy(() => import('../pages/settings/BillingPage'))
 const PDPAPage = lazy(() => import('../pages/settings/PDPAPage'))
 const HiringPage = lazy(() => import('../pages/hiring/HiringPage'))
+const PerformancePage = lazy(() => import('../pages/PerformancePage'))
+const OKRPage = lazy(() => import('../pages/OKRPage'))
 const HealthPage = lazy(() => import('../pages/HealthPage'))
 const GeminiMonitoringPage = lazy(() => import('../pages/GeminiMonitoringPage'))
+const AttendancePage = lazy(() => import('../pages/AttendancePage'))
+const LeavePage = lazy(() => import('../pages/LeavePage'))
 const NotFoundPage = lazy(() => import('../pages/NotFoundPage'))
 const ApplyPage = lazy(() => import('../pages/portal/ApplyPage'))
 const TrackApplicationPage = lazy(() => import('../pages/portal/TrackApplicationPage'))
@@ -205,6 +209,38 @@ export const router = createBrowserRouter([
         element: (
           <AuthGuard callInitSession={false} requiredRoles={HR_ROLES}>
             <AnimatedPage><OnboardingMgmtPage /></AnimatedPage>
+          </AuthGuard>
+        ),
+      },
+      {
+        path: '/performance',
+        element: (
+          <AuthGuard callInitSession={false} requiredRoles={HR_ROLES}>
+            <AnimatedPage><PerformancePage /></AnimatedPage>
+          </AuthGuard>
+        ),
+      },
+      {
+        path: '/okrs',
+        element: (
+          <AuthGuard callInitSession={false} requiredRoles={HR_ROLES}>
+            <AnimatedPage><OKRPage /></AnimatedPage>
+          </AuthGuard>
+        ),
+      },
+      {
+        path: '/attendance',
+        element: (
+          <AuthGuard callInitSession={false} requiredRoles={HR_ROLES}>
+            <AnimatedPage><AttendancePage /></AnimatedPage>
+          </AuthGuard>
+        ),
+      },
+      {
+        path: '/leave',
+        element: (
+          <AuthGuard callInitSession={false} requiredRoles={HR_ROLES}>
+            <AnimatedPage><LeavePage /></AnimatedPage>
           </AuthGuard>
         ),
       },
