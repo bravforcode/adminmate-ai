@@ -41,11 +41,15 @@ const ImportPage = lazy(() => import('../pages/settings/ImportPage'))
 const ExportPage = lazy(() => import('../pages/settings/ExportPage'))
 const BillingPage = lazy(() => import('../pages/settings/BillingPage'))
 const PDPAPage = lazy(() => import('../pages/settings/PDPAPage'))
+const ThailandPayrollPage = lazy(() => import('../pages/settings/ThailandPayrollPage'))
 const HiringPage = lazy(() => import('../pages/hiring/HiringPage'))
 const PerformancePage = lazy(() => import('../pages/PerformancePage'))
 const OKRPage = lazy(() => import('../pages/OKRPage'))
 const HealthPage = lazy(() => import('../pages/HealthPage'))
 const GeminiMonitoringPage = lazy(() => import('../pages/GeminiMonitoringPage'))
+const BenefitsPage = lazy(() => import('../pages/BenefitsPage'))
+const LearningPage = lazy(() => import('../pages/LearningPage'))
+const EngagementPage = lazy(() => import('../pages/EngagementPage'))
 const AttendancePage = lazy(() => import('../pages/AttendancePage'))
 const LeavePage = lazy(() => import('../pages/LeavePage'))
 const NotFoundPage = lazy(() => import('../pages/NotFoundPage'))
@@ -247,12 +251,44 @@ export const router = createBrowserRouter([
         ),
       },
       {
+        path: '/benefits',
+        element: (
+          <AuthGuard callInitSession={false} requiredRoles={HR_ROLES}>
+            <AnimatedPage><BenefitsPage /></AnimatedPage>
+          </AuthGuard>
+        ),
+      },
+      {
+        path: '/learning',
+        element: (
+          <AuthGuard callInitSession={false} requiredRoles={HR_ROLES}>
+            <AnimatedPage><LearningPage /></AnimatedPage>
+          </AuthGuard>
+        ),
+      },
+      {
+        path: '/engagement',
+        element: (
+          <AuthGuard callInitSession={false} requiredRoles={HR_ROLES}>
+            <AnimatedPage><EngagementPage /></AnimatedPage>
+          </AuthGuard>
+        ),
+      },
+      {
         path: '/reports',
         element: (
           <AuthGuard callInitSession={false} requiredRoles={HR_ROLES}>
             <FeatureGate featureKey="reports">
               <AnimatedPage><ReportsPage /></AnimatedPage>
             </FeatureGate>
+          </AuthGuard>
+        ),
+      },
+      {
+        path: '/people-analytics',
+        element: (
+          <AuthGuard callInitSession={false} requiredRoles={HR_ROLES}>
+            <AnimatedPage><PeopleAnalyticsPage /></AnimatedPage>
           </AuthGuard>
         ),
       },
@@ -349,6 +385,14 @@ export const router = createBrowserRouter([
         element: (
           <AuthGuard callInitSession={false} requiredRoles={HR_ROLES}>
             <AnimatedPage><BillingPage /></AnimatedPage>
+          </AuthGuard>
+        ),
+      },
+      {
+        path: '/settings/thailand-payroll',
+        element: (
+          <AuthGuard callInitSession={false} requiredRoles={HR_ROLES}>
+            <AnimatedPage><ThailandPayrollPage /></AnimatedPage>
           </AuthGuard>
         ),
       },
