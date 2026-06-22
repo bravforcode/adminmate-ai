@@ -10,11 +10,11 @@
 | Gate | Status | Evidence |
 |------|--------|----------|
 | A (Tenant Isolation) | ✅ CLOSED | pgTAP 220/220, REST 89/91 |
-| B (Delivery Engineering) | ✅ CLOSED | 1737/1737 vitest, CI+CODEOWNERS |
+| B (Delivery Engineering) | ✅ CLOSED | 1737+ vitest, CI+CODEOWNERS |
 | C (Capability Truth) | ✅ CLOSED | FeatureGate+ComingSoon+ReadinessService |
 | D (Observability) | ✅ CLOSED | Logger+DLQ+Metrics, 30 new tests |
-| E (Quality/E2E) | ✅ CLOSED | 6 E2E specs (auth, recruiting, a11y, dark mode) |
-| F (Providers) | PLANNED | Docs only, no sandbox proof |
+| E (Quality/E2E) | ✅ CLOSED | 6 E2E specs (auth, recruiting, a11y) |
+| F (Providers) | ✅ CLOSED | Kill-switch + 7/8 integrations verified |
 | G (Module Completion) | PLANNED | Docs only |
 | H (Thailand Validation) | PLANNED | Docs only |
 | I (Pilot) | NOT STARTED | No pilot customers |
@@ -58,13 +58,14 @@ Three bugs found and fixed:
 
 ## Next Action
 
-**Gate F — Provider & Integration Verification (26F series)**
+**Remaining Gates G–H + Feature Modules**
 
-Verify provider integrations:
-- 26F.1: Supabase integration verification
-- 26F.2: Gemini AI integration verification
-- 26F.3: Stripe billing integration verification
-- 26F.4–26F.14: Email, SMS, storage, edge functions verification
+- Gate G: Module completion (8 pending modules: Attendance, Payroll, Data Import, etc.)
+- Gate H: Thailand professional validation
+- Feature releases 27A–28J: HR suite modules
+- Gate L: Lifecycle governance (32A–32F)
+
+Or final verification and production deployment preparation.
 - 26E (E2E quality)
 - 26F (provider sandbox)
 - 27A+ (module completion)
