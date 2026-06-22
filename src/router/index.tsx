@@ -37,6 +37,8 @@ const CompliancePage = lazy(() => import('../pages/settings/CompliancePage'))
 const AuditLogPage = lazy(() => import('../pages/settings/AuditLogPage'))
 const NotificationPreferencesPage = lazy(() => import('../pages/settings/NotificationPreferencesPage'))
 const BulkImportPage = lazy(() => import('../pages/settings/BulkImportPage'))
+const ImportPage = lazy(() => import('../pages/settings/ImportPage'))
+const ExportPage = lazy(() => import('../pages/settings/ExportPage'))
 const BillingPage = lazy(() => import('../pages/settings/BillingPage'))
 const PDPAPage = lazy(() => import('../pages/settings/PDPAPage'))
 const HiringPage = lazy(() => import('../pages/hiring/HiringPage'))
@@ -315,6 +317,22 @@ export const router = createBrowserRouter([
         element: (
           <AuthGuard callInitSession={false} requiredRoles={HR_ROLES}>
             <AnimatedPage><BulkImportPage /></AnimatedPage>
+          </AuthGuard>
+        ),
+      },
+      {
+        path: '/settings/import-data',
+        element: (
+          <AuthGuard callInitSession={false} requiredRoles={HR_ROLES}>
+            <AnimatedPage><ImportPage /></AnimatedPage>
+          </AuthGuard>
+        ),
+      },
+      {
+        path: '/settings/export-data',
+        element: (
+          <AuthGuard callInitSession={false} requiredRoles={HR_ROLES}>
+            <AnimatedPage><ExportPage /></AnimatedPage>
           </AuthGuard>
         ),
       },
