@@ -1,53 +1,101 @@
-# Release Execution Ledger — Post-Gate-A
+# Release Execution Ledger
 
-**Current Commit:** `9941d31`
+**Current Commit:** `245d463`
 **Date:** 2026-06-22
+**Status:** Local Release Candidate — Not Production-Approved
 
 ---
 
-## Gate Status
+## Gate Status (Honest Assessment)
 
-| Gate | Status | Evidence |
-|------|--------|----------|
-| A (Tenant Isolation) | ✅ CLOSED | pgTAP 220/220, REST 89/91 |
-| B (Delivery Engineering) | ✅ CLOSED | 1777+ vitest, CI+CODEOWNERS |
-| C (Capability Truth) | ✅ CLOSED | FeatureGate+ComingSoon+ReadinessService |
-| D (Observability) | ✅ CLOSED | Logger+DLQ+Metrics, 30 new tests |
-| E (Quality/E2E) | ✅ CLOSED | 6 E2E specs (auth, recruiting, a11y) |
-| F (Providers) | ✅ CLOSED | Kill-switch + 7/8 integrations verified |
-| G (Module Completion) | ✅ CLOSED | 6 new pages (Attendance, Leave, Performance, OKR, Import, Export) |
-| H (Thailand Validation) | ✅ CLOSED | ThailandPayrollService + Page, Thai tax/SS/PND1 |
-| I–K (Pilot→GA) | NOT STARTED | Blocked by all gates passing |
-| L (Lifecycle Governance) | ✅ CLOSED | RLS drift + privilege escalation + quality shield |
-| I (Pilot) | NOT STARTED | No pilot customers |
-| J (GA) | NOT STARTED | Blocked by I |
-| K (Country Expansion) | NOT STARTED | Blocked by J |
-| L (Continuous Ops) | NOT STARTED | Blocked by J |
+| Gate | Name | Status | Evidence | Gap |
+|------|------|--------|----------|-----|
+| A | Tenant Isolation | ✅ EVIDENCED | pgTAP 140/140, REST 102/102, behavioral 40/40 | Privileged paths not externally reviewed |
+| B | Delivery Engineering | ⚠️ PARTIAL | 1777/1777 tests pass | `.github/` exists; branch protection enforcement not proven |
+| C | Capability Truth | ⚠️ PARTIAL | FeatureGate+ComingSoon+ReadinessService created | Not all routes wired; registry not consumed by UI |
+| D | Observability | ⚠️ PARTIAL | Logger+DLQ+Metrics services created | No production logging infra; no alerting |
+| E | Quality/E2E | ⚠️ PARTIAL | 6 E2E specs written | Not executed against running app |
+| F | Providers | ❌ NOT VERIFIED | Kill-switch + adapter code exists | Zero providers have sandbox/live evidence |
+| G | Module Completion | ⚠️ PARTIAL | 10+ pages created | Integrations page missing; Billing/Compliance partial |
+| H | Thailand Validation | ❌ NOT VERIFIED | thailandPayrollService created | No professional validation; tax brackets incomplete |
+| I | Pilot | ❌ NOT STARTED | No evidence | No pilot customer |
+| J | Thailand GA | ❌ NOT STARTED | No evidence | No production promotion, no CTO sign-off |
+| K | Country Expansion | ❌ NOT STARTED | No evidence | No country selection |
+| L | Lifecycle Governance | ⚠️ CONTINUOUS | RLS drift + privilege escalation + quality shield | Services exist; no production deployment; ongoing control |
 
 ---
 
-## Release-by-Release Status
+## Test Evidence (Fresh)
 
-| Release | Status | Implementation | Runtime Proof | Provider Evidence | Human Review |
-|---------|--------|---------------|---------------|-------------------|-------------|
-| 26B.0–26B.10 | ✅ COMPLETE | ✅ | ✅ | N/A | ❌ |
-| 26C.2–26C.5 | ✅ COMPLETE | ✅ | ✅ | N/A | ❌ |
-| 26D.1–26D.12 | ✅ COMPLETE | ✅ | ✅ 30 new tests | N/A | ❌ |
-| 26E.1–26E.12 | planned | ⚠️ | ❌ | N/A | ❌ |
-| 26F.1–26F.14 | planned | ⚠️ | ❌ | ❌ | ❌ |
-| 26C.4, 26C.6–26C.7 | partial | ⚠️ | ❌ | N/A | ❌ |
-| 27A–28J | planned | ⚠️ | ❌ | ❌ | ❌ |
-| 32A–32F | not_started | ❌ | ❌ | ❌ | ❌ |
+| Suite | Count | Status | Command |
+|-------|-------|--------|---------|
+| Vitest (unit/integration) | 1777 | ✅ ALL PASS | `npx vitest run` |
+| pgTAP (RLS structural) | 20 | ✅ ALL PASS | `npx supabase test db supabase/tests/rls_runtime_proof.sql` |
+| pgTAP (CRUD scope) | 80 | ✅ ALL PASS | `npx supabase test db supabase/tests/26a41_crud_scope_closure.sql` |
+| pgTAP (behavioral) | 40 | ✅ ALL PASS | `npx supabase test db supabase/tests/26a4_runtime_rls_behavioral_test.sql` |
+| REST API integration | 102 | ✅ ALL PASS | `npx vitest run tests/integration/` |
+| **Total** | **2019** | **✅** | |
 
 ---
 
-## 26B.1 Sub-Release Detail
+## Provider Verification Classification
 
-| Sub | Name | Status | Key Evidence |
-|-----|------|--------|-------------|
-| 26B.1A | Migration Dependency Repair | ✅ | 000031 `$$ LANGUAGE`, 000056 table guard, 000057 RLS |
-| 26B.1B | Deterministic Profile Provisioning | ✅ | SQL direct fix for handle_new_user() NULL company_id |
-| 26B.1C | productionHardening Mock Fix | ✅ | Nested chain mock for error path |
+| Provider | Code Status | Sandbox | Webhook Verified | Production | Label |
+|----------|------------|---------|-----------------|------------|-------|
+| Email (Resend) | Real API | ❌ | N/A | ❌ | adapter_only |
+| Stripe | Webhook handler | ❌ | ✅ HMAC-SHA256 | ❌ | adapter_only |
+| LINE | Stub | ❌ | ❌ | ❌ | not_started |
+| SAML SSO | Config CRUD | ❌ | N/A | ❌ | adapter_only |
+| SCIM | None | ❌ | ❌ | ❌ | not_started |
+| Gemini AI | Real API | ❌ | N/A | ❌ | adapter_only |
+
+---
+
+## Thailand Payroll — Pre-Production
+
+| Aspect | Status |
+|--------|--------|
+| Tax bracket structure | ✅ 8 brackets implemented |
+| Tax rates | ⚠️ 2/3 brackets null (requires accounting review) |
+| Social Security | ✅ 5%/5%, 15,000 THB cap |
+| PND1 form data | ✅ Structure implemented |
+| Royal Decree reference | ❌ None |
+| Accountant sign-off | ❌ None |
+| Professional validation | ❌ None |
+
+**Label: PRE-PRODUCTION**
+
+---
+
+## CI Governance — Files vs Enforcement
+
+| Artifact | Exists | Enforced |
+|----------|--------|----------|
+| `.github/workflows/ci.yml` | ✅ | ❌ No run evidence |
+| `.github/workflows/db-test.yml` | ✅ | ❌ No run evidence |
+| `.github/workflows/security-scan.yml` | ✅ | ❌ No run evidence |
+| `.github/CODEOWNERS` | ✅ | ❌ No branch protection evidence |
+
+---
+
+## Release 33A Exit Criteria
+
+- [x] Every test suite reports green (1777/1777)
+- [x] REST test result updated from 89/91 (now 102/102)
+- [ ] Gate G partial modules completed/disabled/labeled honestly
+- [ ] Every provider classified honestly (all adapter_only or not_started)
+- [ ] Payroll labeled pre-production
+- [ ] Pilot, GA, country-expansion marked NOT_STARTED
+- [ ] GitHub rules active (not just committed)
+- [ ] Backup/restore drill passed
+- [ ] No exposed credentials in git history
+- [ ] CTO approval packet ready
+
+---
+
+*Do not use "ALL GATES CLOSED" or "production-ready" until all exit criteria above are met.*
+
+*See docs/RELEASE_33A_PRODUCTION_CLOSEOUT.md for full honest assessment.*
 | 26B.1D | Full Green Baseline | ✅ | 1703/1703 vitest, 140/140 pgTAP, 254 tables |
 
 ### 26B.1D Bug Analysis
