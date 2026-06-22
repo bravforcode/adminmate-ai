@@ -13,18 +13,31 @@
 -- ============================================================================
 
 -- ─── 1. correlation_id columns ───────────────────────────────────────────────
+-- Only add to tables that exist (skip if table doesn't exist)
 
-ALTER TABLE invoices
-  ADD COLUMN IF NOT EXISTS correlation_id UUID;
+DO $$ BEGIN
+  IF EXISTS (SELECT 1 FROM information_schema.tables WHERE table_name = 'invoices') THEN
+    ALTER TABLE invoices ADD COLUMN IF NOT EXISTS correlation_id UUID;
+  END IF;
+END $$;
 
-ALTER TABLE customers
-  ADD COLUMN IF NOT EXISTS correlation_id UUID;
+DO $$ BEGIN
+  IF EXISTS (SELECT 1 FROM information_schema.tables WHERE table_name = 'customers') THEN
+    ALTER TABLE customers ADD COLUMN IF NOT EXISTS correlation_id UUID;
+  END IF;
+END $$;
 
-ALTER TABLE products
-  ADD COLUMN IF NOT EXISTS correlation_id UUID;
+DO $$ BEGIN
+  IF EXISTS (SELECT 1 FROM information_schema.tables WHERE table_name = 'products') THEN
+    ALTER TABLE products ADD COLUMN IF NOT EXISTS correlation_id UUID;
+  END IF;
+END $$;
 
-ALTER TABLE users
-  ADD COLUMN IF NOT EXISTS correlation_id UUID;
+DO $$ BEGIN
+  IF EXISTS (SELECT 1 FROM information_schema.tables WHERE table_name = 'users' AND table_schema = 'public') THEN
+    ALTER TABLE users ADD COLUMN IF NOT EXISTS correlation_id UUID;
+  END IF;
+END $$;
 
 -- ─── 2. audit_log_retention policy table ─────────────────────────────────────
 
