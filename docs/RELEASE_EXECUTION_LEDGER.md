@@ -10,12 +10,12 @@
 | Gate | Status | Evidence |
 |------|--------|----------|
 | A (Tenant Isolation) | ✅ CLOSED | pgTAP 220/220, REST 89/91 |
-| B (Delivery Engineering) | ✅ CLOSED | 1737+ vitest, CI+CODEOWNERS |
+| B (Delivery Engineering) | ✅ CLOSED | 1744+ vitest, CI+CODEOWNERS |
 | C (Capability Truth) | ✅ CLOSED | FeatureGate+ComingSoon+ReadinessService |
 | D (Observability) | ✅ CLOSED | Logger+DLQ+Metrics, 30 new tests |
 | E (Quality/E2E) | ✅ CLOSED | 6 E2E specs (auth, recruiting, a11y) |
 | F (Providers) | ✅ CLOSED | Kill-switch + 7/8 integrations verified |
-| G (Module Completion) | PLANNED | Docs only |
+| G (Module Completion) | ✅ CLOSED | 6 new pages (Attendance, Leave, Performance, OKR, Import, Export) |
 | H (Thailand Validation) | PLANNED | Docs only |
 | I (Pilot) | NOT STARTED | No pilot customers |
 | J (GA) | NOT STARTED | Blocked by I |
