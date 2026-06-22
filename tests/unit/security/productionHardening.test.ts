@@ -23,7 +23,11 @@ function createChainable(result: unknown) {
     chain[m] = vi.fn(() => chain)
   }
   chain.single = vi.fn(() => Promise.resolve(result))
-  chain.then = (resolve: (v: unknown) => void) => Promise.resolve(result).then(resolve)
+  // .then is needed for `await` to resolve, but must return the result directly
+  // so that `const { data, error } = await chain` works correctly
+  chain.then = (resolve: (v: unknown) => void, reject?: (e: unknown) => void) => {
+    try { resolve(result) } catch (e) { if (reject) reject(e) }
+  }
   return chain
 }
 
@@ -81,8 +85,16 @@ describe('productionHardening — security audit service', () => {
     })
 
     it('returns null on insert failure', async () => {
-      const chainResult = { data: null, error: { message: 'permission denied' } }
-      mockFrom.mockReturnValue(createChainable(chainResult))
+      // Mock the entire supabase client to return error on insert
+      const errorResult = { data: null, error: { message: 'permission denied' } }
+      const errorChain = {
+        insert: vi.fn().mockReturnValue({
+          select: vi.fn().mockReturnValue({
+            single: vi.fn().mockResolvedValue(errorResult),
+          }),
+        }),
+      }
+      mockFrom.mockReturnValue(errorChain)
 
       const result = await securityAuditService.logSecurityAudit({
         company_id: 'comp-1',

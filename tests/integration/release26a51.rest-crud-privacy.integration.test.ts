@@ -258,12 +258,12 @@ describe('26A.5.1 — header/credential anti-footgun', () => {
   it('G5: forged company_id does not bypass RLS', async () => {
     // Cross-tenant SELECT proven in 26A.5 (19/19 PASS)
     // This test verifies the contract is maintained
-    const T1 = USERS[1]
-    // Direct HTTP test confirms Company B token returns 0 rows for Company A data
-    const { body } = await api('GET', 'chat_messages', T1.token!, { company_id: `eq.${T0.companyId}` })
-    // NOTE: Due to test setup timing, this may return 1 row if profile update hasn't propagated
-    // The cross-tenant blocking is proven in 26A.5 with 19/19 PASS
-    expect(body.length).toBeLessThanOrEqual(1)
+    const T0 = USERS[0] // Company A
+    const T1 = USERS[1] // Company B
+    // Direct HTTP test: Company B token requests Company A company_id — should get 0 rows
+    const { body } = await api('GET', 'chat_messages', T1.token!, undefined, { company_id: `eq.${T0.companyId}` })
+    // RLS should block cross-tenant access entirely — 0 rows
+    expect(body.length).toBe(0)
   })
 
   it('G6: error response does not leak row data', async () => {

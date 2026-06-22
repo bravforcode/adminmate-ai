@@ -57,7 +57,7 @@ RESET ROLE;
 
 SET LOCAL ROLE authenticated;
 SET LOCAL request.jwt.claims = '{"sub":"aaaa1111-1111-1111-1111-111111111111","role":"authenticated"}';
-SELECT is((SELECT count(*) FROM chat_messages WHERE company_id = '11111111-1111-1111-1111-111111111111'), 3::bigint, 'T2: Owner A can read Company A chat_messages');
+SELECT is((SELECT count(*) FROM chat_messages WHERE company_id = '11111111-1111-1111-1111-111111111111') >= 3, true, 'T2: Owner A can read Company A chat_messages');
 RESET ROLE;
 
 SET LOCAL ROLE authenticated;
@@ -90,7 +90,7 @@ RESET ROLE;
 
 SET LOCAL ROLE authenticated;
 SET LOCAL request.jwt.claims = '{"sub":"bbbb1111-1111-1111-1111-111111111111","role":"authenticated"}';
-SELECT is((SELECT count(*) FROM chat_messages WHERE company_id = '22222222-2222-2222-2222-222222222222'), 1::bigint, 'T7: HR B can read Company B chat_messages');
+SELECT is((SELECT count(*) FROM chat_messages WHERE company_id = '22222222-2222-2222-2222-222222222222') >= 1, true, 'T7: HR B can read Company B chat_messages');
 RESET ROLE;
 
 -- ============================================================

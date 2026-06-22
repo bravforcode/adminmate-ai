@@ -124,23 +124,14 @@ describe('26A.5.2 — G5: Deterministic forged company_id proof', () => {
     const Tb = USERS[1] // Company B
 
     // Pre-condition: verify Ta has Company A data
-    const beforeRes = await api('GET', 'chat_messages', Ta.token!, { company_id: `eq.${Ta.companyId}` })
+    const beforeRes = await api('GET', 'chat_messages', Ta.token!, undefined, { company_id: `eq.${Ta.companyId}` })
     expect(beforeRes.body.length).toBeGreaterThanOrEqual(1)
 
-    // PROOF: Cross-tenant blocking verified via:
-    // 1. Direct Node.js HTTP test (confirmed 0 rows returned)
-    // 2. pgTAP behavioral tests (40/40 PASS)
-    // 3. Service-layer tests (48/49 PASS)
-    // The vitest fetch API has timing issues with Supabase auth flow
-    // but the RLS enforcement is proven at multiple layers
+    // Attack: Company B token with Company A company_id filter
+    const attackRes = await api('GET', 'chat_messages', Tb.token!, undefined, { company_id: `eq.${Ta.companyId}` })
 
-    // Attack: Company B token with Company A company_id
-    const attackRes = await api('GET', 'chat_messages', Tb.token!, { company_id: `eq.${Ta.companyId}` })
-
-    // ASSERTION: RLS blocks cross-tenant access
-    // If this fails in vitest, it's a test-environment timing issue,
-    // not a security issue — proven by direct HTTP test and pgTAP
-    expect(attackRes.body.length).toBeLessThanOrEqual(1)
+    // ASSERTION: RLS blocks cross-tenant access — 0 rows for cross-tenant query
+    expect(attackRes.body.length).toBe(0)
   })
 
   it('G5: Company A token CANNOT read Company B data (deterministic)', async () => {
@@ -148,12 +139,12 @@ describe('26A.5.2 — G5: Deterministic forged company_id proof', () => {
     const Tb = USERS[1]
 
     // Verify Company B has data
-    const beforeRes = await api('GET', 'chat_messages', Tb.token!, { company_id: `eq.${Tb.companyId}` })
+    const beforeRes = await api('GET', 'chat_messages', Tb.token!, undefined, { company_id: `eq.${Tb.companyId}` })
     expect(beforeRes.body.length).toBeGreaterThanOrEqual(1)
 
-    // Attack: Company A token with Company B company_id
-    const attackRes = await api('GET', 'chat_messages', Ta.token!, { company_id: `eq.${Tb.companyId}` })
-    expect(attackRes.body.length).toBeLessThanOrEqual(1)
+    // Attack: Company A token with Company B company_id filter
+    const attackRes = await api('GET', 'chat_messages', Ta.token!, undefined, { company_id: `eq.${Tb.companyId}` })
+    expect(attackRes.body.length).toBe(0)
   })
 
   it('G5: Forged company_id in INSERT is rejected', async () => {
@@ -197,12 +188,12 @@ describe('26A.5.2 — Same-company resource privacy', () => {
   })
 
   it('Admin sees all company chat_messages (by design)', async () => {
-    const { body } = await api('GET', 'chat_messages', Ta.token!, { company_id: `eq.${Ta.companyId}` })
+    const { body } = await api('GET', 'chat_messages', Ta.token!, undefined, { company_id: `eq.${Ta.companyId}` })
     expect(body.length).toBeGreaterThanOrEqual(1)
   })
 
   it('messages SELECT uses company_id + participant/sender scope', async () => {
-    const { body } = await api('GET', 'messages', Ta.token!, { company_id: `eq.${Ta.companyId}` })
+    const { body } = await api('GET', 'messages', Ta.token!, undefined, { company_id: `eq.${Ta.companyId}` })
     // All returned messages should be from Company A
     for (const msg of body) {
       expect(msg.company_id).toBe(Ta.companyId)
@@ -210,7 +201,7 @@ describe('26A.5.2 — Same-company resource privacy', () => {
   })
 
   it('conversation_threads SELECT uses company_id scope', async () => {
-    const { body } = await api('GET', 'conversation_threads', Ta.token!, { company_id: `eq.${Ta.companyId}` })
+    const { body } = await api('GET', 'conversation_threads', Ta.token!, undefined, { company_id: `eq.${Ta.companyId}` })
     for (const thread of body) {
       expect(thread.company_id).toBe(Ta.companyId)
     }
@@ -218,7 +209,7 @@ describe('26A.5.2 — Same-company resource privacy', () => {
 
   it('chat_platform_connections admin-only write', async () => {
     // Admin can read connections
-    const { body } = await api('GET', 'chat_platform_connections', Ta.token!, { company_id: `eq.${Ta.companyId}` })
+    const { body } = await api('GET', 'chat_platform_connections', Ta.token!, undefined, { company_id: `eq.${Ta.companyId}` })
     expect(body.length).toBeGreaterThanOrEqual(0)
   })
 })
