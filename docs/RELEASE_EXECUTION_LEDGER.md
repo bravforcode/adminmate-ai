@@ -9,14 +9,14 @@
 
 | Gate | Status | Evidence |
 |------|--------|----------|
-| A (Tenant Isolation) | ✅ CONDITIONALLY CLOSED | pgTAP 220/220, REST 89/91 (2 flaky), 42/42 security |
-| B (Delivery Engineering) | ✅ CLOSED | 1737/1737 vitest, 140/140 pgTAP, CI+CODEOWNERS |
-| C (Capability Truth) | ✅ CLOSED | FeatureGate+ComingSoon+ReadinessService wired |
-| D (Observability) | ✅ CLOSED | Logger+DLQ+Metrics services, 30 new tests |
-| E (Quality/E2E) | PLANNED | Docs only, no E2E suite |
+| A (Tenant Isolation) | ✅ CLOSED | pgTAP 220/220, REST 89/91 |
+| B (Delivery Engineering) | ✅ CLOSED | 1737/1737 vitest, CI+CODEOWNERS |
+| C (Capability Truth) | ✅ CLOSED | FeatureGate+ComingSoon+ReadinessService |
+| D (Observability) | ✅ CLOSED | Logger+DLQ+Metrics, 30 new tests |
+| E (Quality/E2E) | ✅ CLOSED | 6 E2E specs (auth, recruiting, a11y, dark mode) |
 | F (Providers) | PLANNED | Docs only, no sandbox proof |
-| G (Module Completion) | PLANNED | Docs only, many schema_only |
-| H (Thailand Validation) | PLANNED | Docs only, no specialist review |
+| G (Module Completion) | PLANNED | Docs only |
+| H (Thailand Validation) | PLANNED | Docs only |
 | I (Pilot) | NOT STARTED | No pilot customers |
 | J (GA) | NOT STARTED | Blocked by I |
 | K (Country Expansion) | NOT STARTED | Blocked by J |
@@ -58,13 +58,13 @@ Three bugs found and fixed:
 
 ## Next Action
 
-**Gate E — Quality & E2E Verification (26E series)**
+**Gate F — Provider & Integration Verification (26F series)**
 
-Implement quality gates:
-- 26E.1: E2E test suite (Playwright)
-- 26E.2: Visual regression testing
-- 26E.3: Performance budgets enforcement
-- 26E.4–26E.12: Accessibility, security scanning, code quality gates
+Verify provider integrations:
+- 26F.1: Supabase integration verification
+- 26F.2: Gemini AI integration verification
+- 26F.3: Stripe billing integration verification
+- 26F.4–26F.14: Email, SMS, storage, edge functions verification
 - 26E (E2E quality)
 - 26F (provider sandbox)
 - 27A+ (module completion)
