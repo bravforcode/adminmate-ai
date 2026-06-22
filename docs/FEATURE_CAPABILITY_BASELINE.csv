@@ -1,0 +1,67 @@
+feature_key,module_name,capability_status,owner,dependencies,plan_entitlement,country_availability,provider_requirement,support_tier,known_limitations,is_user_visible
+recruitment-jobs,Recruitment,functional_local,Product,,free,TH,,basic,Schema+service+UI+tests
+recruitment-candidates,Recruitment,functional_local,Product,,free,TH,,basic,Schema+service+UI+tests
+recruitment-applications,Recruitment,functional_local,Product,,free,TH,,basic,Schema+service+UI+tests
+recruitment-interviews,Recruitment,functional_local,Product,,free,TH,,basic,Schema+service+UI+tests
+recruitment-offers,Recruitment,functional_local,Product,,free,TH,,basic,Schema+service+UI+tests
+recruitment-pipeline,Recruitment,functional_local,Product,,free,TH,,basic,Schema+service+UI+tests
+recruitment-referrals,Recruitment,functional_local,Product,,free,TH,,basic,Schema+service+UI+tests
+recruitment-ai-screening,Recruitment,functional_local,Product,,free,TH,Gemini,basic,Schema+service+UI+tests
+candidate-portal,Candidate Portal,functional_local,Product,,free,TH,,basic,Schema+service+UI+tests
+candidate-apply,Candidate Portal,functional_local,Product,,free,TH,,basic,Schema+service+UI+tests
+candidate-tracking,Candidate Portal,functional_local,Product,,free,TH,,basic,Schema+service+UI+tests
+onboarding-templates,Onboarding,functional_local,Product,,free,TH,,basic,Schema+service+UI+tests
+onboarding-checklists,Onboarding,functional_local,Product,,free,TH,,basic,Schema+service+UI+tests
+onboarding-documents,Onboarding,functional_local,Product,,free,TH,,basic,Schema+service+UI+tests
+onboarding-contracts,Onboarding,functional_local,Product,,free,TH,,basic,Schema+service+UI+tests
+onboarding-e-signature,Onboarding,functional_local,Product,,free,TH,Manual,basic,Manual upload only
+offboarding-templates,Offboarding,functional_local,Product,,free,TH,,basic,Schema+service+UI+tests
+offboarding-checklists,Offboarding,functional_local,Product,,free,TH,,basic,Schema+service+UI+tests
+offboarding-asset-return,Offboarding,functional_local,Product,,free,TH,,basic,Schema+service+UI+tests
+offboarding-access-revocation,Offboarding,functional_local,Product,,free,TH,,basic,Schema+service+UI+tests
+offboarding-exit-interview,Offboarding,functional_local,Product,,free,TH,,basic,Schema+service+UI+tests
+offboarding-settlement,Offboarding,functional_local,Product,,free,TH,,basic,Schema+service+UI+tests
+hris-employees,HRIS,functional_local,Product,,free,TH,,basic,Schema+service+UI+tests
+hris-directory,HRIS,functional_local,Product,,free,TH,,basic,Schema+service+UI+tests
+hris-org-chart,HRIS,functional_local,Product,,free,TH,,basic,Schema+service+UI+tests
+hris-change-requests,HRIS,functional_local,Product,,free,TH,,basic,Schema+service+UI+tests
+hris-custom-fields,HRIS,functional_local,Product,,free,TH,,basic,Schema+service+UI+tests
+hris-timeline,HRIS,functional_local,Product,,free,TH,,basic,Schema+service+UI+tests
+hris-documents,HRIS,functional_local,Product,,free,TH,,basic,Schema+service+UI+tests
+hris-self-service,HRIS,functional_local,Product,,free,TH,,basic,Schema+service+UI+tests
+hris-manager-view,HRIS,functional_local,Product,,free,TH,,basic,Schema+service+UI+tests
+messaging-approval,Messaging,functional_local,Product,,free,TH,,basic,Schema+service+UI+tests
+messaging-templates,Messaging,functional_local,Product,,free,TH,,basic,Schema+service+UI+tests
+messaging-ai-draft,Messaging,functional_local,Product,,free,TH,Gemini,basic,Schema+service+UI+tests
+messaging-provider-email,Messaging,adapter_only,Platform,,pro,TH,Email,basic,No sandbox proof
+messaging-provider-line,Messaging,adapter_only,Platform,,pro,TH,LINE,basic,No sandbox proof
+messaging-provider-whatsapp,Messaging,adapter_only,Platform,,pro,TH,WhatsApp,basic,No sandbox proof
+messaging-provider-sms,Messaging,adapter_only,Platform,,pro,TH,SMS,basic,Interface only
+messaging-provider-facebook,Messaging,adapter_only,Platform,,pro,TH,Facebook,basic,Interface only
+ai-recruiting-screening,AI,functional_local,Platform,,free,TH,Gemini,basic,Evidence-based scoring
+ai-recruiting-match-score,AI,functional_local,Platform,,free,TH,Gemini,basic,Evidence-based scoring
+ai-recruiting-summary,AI,functional_local,Platform,,free,TH,Gemini,basic,Evidence-based summary
+ai-assistant,AI,functional_local,Platform,,free,TH,Gemini,basic,Schema+service+tests
+ai-helpdesk,HR Helpdesk,functional_local,Product,,free,TH,,basic,Schema+service+tests
+billing-subscriptions,Billing,functional_local,Platform,,free,TH,Stripe,basic,Schema+service+tests
+billing-plans,Billing,functional_local,Platform,,free,TH,,basic,Schema+service+UI+tests
+attendance-leave,Attendance/Leave,schema_only,Product,,free,TH,,basic,Tables exist only
+scheduling,Scheduling,schema_only,Product,,free,TH,,basic,Tables exist only
+payroll-th,Payroll,implemented_local,Payroll,,pro,TH,,intermediate,No specialist validation
+payroll-global,Payroll,schema_only,Payroll,,enterprise,TH,,basic,Country pack stubs only
+statutory-filing,Compliance,implemented_local,Compliance,,pro,TH,,intermediate,No filing proof
+performance,Performance,schema_only,Product,,free,TH,,basic,Tables exist only
+learning,L&D,schema_only,Product,,free,TH,,basic,Tables exist only
+compensation,Compensation,schema_only,Product,,free,TH,,basic,Tables exist only
+benefits,Benefits,schema_only,Product,,free,TH,,basic,Tables exist only
+engagement,Engagement,schema_only,Product,,free,TH,,basic,Tables exist only
+assets,Assets/Expenses,schema_only,Product,,free,TH,,basic,Tables exist only
+vendor-contractor,Vendor/Contractor,schema_only,Product,,free,TH,,basic,Tables exist only
+analytics,Analytics,implemented_local,Product,,free,TH,,basic,Schema+service+UI+tests
+analytics-people,Analytics,schema_only,Product,,pro,TH,,basic,Tables exist only
+api-webhooks,Platform,functional_local,Platform,,enterprise,TH,,basic,Schema+service+tests
+search-notifications,Platform,functional_local,Platform,,free,TH,,basic,Schema+service+tests
+enterprise-admin,Enterprise,implemented_local,Platform,,enterprise,TH,,basic,Schema+service+tests
+sso-saml,Enterprise,adapter_only,Platform,,enterprise,TH,,basic,Config CRUD only
+scim,Enterprise,not_started,Platform,,enterprise,TH,,basic,No implementation
+privacy-compliance,Compliance,schema_only,Compliance,,free,TH,,basic,Tables exist only
