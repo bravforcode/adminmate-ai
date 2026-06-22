@@ -1,6 +1,7 @@
 import { createBrowserRouter, Navigate } from 'react-router-dom'
 import { lazy } from 'react'
 import { AuthGuard, CompanySetupGuard, getDefaultRoute } from './AuthGuard'
+import { FeatureGate } from '../components/common/FeatureGate'
 import { AppLayout } from '../components/layout/AppLayout'
 import { ErrorBoundary } from '../components/common/ErrorBoundary'
 import { AnimatedPage } from '../components/shared/AnimatedPage'
@@ -211,7 +212,9 @@ export const router = createBrowserRouter([
         path: '/reports',
         element: (
           <AuthGuard callInitSession={false} requiredRoles={HR_ROLES}>
-            <AnimatedPage><ReportsPage /></AnimatedPage>
+            <FeatureGate featureKey="reports">
+              <AnimatedPage><ReportsPage /></AnimatedPage>
+            </FeatureGate>
           </AuthGuard>
         ),
       },
