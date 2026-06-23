@@ -1,0 +1,341 @@
+name: CI Governance Enforcement
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main, develop]
+  workflow_dispatch:
+
+jobs:
+  # ------------------------------------------------------------------
+  # 1. Secret Scanning (blocks secrets in code)
+  # ------------------------------------------------------------------
+  secret-scanning:
+    name: "Secret Scanning"
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # Full history for git log scanning
+
+      - name: Scan for hardcoded secrets
+        run: |
+          echo "=== Scanning for hardcoded secrets ==="
+          # JWT patterns (eyJ...)
+          if grep -rn "eyJ" src/ --include="*.ts" --include="*.tsx" --include="*.js" | grep -v "node_modules" | grep -v ".env" | grep -v "test-utils" | grep -v "setup.ts"; then
+            echo "ERROR: Potential JWT token found in source code"
+            exit 1
+          fi
+
+          # Stripe keys
+          if grep -rn "sk_live_\|sk_test_\|pk_live_\|pk_test_" src/ --include="*.ts" --include="*.tsx" | grep -v "node_modules" | grep -v ".env"; then
+            echo "ERROR: Stripe key found in source code"
+            exit 1
+          fi
+
+          # AWS keys
+          if grep -rn "AKIA[0-9A-Z]\{16\}" src/ --include="*.ts" --include="*.tsx" | grep -v "node_modules"; then
+            echo "ERROR: AWS key found in source code"
+            exit 1
+          fi
+
+          # SendGrid keys
+          if grep -rn "SG\.\|sendgrid" src/ --include="*.ts" --include="*.tsx" -i | grep -v "node_modules" | grep -v ".env"; then
+            echo "ERROR: SendGrid key found in source code"
+            exit 1
+          fi
+
+          # Generic password patterns
+          if grep -rn 'password.*=.*["\x27][^"\x27]\{8,\}' src/ --include="*.ts" --include="*.tsx" | grep -v "node_modules" | grep -v ".env" | grep -v "test" | grep -v "mock"; then
+            echo "ERROR: Potential hardcoded password found in source code"
+            exit 1
+          fi
+
+          echo "✅ No hardcoded secrets found"
+
+      - name: Verify .env not committed
+        run: |
+          if [ -f .env ]; then
+            echo "ERROR: .env file found in repository"
+            exit 1
+          fi
+          echo "✅ .env not in repository"
+
+  # ------------------------------------------------------------------
+  # 2. Migration Validation
+  # ------------------------------------------------------------------
+  migration-validation:
+    name: "Migration Validation"
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Validate migration filenames
+        run: |
+          echo "=== Validating migration filenames ==="
+          INVALID=0
+          for f in supabase/migrations/*.sql; do
+            BASENAME=$(basename "$f")
+            # Skip non-migration files
+            if [[ "$BASENAME" == ".gitkeep" ]] || [[ "$BASENAME" == "manual_migrate_tokens.sql" ]]; then
+              continue
+            fi
+            # Check timestamp pattern
+            if ! [[ "$BASENAME" =~ ^[0-9]{14}_.+\.sql$ ]]; then
+              echo "ERROR: Invalid migration filename: $BASENAME"
+              echo "  Expected: <14-digit-timestamp>_<name>.sql"
+              INVALID=1
+            fi
+          done
+          if [ $INVALID -eq 1 ]; then
+            exit 1
+          fi
+          echo "✅ All migration filenames valid"
+
+      - name: Check migration count
+        run: |
+          COUNT=$(ls supabase/migrations/*.sql 2>/dev/null | wc -l)
+          echo "Migration files: $COUNT"
+          if [ "$COUNT" -lt 50 ]; then
+            echo "ERROR: Expected at least 50 migration files, found $COUNT"
+            exit 1
+          fi
+          echo "✅ Migration count OK"
+
+  # ------------------------------------------------------------------
+  # 3. Security Function Audit
+  # ------------------------------------------------------------------
+  security-audit:
+    name: "Security Function Audit"
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    services:
+      postgres:
+        image: supabase/postgres:15.6.1.78
+        env:
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: postgres
+        ports:
+          - 54322:5432
+        options: >-
+          --health-cmd="pg_isready -U postgres"
+          --health-interval=5s
+          --health-timeout=5s
+          --health-retries=10
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Supabase CLI
+        run: |
+          curl -fsSL https://supabase.com/install.sh | sudo bash
+
+      - name: Reset database
+        run: |
+          supabase db reset --db-url postgresql://postgres:postgres@localhost:54322/postgres
+        env:
+          SUPABASE_DB_URL: postgresql://postgres:postgres@localhost:54322/postgres
+
+      - name: Enable pgTAP
+        run: |
+          PGPASSWORD=postgres psql -h localhost -p 54322 -U postgres -d postgres \
+            -c "CREATE EXTENSION IF NOT EXISTS pgtap;"
+
+      - name: Check SECURITY DEFINER functions
+        run: |
+          echo "=== Checking SECURITY DEFINER functions ==="
+          VULNERABLE=$(PGPASSWORD=postgres psql -h localhost -p 54322 -U postgres -d postgres -t -c "
+            SELECT count(*) FROM pg_proc p
+            JOIN pg_namespace n ON p.pronamespace = n.oid
+            WHERE n.nspname = 'public'
+              AND p.prosecdef = true
+              AND p.prokind = 'f'
+              AND NOT (COALESCE(p.proconfig, ARRAY[]::TEXT[]) @> ARRAY['search_path=public']);
+          " | tr -d ' ')
+
+          echo "Vulnerable SECURITY DEFINER functions: $VULNERABLE"
+          if [ "$VULNERABLE" -gt 0 ]; then
+            echo "ERROR: Found $VULNERABLE SECURITY DEFINER functions without search_path"
+            PGPASSWORD=postgres psql -h localhost -p 54322 -U postgres -d postgres -c "
+              SELECT p.proname, n.nspname
+              FROM pg_proc p
+              JOIN pg_namespace n ON p.pronamespace = n.oid
+              WHERE n.nspname = 'public'
+                AND p.prosecdef = true
+                AND p.prokind = 'f'
+                AND NOT (COALESCE(p.proconfig, ARRAY[]::TEXT[]) @> ARRAY['search_path=public']);
+            "
+            exit 1
+          fi
+          echo "✅ All SECURITY DEFINER functions have search_path"
+
+      - name: Check view security_invoker
+        run: |
+          echo "=== Checking view security_invoker ==="
+          MISSING=$(PGPASSWORD=postgres psql -h localhost -p 54322 -U postgres -d postgres -t -c "
+            SELECT count(*) FROM pg_class c
+            JOIN pg_namespace n ON c.relnamespace = n.oid
+            WHERE n.nspname = 'public'
+              AND c.relkind = 'v'
+              AND c.relname LIKE 'v_%'
+              AND (c.reloptions IS NULL OR NOT (c.reloptions @> ARRAY['security_invoker=true']));
+          " | tr -d ' ')
+
+          echo "Views without security_invoker: $MISSING"
+          if [ "$MISSING" -gt 0 ]; then
+            echo "ERROR: Found $MISSING application views without security_invoker"
+            exit 1
+          fi
+          echo "✅ All application views have security_invoker"
+
+  # ------------------------------------------------------------------
+  # 4. Test Count Verification
+  # ------------------------------------------------------------------
+  test-count:
+    name: "Test Count Verification"
+    runs-on: ubuntu-latest
+    needs: install
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - uses: actions/cache/restore@v4
+        with:
+          path: node_modules
+          key: deps-${{ runner.os }}-${{ hashFiles('package-lock.json') }}
+
+      - name: Run unit tests and verify count
+        run: |
+          echo "=== Running unit tests ==="
+          npx vitest run --reporter=verbose 2>&1 | tee test-output.txt
+
+          # Extract test count
+          TOTAL=$(grep -oP 'Tests\s+\K\d+' test-output.txt | tail -1)
+          PASSED=$(grep -oP 'passed\s+\K\d+' test-output.txt | tail -1)
+          FAILED=$(grep -oP 'failed\s+\K\d+' test-output.txt | tail -1)
+
+          echo "Total tests: $TOTAL"
+          echo "Passed: $PASSED"
+          echo "Failed: $FAILED"
+
+          # Enforce minimum test count (1777 from 33B.2 + 33B.3)
+          MIN_TESTS=1777
+          if [ "${TOTAL:-0}" -lt "$MIN_TESTS" ]; then
+            echo "ERROR: Test count $TOTAL is below minimum $MIN_TESTS"
+            exit 1
+          fi
+
+          # Enforce zero failures
+          if [ "${FAILED:-0}" -gt 0 ]; then
+            echo "ERROR: $FAILED tests failed"
+            exit 1
+          fi
+
+          echo "✅ Test count verification passed"
+
+  # ------------------------------------------------------------------
+  # 5. Build Size Check
+  # ------------------------------------------------------------------
+  build-size:
+    name: "Build Size Check"
+    runs-on: ubuntu-latest
+    needs: install
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - uses: actions/cache/restore@v4
+        with:
+          path: node_modules
+          key: deps-${{ runner.os }}-${{ hashFiles('package-lock.json') }}
+
+      - name: Build and check size
+        run: |
+          echo "=== Building project ==="
+          npx vite build 2>&1 | tee build-output.txt
+
+          # Check build output size
+          if [ -d "dist" ]; then
+            TOTAL_SIZE=$(du -sh dist | cut -f1)
+            echo "Build output size: $TOTAL_SIZE"
+
+            # Check individual chunk sizes (warn if > 500KB)
+            find dist -name "*.js" -size +500k | while read f; do
+              SIZE=$(du -sh "$f" | cut -f1)
+              echo "WARNING: Large chunk: $f ($SIZE)"
+            done
+
+            echo "✅ Build completed successfully"
+          else
+            echo "ERROR: Build output not found"
+            exit 1
+          fi
+
+  # ------------------------------------------------------------------
+  # 6. Deployment Readiness Gate
+  # ------------------------------------------------------------------
+  deployment-readiness:
+    name: "Deployment Readiness Gate"
+    runs-on: ubuntu-latest
+    needs: [secret-scanning, migration-validation, security-audit, test-count, build-size]
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Verify deployment readiness
+        run: |
+          echo "=== Deployment Readiness Check ==="
+
+          # Check all required files exist
+          REQUIRED_FILES=(
+            ".github/workflows/ci.yml"
+            ".github/workflows/db-test.yml"
+            ".github/workflows/security-scan.yml"
+            ".github/CODEOWNERS"
+            "docs/POLICY_DESTRUCTIVE_DOCKER.md"
+            "docs/RELEASE_EXECUTION_LEDGER.md"
+          )
+
+          MISSING=0
+          for f in "${REQUIRED_FILES[@]}"; do
+            if [ ! -f "$f" ]; then
+              echo "ERROR: Missing required file: $f"
+              MISSING=1
+            fi
+          done
+
+          if [ $MISSING -eq 1 ]; then
+            exit 1
+          fi
+
+          # Check test count in package.json
+          echo "✅ All required files present"
+
+          # Verify no sensitive files in repo
+          if [ -f ".env" ] || [ -f ".env.local" ] || [ -f ".env.production" ]; then
+            echo "ERROR: Sensitive env files found in repository"
+            exit 1
+          fi
+
+          echo "✅ Deployment readiness gate PASSED"
+          echo ""
+          echo "Summary:"
+          echo "  - Secret scanning: PASS"
+          echo "  - Migration validation: PASS"
+          echo "  - Security audit: PASS"
+          echo "  - Test count: PASS"
+          echo "  - Build size: PASS"
+          echo ""
+          echo "All gates passed. Ready for deployment."
