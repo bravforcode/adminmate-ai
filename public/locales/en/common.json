@@ -170,25 +170,8 @@
     "info": "Info"
   },
   "errors": {
-    "generic": "Something went wrong. Please try again.",
-    "unauthorized": "You are not authorized to perform this action.",
-    "not_found": "The requested resource was not found.",
-    "validation": "Please check your input and try again.",
-    "network": "Network error. Please check your connection.",
-    "auth_invalid_credentials": "Invalid email or password.",
-    "auth_email_not_confirmed": "Please confirm your email before signing in.",
-    "auth_user_exists": "An account with this email already exists.",
-    "auth_signups_disabled": "New signups are currently disabled.",
-    "auth_provider_disabled": "Email authentication is not enabled. Please contact support.",
-    "auth_rate_limited": "Too many attempts. Please slow down and try again later.",
-    "auth_weak_password": "Please choose a stronger password.",
-    "auth_invalid_email_format": "Please enter a valid email address.",
-    "auth_token_expired": "Your session has expired. Please sign in again.",
-    "auth_session_expired": "Your session has expired. Please sign in again.",
-    "auth_session_missing": "You are not signed in.",
-    "auth_user_not_found": "No account found with that email.",
-    "load_failed": "Failed to load data",
-    "retry": "Retry"
+    "unexpected_issue_reported": "Something went wrong. The issue has been reported.",
+    "async_operation_failed": "An async operation failed. Our team has been notified."
   },
   "empty": {
     "no_data": "No data available. Try adjusting your filters or check back later.",
@@ -286,10 +269,6 @@
     "email_readonly": "Email cannot be changed here.",
     "updated": "Profile updated successfully",
     "name_required": "Name is required"
-  },
-  "errors": {
-    "unexpected_issue_reported": "Something went wrong. The issue has been reported.",
-    "async_operation_failed": "An async operation failed. Our team has been notified."
   },
   "ai": {
     "hr_assistant": "HR Knowledge Assistant",
@@ -795,5 +774,12 @@
     "feature_ai_chat_unlimited": "AI chat (unlimited)",
     "feature_1yr_audit": "1-year audit log",
     "feature_custom_reports": "Custom reports"
+  },
+  "notifications": {
+    "title": "Notifications",
+    "markAllRead": "Mark all as read",
+    "empty": "No notifications yet",
+    "justNow": "Just now",
+    "minutesAgo": "{{count}} minutes ago"
   }
 }

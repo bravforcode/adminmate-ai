@@ -225,7 +225,7 @@ export default function ApplyPage() {
         <div className="bg-[var(--color-surface)] rounded-2xl border border-[var(--color-border)] p-6 mb-8">
           <div className="flex items-start gap-4">
             {job.company_logo_url ? (
-              <img src={job.company_logo_url} alt="" className="w-12 h-12 rounded-xl object-cover" />
+              <img src={job.company_logo_url} alt={job.company_name} className="w-12 h-12 rounded-xl object-cover" />
             ) : (
               <div className="w-12 h-12 rounded-xl bg-[var(--color-primary)]/10 flex items-center justify-center">
                 <Building2 className="w-6 h-6 text-[var(--color-primary)]" />

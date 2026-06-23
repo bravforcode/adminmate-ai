@@ -73,6 +73,7 @@ export function MobileNav() {
         <div
           ref={moreRef}
           role="dialog"
+          aria-modal="true"
           aria-label="More navigation"
           className="fixed bottom-16 left-2 right-2 z-50 md:hidden bg-surface dark:bg-surface border border-outline-variant dark:border-outline rounded-xl shadow-lg max-h-[60vh] overflow-y-auto"
         >

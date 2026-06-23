@@ -113,6 +113,7 @@ export function ChatWidget() {
             ref={panelRef}
             data-testid="chat-panel"
             role="dialog"
+            aria-modal="true"
             aria-label={t('title')}
             className="chat-panel fixed bottom-[92px] md:bottom-24 right-4 md:right-6 z-[60] w-[calc(100vw-32px)] sm:w-[400px] h-[min(550px,calc(100vh-180px))] bg-surface border border-border rounded-2xl shadow-2xl flex flex-col overflow-hidden origin-bottom-right pointer-events-auto"
             initial={{ opacity: 0, scale: 0.9, y: 16 }}

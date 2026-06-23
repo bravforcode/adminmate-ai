@@ -1,0 +1,45 @@
+{
+  "apply": {
+    "title": "Apply Now",
+    "full_name": "Full Name *",
+    "email": "Email *",
+    "phone": "Phone",
+    "location": "Location",
+    "current_position": "Current Position",
+    "experience_years": "Years of Experience",
+    "linkedin": "LinkedIn",
+    "cover_letter": "Cover Letter",
+    "consent": "I consent to the collection and use of my personal data for recruitment purposes, in accordance with the PDPA policy. *",
+    "submit": "Submit Application",
+    "submitting": "Submitting...",
+    "success_title": "Application Submitted!",
+    "success_msg": "Thank you for your interest. We will review your application.",
+    "already_applied_title": "Already Applied",
+    "already_applied_msg": "You have already applied to this position.",
+    "tracking_code": "Tracking Code",
+    "track_status": "Track Status →",
+    "not_found": "Job Not Found",
+    "not_found_msg": "This job may have been removed or is no longer accepting applications.",
+    "back_home": "Back to home",
+    "deadline": "Deadline"
+  },
+  "track": {
+    "title": "Application Status",
+    "company": "Company",
+    "applied": "Applied",
+    "status": "Status",
+    "your_code": "Your Tracking Code",
+    "save_code": "Save this code to check your application status later.",
+    "not_found": "Application Not Found",
+    "not_found_msg": "Invalid tracking code.",
+    "statuses": {
+      "applied": "Applied",
+      "screened": "Under Review",
+      "shortlisted": "Shortlisted",
+      "interviewed": "Interviewed",
+      "offered": "Offer Extended",
+      "hired": "Hired",
+      "rejected": "Not Selected"
+    }
+  }
+}
