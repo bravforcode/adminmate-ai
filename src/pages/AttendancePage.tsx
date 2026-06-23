@@ -197,11 +197,13 @@ export function AttendancePage() {
           value={employeeFilter}
           onChange={(e) => setEmployeeFilter(e.target.value)}
           placeholder={t('filter_employee')}
+          aria-label={t('filter_employee')}
           className="px-4 py-2 rounded-xl border border-outline-variant dark:border-outline bg-surface-container-lowest dark:bg-surface-container-lowest text-on-surface dark:text-on-surface focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all text-sm w-full sm:w-64"
         />
         <select
           value={statusFilter}
           onChange={(e) => setStatusFilter(e.target.value as AttendanceStatus | '')}
+          aria-label={t('filter_all_statuses')}
           className="px-4 py-2 rounded-xl border border-outline-variant dark:border-outline bg-surface-container-lowest dark:bg-surface-container-lowest text-on-surface dark:text-on-surface focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all text-sm w-full sm:w-48"
         >
           <option value="">{t('filter_all_statuses')}</option>
@@ -217,15 +219,15 @@ export function AttendancePage() {
       <Card className="overflow-hidden">
         <CardHeader className="border-b border-surface-container-high dark:border-outline bg-surface-bright dark:bg-surface-container-low flex-row items-center justify-between">
           <div className="flex items-center gap-3">
-            <Button variant="ghost" size="icon_md" onClick={prevMonth} icon={<ChevronLeft size={18} />} />
+            <Button variant="ghost" size="icon_md" onClick={prevMonth} icon={<ChevronLeft size={18} />} aria-label={t('calendar.prev_month', 'Previous month')} />
             <CardTitle className="text-lg min-w-[160px] text-center">
               {currentDate.toLocaleString('en', { month: 'long', year: 'numeric' })}
             </CardTitle>
-            <Button variant="ghost" size="icon_md" onClick={nextMonth} icon={<ChevronRight size={18} />} />
+            <Button variant="ghost" size="icon_md" onClick={nextMonth} icon={<ChevronRight size={18} />} aria-label={t('calendar.next_month', 'Next month')} />
           </div>
-          <div className="flex items-center gap-2 text-xs">
+          <div className="flex items-center gap-2 text-xs flex-wrap">
             {Object.entries(statusColors).map(([status, color]) => (
-              <span key={status} className={cn('px-2 py-1 rounded-full font-medium', color)}>
+              <span key={status} className={cn('px-2 py-1 rounded-full font-medium whitespace-nowrap', color)}>
                 {t(`status.${status}`)}
               </span>
             ))}
@@ -235,14 +237,14 @@ export function AttendancePage() {
           {isLoading ? (
             <LoadingState variant="cards" rows={2} />
           ) : (
-            <div className="grid grid-cols-7 border-b border-outline-variant dark:border-outline">
+            <div className="grid grid-cols-7 border-b border-outline-variant dark:border-outline overflow-x-auto">
               {WEEKDAYS.map(day => (
-                <div key={day} className="py-2 px-1 text-center text-xs font-semibold text-on-surface-variant dark:text-on-surface-variant border-r border-outline-variant/50 dark:border-outline/50 last:border-r-0">
+                <div key={day} className="py-2 px-1 text-center text-[10px] sm:text-xs font-semibold text-on-surface-variant dark:text-on-surface-variant border-r border-outline-variant/50 dark:border-outline/50 last:border-r-0">
                   {t(`weekday.${day.toLowerCase()}`)}
                 </div>
               ))}
               {Array.from({ length: startPadding }).map((_, i) => (
-                <div key={`pad-${i}`} className="min-h-[100px] border-r border-b border-outline-variant/50 dark:border-outline/50 last:border-r-0 bg-surface-container-lowest/50 dark:bg-surface-container/20" />
+                <div key={`pad-${i}`} className="min-h-[60px] sm:min-h-[100px] border-r border-b border-outline-variant/50 dark:border-outline/50 last:border-r-0 bg-surface-container-lowest/50 dark:bg-surface-container/20" />
               ))}
               {calendarDays.map(({ day, date }) => {
                 const dayRecords = recordsByDate[date] ?? []
@@ -251,21 +253,21 @@ export function AttendancePage() {
                   <div
                     key={day}
                     className={cn(
-                      'min-h-[100px] p-1.5 border-r border-b border-outline-variant/50 dark:border-outline/50 last:border-r-0 transition-colors hover:bg-surface-container-high/30 dark:hover:bg-surface-container/20',
+                      'min-h-[60px] sm:min-h-[100px] p-1 sm:p-1.5 border-r border-b border-outline-variant/50 dark:border-outline/50 last:border-r-0 transition-colors hover:bg-surface-container-high/30 dark:hover:bg-surface-container/20',
                       isToday && 'bg-primary-fixed/20 dark:bg-primary/10'
                     )}
                   >
-                    <span className={cn('text-xs font-medium', isToday ? 'text-primary dark:text-accent-dim font-bold' : 'text-on-surface-variant dark:text-on-surface-variant')}>
+                    <span className={cn('text-[10px] sm:text-xs font-medium', isToday ? 'text-primary dark:text-accent-dim font-bold' : 'text-on-surface-variant dark:text-on-surface-variant')}>
                       {day}
                     </span>
-                    <div className="mt-1 space-y-0.5">
+                    <div className="mt-0.5 sm:mt-1 space-y-0.5">
                       {dayRecords.slice(0, 2).map(r => (
-                        <div key={r.id} className={cn('text-[10px] font-medium px-1 py-0.5 rounded truncate', statusColors[r.status])}>
+                        <div key={r.id} className={cn('text-[8px] sm:text-[10px] font-medium px-0.5 sm:px-1 py-0.5 rounded truncate', statusColors[r.status])}>
                           {r.check_in ? new Date(r.check_in).toLocaleTimeString('en', { hour: '2-digit', minute: '2-digit' }) : r.status}
                         </div>
                       ))}
                       {dayRecords.length > 2 && (
-                        <span className="text-[10px] text-on-surface-variant">+{dayRecords.length - 2}</span>
+                        <span className="text-[8px] sm:text-[10px] text-on-surface-variant">+{dayRecords.length - 2}</span>
                       )}
                     </div>
                   </div>
@@ -280,7 +282,7 @@ export function AttendancePage() {
         <CardHeader className="border-b border-surface-container-high dark:border-outline bg-surface-bright dark:bg-surface-container-low">
           <CardTitle className="text-lg">{t('recent_records')}</CardTitle>
         </CardHeader>
-        <div className="overflow-x-auto">
+        <div className="table-responsive overflow-x-auto -mx-6 px-6">
           <table role="table" className="w-full text-left border-collapse min-w-[500px]">
             <thead>
               <tr className="bg-surface-container dark:bg-surface-container/50 border-b border-outline-variant/50 dark:border-outline/50">

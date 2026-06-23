@@ -127,10 +127,13 @@ export function BenefitsPage() {
         )}
       </header>
 
-      <div className="flex gap-1 bg-surface rounded-full p-1 border border-outline-variant w-fit">
+      <div className="flex gap-1 bg-surface rounded-full p-1 border border-outline-variant w-fit" role="tablist" aria-label={t('benefits.tabs_label', 'Benefits sections')}>
         {(['catalog', 'enrollment', 'calculator'] as const).map(tab => (
           <button
             key={tab}
+            role="tab"
+            aria-selected={activeTab === tab}
+            aria-controls={`tabpanel-${tab}`}
             onClick={() => setActiveTab(tab)}
             className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${
               activeTab === tab
@@ -144,7 +147,7 @@ export function BenefitsPage() {
       </div>
 
       {activeTab === 'catalog' && (
-        <div className="space-y-4">
+        <div id="tabpanel-catalog" role="tabpanel" aria-label={t('tabs.catalog', 'Catalog')} className="space-y-4">
           {plansLoading ? (
             <LoadingState variant="cards" rows={3} />
           ) : plans.length === 0 ? (
@@ -212,7 +215,7 @@ export function BenefitsPage() {
       )}
 
       {activeTab === 'enrollment' && (
-        <div className="space-y-4">
+        <div id="tabpanel-enrollment" role="tabpanel" aria-label={t('tabs.enrollment', 'Enrollment')} className="space-y-4">
           <Card>
             <CardHeader>
               <div className="flex items-center gap-3">
@@ -230,7 +233,7 @@ export function BenefitsPage() {
                   description={t('enrollment.empty_desc', 'You are not currently enrolled in any benefits plans.')}
                 />
               ) : (
-                <div className="overflow-x-auto">
+                <div className="table-responsive overflow-x-auto -mx-6 px-6">
                   <table className="w-full text-left min-w-[500px]">
                     <thead>
                       <tr className="border-b border-outline-variant">
@@ -266,7 +269,7 @@ export function BenefitsPage() {
       )}
 
       {activeTab === 'calculator' && (
-        <div className="space-y-4">
+        <div id="tabpanel-calculator" role="tabpanel" aria-label={t('tabs.calculator', 'Calculator')} className="space-y-4">
           <Card>
             <CardHeader>
               <div className="flex items-center gap-3">

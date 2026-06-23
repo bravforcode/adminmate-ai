@@ -127,10 +127,13 @@ export function EngagementPage() {
         </div>
       </header>
 
-      <div className="flex gap-1 bg-surface rounded-full p-1 border border-outline-variant w-fit">
+      <div className="flex gap-1 bg-surface rounded-full p-1 border border-outline-variant w-fit" role="tablist" aria-label={t('engagement.tabs_label', 'Engagement sections')}>
         {(['surveys', 'enps', 'recognition', 'culture'] as const).map(tab => (
           <button
             key={tab}
+            role="tab"
+            aria-selected={activeTab === tab}
+            aria-controls={`tabpanel-engagement-${tab}`}
             onClick={() => setActiveTab(tab)}
             className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${
               activeTab === tab
@@ -144,7 +147,7 @@ export function EngagementPage() {
       </div>
 
       {activeTab === 'surveys' && (
-        <div className="space-y-4">
+        <div id="tabpanel-engagement-surveys" role="tabpanel" aria-label={t('tabs.surveys', 'Surveys')} className="space-y-4">
           {surveysLoading ? (
             <LoadingState variant="cards" rows={3} />
           ) : surveys.length === 0 ? (
@@ -190,7 +193,7 @@ export function EngagementPage() {
       )}
 
       {activeTab === 'enps' && (
-        <div className="space-y-4">
+        <div id="tabpanel-engagement-enps" role="tabpanel" aria-label={t('tabs.enps', 'eNPS')} className="space-y-4">
           {enpsLoading ? (
             <LoadingState variant="cards" rows={1} />
           ) : !enps ? (
@@ -256,7 +259,7 @@ export function EngagementPage() {
       )}
 
       {activeTab === 'recognition' && (
-        <div className="space-y-4">
+        <div id="tabpanel-engagement-recognition" role="tabpanel" aria-label={t('tabs.recognition', 'Recognition')} className="space-y-4">
           {recognitionsLoading ? (
             <LoadingState variant="list" rows={4} />
           ) : recognitions.length === 0 ? (
@@ -299,7 +302,7 @@ export function EngagementPage() {
       )}
 
       {activeTab === 'culture' && (
-        <div className="space-y-4">
+        <div id="tabpanel-engagement-culture" role="tabpanel" aria-label={t('tabs.culture', 'Culture')} className="space-y-4">
           <Card>
             <CardHeader>
               <CardTitle>{t('culture.title', 'Culture Metrics')}</CardTitle>

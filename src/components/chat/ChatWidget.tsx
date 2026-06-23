@@ -74,6 +74,8 @@ export function ChatWidget() {
         {isOpen && (
           <motion.div
             data-testid="chat-panel"
+            role="dialog"
+            aria-label={t('title')}
             className="chat-panel fixed bottom-[92px] md:bottom-24 right-4 md:right-6 z-[60] w-[calc(100vw-32px)] sm:w-[400px] h-[min(550px,calc(100vh-180px))] bg-surface border border-border rounded-2xl shadow-2xl flex flex-col overflow-hidden origin-bottom-right pointer-events-auto"
             initial={{ opacity: 0, scale: 0.9, y: 16 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
@@ -192,6 +194,7 @@ export function ChatWidget() {
             onChange={(e) => setInput(e.target.value)}
             onKeyDown={(e) => e.key === 'Enter' && handleSend()}
             data-testid="chat-input"
+            aria-label={t('placeholder')}
             className="flex-1 px-4 py-2.5 rounded-full border border-border bg-bg focus:border-accent focus:ring-1 focus:ring-accent outline-none text-xs text-text-primary placeholder-text-muted transition-all"
             placeholder={t('placeholder')}
             disabled={isLoading}
@@ -200,6 +203,7 @@ export function ChatWidget() {
             onClick={handleSend}
             disabled={isLoading || !input.trim()}
             data-testid="chat-send"
+            aria-label={t('send', 'Send message')}
             className="w-11 h-11 rounded-full bg-accent text-white flex items-center justify-center hover:opacity-90 active:scale-95 disabled:opacity-40 disabled:scale-100 transition-all cursor-pointer shadow-[0_2px_8px_rgba(96,165,250,0.2)] flex-shrink-0"
           >
             <Send size={15} />

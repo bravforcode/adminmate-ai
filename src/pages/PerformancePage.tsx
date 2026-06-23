@@ -168,10 +168,13 @@ export function PerformancePage() {
         <KPICard title={t('pending_reviews', 'Pending Reviews')} value={reviewStats.pending} icon={Clock} iconBg="bg-warning-container dark:bg-warning-container/30" iconColor="text-warning dark:text-warning" />
       </div>
 
-      <div className="flex gap-1 border-b border-outline-variant dark:border-outline">
+      <div className="flex gap-1 border-b border-outline-variant dark:border-outline" role="tablist" aria-label={t('performance.tabs_label', 'Performance sections')}>
         {(['cycles', 'reviews', 'ninebox'] as const).map(tab => (
           <button
             key={tab}
+            role="tab"
+            aria-selected={activeTab === tab}
+            aria-controls={`tabpanel-performance-${tab}`}
             onClick={() => setActiveTab(tab)}
             className={`px-4 py-3 text-sm font-medium transition-colors border-b-2 -mb-px ${
               activeTab === tab
@@ -185,11 +188,12 @@ export function PerformancePage() {
       </div>
 
       {activeTab === 'cycles' && (
-        <div className="space-y-4">
+        <div id="tabpanel-performance-cycles" role="tabpanel" aria-label={t('tab_cycles', 'Cycles')} className="space-y-4">
           <div className="flex flex-col sm:flex-row gap-4">
             <select
               value={statusFilter}
               onChange={e => setStatusFilter(e.target.value as CycleStatus | '')}
+              aria-label={t('all_statuses', 'All Statuses')}
               className="w-full sm:w-auto px-4 py-3 rounded-xl border border-outline-variant dark:border-outline bg-surface-container-lowest dark:bg-surface-container-lowest text-on-surface dark:text-on-surface focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all duration-200 outline-none text-sm"
             >
               <option value="">{t('all_statuses', 'All Statuses')}</option>
@@ -239,7 +243,7 @@ export function PerformancePage() {
                             {completed}/{cycleReviews.length}
                           </td>
                           <td className="py-3 px-4 text-sm text-on-surface dark:text-on-surface text-right" data-label={t('actions')}>
-                            <Button variant="ghost" size="icon_sm" icon={<ChevronRight size={14} />} />
+                            <Button variant="ghost" size="icon_sm" icon={<ChevronRight size={14} />} aria-label={t('cycle_details', 'View cycle details')} />
                           </td>
                         </tr>
                       )
@@ -253,7 +257,7 @@ export function PerformancePage() {
       )}
 
       {activeTab === 'reviews' && (
-        <div className="space-y-4">
+        <div id="tabpanel-performance-reviews" role="tabpanel" aria-label={t('tab_reviews', 'Reviews')} className="space-y-4">
           {isLoading ? (
             <LoadingState variant="table" rows={5} message={t('common:loading')} />
           ) : !reviews || reviews.length === 0 ? (
@@ -302,7 +306,7 @@ export function PerformancePage() {
       )}
 
       {activeTab === 'ninebox' && (
-        <div className="space-y-4">
+        <div id="tabpanel-performance-ninebox" role="tabpanel" aria-label={t('tab_ninebox', '9-Box Grid')} className="space-y-4">
           {isLoading ? (
             <LoadingState variant="cards" rows={4} message={t('common:loading')} />
           ) : (

@@ -46,7 +46,7 @@ function ProgressRing({ progress, size = 36 }: { progress: number; size?: number
   const offset = circumference - (progress / 100) * circumference
 
   return (
-    <svg width={size} height={size} className="shrink-0">
+    <svg width={size} height={size} className="shrink-0" role="img" aria-label={`${progress}% complete`}>
       <circle cx={size / 2} cy={size / 2} r={radius} fill="none" stroke="currentColor" className="text-outline-variant/30" strokeWidth={3} />
       <circle cx={size / 2} cy={size / 2} r={radius} fill="none" stroke="#16a34a" strokeWidth={3} strokeDasharray={circumference} strokeDashoffset={offset} strokeLinecap="round" transform={`rotate(-90 ${size / 2} ${size / 2})`} />
       <text x="50%" y="50%" textAnchor="middle" dy="0.35em" className="text-[9px] font-bold fill-on-surface">{progress}%</text>
@@ -156,10 +156,13 @@ export function LearningPage() {
         ))}
       </div>
 
-      <div className="flex gap-1 bg-surface rounded-full p-1 border border-outline-variant w-fit">
+      <div className="flex gap-1 bg-surface rounded-full p-1 border border-outline-variant w-fit" role="tablist" aria-label={t('learning.tabs_label', 'Learning sections')}>
         {(['catalog', 'enrolled', 'certificates'] as const).map(tab => (
           <button
             key={tab}
+            role="tab"
+            aria-selected={activeTab === tab}
+            aria-controls={`tabpanel-learning-${tab}`}
             onClick={() => setActiveTab(tab)}
             className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${
               activeTab === tab
@@ -173,11 +176,12 @@ export function LearningPage() {
       </div>
 
       {activeTab === 'catalog' && (
-        <div className="space-y-4">
+        <div id="tabpanel-learning-catalog" role="tabpanel" aria-label={t('tabs.catalog', 'Catalog')} className="space-y-4">
           <div className="flex flex-wrap gap-2">
             <select
               value={categoryFilter}
               onChange={e => setCategoryFilter(e.target.value)}
+              aria-label={t('filter.all_categories', 'All Categories')}
               className="px-3 py-2 rounded-xl border border-outline-variant bg-surface text-sm text-on-surface focus:border-primary"
             >
               <option value="">{t('filter.all_categories', 'All Categories')}</option>
@@ -255,7 +259,7 @@ export function LearningPage() {
       )}
 
       {activeTab === 'enrolled' && (
-        <div className="space-y-4">
+        <div id="tabpanel-learning-enrolled" role="tabpanel" aria-label={t('tabs.enrolled', 'Enrolled')} className="space-y-4">
           {enrollLoading ? (
             <LoadingState variant="list" rows={3} />
           ) : enrollments.length === 0 ? (
@@ -309,7 +313,7 @@ export function LearningPage() {
       )}
 
       {activeTab === 'certificates' && (
-        <div className="space-y-4">
+        <div id="tabpanel-learning-certificates" role="tabpanel" aria-label={t('tabs.certificates', 'Certificates')} className="space-y-4">
           {enrollLoading ? (
             <LoadingState variant="list" rows={2} />
           ) : (

@@ -208,6 +208,7 @@ export function DashboardPage() {
                       <input
                         value={search}
                         onChange={handleSearchChange}
+                        aria-label={t('dashboard:search_candidates')}
                         className="pl-10 pr-4 py-3 rounded-xl border border-outline-variant dark:border-outline bg-surface-container-lowest dark:bg-surface-container-lowest text-on-surface dark:text-on-surface focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all duration-200 outline-none text-sm w-full max-w-[200px]"
                         placeholder={t('dashboard:search_candidates')}
                       />

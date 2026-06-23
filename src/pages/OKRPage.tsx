@@ -26,7 +26,7 @@ function ProgressRing({ progress, size = 40 }: { progress: number; size?: number
   const color = progress >= 70 ? '#16a34a' : progress >= 40 ? '#ca8a04' : '#dc2626'
 
   return (
-    <svg width={size} height={size} className="shrink-0">
+    <svg width={size} height={size} className="shrink-0" role="img" aria-label={`${progress}% progress`}>
       <circle cx={size / 2} cy={size / 2} r={radius} fill="none" stroke="currentColor" className="text-outline-variant/30 dark:text-outline/30" strokeWidth={4} />
       <circle cx={size / 2} cy={size / 2} r={radius} fill="none" stroke={color} strokeWidth={4} strokeDasharray={circumference} strokeDashoffset={offset} strokeLinecap="round" transform={`rotate(-90 ${size / 2} ${size / 2})`} />
       <text x="50%" y="50%" textAnchor="middle" dy="0.35em" className="text-[10px] font-bold fill-on-surface dark:fill-on-surface">{progress}%</text>
@@ -44,6 +44,7 @@ function OKRCard({ objective, keyResults }: { objective: OkrObjective & { user_p
     <div className="bg-surface dark:bg-surface rounded-xl border border-outline-variant dark:border-outline overflow-hidden">
       <button
         onClick={() => setExpanded(!expanded)}
+        aria-expanded={expanded}
         className="w-full flex items-center gap-4 p-4 text-left hover:bg-surface-container-high/50 dark:hover:bg-surface-container/30 transition-colors"
       >
         <ProgressRing progress={objective.progress} />

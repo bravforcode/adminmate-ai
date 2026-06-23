@@ -249,15 +249,15 @@ export function LeavePage() {
       </div>
 
       <Card>
-        <CardHeader className="border-b border-surface-container-high dark:border-outline bg-surface-bright dark:bg-surface-container-low flex-row items-center justify-between">
+        <CardHeader className="border-b border-surface-container-high dark:border-outline bg-surface-bright dark:bg-surface-container-low flex-row items-center justify-between gap-3">
           <CardTitle className="text-lg">{t('history.title')}</CardTitle>
-          <div className="flex items-center gap-1 bg-surface dark:bg-surface rounded-full p-1 border border-outline-variant dark:border-outline shadow-sm">
+          <div className="flex items-center gap-1 bg-surface dark:bg-surface rounded-full p-1 border border-outline-variant dark:border-outline shadow-sm overflow-x-auto shrink-0">
             {(['', 'pending', 'approved', 'rejected'] as const).map(s => (
               <button
                 key={s}
                 onClick={() => setStatusFilter(s)}
                 className={cn(
-                  'px-3 py-1.5 rounded-full text-xs font-semibold transition-colors',
+                  'px-3 py-1.5 rounded-full text-xs font-semibold transition-colors whitespace-nowrap',
                   statusFilter === s
                     ? 'bg-surface-container-low dark:bg-surface-container-low text-primary dark:text-accent-dim'
                     : 'text-on-surface-variant dark:text-on-surface-variant hover:bg-surface-container-high dark:hover:bg-surface-container'
@@ -268,7 +268,7 @@ export function LeavePage() {
             ))}
           </div>
         </CardHeader>
-        <div className="overflow-x-auto">
+        <div className="table-responsive overflow-x-auto -mx-6 px-6">
           {requestsLoading ? (
             <LoadingState variant="list" rows={3} />
           ) : (
@@ -318,6 +318,7 @@ export function LeavePage() {
                                   onClick={() => approveMutation.mutate(req.id)}
                                   disabled={approveMutation.isPending}
                                   icon={<CheckCircle size={14} />}
+                                  aria-label={t('history.approve', 'Approve')}
                                   className="text-green-600 dark:text-green-400 hover:bg-green-50 dark:hover:bg-green-900/20"
                                 />
                                 <Button
@@ -325,6 +326,7 @@ export function LeavePage() {
                                   size="sm"
                                   onClick={() => setRejectionModal({ id: req.id, reason: '' })}
                                   icon={<XCircle size={14} />}
+                                  aria-label={t('history.reject', 'Reject')}
                                   className="text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20"
                                 />
                               </div>
@@ -342,7 +344,7 @@ export function LeavePage() {
       </Card>
 
       {rejectionModal.id && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50" onClick={() => setRejectionModal({ id: '', reason: '' })}>
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50" onClick={() => setRejectionModal({ id: '', reason: '' })} role="dialog" aria-modal="true" aria-label={t('reject.title')}>
           <div className="bg-surface dark:bg-surface rounded-xl border border-outline-variant dark:border-outline shadow-xl p-6 w-full max-w-md mx-4" onClick={e => e.stopPropagation()}>
             <div className="flex items-center gap-3 mb-4">
               <div className="w-10 h-10 rounded-full bg-error-container dark:bg-error-container/30 flex items-center justify-center">
@@ -350,6 +352,7 @@ export function LeavePage() {
               </div>
               <h3 className="text-lg font-semibold text-on-surface dark:text-on-surface">{t('reject.title')}</h3>
             </div>
+            <label className="block text-sm font-medium text-on-surface dark:text-on-surface mb-1">{t('reject.reason_placeholder', 'Rejection reason')}</label>
             <textarea
               value={rejectionModal.reason}
               onChange={(e) => setRejectionModal({ ...rejectionModal, reason: e.target.value })}
