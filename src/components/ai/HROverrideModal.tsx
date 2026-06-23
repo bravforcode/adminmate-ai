@@ -122,7 +122,7 @@ export function HROverrideModal({ isOpen, onClose, onSubmit, originalScore, orig
             <button
               type="button"
               onClick={onClose}
-              className="flex-1 py-2.5 text-sm font-medium text-[var(--color-text-secondary)] border border-[var(--color-border)] rounded-xl hover:bg-[var(--color-surface-alt)] transition-colors"
+              className="flex-1 py-2.5 text-sm font-medium text-secondary border border-[var(--color-border)] rounded-xl hover:bg-[var(--color-surface-alt)] transition-colors"
             >
               Cancel
             </button>

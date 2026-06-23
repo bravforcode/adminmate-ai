@@ -332,6 +332,19 @@ body {
 }
 
 /* ============================================================
+   UTILITY CLASSES — Replace arbitrary Tailwind values
+   to avoid CSP warnings with escaped CSS selectors
+   ============================================================ */
+
+.text-secondary {
+  color: var(--color-text-secondary);
+}
+
+.hover\:text-primary:hover {
+  color: var(--color-text-primary);
+}
+
+/* ============================================================
    LUXURY BUTTON SYSTEM
    ============================================================ */
 

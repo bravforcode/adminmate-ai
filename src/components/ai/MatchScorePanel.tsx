@@ -37,7 +37,7 @@ function EvidenceItem({ item }: { item: AIEvidenceItem }) {
       <span className={statusColor}>{statusIcon}</span>
       <div className="flex-1 min-w-0">
         <span className="font-medium text-[var(--color-text-primary)]">{item.label}: </span>
-        <span className="text-[var(--color-text-secondary)]">
+        <span className="text-secondary">
           {item.value !== null && item.value !== undefined ? String(item.value) : '—'}
         </span>
         <span className="text-[var(--color-text-muted)] ml-1">({item.source})</span>
@@ -90,7 +90,7 @@ function BreakdownItem({ item }: { item: AIScoreBreakdownItem }) {
             <div className="px-3 pb-3 space-y-2">
               {item.evidence.length > 0 && (
                 <div>
-                  <p className="text-xs font-medium text-[var(--color-text-secondary)] mb-1">Evidence:</p>
+                  <p className="text-xs font-medium text-secondary mb-1">Evidence:</p>
                   {item.evidence.map((e, i) => <EvidenceItem key={i} item={e} />)}
                 </div>
               )}

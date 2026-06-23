@@ -66,12 +66,12 @@ export default function BillingPage() {
         <div className="mb-8">
           <button
             onClick={() => navigate('/settings')}
-            className="flex items-center gap-1 text-sm text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)] mb-4"
+            className="flex items-center gap-1 text-sm text-secondary hover:text-primary mb-4"
           >
             <ArrowLeft size={14} /> {t('billing.back_to_settings', 'Back to Settings')}
           </button>
           <h1 className="text-2xl font-bold text-[var(--color-text-primary)]">{t('billing.title', 'Billing & Plans')}</h1>
-          <p className="text-sm text-[var(--color-text-secondary)] mt-1">{t('billing.subtitle', 'Manage your subscription and billing')}</p>
+          <p className="text-sm text-secondary mt-1">{t('billing.subtitle', 'Manage your subscription and billing')}</p>
         </div>
 
         {/* Current Plan */}
@@ -79,7 +79,7 @@ export default function BillingPage() {
           <div className="flex items-center justify-between">
             <div>
               <h2 className="text-lg font-semibold">{t('billing.current_plan', 'Current Plan')}</h2>
-              <p className="text-sm text-[var(--color-text-secondary)] mt-1">
+              <p className="text-sm text-secondary mt-1">
                 {t('billing.current_plan_desc', 'You are on the')} <span className="font-medium text-[var(--color-primary)]">{PLAN_NAMES[currentTier]}</span> {t('billing.current_plan_desc2', 'plan')}
               </p>
             </div>
@@ -199,7 +199,7 @@ export default function BillingPage() {
         </div>
 
         {/* Notes */}
-        <div className="mt-8 p-4 rounded-xl bg-[var(--color-surface-alt)] text-sm text-[var(--color-text-secondary)]">
+        <div className="mt-8 p-4 rounded-xl bg-[var(--color-surface-alt)] text-sm text-secondary">
           <div className="flex items-start gap-2">
             <AlertTriangle size={16} className="text-[var(--color-warning)] mt-0.5 flex-shrink-0" />
             <div>

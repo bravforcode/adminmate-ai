@@ -160,7 +160,7 @@ export default function ApplyPage() {
           <h1 className="text-2xl font-bold text-[var(--color-text-primary)] mb-2">
             {isThai ? 'ไม่พบงาน' : 'Job Not Found'}
           </h1>
-          <p className="text-[var(--color-text-secondary)] mb-6">
+          <p className="text-secondary mb-6">
             {error || (isThai ? 'งานนี้อาจถูกลบหรือไม่เปิดรับสมัครอีกต่อไป' : 'This job may have been removed or is no longer accepting applications.')}
           </p>
           <Link to="/" className="text-[var(--color-primary)] hover:underline">
@@ -182,14 +182,14 @@ export default function ApplyPage() {
               ? (isThai ? 'คุณสมัครแล้ว' : 'Already Applied')
               : (isThai ? 'สมัครสำเร็จ!' : 'Application Submitted!')}
           </h1>
-          <p className="text-[var(--color-text-secondary)] mb-4">
+          <p className="text-secondary mb-4">
             {alreadyApplied
               ? (isThai ? 'คุณได้สมัครงานนี้ไปแล้ว' : 'You have already applied to this position.')
               : (isThai ? 'ขอบคุณที่สนใจร่วมงานกับเรา' : 'Thank you for your interest. We will review your application.')}
           </p>
           {trackingToken && (
             <div className="bg-[var(--color-surface)] rounded-xl p-4 mb-6 border border-[var(--color-border)]">
-              <p className="text-sm text-[var(--color-text-secondary)] mb-1">
+              <p className="text-sm text-secondary mb-1">
                 {isThai ? 'รหัสติดตาม' : 'Tracking Code'}
               </p>
               <p className="font-mono text-lg font-bold text-[var(--color-primary)]">{trackingToken}</p>
@@ -216,7 +216,7 @@ export default function ApplyPage() {
       <header className="border-b border-[var(--color-border)] bg-[var(--color-surface)]">
         <div className="max-w-3xl mx-auto px-4 h-14 flex items-center gap-2">
           <Logo size={22} showText={false} />
-          <span className="text-sm font-medium text-[var(--color-text-secondary)]">AdminMate AI</span>
+          <span className="text-sm font-medium text-secondary">AdminMate AI</span>
         </div>
       </header>
 
@@ -235,10 +235,10 @@ export default function ApplyPage() {
               <h1 className="text-xl font-bold text-[var(--color-text-primary)]">
                 {isThai && job.title_th ? job.title_th : job.title}
               </h1>
-              <p className="text-sm text-[var(--color-text-secondary)]">{job.company_name}</p>
+              <p className="text-sm text-secondary">{job.company_name}</p>
             </div>
           </div>
-          <div className="flex flex-wrap gap-3 mt-4 text-sm text-[var(--color-text-secondary)]">
+          <div className="flex flex-wrap gap-3 mt-4 text-sm text-secondary">
             {job.department && (
               <span className="inline-flex items-center gap-1"><Briefcase className="w-3.5 h-3.5" />{job.department}</span>
             )}
@@ -250,7 +250,7 @@ export default function ApplyPage() {
             )}
           </div>
           {job.description && (
-            <p className="mt-4 text-sm text-[var(--color-text-secondary)] leading-relaxed whitespace-pre-line">
+            <p className="mt-4 text-sm text-secondary leading-relaxed whitespace-pre-line">
               {isThai && job.description_th ? job.description_th : job.description}
             </p>
           )}
@@ -389,7 +389,7 @@ export default function ApplyPage() {
               onChange={e => updateForm('consent_given', e.target.checked)}
               className="mt-1 w-4 h-4 rounded border-[var(--color-border)] text-[var(--color-primary)] focus:ring-[var(--color-primary)]"
             />
-            <label htmlFor="consent" className="text-sm text-[var(--color-text-secondary)]">
+            <label htmlFor="consent" className="text-sm text-secondary">
               {isThai
                 ? 'ฉันยินยอมให้บริษัทเก็บและใช้ข้อมูลส่วนบุคคลของฉันเพื่อวัตถุประสงค์ในการสรรหาบุคลากร ตามนโยบาย PDPA *'
                 : 'I consent to the collection and use of my personal data for recruitment purposes, in accordance with the PDPA policy. *'}

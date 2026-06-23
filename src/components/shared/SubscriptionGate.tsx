@@ -37,7 +37,7 @@ export function SubscriptionGate({ feature, children, fallback }: SubscriptionGa
       <h3 className="text-lg font-semibold text-[var(--color-text-primary)] mb-2">
         {t('gate.title', 'Upgrade Required')}
       </h3>
-      <p className="text-sm text-[var(--color-text-secondary)] max-w-sm mb-6">
+      <p className="text-sm text-secondary max-w-sm mb-6">
         {t('gate.description', 'This feature requires a higher subscription tier. Upgrade to access this and more features.')}
       </p>
       <a

@@ -76,7 +76,7 @@ export default function TrackApplicationPage() {
           <h1 className="text-2xl font-bold text-[var(--color-text-primary)] mb-2">
             {isThai ? 'ไม่พบใบสมัคร' : 'Application Not Found'}
           </h1>
-          <p className="text-[var(--color-text-secondary)] mb-6">
+          <p className="text-secondary mb-6">
             {error || (isThai ? 'รหัสติดตามไม่ถูกต้อง' : 'Invalid tracking code.')}
           </p>
           <Link to="/" className="text-[var(--color-primary)] hover:underline">
@@ -96,7 +96,7 @@ export default function TrackApplicationPage() {
       <header className="border-b border-[var(--color-border)] bg-[var(--color-surface)]">
         <div className="max-w-3xl mx-auto px-4 h-14 flex items-center gap-2">
           <Logo size={22} showText={false} />
-          <span className="text-sm font-medium text-[var(--color-text-secondary)]">AdminMate AI</span>
+          <span className="text-sm font-medium text-secondary">AdminMate AI</span>
         </div>
       </header>
 
@@ -115,24 +115,24 @@ export default function TrackApplicationPage() {
               <h2 className="font-semibold text-[var(--color-text-primary)]">
                 {statusConfig.label[isThai ? 'th' : 'en']}
               </h2>
-              <p className="text-sm text-[var(--color-text-secondary)]">
+              <p className="text-sm text-secondary">
                 {application.job_title}
               </p>
             </div>
           </div>
           <div className="border-t border-[var(--color-border)] pt-4 space-y-2 text-sm">
             <div className="flex justify-between">
-              <span className="text-[var(--color-text-secondary)]">{isThai ? 'บริษัท' : 'Company'}</span>
+              <span className="text-secondary">{isThai ? 'บริษัท' : 'Company'}</span>
               <span className="text-[var(--color-text-primary)] font-medium">{application.company_name}</span>
             </div>
             <div className="flex justify-between">
-              <span className="text-[var(--color-text-secondary)]">{isThai ? 'วันที่สมัคร' : 'Applied'}</span>
+              <span className="text-secondary">{isThai ? 'วันที่สมัคร' : 'Applied'}</span>
               <span className="text-[var(--color-text-primary)]">
                 {new Date(application.applied_at).toLocaleDateString(isThai ? 'th-TH' : 'en-US')}
               </span>
             </div>
             <div className="flex justify-between">
-              <span className="text-[var(--color-text-secondary)]">{isThai ? 'สถานะ' : 'Status'}</span>
+              <span className="text-secondary">{isThai ? 'สถานะ' : 'Status'}</span>
               <span className={`font-medium ${statusConfig.color}`}>
                 {statusConfig.label[isThai ? 'th' : 'en']}
               </span>
@@ -142,7 +142,7 @@ export default function TrackApplicationPage() {
 
         {/* Tracking code */}
         <div className="bg-[var(--color-surface)] rounded-2xl border border-[var(--color-border)] p-6 mb-8">
-          <p className="text-sm text-[var(--color-text-secondary)] mb-1">
+          <p className="text-sm text-secondary mb-1">
             {isThai ? 'รหัสติดตามของคุณ' : 'Your Tracking Code'}
           </p>
           <p className="font-mono text-lg font-bold text-[var(--color-primary)]">{trackingToken}</p>
