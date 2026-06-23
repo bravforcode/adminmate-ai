@@ -20,7 +20,7 @@ i18n
     supportedLngs: ['th', 'en', 'vi', 'zh', 'id'],
     load: 'languageOnly',
     nonExplicitSupportedLngs: true,
-    ns: ['common', 'chat', 'recruitment', 'hiring', 'onboarding', 'documents', 'compliance', 'reports', 'dashboard', 'health', 'system', 'calendar'],
+    ns: ['common', 'chat', 'recruitment', 'hiring', 'onboarding', 'documents', 'compliance', 'reports', 'dashboard', 'health', 'system', 'calendar', 'portal'],
     defaultNS: 'common',
     backend: {
       loadPath: '/locales/{{lng}}/{{ns}}.json',
