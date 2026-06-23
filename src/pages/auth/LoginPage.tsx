@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useUIStore } from '../../stores/uiStore'
 import { ArrowLeft, Users } from 'lucide-react'
@@ -31,6 +31,14 @@ export function LoginPage() {
   const currentLang = useUIStore(s => s.language) || 'th'
 
   const [step, setStep] = useState<LoginStep>('role-select')
+  const loginFormRef = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    if (step === 'login-form' && loginFormRef.current) {
+      const firstInput = loginFormRef.current.querySelector<HTMLElement>('input')
+      if (firstInput) firstInput.focus()
+    }
+  }, [step])
 
   const switchLang = (code: string) => {
     i18n.changeLanguage(code)
@@ -111,7 +119,7 @@ export function LoginPage() {
           </div>
         ) : (
           /* Login Form Step */
-          <div className="w-full max-w-[420px] animate-slide-in-right">
+          <div ref={loginFormRef} className="w-full max-w-[420px] animate-slide-in-right">
             {/* Back button */}
             <button
               onClick={handleBack}

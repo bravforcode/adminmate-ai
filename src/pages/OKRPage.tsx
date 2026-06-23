@@ -80,6 +80,11 @@ function OKRCard({ objective, keyResults }: { objective: OkrObjective & { user_p
                         <div
                           className={`h-2 rounded-full transition-all duration-500 ${pct >= 70 ? 'bg-success' : pct >= 40 ? 'bg-warning' : 'bg-error'}`}
                           style={{ width: `${pct}%` }}
+                          role="progressbar"
+                          aria-valuenow={pct}
+                          aria-valuemin={0}
+                          aria-valuemax={100}
+                          aria-label={`${pct}% completion`}
                         />
                       </div>
                     </div>
