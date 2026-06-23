@@ -110,7 +110,7 @@ export default function BillingPage() {
             <div className="inline-flex items-center gap-1 p-1 rounded-xl bg-[var(--color-surface-alt)]">
               <button
                 onClick={() => setBillingCycle('monthly')}
-                className={`px-4 py-2 text-sm font-medium rounded-lg transition-colors ${
+                className={`px-4 py-2 text-sm font-medium rounded-lg transition-colors min-h-[44px] ${
                   billingCycle === 'monthly' ? 'bg-[var(--color-surface)] shadow-sm text-[var(--color-text-primary)]' : 'text-[var(--color-text-muted)]'
                 }`}
               >
@@ -118,7 +118,7 @@ export default function BillingPage() {
               </button>
               <button
                 onClick={() => setBillingCycle('annual')}
-                className={`px-4 py-2 text-sm font-medium rounded-lg transition-colors ${
+                className={`px-4 py-2 text-sm font-medium rounded-lg transition-colors min-h-[44px] ${
                   billingCycle === 'annual' ? 'bg-[var(--color-surface)] shadow-sm text-[var(--color-text-primary)]' : 'text-[var(--color-text-muted)]'
                 }`}
               >

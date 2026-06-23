@@ -258,8 +258,8 @@ export function AuditLogPage() {
             description={t('empty.audit_log_description')}
           />
         ) : (
-          <div className="overflow-x-auto">
-            <table className="w-full text-sm">
+          <div className="table-responsive overflow-x-auto -mx-6 px-6">
+            <table className="w-full text-sm min-w-[700px]">
               <thead>
                 <tr className="bg-surface-container dark:bg-surface-container/50 border-b border-outline-variant/50 dark:border-outline/50">
                   <th className="py-3 px-4 text-xs font-semibold uppercase tracking-wider text-on-surface-variant dark:text-on-surface-variant">{t('audit_log.timestamp') || 'Timestamp'}</th>

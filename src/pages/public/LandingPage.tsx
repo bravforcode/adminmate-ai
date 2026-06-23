@@ -360,7 +360,7 @@ export default function LandingPage() {
               <Logo size={24} showText={false} />
               <span className="font-semibold">AdminMate AI</span>
             </div>
-            <div className="flex items-center gap-6 text-sm text-[var(--color-text-muted)]">
+            <div className="flex flex-wrap items-center gap-4 sm:gap-6 text-sm text-[var(--color-text-muted)]">
               <button onClick={() => handleCTA('/pricing')} className="hover:text-[var(--color-text-primary)] transition-colors">{t('landing.footer_pricing', 'Pricing')}</button>
               <button onClick={() => handleCTA('/login')} className="hover:text-[var(--color-text-primary)] transition-colors">{t('landing.footer_sign_in', 'Sign In')}</button>
               <button onClick={() => handleCTA('/login')} className="hover:text-[var(--color-text-primary)] transition-colors">{t('landing.footer_get_started', 'Get Started')}</button>
