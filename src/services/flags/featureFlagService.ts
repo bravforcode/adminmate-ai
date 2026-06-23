@@ -6,12 +6,6 @@ import { supabase } from '../../lib/supabase'
  * Evaluation order: kill_switch -> plan -> country -> tenant -> beta -> global
  */
 
-interface FeatureFlagResult {
-  enabled: boolean
-  flagType: string
-  evaluationPath: string
-}
-
 interface BulkFlagResult {
   featureKey: string
   enabled: boolean
@@ -122,8 +116,8 @@ export async function evaluateCompanyFlags(
   const flags: Record<string, boolean> = {}
   if (Array.isArray(data)) {
     for (const row of data as BulkFlagResult[]) {
-      flags[row.feature_key] = row.enabled
-      setCache(`${row.feature_key}:${companyId}`, row.enabled)
+      flags[row.featureKey] = row.enabled
+      setCache(`${row.featureKey}:${companyId}`, row.enabled)
     }
   }
   return flags

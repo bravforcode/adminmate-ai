@@ -1,0 +1,21 @@
+{
+  "title": "Asisten AI Mate",
+  "status": "Online",
+  "subtitle": "Tanyakan apa saja tentang kebijakan perusahaan, manfaat, atau prosedur",
+  "placeholder": "Ketik pesan...",
+  "thinking": "Berpikir...",
+  "retry": "Coba lagi",
+  "clearChat": "Hapus chat",
+  "error": "Maaf, tidak dapat memproses permintaan Anda. Silakan coba lagi.",
+  "timestamps": {
+    "justNow": "Baru saja",
+    "minutesAgo": "{{count}}m yang lalu"
+  },
+  "suggestions": [
+    "Jam kerja perusahaan itu pukul berapa?",
+    "Berapa hari cuti tahunan yang saya dapat?",
+    "Ceritakan tentang manfaat asuransi kesehatan",
+    "Bagaimana kebijakan cuti sakit?",
+    "Bagaimana cara mengajukan hari libur?"
+  ]
+}

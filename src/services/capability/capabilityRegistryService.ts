@@ -39,7 +39,7 @@ export interface CapabilityMatrix {
   hidden: FeatureCapability[]
 }
 
-export async function getCapabilities(companyId?: string): Promise<FeatureCapability[]> {
+export async function getCapabilities(_companyId?: string): Promise<FeatureCapability[]> {
   const { data, error } = await supabase
     .from('feature_capabilities')
     .select('*')
