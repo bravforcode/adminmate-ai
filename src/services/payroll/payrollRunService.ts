@@ -261,15 +261,21 @@ export async function calculateRun(runId: string): Promise<PayrollRun> {
 
 /**
  * Calculate TH progressive income tax for 2024.
- * Uses Revenue Department of Thailand brackets.
+ * Uses Revenue Department of Thailand 8-bracket progressive rates.
  *
- * Simplified rates for fixed-rate brackets:
+ * Brackets (Revenue Code §40(1)):
  *   0-150,000: 0%
- *   150,001-1,800,000: 5% (simplified, actual is progressive 5-20%)
- *   1,800,001+: 10% (simplified, actual is progressive + surcharge)
+ *   150,001-300,000: 5%
+ *   300,001-500,000: 10%
+ *   500,001-750,000: 15%
+ *   750,001-1,000,000: 20%
+ *   1,000,001-2,000,000: 25%
+ *   2,000,001-5,000,000: 30%
+ *   Above 5,000,000: 35%
  *
- * WARNING: This is a simplified model. Actual Thai tax calculation uses
- *   5-level progressive rates. For production use, verify with accounting.
+ * SAFETY: NULL tax_rate is treated as a fatal data-integrity error,
+ * not a fallback. Correct seed data (migration 20240627000001) should
+ * ensure all brackets have non-null rates.
  */
 function calculateTHProgressiveTax(annualIncome: number, brackets: Array<{ min_income: number; max_income: number | null; tax_rate: number | null }>): number {
   let tax = 0
@@ -285,15 +291,16 @@ function calculateTHProgressiveTax(annualIncome: number, brackets: Array<{ min_i
 
     const taxableInBracket = Math.min(remaining, bracketMax - bracketMin)
 
-    if (bracket.tax_rate !== null) {
-      // Fixed-rate bracket
-      tax += taxableInBracket * (bracket.tax_rate / 100)
-    } else {
-      // requires_accounting_review: progressive bracket with NULL rate
-      // Apply placeholder 10% — MUST be verified by accounting
-      // TODO: requires_accounting_review — implement exact 5-level progressive tax
-      tax += taxableInBracket * 0.10
+    if (bracket.tax_rate === null) {
+      // FATAL: NULL tax_rate indicates corrupted seed data.
+      // Do NOT use a fallback rate — throw to prevent silent financial errors.
+      throw new Error(
+        `Tax rate is NULL for bracket [${bracketMin}-${bracketMax}]. ` +
+        `Check th_tax_brackets seed data — migration 20240627000001 should fix this.`
+      )
     }
+
+    tax += taxableInBracket * (bracket.tax_rate / 100)
 
     remaining -= taxableInBracket
   }
