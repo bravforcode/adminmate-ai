@@ -7,6 +7,13 @@ export interface AuditLogFilters {
   date_to?: string
   page?: number
   limit?: number
+  cursor?: string
+}
+
+export interface PaginatedResult<T> {
+  data: T[]
+  cursor: string | null
+  hasMore: boolean
 }
 
 export interface AuditLogEntry {
@@ -31,63 +38,43 @@ export interface AuditLogStats {
 const PAGE_SIZE = 25
 
 export const auditLogService = {
-  getAuditLogs: async (companyId: string, filters: AuditLogFilters = {}) => {
-    const { action, user_id, date_from, date_to, page = 1, limit = PAGE_SIZE } = filters
-    const from = (page - 1) * limit
-    const to = from + limit - 1
+  getAuditLogs: async (companyId: string, filters: AuditLogFilters = {}): Promise<PaginatedResult<AuditLogEntry>> => {
+    const { action, user_id, date_from, date_to, limit = PAGE_SIZE, cursor } = filters
 
+    const fetchLimit = limit + 1
     let query = supabase
       .from('audit_logs')
-      .select('id, user_id, action, resource_type, resource_id, details, ip_address, created_at, user_profiles(full_name, email)', { count: 'exact' })
+      .select('id, user_id, action, resource_type, resource_id, details, ip_address, created_at, user_profiles(full_name, email)')
       .eq('company_id', companyId)
 
     if (action) query = query.eq('action', action)
     if (user_id) query = query.eq('user_id', user_id)
     if (date_from) query = query.gte('created_at', date_from)
     if (date_to) query = query.lte('created_at', date_to + 'T23:59:59')
+    if (cursor) query = query.lt('created_at', cursor)
 
-    query = query.order('created_at', { ascending: false }).range(from, to)
+    query = query.order('created_at', { ascending: false }).limit(fetchLimit)
 
-    const { data, error, count } = await query
+    const { data, error } = await query
     if (error) throw error
 
-    return {
-      logs: (data ?? []) as AuditLogEntry[],
-      total: count ?? 0,
-      page,
-      limit,
-      totalPages: Math.ceil((count ?? 0) / limit),
-    }
+    const rows = (data ?? []) as AuditLogEntry[]
+    const hasMore = rows.length > limit
+    const items = hasMore ? rows.slice(0, limit) : rows
+    const nextCursor = hasMore ? items[items.length - 1].created_at : null
+
+    return { data: items, cursor: nextCursor, hasMore }
   },
 
   getAuditLogStats: async (companyId: string): Promise<AuditLogStats> => {
-    const today = new Date()
-    today.setHours(0, 0, 0, 0)
-    const todayStr = today.toISOString()
-
-    const [totalRes, todayRes, uniqueRes, topActionsRes] = await Promise.all([
-      supabase.from('audit_logs').select('id', { count: 'exact', head: true }).eq('company_id', companyId),
-      supabase.from('audit_logs').select('id', { count: 'exact', head: true }).eq('company_id', companyId).gte('created_at', todayStr),
-      supabase.from('audit_logs').select('user_id').eq('company_id', companyId),
-      supabase.from('audit_logs').select('action').eq('company_id', companyId).gte('created_at', todayStr),
-    ])
-
-    const uniqueUsers = new Set((uniqueRes.data ?? []).map((r: { user_id: string }) => r.user_id)).size
-
-    const actionCounts: Record<string, number> = {}
-    for (const row of (topActionsRes.data ?? []) as { action: string }[]) {
-      actionCounts[row.action] = (actionCounts[row.action] || 0) + 1
-    }
-    const top_actions = Object.entries(actionCounts)
-      .map(([action, count]) => ({ action, count }))
-      .sort((a, b) => b.count - a.count)
-      .slice(0, 5)
-
+    const { data, error } = await supabase.rpc('get_audit_log_stats', { p_company_id: companyId })
+    if (error) throw error
+    const row = data as Record<string, unknown>
     return {
-      total_logs: totalRes.count ?? 0,
-      today_count: todayRes.count ?? 0,
-      unique_users: uniqueUsers,
-      top_actions,
+      total_logs: (row.total_logs as number) ?? 0,
+      today_count: (row.today_count as number) ?? 0,
+      unique_users: (row.unique_users as number) ?? 0,
+      top_actions: (row.top_actions as { action: string; count: number }[]) ?? [],
     }
   },
 
