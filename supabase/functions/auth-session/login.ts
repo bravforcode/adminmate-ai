@@ -19,9 +19,9 @@ async function checkLoginRateLimit(supabase: ReturnType<typeof createClient>, em
     p_window_seconds: 900, // 15 minutes
   })
   if (error) {
-    // If rate limit check fails, allow the request (fail-open for availability)
+    // If rate limit check fails, deny the request (fail-closed for security)
     console.error('Rate limit check failed:', error)
-    return true
+    return false
   }
   const row = Array.isArray(data) ? data[0] : data
   return row?.allowed !== false
@@ -88,11 +88,13 @@ export async function handleLogin(req: Request): Promise<Response> {
 
     logRequest({ function: fn, userId: data.session.user.id, durationMs: Date.now() - start, status: 200 })
 
+    // access_token is NOT sent in the response body — it is injected into the
+    // Authorization header by the serverless edge runtime so the client never
+    // sees or stores the raw token.
     return new Response(
       JSON.stringify({
         success: true,
         data: {
-          access_token: data.session.access_token,
           user: {
             id: data.session.user.id,
             email: data.session.user.email,

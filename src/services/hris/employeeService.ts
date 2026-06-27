@@ -107,12 +107,19 @@ export async function createEmployeeFromOnboarding(
     .single()
   if (!instance) throw new Error('Onboarding instance not found')
 
-  // Generate employee number
-  const { count } = await supabase
-    .from('employees')
-    .select('id', { count: 'exact', head: true })
-    .eq('company_id', companyId)
-  const empNum = `EMP${String((count ?? 0) + 1).padStart(5, '0')}`
+  // Generate employee number using a PostgreSQL sequence to prevent race conditions
+  const { data: seqData, error: seqError } = await supabase.rpc('nextval', { seq_name: 'emp_num_seq' })
+  let empNum: string
+  if (seqError) {
+    // Fallback: if sequence doesn't exist yet, use COUNT + 1 (less safe but functional)
+    const { count } = await supabase
+      .from('employees')
+      .select('id', { count: 'exact', head: true })
+      .eq('company_id', companyId)
+    empNum = `EMP${String((count ?? 0) + 1).padStart(5, '0')}`
+  } else {
+    empNum = `EMP${String(seqData).padStart(5, '0')}`
+  }
 
   const candidate = instance.candidates
 
@@ -207,6 +214,25 @@ export async function updateEmploymentStatus(
   const { data: emp } = await supabase.from('employees').select('company_id, employment_status').eq('id', id).single()
   if (!emp) throw new Error('Employee not found')
 
+  // Employment status state machine — enforce valid transitions
+  const VALID_TRANSITIONS: Record<string, string[]> = {
+    draft: ['active'],
+    active: ['on_leave', 'suspended', 'offboarding'],
+    on_leave: ['active', 'offboarding'],
+    suspended: ['active', 'offboarding'],
+    offboarding: ['terminated', 'active'],
+    terminated: ['active'], // rehire
+    inactive: ['active'],
+  }
+  const currentStatus = emp.employment_status
+  const allowedNext = VALID_TRANSITIONS[currentStatus]
+  if (!allowedNext || !allowedNext.includes(status)) {
+    throw new Error(
+      `Invalid employment status transition: ${currentStatus} → ${status}. ` +
+      `Allowed transitions from "${currentStatus}": ${allowedNext?.join(', ') || 'none'}`
+    )
+  }
+
   await supabase.from('employees').update({
     employment_status: status,
     updated_at: new Date().toISOString(),
@@ -242,6 +268,30 @@ export async function assignManager(
   // Prevent circular reference
   if (managerEmployeeId && managerEmployeeId === employeeId) {
     throw new Error('Cannot assign employee as their own manager')
+  }
+
+  // Prevent circular manager chain: walk the proposed manager's chain upward
+  // to ensure assigning this manager wouldn't create a cycle (A→B→C→A).
+  if (managerEmployeeId) {
+    const visited = new Set<string>([managerEmployeeId])
+    let currentManagerId: string | null = managerEmployeeId
+    while (currentManagerId) {
+      const { data: mgr } = await supabase
+        .from('employees')
+        .select('manager_employee_id')
+        .eq('id', currentManagerId)
+        .single()
+      const nextId = mgr?.manager_employee_id ?? null
+      if (!nextId) break
+      if (nextId === employeeId) {
+        throw new Error('Circular manager chain detected: assigning this manager would create a cycle')
+      }
+      if (visited.has(nextId)) {
+        throw new Error('Circular manager chain detected: cycle found in manager hierarchy')
+      }
+      visited.add(nextId)
+      currentManagerId = nextId
+    }
   }
 
   await supabase.from('employees').update({

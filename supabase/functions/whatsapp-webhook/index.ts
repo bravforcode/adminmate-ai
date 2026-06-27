@@ -1,6 +1,6 @@
 import { serve } from 'https://deno.land/std@0.168.0/http/server.ts'
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2'
-import { createHmac } from 'node:crypto'
+import { createHmac, timingSafeEqual } from 'node:crypto'
 import { handleIncomingMessage } from '../_shared/messageHandler.ts'
 import { getCorsHeaders, getJsonHeaders, logRequest } from '../_shared/utils.ts'
 import { errorResponse } from '../_shared/errorHandler.ts'
@@ -60,7 +60,10 @@ serve(async (req) => {
     const hmac = createHmac('sha256', secret)
     hmac.update(bodyText)
     const expectedSignature = `sha256=${hmac.digest('hex')}`
-    if (signature !== expectedSignature) {
+    // Constant-time comparison to prevent timing attacks on HMAC verification
+    const sigBuf = Buffer.from(signature, 'utf-8')
+    const expBuf = Buffer.from(expectedSignature, 'utf-8')
+    if (sigBuf.length !== expBuf.length || !timingSafeEqual(sigBuf, expBuf)) {
       logRequest({ function: FN, durationMs: Date.now() - start, status: 403, error: 'invalid signature' })
       return new Response('Forbidden', { status: 403 })
     }

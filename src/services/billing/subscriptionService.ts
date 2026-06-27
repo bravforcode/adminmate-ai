@@ -70,6 +70,12 @@ export const subscriptionService = {
   },
 
   async createSubscription(companyId: string, planId: string): Promise<Subscription> {
+    // Prevent duplicate active/trialing subscriptions
+    const existing = await this.getSubscription(companyId)
+    if (existing && ['active', 'trialing'].includes(existing.status)) {
+      throw new Error('Active subscription already exists for this company')
+    }
+
     const { data: plan, error: planError } = await supabase
       .from('plans')
       .select('trial_days')

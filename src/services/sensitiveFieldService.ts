@@ -6,15 +6,20 @@ import { supabase } from '../lib/supabase'
  */
 
 let cachedFields: string[] = []
+let cacheTimestamp = 0
+const CACHE_TTL = 60 * 60 * 1000 // 1 hour
 
 export async function getSensitiveFieldNames(): Promise<string[]> {
-  if (cachedFields.length > 0) return cachedFields
+  if (cachedFields.length > 0 && Date.now() - cacheTimestamp < CACHE_TTL) {
+    return cachedFields
+  }
   const { data, error } = await supabase.rpc('get_sensitive_field_names', {})
   if (error) {
     console.error('Failed to fetch sensitive fields:', error.message)
     return []
   }
   cachedFields = data ?? []
+  cacheTimestamp = Date.now()
   return cachedFields
 }
 

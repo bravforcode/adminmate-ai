@@ -103,9 +103,11 @@ async function logSensitiveAccess(
   action: string,
   entityType: string,
   entityId: string,
+  companyId?: string,
   details?: Record<string, unknown>
 ) {
   await supabase.from('audit_logs').insert({
+    company_id: companyId ?? null,
     action,
     entity_type: entityType,
     entity_id: entityId,
@@ -140,7 +142,7 @@ export async function createPrivacyRequest(input: {
 
   if (error) throw error
 
-  await logSensitiveAccess('privacy_request_created', 'privacy_request', data.id, {
+  await logSensitiveAccess('privacy_request_created', 'privacy_request', data.id, input.company_id, {
     request_type: input.request_type,
     employee_id: input.employee_id,
   })
@@ -174,7 +176,7 @@ export async function createGrievanceCase(input: {
 
   if (error) throw error
 
-  await logSensitiveAccess('grievance_created', 'grievance_case', data.id, {
+  await logSensitiveAccess('grievance_created', 'grievance_case', data.id, input.company_id, {
     category: input.category,
   })
 
@@ -207,7 +209,7 @@ export async function createWhistleblowerReport(
 
   if (error) throw error
 
-  await logSensitiveAccess('whistleblower_report_created', 'whistleblower_report', data.id, {
+  await logSensitiveAccess('whistleblower_report_created', 'whistleblower_report', data.id, companyId, {
     category,
   })
 
@@ -244,7 +246,7 @@ export async function createSafetyIncident(input: {
 
   if (error) throw error
 
-  await logSensitiveAccess('safety_incident_created', 'health_safety_incident', data.id, {
+  await logSensitiveAccess('safety_incident_created', 'health_safety_incident', data.id, input.company_id, {
     severity: input.severity,
     location: input.location,
   })
@@ -281,7 +283,7 @@ export async function placeLegalHold(input: {
 
   if (error) throw error
 
-  await logSensitiveAccess('legal_hold_placed', 'legal_hold', data.id, {
+  await logSensitiveAccess('legal_hold_placed', 'legal_hold', data.id, input.company_id, {
     entity_type: input.entity_type,
     entity_id: input.entity_id,
     reason: input.reason,
@@ -311,7 +313,7 @@ export async function checkLegalHold(
   const isHeld = (data ?? []).length > 0
 
   if (isHeld) {
-    await logSensitiveAccess('legal_hold_check_positive', 'legal_hold', entityId, {
+    await logSensitiveAccess('legal_hold_check_positive', 'legal_hold', entityId, undefined, {
       entity_type: entityType,
     })
   }

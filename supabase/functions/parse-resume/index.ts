@@ -52,7 +52,11 @@ serve(async (req) => {
       return new Response(JSON.stringify({ success: false, error: 'CV document not found' }), { status: 404, headers: h })
     }
 
-    if (companyId && cvDoc.company_id && cvDoc.company_id !== companyId) {
+    // Mandatory company ownership check — never allow cross-tenant access
+    if (!cvDoc.company_id) {
+      return new Response(JSON.stringify({ success: false, error: 'CV document has no associated company' }), { status: 403, headers: h })
+    }
+    if (companyId && cvDoc.company_id !== companyId) {
       return new Response(JSON.stringify({ success: false, error: 'CV does not belong to this company' }), { status: 403, headers: h })
     }
 
