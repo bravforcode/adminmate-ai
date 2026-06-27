@@ -1,5 +1,13 @@
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2'
 
+// ============================================================
+// Correlation ID — unique per-request for log tracing
+// ============================================================
+
+export function generateCorrelationId(): string {
+  return `req_${crypto.randomUUID().replace(/-/g, '').substring(0, 12)}`
+}
+
 const ALLOWED_ORIGINS = [
   'http://localhost:5173',
   'http://localhost:3000',
@@ -173,8 +181,9 @@ export function getEnv(name: string, fallback: string = ''): string {
 
 export function successResponse(data: unknown, status: number = 200, extraHeaders: Record<string, string> = {}, req?: Request) {
   const base = req ? getJsonHeaders(req) : getJsonHeaders(new Request('http://localhost'))
+  const correlationId = generateCorrelationId()
   return new Response(
-    JSON.stringify({ success: true, data }),
+    JSON.stringify({ success: true, data, correlationId }),
     { status, headers: { ...base, ...extraHeaders } }
   )
 }
