@@ -149,7 +149,7 @@ serve(async (req) => {
     ].filter(Boolean).join('\n')
 
     // Call Gemini for scoring
-    const { GoogleGenAI } = await import('https://esm.sh/@google/genai@latest')
+    const { GoogleGenAI } = await import('https://esm.sh/@google/genai@0.9.0')
     const genai = new GoogleGenAI({ apiKey: geminiKey })
 
     const systemPrompt = `You are an evidence-based HR scoring assistant. You evaluate candidates against job requirements using ONLY the evidence provided.

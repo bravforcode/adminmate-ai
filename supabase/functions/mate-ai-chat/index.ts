@@ -1,6 +1,6 @@
 import { serve } from 'https://deno.land/std@0.168.0/http/server.ts'
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2'
-import { GoogleGenAI } from 'https://esm.sh/@google/genai@latest'
+import { GoogleGenAI } from 'https://esm.sh/@google/genai@0.9.0'
 import {
   getCorsHeaders,
   getJsonHeaders,
@@ -45,6 +45,16 @@ serve(async (req) => {
     }
     if (!companyId || typeof companyId !== 'string') {
       return new Response(JSON.stringify({ success: false, error: 'companyId is required' }), { status: 400, headers: h })
+    }
+
+    // Verify user belongs to the claimed company (prevent cross-tenant access)
+    const { data: userProfile } = await supabase
+      .from('user_profiles')
+      .select('company_id')
+      .eq('id', user.id)
+      .single()
+    if (!userProfile?.company_id || userProfile.company_id !== companyId) {
+      return new Response(JSON.stringify({ success: false, error: 'Forbidden: company mismatch' }), { status: 403, headers: h })
     }
 
     // Check subscription-based monthly AI limit
