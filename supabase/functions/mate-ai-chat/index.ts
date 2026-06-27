@@ -10,6 +10,7 @@ import {
   getGeminiKey,
   checkAILimit,
   logRequest,
+  generateCorrelationId,
 } from '../_shared/utils.ts'
 import { errorResponse } from '../_shared/errorHandler.ts'
 import { checkAIMonthlyLimit, limitExceededResponse } from '../_shared/limits.ts'
@@ -113,7 +114,8 @@ Company Context: ${context}`,
     const reply = response.text || 'ขออภัย ไม่สามารถตอบคำถามได้ในขณะนี้. Please try again or contact HR.'
 
     logRequest({ function: FN, userId, durationMs: Date.now() - start, status: 200 })
-    return new Response(JSON.stringify({ success: true, data: { response: reply } }), { headers: getJsonHeaders(req) })
+    const correlationId = generateCorrelationId()
+    return new Response(JSON.stringify({ success: true, data: { response: reply }, correlationId }), { headers: getJsonHeaders(req) })
   } catch (error: any) {
     logRequest({ function: FN, userId, durationMs: Date.now() - start, status: 500, error: error?.message })
     return errorResponse(error, 500, getCorsHeaders(req))

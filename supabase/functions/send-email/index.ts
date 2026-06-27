@@ -9,6 +9,7 @@ import {
   requireEnv,
   getEnv,
   logRequest,
+  generateCorrelationId,
 } from '../_shared/utils.ts'
 import { errorResponse } from '../_shared/errorHandler.ts'
 
@@ -97,7 +98,8 @@ serve(async (req) => {
 
     const resendResult = await result.json().catch(() => ({}))
     logRequest({ function: FN, userId, durationMs: Date.now() - start, status: 200 })
-    return new Response(JSON.stringify({ success: true, id: resendResult.id }), { headers: getJsonHeaders(req) })
+    const correlationId = generateCorrelationId()
+    return new Response(JSON.stringify({ success: true, data: { id: resendResult.id }, correlationId }), { headers: getJsonHeaders(req) })
   } catch (error: any) {
     logRequest({ function: FN, userId, durationMs: Date.now() - start, status: 500, error: error?.message })
     return errorResponse(error, 500, getCorsHeaders(req))

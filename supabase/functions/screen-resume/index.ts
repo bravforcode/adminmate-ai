@@ -10,6 +10,7 @@ import {
   getGeminiKey,
   checkAILimit,
   logRequest,
+  generateCorrelationId,
 } from '../_shared/utils.ts'
 import { errorResponse } from '../_shared/errorHandler.ts'
 import { checkAIMonthlyLimit, limitExceededResponse } from '../_shared/limits.ts'
@@ -130,7 +131,8 @@ You are an expert AI recruiter. Analyze this candidate against the job requireme
     })
 
     logRequest({ function: FN, userId, durationMs: Date.now() - start, status: 200 })
-    return new Response(JSON.stringify({ success: true, data: analysis }), { headers: getJsonHeaders(req) })
+    const correlationId = generateCorrelationId()
+    return new Response(JSON.stringify({ success: true, data: analysis, correlationId }), { headers: getJsonHeaders(req) })
   } catch (error: any) {
     logRequest({ function: FN, userId, durationMs: Date.now() - start, status: 500, error: error?.message })
     return errorResponse(error, 500, getCorsHeaders(req))
