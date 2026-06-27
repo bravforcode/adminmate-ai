@@ -29,7 +29,6 @@ async function fetchJson(path: string, init: RequestInit): Promise<any | null> {
 
 export async function fetchSessionStatus(): Promise<{
   valid: boolean
-  access_token?: string
   user?: { id: string; email?: string }
 }> {
   const json = await fetchJson('/status', {
@@ -47,7 +46,6 @@ export async function fetchSessionStatus(): Promise<{
 export async function refreshAccessToken(): Promise<{
   success: boolean
   data?: {
-    access_token?: string
     user?: { id: string; email?: string }
   }
   error?: string
@@ -67,7 +65,6 @@ export async function refreshAccessToken(): Promise<{
 export async function loginViaEdge(email: string, password: string): Promise<{
   success: boolean
   data?: {
-    access_token?: string
     user?: { id: string; email?: string }
   }
   error?: string

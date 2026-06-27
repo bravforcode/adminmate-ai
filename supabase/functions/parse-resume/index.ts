@@ -56,7 +56,9 @@ serve(async (req) => {
     if (!cvDoc.company_id) {
       return new Response(JSON.stringify({ success: false, error: 'CV document has no associated company' }), { status: 403, headers: h })
     }
-    if (companyId && cvDoc.company_id !== companyId) {
+    // SECURITY: Reject if caller's companyId doesn't match document's company_id.
+    // companyId is now mandatory — callers must always provide it.
+    if (!companyId || cvDoc.company_id !== companyId) {
       return new Response(JSON.stringify({ success: false, error: 'CV does not belong to this company' }), { status: 403, headers: h })
     }
 

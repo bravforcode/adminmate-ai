@@ -109,6 +109,44 @@ export const ssoService = {
   },
 
   /**
+   * Validate that a URL does not target private/internal IP ranges (SSRF protection).
+   * Only allows https:// scheme. Resolves hostname and rejects private IPs.
+   */
+  validateMetadataUrl: async (url: string): Promise<{ valid: boolean; error?: string }> => {
+    // 1. Validate URL scheme — only https allowed
+    let parsed: URL
+    try {
+      parsed = new URL(url)
+    } catch {
+      return { valid: false, error: 'Invalid URL format' }
+    }
+
+    if (parsed.protocol !== 'https:') {
+      return { valid: false, error: 'Only HTTPS metadata URLs are allowed' }
+    }
+
+    // 2. Resolve hostname to IP and check for private ranges
+    const hostname = parsed.hostname
+    // Skip DNS check for localhost and obvious private hosts
+    if (hostname === 'localhost' || hostname === '127.0.0.1' || hostname === '::1') {
+      return { valid: false, error: 'Metadata URL cannot target localhost' }
+    }
+
+    try {
+      const { isPrivateIp } = await import('../../lib/networkUtils')
+      const result = await isPrivateIp(hostname)
+      if (result) {
+        return { valid: false, error: 'Metadata URL resolves to a private/internal IP address (SSRF blocked)' }
+      }
+    } catch {
+      // If DNS resolution fails, reject to fail closed
+      return { valid: false, error: 'Could not resolve metadata URL hostname' }
+    }
+
+    return { valid: true }
+  },
+
+  /**
    * Test SSO connection by attempting to fetch metadata URL.
    * Returns connection status and validates metadata.
    */
@@ -129,6 +167,21 @@ export const ssoService = {
     // Test metadata URL if provided
     if (config.metadata_url) {
       try {
+        // SSRF protection: validate URL scheme and resolved IP before fetching
+        const urlCheck = await ssoService.validateMetadataUrl(config.metadata_url)
+        if (!urlCheck.valid) {
+          await supabase
+            .from('sso_provider_configs')
+            .update({ config_status: 'error' })
+            .eq('id', config.id)
+            .eq('company_id', companyId)
+
+          return {
+            success: false,
+            message: urlCheck.error || 'Metadata URL validation failed',
+          }
+        }
+
         const response = await fetch(config.metadata_url, {
           method: 'GET',
           signal: AbortSignal.timeout(10_000),

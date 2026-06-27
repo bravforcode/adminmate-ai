@@ -224,3 +224,26 @@ export async function withRequestLogging<T>(
     throw error
   }
 }
+
+// ============================================================
+// Constant-time string comparison — prevents timing attacks
+// on webhook signature verification.
+// ============================================================
+
+/**
+ * Compare two strings in constant time to prevent timing attacks.
+ * Returns true if the strings are equal, false otherwise.
+ * The comparison time depends only on the length of the strings,
+ * not on their content.
+ */
+export function timingSafeEqual(a: string, b: string): boolean {
+  if (a.length !== b.length) return false
+  const encoder = new TextEncoder()
+  const bufA = encoder.encode(a)
+  const bufB = encoder.encode(b)
+  let result = 0
+  for (let i = 0; i < bufA.length; i++) {
+    result |= bufA[i] ^ bufB[i]
+  }
+  return result === 0
+}
