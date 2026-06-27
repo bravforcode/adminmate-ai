@@ -1,14 +1,16 @@
 import { supabase } from '../../lib/supabase'
 
+// Correct Thai PIT progressive brackets (Revenue Department of Thailand, 2024)
+// Source: Revenue Code §40(1), Royal Decree No. 776
 export const TH_TAX_BRACKETS_2024 = [
-  { min: 0, max: 150000, rate: 0 },
-  { min: 150001, max: 1800000, rate: 5 },
-  { min: 1800001, max: 3600000, rate: 10 },
-  { min: 3600001, max: 5400000, rate: 15 },
-  { min: 5400001, max: 7200000, rate: 20 },
-  { min: 7200001, max: 9600000, rate: 25 },
-  { min: 9600001, max: 12000000, rate: 30 },
-  { min: 12000001, max: null, rate: 35 },
+  { min: 0,          max: 150000,   rate: 0 },   // 0 – 150,000:          0%
+  { min: 150001,     max: 300000,   rate: 5 },   // 150,001 – 300,000:    5%
+  { min: 300001,     max: 500000,   rate: 10 },  // 300,001 – 500,000:   10%
+  { min: 500001,     max: 750000,   rate: 15 },  // 500,001 – 750,000:   15%
+  { min: 750001,     max: 1000000,  rate: 20 },  // 750,001 – 1,000,000: 20%
+  { min: 1000001,    max: 2000000,  rate: 25 },  // 1,000,001 – 2,000,000: 25%
+  { min: 2000001,    max: 5000000,  rate: 30 },  // 2,000,001 – 5,000,000: 30%
+  { min: 5000001,    max: null,     rate: 35 },  // Above 5,000,000:      35%
 ]
 
 export const TH_SS_RULES = {
