@@ -1,15 +1,11 @@
 import { serve } from "https://deno.land/std@0.177.0/http/server.ts"
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2"
 import { captureError } from '../_shared/sentry.ts'
-
-const corsHeaders = {
-  "Access-Control-Allow-Origin": "*",
-  "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
-}
+import { getCorsHeaders } from '../_shared/utils.ts'
 
 serve(async (req: Request) => {
   if (req.method === "OPTIONS") {
-    return new Response("ok", { headers: corsHeaders })
+    return new Response("ok", { headers: getCorsHeaders(req) })
   }
 
   try {
@@ -23,7 +19,7 @@ serve(async (req: Request) => {
     if (!authHeader) {
       return new Response(JSON.stringify({ error: "Missing authorization" }), {
         status: 401,
-        headers: { ...corsHeaders, "Content-Type": "application/json" },
+        headers: { ...getCorsHeaders(req), "Content-Type": "application/json" },
       })
     }
 
@@ -35,7 +31,7 @@ serve(async (req: Request) => {
     if (authError || !user) {
       return new Response(JSON.stringify({ error: "Unauthorized" }), {
         status: 401,
-        headers: { ...corsHeaders, "Content-Type": "application/json" },
+        headers: { ...getCorsHeaders(req), "Content-Type": "application/json" },
       })
     }
 
@@ -49,7 +45,7 @@ serve(async (req: Request) => {
     if (!profile?.company_id) {
       return new Response(JSON.stringify({ error: "No company found" }), {
         status: 400,
-        headers: { ...corsHeaders, "Content-Type": "application/json" },
+        headers: { ...getCorsHeaders(req), "Content-Type": "application/json" },
       })
     }
 
@@ -65,7 +61,7 @@ serve(async (req: Request) => {
     if (!priceId) {
       return new Response(JSON.stringify({ error: "Missing priceId" }), {
         status: 400,
-        headers: { ...corsHeaders, "Content-Type": "application/json" },
+        headers: { ...getCorsHeaders(req), "Content-Type": "application/json" },
       })
     }
 
@@ -73,7 +69,7 @@ serve(async (req: Request) => {
     if (!priceId.startsWith("price_")) {
       return new Response(JSON.stringify({ error: "Invalid priceId format" }), {
         status: 400,
-        headers: { ...corsHeaders, "Content-Type": "application/json" },
+        headers: { ...getCorsHeaders(req), "Content-Type": "application/json" },
       })
     }
 
@@ -81,7 +77,7 @@ serve(async (req: Request) => {
     if (trialPeriodDays < 0 || trialPeriodDays > 30) {
       return new Response(JSON.stringify({ error: "Invalid trialPeriodDays (0-30)" }), {
         status: 400,
-        headers: { ...corsHeaders, "Content-Type": "application/json" },
+        headers: { ...getCorsHeaders(req), "Content-Type": "application/json" },
       })
     }
 
@@ -108,7 +104,7 @@ serve(async (req: Request) => {
         console.error('Stripe customer creation failed:', customer.error.message)
         return new Response(JSON.stringify({ error: 'Failed to create customer. Please try again.' }), {
           status: 500,
-          headers: { ...corsHeaders, "Content-Type": "application/json" },
+          headers: { ...getCorsHeaders(req), "Content-Type": "application/json" },
         })
       }
 
@@ -148,19 +144,19 @@ serve(async (req: Request) => {
       console.error('Stripe checkout session failed:', session.error.message)
       return new Response(JSON.stringify({ error: 'Failed to create checkout session. Please try again.' }), {
         status: 500,
-        headers: { ...corsHeaders, "Content-Type": "application/json" },
+        headers: { ...getCorsHeaders(req), "Content-Type": "application/json" },
       })
     }
 
     return new Response(JSON.stringify({ url: session.url }), {
       status: 200,
-      headers: { ...corsHeaders, "Content-Type": "application/json" },
+      headers: { ...getCorsHeaders(req), "Content-Type": "application/json" },
     })
   } catch (error) {
     captureError(error, { function: 'stripe-checkout' })
     return new Response(JSON.stringify({ error: 'Internal server error' }), {
       status: 500,
-      headers: { ...corsHeaders, "Content-Type": "application/json" },
+      headers: { ...getCorsHeaders(req), "Content-Type": "application/json" },
     })
   }
 })

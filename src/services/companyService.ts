@@ -13,8 +13,12 @@ export interface CreateCompanyData {
 }
 
 export const companyService = {
-  getAll: async () => {
-    const { data, error } = await supabase.from('companies').select('id, name, name_th, tax_id, phone, email, address, city, website_url, industry, country, currency, locale, timezone, subscription_tier')
+  getAll: async (companyId?: string) => {
+    let query = supabase.from('companies').select('id, name, name_th, tax_id, phone, email, address, city, website_url, industry, country, currency, locale, timezone, subscription_tier')
+    if (companyId) {
+      query = query.eq('id', companyId)
+    }
+    const { data, error } = await query
     if (error) throw error
     return data
   },

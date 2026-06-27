@@ -2,8 +2,8 @@ import { test as base, expect, type Page } from '@playwright/test'
 
 // ─── Test Credentials ────────────────────────────────────────────
 export const HR_USER = {
-  email: 'testlogin99@gmail.com',
-  password: 'Test123456!',
+  email: process.env.E2E_TEST_EMAIL || 'testlogin99@gmail.com',
+  password: process.env.E2E_TEST_PASSWORD || 'Test123456!',
 }
 
 export function freshEmail() {
