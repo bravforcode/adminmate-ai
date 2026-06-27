@@ -1,4 +1,5 @@
 import { supabase } from '../../lib/supabase'
+import { hasPermission } from '../permissionService'
 
 // Correct Thai PIT progressive brackets (Revenue Department of Thailand, 2024)
 // Source: Revenue Code §40(1), Royal Decree No. 776
@@ -198,6 +199,25 @@ export async function upsertCompanyPayrollConfig(
     cycle_type?: string
   },
 ) {
+  // ── RBAC: Verify payroll write permission ──
+  const canWrite = await hasPermission('payroll', 'write')
+  if (!canWrite) throw new Error('Requires payroll_write permission')
+
+  // ── Verify companyId matches the authenticated user's company ──
+  const { data: { user } } = await supabase.auth.getUser()
+  if (!user) throw new Error('Not authenticated')
+
+  const { data: profile } = await supabase
+    .from('user_profiles')
+    .select('company_id')
+    .eq('id', user.id)
+    .single()
+
+  if (!profile?.company_id) throw new Error('No company associated with user')
+  if (profile.company_id !== companyId) {
+    throw new Error('Cannot modify payroll config for another company')
+  }
+
   const { data, error } = await supabase
     .from('payroll_configs')
     .upsert(

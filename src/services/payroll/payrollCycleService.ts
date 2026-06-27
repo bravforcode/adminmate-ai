@@ -122,11 +122,15 @@ export async function closeCycle(cycleId: string): Promise<PayrollCycle> {
 
   if (error) throw new Error(`Failed to close payroll cycle: ${error.message}`)
 
+  // Resolve user for audit trail
+  const { data: { user } } = await supabase.auth.getUser()
+
   // Audit event
   await supabase.from('payroll_audit_events').insert({
     company_id: cycle.company_id,
     action: 'cycle.closed',
     details: JSON.stringify({ cycle_id: cycleId }),
+    created_by: user?.id ?? null,
   })
 
   return data as PayrollCycle
