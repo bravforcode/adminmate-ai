@@ -276,12 +276,12 @@ export async function assignManager(
     const visited = new Set<string>([managerEmployeeId])
     let currentManagerId: string | null = managerEmployeeId
     while (currentManagerId) {
-      const { data: mgr } = await supabase
+      const mgrResult: { data: { manager_employee_id?: string | null } | null } = await supabase
         .from('employees')
         .select('manager_employee_id')
         .eq('id', currentManagerId)
         .single()
-      const nextId = mgr?.manager_employee_id ?? null
+      const nextId: string | null = mgrResult.data?.manager_employee_id ?? null
       if (!nextId) break
       if (nextId === employeeId) {
         throw new Error('Circular manager chain detected: assigning this manager would create a cycle')

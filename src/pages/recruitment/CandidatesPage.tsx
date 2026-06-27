@@ -113,7 +113,7 @@ export function CandidatesPage() {
           />
         )
       ) : (
-        <div className="grid gap-4">{filtered?.map(c => <CandidateCard key={c.id} candidate={c} />)}</div>
+        <div className="grid gap-4">{filtered?.map(c => <CandidateCard key={c.id} candidate={c as unknown as import('../../types/models').Candidate} />)}</div>
       )}
     </div>
   )

@@ -44,8 +44,8 @@ export function DocumentsPage() {
 
   const stats = useMemo(() => ({
     total: documents?.length || 0,
-    pending: documents?.filter(d => ['draft', 'pending_signature'].includes(d.status)).length || 0,
-    overdue: documents?.filter(d => d.due_date && new Date(d.due_date) < new Date() && !['signed', 'approved'].includes(d.status)).length || 0,
+    pending: documents?.filter(d => ['draft', 'pending_signature'].includes(d.status ?? '')).length || 0,
+    overdue: documents?.filter(d => d.due_date && new Date(d.due_date) < new Date() && !['signed', 'approved'].includes(d.status ?? '')).length || 0,
   }), [documents])
 
   const handleSearchChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => setSearchInput(e.target.value), [])
@@ -159,7 +159,7 @@ export function DocumentsPage() {
                     <td className="py-3 px-4 text-sm text-on-surface dark:text-on-surface text-on-surface-variant" data-label={t('for')}>{doc.candidates?.full_name || doc.user_profiles?.full_name || '-'}</td>
                     <td className="py-3 px-4 text-sm text-on-surface dark:text-on-surface text-on-surface-variant" data-label={t('type')}>{doc.document_type?.replace(/_/g, ' ')}</td>
                     <td className="py-3 px-4 text-sm text-on-surface dark:text-on-surface" data-label={t('region')}><span className="px-2 py-0.5 bg-surface-container-low dark:bg-surface-container-low rounded text-xs dark:text-on-surface">{doc.region}</span></td>
-                    <td className="py-3 px-4 text-sm text-on-surface dark:text-on-surface" data-label={t('status', { ns: 'common' })}><span className={cn('px-2 py-0.5 rounded text-xs font-medium', STATUS_COLORS[doc.status] || '')}>{getStatusLabel(doc.status)}</span></td>
+                    <td className="py-3 px-4 text-sm text-on-surface dark:text-on-surface" data-label={t('status', { ns: 'common' })}><span className={cn('px-2 py-0.5 rounded text-xs font-medium', STATUS_COLORS[doc.status ?? ''] || '')}>{getStatusLabel(doc.status)}</span></td>
                     <td className="py-3 px-4 text-sm text-on-surface dark:text-on-surface" data-label={t('signature_status')}>
                       {doc.requires_signature ? (
                         <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded text-xs font-medium bg-yellow-50 dark:bg-warning-container/30 text-yellow-700 dark:text-warning">
