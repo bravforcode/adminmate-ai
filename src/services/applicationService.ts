@@ -1,4 +1,5 @@
 import { supabase } from '../lib/supabase'
+import type { Application } from '../types/models'
 
 export interface CreateApplicationInput {
   job_id: string
@@ -13,11 +14,35 @@ export interface UpdateStatusInput {
   companyId: string
 }
 
+export interface PaginatedResult<T> {
+  data: T[]
+  cursor: string | null
+  hasMore: boolean
+}
+
 export const applicationService = {
-  getByJob: async (jobId: string) => {
-    const { data, error } = await supabase.from('applications').select('*, candidates(full_name, email, phone, location, current_position, avatar_url), cv_documents(file_url, parsed_content, is_current)').eq('job_id', jobId).order('created_at', { ascending: false })
+  getByJob: async (jobId: string, options?: { cursor?: string; limit?: number }): Promise<PaginatedResult<Application>> => {
+    const limit = options?.limit ?? 50
+    let query = supabase
+      .from('applications')
+      .select('*, candidates(full_name, email, phone, location, current_position, avatar_url), cv_documents(file_url, parsed_content, is_current)')
+      .eq('job_id', jobId)
+      .order('created_at', { ascending: false })
+      .limit(limit + 1)
+
+    if (options?.cursor) {
+      query = query.lt('created_at', options.cursor)
+    }
+
+    const { data, error } = await query
     if (error) throw error
-    return data
+
+    const rows = (data ?? []) as Application[]
+    const hasMore = rows.length > limit
+    const items = hasMore ? rows.slice(0, limit) : rows
+    const nextCursor = hasMore ? items[items.length - 1].created_at ?? null : null
+
+    return { data: items, cursor: nextCursor, hasMore }
   },
   create: async (input: CreateApplicationInput) => {
     const { data, error } = await supabase.from('applications').insert(input).select().single()

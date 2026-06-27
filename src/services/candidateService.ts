@@ -44,11 +44,35 @@ export interface UpdateCandidateInput {
   source?: string
 }
 
+export interface PaginatedResult<T> {
+  data: T[]
+  cursor: string | null
+  hasMore: boolean
+}
+
 export const candidateService = {
-  getAll: async (companyId: string) => {
-    const { data, error } = await supabase.from('candidates').select('*, cv_documents(*), applications(status)').eq('company_id', companyId).order('created_at', { ascending: false })
+  getAll: async (companyId: string, options?: { cursor?: string; limit?: number }): Promise<PaginatedResult<Record<string, unknown>>> => {
+    const limit = options?.limit ?? 50
+    let query = supabase
+      .from('candidates')
+      .select('*, cv_documents(*), applications(status)')
+      .eq('company_id', companyId)
+      .order('created_at', { ascending: false })
+      .limit(limit + 1)
+
+    if (options?.cursor) {
+      query = query.lt('created_at', options.cursor)
+    }
+
+    const { data, error } = await query
     if (error) throw error
-    return data
+
+    const rows = (data ?? []) as Record<string, unknown>[]
+    const hasMore = rows.length > limit
+    const items = hasMore ? rows.slice(0, limit) : rows
+    const nextCursor = hasMore ? (items[items.length - 1]?.created_at as string) ?? null : null
+
+    return { data: items, cursor: nextCursor, hasMore }
   },
   getAllWithApplications: async (companyId: string): Promise<CandidateWithApplications[]> => {
     const { data, error } = await supabase.rpc('get_candidates_with_applications', { p_company_id: companyId })
