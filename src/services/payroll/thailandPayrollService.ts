@@ -3,15 +3,16 @@ import { hasPermission } from '../permissionService'
 
 // Correct Thai PIT progressive brackets (Revenue Department of Thailand, 2024)
 // Source: Revenue Code §40(1), Royal Decree No. 776
+// Ranges are half-open: [min, max) — income at exactly max is taxed at this bracket's rate.
 export const TH_TAX_BRACKETS_2024 = [
   { min: 0,          max: 150000,   rate: 0 },   // 0 – 150,000:          0%
-  { min: 150001,     max: 300000,   rate: 5 },   // 150,001 – 300,000:    5%
-  { min: 300001,     max: 500000,   rate: 10 },  // 300,001 – 500,000:   10%
-  { min: 500001,     max: 750000,   rate: 15 },  // 500,001 – 750,000:   15%
-  { min: 750001,     max: 1000000,  rate: 20 },  // 750,001 – 1,000,000: 20%
-  { min: 1000001,    max: 2000000,  rate: 25 },  // 1,000,001 – 2,000,000: 25%
-  { min: 2000001,    max: 5000000,  rate: 30 },  // 2,000,001 – 5,000,000: 30%
-  { min: 5000001,    max: null,     rate: 35 },  // Above 5,000,000:      35%
+  { min: 150000,     max: 300000,   rate: 5 },   // 150,000 – 300,000:    5%
+  { min: 300000,     max: 500000,   rate: 10 },  // 300,000 – 500,000:   10%
+  { min: 500000,     max: 750000,   rate: 15 },  // 500,000 – 750,000:   15%
+  { min: 750000,     max: 1000000,  rate: 20 },  // 750,000 – 1,000,000: 20%
+  { min: 1000000,    max: 2000000,  rate: 25 },  // 1,000,000 – 2,000,000: 25%
+  { min: 2000000,    max: 5000000,  rate: 30 },  // 2,000,000 – 5,000,000: 30%
+  { min: 5000000,    max: null,     rate: 35 },  // Above 5,000,000:      35%
 ]
 
 export const TH_SS_RULES = {
@@ -72,9 +73,12 @@ export function calculateWithholdingTax(annualSalary: number): number {
 
   for (const bracket of TH_TAX_BRACKETS_2024) {
     if (remaining <= 0) break
-    const bracketSize = (bracket.max ?? Infinity) - bracket.min + 1
+    const bracketSize = (bracket.max ?? Infinity) - bracket.min
     const taxable = Math.min(remaining, bracketSize)
-    tax += taxable * (bracket.rate / 100)
+    // Use integer arithmetic to avoid floating-point errors:
+    // taxable * rate is exact (both integers), then /100 gives exact satang.
+    // vs. taxable * (rate / 100) which introduces IEEE 754 rounding.
+    tax += Math.round(taxable * bracket.rate) / 100
     remaining -= taxable
   }
 
@@ -108,8 +112,9 @@ export function calculatePND1(
 ): PND1Data {
   // ── Thai PND1 Statutory Deductions (Revenue Code §40) ──
 
-  // Employment income deduction (ค่าใช้จ่าย): 40% of income, capped at 100,000 THB
-  const employmentIncomeDeduction = Math.min(annualTaxableIncome * 0.4, 100000)
+  // Employment income deduction (ค่าใช้จ่าย): 50% of income, capped at 100,000 THB
+  // (50% rate per Revenue Department reform effective 1 Jan 2017)
+  const employmentIncomeDeduction = Math.min(annualTaxableIncome * 0.5, 100000)
 
   // Social security contribution: actual amount passed in, default 0
   const socialSecurity = options?.socialSecurityAnnual ?? 0
@@ -131,8 +136,12 @@ export function calculatePND1(
   // Progressive tax on net assessable income
   const taxPayable = calculateWithholdingTax(assessableIncome)
 
-  // Tax credit (เครดิตภาษี): 60,000 THB — subtracted from final tax
-  const totalTaxCredits = 60000
+  // NOTE: The 60,000 THB personal allowance (ค่าลดหย่อนส่วนตัว) is already
+  // subtracted from assessableIncome above via totalAllowances. Do NOT also
+  // subtract it as a "tax credit" — that would double-count the same 60K.
+  // The Thai tax system has no separate post-calculation credit for PIT;
+  // the personal allowance reduces the tax base, not the tax itself.
+  const totalTaxCredits = 0
 
   const bracket = TH_TAX_BRACKETS_2024.find(
     b => assessableIncome >= b.min && (b.max === null || assessableIncome <= b.max),
@@ -144,7 +153,7 @@ export function calculatePND1(
     totalAllowances,
     totalTaxCredits,
     assessableIncome,
-    taxPayable: Math.max(0, taxPayable - totalTaxCredits),
+    taxPayable: Math.max(0, taxPayable),
     taxBracket: bracket ? `${bracket.min}-${bracket.max ?? '∞'} THB (${bracket.rate}%)` : 'N/A',
   }
 }

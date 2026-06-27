@@ -75,8 +75,12 @@ END;
 $$;
 
 -- 3. Create a view that auto-decrypts certificates for authorized reads
--- This avoids changing the SSO service code — the view presents decrypted data.
-CREATE OR REPLACE VIEW public.sso_provider_configs_decrypted AS
+-- SECURITY INVOKER ensures RLS on the base table is enforced — the view
+-- runs with the querying user's privileges, not the view owner's.
+-- Without this, any authenticated user could bypass RLS and read all SSO certs.
+CREATE OR REPLACE VIEW public.sso_provider_configs_decrypted
+  WITH (security_invoker = true)
+AS
 SELECT
   id,
   company_id,

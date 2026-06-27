@@ -300,7 +300,8 @@ function calculateTHProgressiveTax(annualIncome: number, brackets: Array<{ min_i
       )
     }
 
-    tax += taxableInBracket * (bracket.tax_rate / 100)
+    // Integer arithmetic to avoid IEEE 754 floating-point rounding errors
+    tax += Math.round(taxableInBracket * bracket.tax_rate) / 100
 
     remaining -= taxableInBracket
   }
