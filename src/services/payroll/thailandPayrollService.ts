@@ -98,23 +98,52 @@ export function calculateProvincialTax(annualSalary: number, provinceCode: strin
   return Math.round(annualSalary * rate * 100) / 100
 }
 
-export function calculatePND1(annualTaxableIncome: number): PND1Data {
-  const totalDeductions = annualTaxableIncome * 0.4
-  const totalAllowances = annualTaxableIncome * 0.1
-  const assessableIncome = annualTaxableIncome - totalDeductions - totalAllowances
-  const taxPayable = calculateWithholdingTax(Math.max(0, assessableIncome))
+export function calculatePND1(
+  annualTaxableIncome: number,
+  options?: {
+    socialSecurityAnnual?: number   // actual SS from employee_tax_profiles
+    otherDeductions?: number        // provident fund, life insurance, donations, etc.
+  },
+): PND1Data {
+  // ── Thai PND1 Statutory Deductions (Revenue Code §40) ──
+
+  // Employment income deduction (ค่าใช้จ่าย): 40% of income, capped at 100,000 THB
+  const employmentIncomeDeduction = Math.min(annualTaxableIncome * 0.4, 100000)
+
+  // Social security contribution: actual amount passed in, default 0
+  const socialSecurity = options?.socialSecurityAnnual ?? 0
+
+  // Other deductions from employee_tax_profiles (provident fund, life insurance,
+  // donations, mortgage interest, etc.) — each capped per Revenue Department rules
+  const otherDeductions = options?.otherDeductions ?? 0
+
+  // Total deductions = employment income deduction + SS + other
+  const totalDeductions = employmentIncomeDeduction + socialSecurity + otherDeductions
+
+  // Personal allowance (ค่าลดหย่อนส่วนตัว): 60,000 THB standard
+  const personalAllowance = 60000
+  const totalAllowances = personalAllowance
+
+  // Net assessable income after deductions and allowances
+  const assessableIncome = Math.max(0, annualTaxableIncome - totalDeductions - totalAllowances)
+
+  // Progressive tax on net assessable income
+  const taxPayable = calculateWithholdingTax(assessableIncome)
+
+  // Tax credit (เครดิตภาษี): 60,000 THB — subtracted from final tax
+  const totalTaxCredits = 60000
 
   const bracket = TH_TAX_BRACKETS_2024.find(
-    b => annualTaxableIncome >= b.min && (b.max === null || annualTaxableIncome <= b.max),
+    b => assessableIncome >= b.min && (b.max === null || assessableIncome <= b.max),
   )
 
   return {
     annualTaxableIncome,
     totalDeductions,
     totalAllowances,
-    totalTaxCredits: 60000,
-    assessableIncome: Math.max(0, assessableIncome),
-    taxPayable,
+    totalTaxCredits,
+    assessableIncome,
+    taxPayable: Math.max(0, taxPayable - totalTaxCredits),
     taxBracket: bracket ? `${bracket.min}-${bracket.max ?? '∞'} THB (${bracket.rate}%)` : 'N/A',
   }
 }
