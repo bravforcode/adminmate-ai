@@ -1,18 +1,126 @@
-name: Application CI
+name: CI
 
 on:
   push:
     branches: [main, develop]
   pull_request:
     branches: [main, develop]
-  workflow_dispatch:
 
 jobs:
   # ------------------------------------------------------------------
-  # 1. Install dependencies (cached)
+  # 1. Lint & TypeCheck
   # ------------------------------------------------------------------
-  install:
-    name: "Install"
+  lint-and-typecheck:
+    name: "Lint & TypeCheck"
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - run: npm ci
+
+      - name: Lint
+        run: npm run lint
+
+      - name: TypeCheck
+        run: npm run type-check
+
+  # ------------------------------------------------------------------
+  # 2. Unit Tests with Coverage
+  # ------------------------------------------------------------------
+  unit-tests:
+    name: "Unit Tests"
+    runs-on: ubuntu-latest
+    needs: lint-and-typecheck
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - run: npm ci
+
+      - name: Run tests with coverage
+        run: npm run test:coverage
+
+  # ------------------------------------------------------------------
+  # 3. Build
+  # ------------------------------------------------------------------
+  build:
+    name: "Build"
+    runs-on: ubuntu-latest
+    needs: unit-tests
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - run: npm ci
+
+      - name: Build
+        run: npm run build
+        env:
+          VITE_SUPABASE_URL: "https://placeholder.supabase.co"
+          VITE_SUPABASE_ANON_KEY: "placeholder-anon-key"
+
+  # ------------------------------------------------------------------
+  # 4. Security Grep (no deps — runs in parallel)
+  # ------------------------------------------------------------------
+  security-grep:
+    name: "Security Pattern Scan"
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Check for dangerous RLS patterns
+        run: |
+          if grep -r "USING (true)" supabase/migrations/ --include="*.sql"; then
+            echo "ERROR: Found USING (true) in migration files — potential RLS bypass"
+            exit 1
+          fi
+          echo "✅ No dangerous RLS patterns found"
+
+      - name: Check for wildcard CORS
+        run: |
+          if grep -r 'Access-Control-Allow-Origin: \*' supabase/functions/ --include="*.ts"; then
+            echo "ERROR: Found wildcard CORS — potential security issue"
+            exit 1
+          fi
+          echo "✅ No wildcard CORS found"
+
+      - name: Check for @latest imports
+        run: |
+          if grep -r '@latest' supabase/functions/ --include="*.ts"; then
+            echo "WARNING: Found @latest imports in edge functions"
+            exit 1
+          fi
+          echo "✅ No @latest imports found"
+
+      - name: Check for hardcoded secrets
+        run: |
+          if grep -r "password.*=.*['\"]" e2e/helpers.ts src/ --include="*.ts" --include="*.tsx" 2>/dev/null; then
+            echo "WARNING: Possible hardcoded credentials found"
+          fi
+          echo "✅ Secret scan complete"
+
+  # ------------------------------------------------------------------
+  # 5. Dependency Audit (no deps — runs in parallel)
+  # ------------------------------------------------------------------
+  dependency-audit:
+    name: "Dependency Audit"
     runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:
@@ -25,126 +133,5 @@ jobs:
 
       - run: npm ci
 
-      - name: Cache node_modules
-        uses: actions/cache/save@v4
-        with:
-          path: node_modules
-          key: deps-${{ runner.os }}-${{ hashFiles('package-lock.json') }}
-
-  # ------------------------------------------------------------------
-  # 2. TypeCheck
-  # ------------------------------------------------------------------
-  typecheck:
-    name: "TypeCheck"
-    runs-on: ubuntu-latest
-    needs: install
-    timeout-minutes: 10
-    steps:
-      - uses: actions/checkout@v4
-
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 20
-          cache: npm
-
-      - uses: actions/cache/restore@v4
-        with:
-          path: node_modules
-          key: deps-${{ runner.os }}-${{ hashFiles('package-lock.json') }}
-
-      - run: npx tsc --noEmit
-
-  # ------------------------------------------------------------------
-  # 3. Lint
-  # ------------------------------------------------------------------
-  lint:
-    name: "Lint"
-    runs-on: ubuntu-latest
-    needs: install
-    timeout-minutes: 5
-    steps:
-      - uses: actions/checkout@v4
-
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 20
-          cache: npm
-
-      - uses: actions/cache/restore@v4
-        with:
-          path: node_modules
-          key: deps-${{ runner.os }}-${{ hashFiles('package-lock.json') }}
-
-      - run: npx eslint src/ --ext .ts,.tsx
-
-  # ------------------------------------------------------------------
-  # 4. Build
-  # ------------------------------------------------------------------
-  build:
-    name: "Build"
-    runs-on: ubuntu-latest
-    needs: install
-    timeout-minutes: 10
-    steps:
-      - uses: actions/checkout@v4
-
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 20
-          cache: npm
-
-      - uses: actions/cache/restore@v4
-        with:
-          path: node_modules
-          key: deps-${{ runner.os }}-${{ hashFiles('package-lock.json') }}
-
-      - run: npx vite build
-        env:
-          VITE_SUPABASE_URL: "https://placeholder.supabase.co"
-          VITE_SUPABASE_ANON_KEY: "placeholder-anon-key"
-
-  # ------------------------------------------------------------------
-  # 5. Unit Tests
-  # ------------------------------------------------------------------
-  unit-tests:
-    name: "Unit Tests"
-    runs-on: ubuntu-latest
-    needs: install
-    timeout-minutes: 10
-    steps:
-      - uses: actions/checkout@v4
-
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 20
-          cache: npm
-
-      - uses: actions/cache/restore@v4
-        with:
-          path: node_modules
-          key: deps-${{ runner.os }}-${{ hashFiles('package-lock.json') }}
-
-      - run: npx vitest run --reporter=verbose
-
-  # ------------------------------------------------------------------
-  # 6. Integration Tests
-  # ------------------------------------------------------------------
-  integration-tests:
-    name: "Integration Tests"
-    runs-on: ubuntu-latest
-    needs: install
-    timeout-minutes: 15
-    steps:
-      - uses: actions/checkout@v4
-
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 20
-          cache: npm
-
-      - uses: actions/cache/restore@v4
-        with:
-          path: node_modules
-          key: deps-${{ runner.os }}-${{ hashFiles('package-lock.json') }}
-
-      - run: npx vitest run tests/integration/ --reporter=verbose
+      - name: Audit dependencies
+        run: npm audit --audit-level=high
