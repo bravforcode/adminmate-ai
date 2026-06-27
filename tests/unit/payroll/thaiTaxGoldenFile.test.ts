@@ -282,6 +282,38 @@ describe('calculatePND1 — golden-file scenarios', () => {
     expect(result.assessableIncome).toBe(181_000)
     expect(result.taxPayable).toBe(1_550)
   })
+
+  /**
+   * XFAIL: Married + 2 kids scenario — spouse/child allowances not yet implemented.
+   *
+   * This test documents the correct computation once allowances are built.
+   * It is expected to FAIL until the data model captures:
+   *   - Marital status (for 60K spouse allowance)
+   *   - Number of dependents (for 30K/child allowance)
+   *
+   * Income: ฿960,000/year (฿80K/month)
+   * SS: 9,000
+   *
+   * Current (personal-allowance-only):
+   *   employmentDeduction = 100,000 (capped)
+   *   totalDeductions = 100,000 + 9,000 = 109,000
+   *   personalAllowance = 60,000
+   *   assessableIncome = 960,000 - 109,000 - 60,000 = 791,000
+   *   tax = 0 + 7,500 + 20,000 + 37,500 + (41,000 × 20%) = 73,200
+   *
+   * Correct (with spouse + 2 kids):
+   *   employmentDeduction = 100,000 (capped)
+   *   totalDeductions = 100,000 + 9,000 = 109,000
+   *   personalAllowance = 60,000
+   *   spouseAllowance = 60,000
+   *   childAllowance = 2 × 30,000 = 60,000
+   *   totalAllowances = 180,000
+   *   assessableIncome = 960,000 - 109,000 - 180,000 = 671,000
+   *   tax = 0 + 7,500 + 20,000 + 37,500 + (71,000 × 20%) = 53,150
+   *
+   * The gap (~฿20,000/year) is the cost of shipping without the allowance data model.
+   */
+  it.todo('Married + 2 kids: spouse/child allowances reduce tax by ~฿20K/year (NOT YET IMPLEMENTED)')
 })
 
 // ── Social security ──
