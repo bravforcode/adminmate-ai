@@ -274,10 +274,10 @@ CREATE INDEX IF NOT EXISTS idx_esignature_requests_contract_id
 CREATE INDEX IF NOT EXISTS idx_messages_conversation_id
   ON messages(conversation_id);
 
--- message_queue.thread_id (FK to conversation_threads)
-CREATE INDEX IF NOT EXISTS idx_message_queue_thread_id
-  ON message_queue(thread_id)
-  WHERE thread_id IS NOT NULL;
+-- message_queue has no thread_id column.
+-- It has: company_id (indexed in Phase 1), reply_to_message_id (FK to messages).
+-- reply_to_message_id already has a FK constraint; low query volume on this path.
+-- Skipping index for now.
 
 -- message_queue.company_id (FK to companies)
 CREATE INDEX IF NOT EXISTS idx_message_queue_company_id
@@ -300,9 +300,8 @@ CREATE INDEX IF NOT EXISTS idx_notification_prefs_v2_user_id
 -- PLATFORM & INTEGRATIONS
 -- ============================================================
 
--- api_keys.company_id (FK to companies)
-CREATE INDEX IF NOT EXISTS idx_api_keys_company_id
-  ON api_keys(company_id);
+-- api_keys: no company_id column (accessed via client_id → api_clients.company_id).
+-- Already addressed in 20240621000002_performance_indexes.sql.
 
 -- platform_sync_log.company_id (FK to companies)
 CREATE INDEX IF NOT EXISTS idx_platform_sync_log_company_id
