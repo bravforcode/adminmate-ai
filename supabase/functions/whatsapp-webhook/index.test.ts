@@ -39,6 +39,18 @@ vi.mock('../_shared/utils.ts', () => ({
   getCorsHeaders: () => ({ 'Access-Control-Allow-Origin': 'http://localhost:5173' }),
   getJsonHeaders: () => ({ 'Access-Control-Allow-Origin': 'http://localhost:5173', 'Content-Type': 'application/json' }),
   logRequest: (...args: any[]) => mockLogRequest(...args),
+  // Constant-time string comparison (matches the real implementation in _shared/utils.ts)
+  timingSafeEqual: (a: string, b: string): boolean => {
+    if (a.length !== b.length) return false
+    const encoder = new TextEncoder()
+    const bufA = encoder.encode(a)
+    const bufB = encoder.encode(b)
+    let result = 0
+    for (let i = 0; i < bufA.length; i++) {
+      result |= bufA[i] ^ bufB[i]
+    }
+    return result === 0
+  },
 }))
 
 vi.mock('../_shared/messageHandler.ts', () => ({
