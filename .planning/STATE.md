@@ -21,6 +21,8 @@
 - `6d32b08` - feat(3-5): update hooks and pages for cursor-based pagination
 - `80c2595` - feat(3-6): add ESLint custom rule to flag .select('*') usage
 - `e125f4c` - fix(phase3): resolve TypeScript errors in DocumentsPage, CandidatesPage, useSessionRestore, employeeService
+- `bd050c6` - perf: replace select('*') with explicit columns on PII/high-traffic tables
+- `749b929` - perf: replace select('*') on PDPA-sensitive and medium-traffic tables
 
 ### Key Architecture Notes
 - Auth session uses httpOnly cookies (`sb-auth-refresh`) via edge functions
