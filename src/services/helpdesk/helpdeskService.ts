@@ -151,7 +151,7 @@ export const helpdeskService = {
         .select('role:roles(name)')
         .eq('user_id', userId)
         .eq('company_id', companyId)
-      const names = (roles as any[])?.map(r => r.role?.name) ?? []
+      const names = (roles as unknown as { role?: { name: string }[] }[])?.map(r => r.role?.[0]?.name ?? '') ?? []
       const isHr = names.some(n => ['owner', 'admin', 'hr_manager', 'hr_staff'].includes(n))
       if (!isHr) throw new Error('Access denied: not your case')
     }
@@ -195,7 +195,7 @@ export const helpdeskService = {
         .select('role:roles(name)')
         .eq('user_id', authorId)
         .eq('company_id', companyId)
-      const names = (roles as any[])?.map(r => r.role?.name) ?? []
+      const names = (roles as unknown as { role?: { name: string }[] }[])?.map(r => r.role?.[0]?.name ?? '') ?? []
       const isHr = names.some(n => ['owner', 'admin', 'hr_manager', 'hr_staff'].includes(n))
       if (!isHr) throw new Error('Only HR can post internal comments')
     }
@@ -299,7 +299,7 @@ export const helpdeskService = {
       .select('role:roles(name)')
       .eq('user_id', userId)
       .eq('company_id', companyId)
-    const names = (roles as any[])?.map(r => r.role?.name) ?? []
+    const names = (roles as unknown as { role?: { name: string }[] }[])?.map(r => r.role?.[0]?.name ?? '') ?? []
     return names.some(n => ['owner', 'admin', 'hr_manager', 'hr_staff'].includes(n))
   },
 }

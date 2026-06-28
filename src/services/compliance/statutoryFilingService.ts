@@ -340,9 +340,10 @@ export async function getFilings(
   // Filter by report_key if specified (post-query since it's nested)
   if (filters?.report_key) {
     results = results.filter(
-      (r: any) => r.statutory_filing_periods?.statutory_report_definitions?.report_key === filters.report_key
+      (r: StatutoryFiling & { statutory_filing_periods?: StatutoryFilingPeriod & { statutory_report_definitions?: StatutoryReportDefinition } }) =>
+        r.statutory_filing_periods?.statutory_report_definitions?.report_key === filters.report_key
     )
   }
 
-  return results as any
+  return results as unknown as (StatutoryFiling & { period?: StatutoryFilingPeriod; report_def?: StatutoryReportDefinition })[]
 }

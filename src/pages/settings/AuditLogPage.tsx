@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next'
 import { useAuthStore } from '../../stores/authStore'
 import { auditLogService, type AuditLogEntry, type AuditLogFilters } from '../../services/auditLogService'
 import { supabase } from '../../lib/supabase'
+import { logger } from '../../lib/logger'
 import {
   ScrollText,
   Download,
@@ -69,7 +70,7 @@ export function AuditLogPage() {
       setHasMore(result.hasMore)
       if (resetStack) setCursorStack([])
     } catch (err) {
-      console.error('Failed to fetch audit logs:', err)
+      logger.error('Failed to fetch audit logs:', { error: err instanceof Error ? err.message : String(err) })
     } finally {
       setLoading(false)
     }
@@ -81,7 +82,7 @@ export function AuditLogPage() {
       const s = await auditLogService.getAuditLogStats(company.id)
       setStats(s)
     } catch (err) {
-      console.error('Failed to fetch audit log stats:', err)
+      logger.error('Failed to fetch audit log stats:', { error: err instanceof Error ? err.message : String(err) })
     }
   }, [company?.id])
 

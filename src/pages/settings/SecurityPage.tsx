@@ -2,6 +2,7 @@ import { useState, useEffect, useCallback } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useAuthStore } from '../../stores/authStore'
 import { supabase } from '../../lib/supabase'
+import { logger } from '../../lib/logger'
 import toast from 'react-hot-toast'
 import {
   Shield,
@@ -55,7 +56,7 @@ export function SecurityPage() {
         .maybeSingle()
 
       if (error && error.code !== 'PGRST116') {
-        console.error('Failed to fetch MFA status:', error)
+        logger.error('Failed to fetch MFA status:', { error: error.message })
       }
 
       setMfaStatus({
@@ -169,7 +170,7 @@ export function SecurityPage() {
         .eq('user_id', profile!.id)
         .eq('factor_id', mfaStatus.factorId)
 
-      if (updateError) console.error('Update enrollment error:', updateError)
+      if (updateError) logger.error('Update enrollment error:', { error: updateError.message })
 
       // Audit log
       try {
