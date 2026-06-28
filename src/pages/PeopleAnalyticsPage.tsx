@@ -18,6 +18,35 @@ import {
   Select, SelectTrigger, SelectValue, SelectContent, SelectItem,
 } from '../components/ui/select'
 
+interface Employee {
+  id: string
+  department: string | null
+  hire_date: string | null
+  termination_date: string | null
+  status: string | null
+  gender: string | null
+  date_of_birth: string | null
+  salary: number | null
+  contract_type: string | null
+}
+
+interface Application {
+  id: string
+  status: string | null
+  source: string | null
+  created_at: string
+  updated_at: string
+  company_id: string
+}
+
+interface LeaveRecord {
+  id: string
+  leave_type: string | null
+  start_date: string
+  end_date: string
+  status: string | null
+}
+
 const BAR_COLORS = ['bg-primary', 'bg-tertiary', 'bg-secondary', 'bg-outline', 'bg-surface-dim', 'bg-error', 'bg-tertiary-fixed']
 const GENDER_COLORS: Record<string, string> = { Male: 'bg-primary', Female: 'bg-tertiary', Other: 'bg-secondary', Unspecified: 'bg-outline' }
 
@@ -176,9 +205,10 @@ export function PeopleAnalyticsPage() {
 
   const metrics = useMemo(() => {
     if (!employees) return null
-    const active = employees.filter((e: any) => e.status !== 'terminated')
-    const terminated = employees.filter((e: any) => e.status === 'terminated')
-    const newHires = employees.filter((e: any) => {
+    const active = employees.filter((e: Employee) => e.status !== 'terminated')
+    const terminated = employees.filter((e: Employee) => e.status === 'terminated')
+    const newHires = employees.filter((e: Employee) => {
+      if (!e.hire_date) return false
       const hd = new Date(e.hire_date)
       return hd >= new Date(dateStart) && hd <= new Date(dateEnd)
     })
@@ -188,7 +218,7 @@ export function PeopleAnalyticsPage() {
     const genderMap: Record<string, number> = {}
     const deptMap: Record<string, number> = {}
     const ageBuckets: Record<string, number> = { '18-25': 0, '26-35': 0, '36-45': 0, '46-55': 0, '56+': 0 }
-    active.forEach((e: any) => {
+    active.forEach((e: Employee) => {
       const g = e.gender || 'Unspecified'
       genderMap[g] = (genderMap[g] || 0) + 1
       const d = e.department || 'Unassigned'
@@ -205,7 +235,7 @@ export function PeopleAnalyticsPage() {
 
     // Turnover by department
     const deptTermMap: Record<string, { total: number; terminated: number }> = {}
-    employees.forEach((e: any) => {
+    employees.forEach((e: Employee) => {
       const d = e.department || 'Unassigned'
       if (!deptTermMap[d]) deptTermMap[d] = { total: 0, terminated: 0 }
       deptTermMap[d].total++
@@ -213,7 +243,7 @@ export function PeopleAnalyticsPage() {
     })
 
     // Compensation
-    const salaries = active.filter((e: any) => e.salary > 0).map((e: any) => e.salary).sort((a: number, b: number) => a - b)
+    const salaries = active.filter((e: Employee) => (e.salary ?? 0) > 0).map((e: Employee) => e.salary as number).sort((a: number, b: number) => a - b)
     const medianSalary = salaries.length > 0 ? salaries[Math.floor(salaries.length / 2)] : 0
     const avgSalary = salaries.length > 0 ? Math.round(salaries.reduce((a: number, b: number) => a + b, 0) / salaries.length) : 0
     const salaryBands: Record<string, number> = { '<30k': 0, '30-50k': 0, '50-75k': 0, '75-100k': 0, '100k+': 0 }
@@ -226,21 +256,21 @@ export function PeopleAnalyticsPage() {
     })
 
     // Hiring pipeline
-    const hired = applications?.filter((a: any) => a.status === 'hired') || []
-    const rejected = applications?.filter((a: any) => a.status === 'rejected') || []
+    const hired = applications?.filter((a: Application) => a.status === 'hired') || []
+    const rejected = applications?.filter((a: Application) => a.status === 'rejected') || []
     const avgDaysToHire = hired.length > 0
-      ? Math.round(hired.reduce((sum: number, a: any) => sum + (new Date(a.updated_at).getTime() - new Date(a.created_at).getTime()) / 86400000, 0) / hired.length)
+      ? Math.round(hired.reduce((sum: number, a: Application) => sum + (new Date(a.updated_at).getTime() - new Date(a.created_at).getTime()) / 86400000, 0) / hired.length)
       : 0
     const acceptanceRate = applications?.length ? ((hired.length / applications.length) * 100).toFixed(1) : '0.0'
     const sourceMap: Record<string, number> = {}
-    applications?.forEach((a: any) => {
+    applications?.forEach((a: Application) => {
       const s = a.source || 'Other'
       sourceMap[s] = (sourceMap[s] || 0) + 1
     })
 
     // Absence
-    const approvedLeaves = leaveRecords?.filter((l: any) => l.status === 'approved') || []
-    const sickLeaves = approvedLeaves.filter((l: any) => l.leave_type === 'sick')
+    const approvedLeaves = leaveRecords?.filter((l: LeaveRecord) => l.status === 'approved') || []
+    const sickLeaves = approvedLeaves.filter((l: LeaveRecord) => l.leave_type === 'sick')
     const absenceRate = active.length > 0 ? ((approvedLeaves.length / (active.length * 260)) * 100).toFixed(1) : '0.0'
 
     return {
