@@ -126,7 +126,7 @@ export const attendanceService = {
   async checkOut(recordId: string): Promise<AttendanceRecord> {
     const { data: record, error: fetchError } = await supabase
       .from('attendance_records')
-      .select('*')
+      .select('id, company_id, check_out')
       .eq('id', recordId)
       .single()
 
@@ -191,7 +191,7 @@ export const attendanceService = {
     // Fetch original record
     const { data: original, error: origErr } = await supabase
       .from('attendance_records')
-      .select('*')
+      .select('id, company_id, check_in, check_out')
       .eq('id', input.attendance_record_id)
       .single()
 
@@ -235,7 +235,7 @@ export const attendanceService = {
   ): Promise<AttendanceCorrection> {
     const { data: correction, error: fetchErr } = await supabase
       .from('attendance_corrections')
-      .select('*')
+      .select('id, company_id, attendance_record_id, status, corrected_check_in, corrected_check_out')
       .eq('id', id)
       .single()
 

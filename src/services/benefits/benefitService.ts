@@ -104,7 +104,7 @@ export const benefitService = {
   async getBenefitPlans(companyId: string): Promise<BenefitPlan[]> {
     const { data, error } = await supabase
       .from('benefit_plans')
-      .select('*')
+      .select('id, company_id, name, plan_type, description, provider, monthly_cost, employee_contribution, is_active, created_at, updated_at')
       .eq('company_id', companyId)
       .eq('is_active', true)
       .order('name', { ascending: true })
@@ -177,7 +177,7 @@ export const benefitService = {
   ): Promise<BenefitEnrollment[]> {
     let query = supabase
       .from('benefit_enrollments')
-      .select('*')
+      .select('id, company_id, plan_id, employee_id, status, enrolled_at, coverage_start, coverage_end, approved_by, approved_at, created_at, updated_at')
       .eq('company_id', companyId)
       .order('created_at', { ascending: false })
 
@@ -261,7 +261,7 @@ export const benefitService = {
     // Fetch eligibility rules for this plan
     const { data: rules } = await supabase
       .from('benefit_eligibility_rules')
-      .select('*')
+      .select('id, employment_type, min_service_months, department_ids')
       .eq('plan_id', planId)
       .eq('company_id', companyId)
 
@@ -303,7 +303,7 @@ export const benefitService = {
   async getOpenEnrollmentPeriods(companyId: string): Promise<BenefitOpenEnrollmentPeriod[]> {
     const { data, error } = await supabase
       .from('benefit_open_enrollment_periods')
-      .select('*')
+      .select('id, company_id, name, start_date, end_date, status, created_at, updated_at')
       .eq('company_id', companyId)
       .order('start_date', { ascending: false })
     if (error) throw new Error(`Failed to fetch open enrollment periods: ${error.message}`)

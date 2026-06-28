@@ -83,7 +83,7 @@ export const leaveService = {
   async getLeaveTypes(companyId: string): Promise<LeaveType[]> {
     const { data, error } = await supabase
       .from('leave_types')
-      .select('*')
+      .select('id, company_id, name, name_th, code, description, is_paid, max_days_per_year, carry_over_enabled, requires_approval, is_active, created_at, updated_at')
       .eq('company_id', companyId)
       .eq('is_active', true)
       .order('name')
@@ -105,7 +105,7 @@ export const leaveService = {
     // Check available balance (used + pending <= total)
     const { data: balance, error: balErr } = await supabase
       .from('leave_balances')
-      .select('*')
+      .select('id, total_days, used_days, pending_days')
       .eq('company_id', companyId)
       .eq('employee_id', input.employee_id)
       .eq('leave_type_id', input.leave_type_id)
@@ -187,7 +187,7 @@ export const leaveService = {
   ): Promise<LeaveRequest> {
     const { data: request, error: fetchErr } = await supabase
       .from('leave_requests')
-      .select('*')
+      .select('id, company_id, employee_id, leave_type_id, start_date, total_days, status')
       .eq('id', id)
       .single()
 
@@ -211,7 +211,7 @@ export const leaveService = {
     // Move from pending_days to used_days
     const { data: balance } = await supabase
       .from('leave_balances')
-      .select('*')
+      .select('id, pending_days, used_days')
       .eq('company_id', request.company_id)
       .eq('employee_id', request.employee_id)
       .eq('leave_type_id', request.leave_type_id)
@@ -252,7 +252,7 @@ export const leaveService = {
 
     const { data: request, error: fetchErr } = await supabase
       .from('leave_requests')
-      .select('*')
+      .select('id, company_id, employee_id, leave_type_id, start_date, total_days, status')
       .eq('id', id)
       .single()
 
@@ -276,7 +276,7 @@ export const leaveService = {
     // Return pending_days
     const { data: balance } = await supabase
       .from('leave_balances')
-      .select('*')
+      .select('id, pending_days')
       .eq('company_id', request.company_id)
       .eq('employee_id', request.employee_id)
       .eq('leave_type_id', request.leave_type_id)

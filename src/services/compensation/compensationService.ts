@@ -229,7 +229,7 @@ export const compensationService = {
 
     const { data, error } = await supabase
       .from('compensation_reviews')
-      .select('*')
+      .select('id, company_id, cycle_id, employee_id, current_salary, proposed_salary, merit_increase_pct, reason, status, reviewed_by, reviewed_at, created_at, updated_at')
       .eq('company_id', companyId)
       .eq('cycle_id', cycleId)
       .order('created_at', { ascending: false })
@@ -284,7 +284,7 @@ export const compensationService = {
 
     const { data, error } = await supabase
       .from('headcount_plans')
-      .select('*')
+      .select('id, company_id, department_id, plan_year, planned_headcount, current_headcount, budget, notes, created_at, updated_at')
       .eq('company_id', companyId)
       .eq('plan_year', year)
       .order('created_at', { ascending: false })

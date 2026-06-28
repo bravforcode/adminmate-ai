@@ -138,7 +138,7 @@ export const helpdeskService = {
     }
     const { data, error } = await supabase
       .from('hr_helpdesk_cases')
-      .select('*')
+      .select('id, company_id, requester_id, assignee_id, category_id, subject, description, priority, status, sla_due_at, resolved_at, created_at, updated_at')
       .eq('id', caseId)
       .eq('company_id', companyId)
       .single()
@@ -164,7 +164,7 @@ export const helpdeskService = {
     }
     let query = supabase
       .from('hr_helpdesk_cases')
-      .select('*')
+      .select('id, company_id, requester_id, assignee_id, category_id, subject, priority, status, sla_due_at, resolved_at, created_at, updated_at')
       .eq('company_id', companyId)
       .order('created_at', { ascending: false })
 
@@ -279,7 +279,7 @@ export const helpdeskService = {
 
     let query = supabase
       .from('hr_case_comments')
-      .select('*')
+      .select('id, company_id, case_id, author_id, content, is_internal, created_at')
       .eq('case_id', caseId)
       .eq('company_id', companyId)
       .order('created_at', { ascending: true })

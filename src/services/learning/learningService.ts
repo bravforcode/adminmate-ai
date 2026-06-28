@@ -126,7 +126,7 @@ export const learningService = {
   async getCourses(companyId: string): Promise<LearningCourse[]> {
     const { data, error } = await supabase
       .from('learning_courses')
-      .select('*')
+      .select('id, company_id, title, description, course_type, duration_hours, is_mandatory, is_active, created_at, updated_at')
       .eq('company_id', companyId)
       .eq('is_active', true)
       .order('title')
@@ -154,7 +154,7 @@ export const learningService = {
     // Fetch enrollment to validate ownership
     const { data: enrollment, error: fetchErr } = await supabase
       .from('learning_enrollments')
-      .select('*')
+      .select('id, company_id, course_id, progress_pct')
       .eq('id', enrollmentId)
       .eq('company_id', companyId)
       .single()
@@ -193,7 +193,7 @@ export const learningService = {
   async getEnrollments(employeeId: string): Promise<LearningEnrollment[]> {
     const { data, error } = await supabase
       .from('learning_enrollments')
-      .select('*')
+      .select('id, company_id, course_id, employee_id, status, progress_pct, enrolled_at, completed_at, created_at, updated_at')
       .eq('employee_id', employeeId)
       .order('enrolled_at', { ascending: false })
     if (error) throw new Error(`Failed to fetch enrollments: ${error.message}`)
@@ -220,7 +220,7 @@ export const learningService = {
   async getCertifications(employeeId: string): Promise<Certification[]> {
     const { data, error } = await supabase
       .from('certifications')
-      .select('*')
+      .select('id, company_id, employee_id, cert_name, issuing_org, issue_date, expiry_date, document_id, status, created_at, updated_at')
       .eq('employee_id', employeeId)
       .order('expiry_date', { ascending: true })
     if (error) throw new Error(`Failed to fetch certifications: ${error.message}`)
@@ -234,7 +234,7 @@ export const learningService = {
 
     const { data, error } = await supabase
       .from('certifications')
-      .select('*')
+      .select('id, company_id, employee_id, cert_name, issuing_org, issue_date, expiry_date, status, created_at, updated_at')
       .eq('company_id', companyId)
       .eq('status', 'active')
       .gte('expiry_date', today)
@@ -247,7 +247,7 @@ export const learningService = {
   async getSkillProfile(employeeId: string): Promise<SkillProfile | null> {
     const { data, error } = await supabase
       .from('skill_profiles')
-      .select('*')
+      .select('id, company_id, employee_id, skills, last_assessed_at, created_at, updated_at')
       .eq('employee_id', employeeId)
       .single()
     if (error && error.code !== 'PGRST116') throw new Error(`Failed to fetch skill profile: ${error.message}`)
