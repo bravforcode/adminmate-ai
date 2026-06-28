@@ -1,5 +1,22 @@
 import { supabase } from '../lib/supabase'
 
+// Simple in-memory rate limiter — keyed by companyId, 30 searches/minute
+const searchRateLimits = new Map<string, { count: number; resetAt: number }>()
+const SEARCH_RATE_LIMIT = 30
+const SEARCH_RATE_WINDOW = 60_000
+
+function checkSearchRateLimit(key: string): boolean {
+  const now = Date.now()
+  const entry = searchRateLimits.get(key)
+  if (!entry || now > entry.resetAt) {
+    searchRateLimits.set(key, { count: 1, resetAt: now + SEARCH_RATE_WINDOW })
+    return true
+  }
+  if (entry.count >= SEARCH_RATE_LIMIT) return false
+  entry.count++
+  return true
+}
+
 export interface SearchResult {
   id: string
   title: string
@@ -21,7 +38,10 @@ export const searchService = {
     const sanitizedQuery = query.replace(/[%_]/g, '\\$&')
     // Minimum query length (3 chars) to reduce attack surface
     if (!query || query.trim().length < 3) return { candidates: [], jobs: [], applications: [], interviews: [] }
-    // TODO: Add server-side rate limiting to prevent brute-force enumeration attacks
+    if (!checkSearchRateLimit(companyId)) {
+      throw new Error('Search rate limit exceeded. Try again later.')
+    }
+
     const q = `%${sanitizedQuery}%`
 
     const [candidatesRes, jobsRes, applicationsRes, interviewsRes] = await Promise.all([
