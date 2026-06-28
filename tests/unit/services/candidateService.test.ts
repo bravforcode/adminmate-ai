@@ -12,13 +12,15 @@ describe('candidateService', () => {
     mockSupabase.from.mockReturnValue({
       select: vi.fn().mockReturnValue({
         eq: vi.fn().mockReturnValue({
-          order: vi.fn().mockResolvedValue({ data: [{ id: '1', full_name: 'Test', company_id: 'c1' }], error: null }),
+          order: vi.fn().mockReturnValue({
+            limit: vi.fn().mockResolvedValue({ data: [{ id: '1', full_name: 'Test', company_id: 'c1' }], error: null }),
+          }),
         }),
       }),
     })
     const result = await candidateService.getAll('c1')
     expect(mockSupabase.from).toHaveBeenCalledWith('candidates')
-    expect(result).toHaveLength(1)
+    expect(result.data).toHaveLength(1)
   })
 
   it('create: inserts candidate', async () => {

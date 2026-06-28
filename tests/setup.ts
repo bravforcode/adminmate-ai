@@ -6,8 +6,8 @@ vi.stubEnv('VITE_DEMO_MODE', 'false')
 
 vi.mock('@supabase/supabase-js', () => ({
   createClient: vi.fn(() => ({
-    from: vi.fn(() => ({ select: vi.fn(), insert: vi.fn(), update: vi.fn(), delete: vi.fn(), eq: vi.fn() })),
-    auth: { getUser: vi.fn(), signInWithPassword: vi.fn(), signUp: vi.fn(), signOut: vi.fn() },
+    from: vi.fn(() => ({ select: vi.fn(), insert: vi.fn(), update: vi.fn(), delete: vi.fn(), eq: vi.fn(), limit: vi.fn().mockReturnThis(), range: vi.fn().mockReturnThis() })),
+    auth: { getUser: vi.fn(), signInWithPassword: vi.fn(), signUp: vi.fn(), signOut: vi.fn(), getSession: vi.fn().mockResolvedValue({ data: { session: null }, error: null }) },
     storage: { from: vi.fn(() => ({ upload: vi.fn(), getPublicUrl: vi.fn() })) },
     functions: { invoke: vi.fn() },
     channel: vi.fn(() => ({ on: vi.fn(), subscribe: vi.fn(() => ({ unsubscribe: vi.fn() })) })),

@@ -12,15 +12,17 @@ describe('applicationService', () => {
     mockSupabase.from.mockReturnValue({
       select: vi.fn().mockReturnValue({
         eq: vi.fn().mockReturnValue({
-          order: vi.fn().mockResolvedValue({
-            data: [{ id: '1', job_id: 'j1', candidates: { full_name: 'Test' } }],
-            error: null,
+          order: vi.fn().mockReturnValue({
+            limit: vi.fn().mockResolvedValue({
+              data: [{ id: '1', job_id: 'j1', candidates: { full_name: 'Test' } }],
+              error: null,
+            }),
           }),
         }),
       }),
     })
     const result = await applicationService.getByJob('j1')
-    expect(result).toHaveLength(1)
+    expect(result.data).toHaveLength(1)
     expect(mockSupabase.from).toHaveBeenCalledWith('applications')
   })
 

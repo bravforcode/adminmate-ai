@@ -147,8 +147,9 @@ describe('subscriptionService', () => {
       const sub = { id: 'sub-1', company_id: 'company-1', plan_id: 'plan-1', status: 'trialing' }
 
       mockFrom
-        .mockReturnValueOnce(chainResult(plan))  // plans query
-        .mockReturnValueOnce(chainResult(sub))    // subscriptions insert
+        .mockReturnValueOnce(chainResult(null))   // getSubscription check (no existing)
+        .mockReturnValueOnce(chainResult(plan))    // plans query
+        .mockReturnValueOnce(chainResult(sub))     // subscriptions insert
 
       const result = await subscriptionService.createSubscription('company-1', 'plan-1')
       expect(result.status).toBe('trialing')
@@ -156,7 +157,9 @@ describe('subscriptionService', () => {
     })
 
     it('throws on plan lookup error', async () => {
-      mockFrom.mockReturnValue(chainResult(null, { message: 'plan not found' }))
+      mockFrom
+        .mockReturnValueOnce(chainResult(null))  // getSubscription check (no existing)
+        .mockReturnValueOnce(chainResult(null, { message: 'plan not found' }))  // plans query
       await expect(subscriptionService.createSubscription('company-1', 'bad-plan')).rejects.toThrow()
     })
   })
@@ -198,6 +201,7 @@ describe('subscriptionService', () => {
       const plan = { trial_days: 14 }
       const sub = { id: 'sub-2', status: 'trialing' }
       mockFrom
+        .mockReturnValueOnce(chainResult(null))  // getSubscription check (no existing)
         .mockReturnValueOnce(chainResult(plan))
         .mockReturnValueOnce(chainResult(sub))
       const result = await subscriptionService.createSubscription('company-1', 'plan-1')
@@ -209,6 +213,7 @@ describe('subscriptionService', () => {
       const plan = { trial_days: 14 }
       const sub = { id: 'sub-3', status: 'trialing' }
       mockFrom
+        .mockReturnValueOnce(chainResult(null))  // getSubscription check (no existing)
         .mockReturnValueOnce(chainResult(plan))
         .mockReturnValueOnce(chainResult(sub))
       // No Stripe SDK import = no crash

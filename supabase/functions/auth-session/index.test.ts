@@ -100,7 +100,7 @@ describe('auth-session Edge Function', () => {
       expect(res.status).toBe(401)
     })
 
-    it('should return 200 with access token on success', async () => {
+    it('should return 200 with user info on success (cookie-only transport)', async () => {
       mockSignInWithPassword = vi.fn().mockResolvedValue({
         data: {
           session: {
@@ -120,7 +120,7 @@ describe('auth-session Edge Function', () => {
       expect(res.status).toBe(200)
       const body = await res.json()
       expect(body.success).toBe(true)
-      expect(body.data.access_token).toBe('access-token-123')
+      expect(body.data.access_token).toBeUndefined()
       expect(body.data.user.id).toBe('user-1')
       expect(res.headers.get('Set-Cookie')).toContain('sb-auth-refresh')
       expect(res.headers.get('Set-Cookie')).toContain('HttpOnly')
@@ -171,7 +171,7 @@ describe('auth-session Edge Function', () => {
       expect(res.status).toBe(401)
     })
 
-    it('should return 200 with new tokens on success', async () => {
+    it('should return 200 with user info on success (cookie-only transport)', async () => {
       mockRefreshSession = vi.fn().mockResolvedValue({
         data: {
           session: {
@@ -190,7 +190,8 @@ describe('auth-session Edge Function', () => {
       const res = await handleRefresh(req)
       expect(res.status).toBe(200)
       const body = await res.json()
-      expect(body.data.access_token).toBe('new-access-token')
+      expect(body.data.access_token).toBeUndefined()
+      expect(body.data.user.id).toBe('user-1')
       expect(res.headers.get('Set-Cookie')).toContain('sb-auth-refresh')
     })
 
@@ -269,7 +270,7 @@ describe('auth-session Edge Function', () => {
       expect(body.data.valid).toBe(false)
     })
 
-    it('should return valid true with access token on success', async () => {
+    it('should return valid true with user info on success (cookie-only transport)', async () => {
       mockRefreshSession = vi.fn().mockResolvedValue({
         data: {
           session: {
@@ -288,7 +289,7 @@ describe('auth-session Edge Function', () => {
       const res = await handleStatus(req)
       const body = await res.json()
       expect(body.data.valid).toBe(true)
-      expect(body.data.access_token).toBe('status-access-token')
+      expect(body.data.access_token).toBeUndefined()
       expect(body.data.user.id).toBe('user-1')
     })
   })

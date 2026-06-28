@@ -74,14 +74,16 @@ describe('documentService', () => {
     mockSupabase.from.mockReturnValue({
       select: vi.fn().mockReturnValue({
         eq: vi.fn().mockReturnValue({
-          order: vi.fn().mockResolvedValue({ data: [mockDoc], error: null }),
+          order: vi.fn().mockReturnValue({
+            limit: vi.fn().mockResolvedValue({ data: [mockDoc], error: null }),
+          }),
         }),
       }),
     })
 
     const result = await documentService.getAll('c1')
-    expect(result).toHaveLength(1)
-    expect(result[0].company_id).toBe('c1')
+    expect(result.data).toHaveLength(1)
+    expect(result.data[0].company_id).toBe('c1')
   })
 
   it('getByType: filters by companyId and docType', async () => {
