@@ -180,6 +180,54 @@ export async function calculateRun(runId: string): Promise<PayrollRun> {
     return run as PayrollRun
   }
 
+  // ── Allowance gap warning: flag employees with dependents/marital data ──
+  // Spouse/child/parent allowances are not yet implemented in tax calculation.
+  // If an employee has this data, their withholding will be based on personal
+  // allowance only — potentially over-withholding by ~฿20K/year for married
+  // employees with children. Surface these for manual review before approval.
+  const employeeIds = [...new Set(items.map(i => i.employee_id).filter(Boolean))]
+  const { data: employeeProfiles } = await supabase
+    .from('user_profiles')
+    .select('id, full_name, company_id')
+    .in('id', employeeIds)
+
+  const employeesNeedingReview: Array<{ employeeId: string; name: string; reason: string }> = []
+
+  // Check employee_tax_profiles for dependents/marital data
+  if (employeeIds.length > 0) {
+    const { data: taxProfiles } = await supabase
+      .from('employee_tax_profiles')
+      .select('employee_id, marital_status, number_of_dependents, spouse_allowance, child_allowance')
+      .in('employee_id', employeeIds)
+
+    if (taxProfiles) {
+      for (const profile of taxProfiles) {
+        const reasons: string[] = []
+        if (profile.marital_status && profile.marital_status !== 'single') {
+          reasons.push(`marital_status=${profile.marital_status}`)
+        }
+        if (profile.number_of_dependents && profile.number_of_dependents > 0) {
+          reasons.push(`${profile.number_of_dependents} dependents`)
+        }
+        if (profile.spouse_allowance && profile.spouse_allowance > 0) {
+          reasons.push(`spouse_allowance=${profile.spouse_allowance}`)
+        }
+        if (profile.child_allowance && profile.child_allowance > 0) {
+          reasons.push(`child_allowance=${profile.child_allowance}`)
+        }
+
+        if (reasons.length > 0) {
+          const emp = employeeProfiles?.find(e => e.id === profile.employee_id)
+          employeesNeedingReview.push({
+            employeeId: profile.employee_id,
+            name: emp?.full_name ?? profile.employee_id,
+            reason: reasons.join(', '),
+          })
+        }
+      }
+    }
+  }
+
   // Fetch TH tax brackets for current year
   const currentYear = new Date().getFullYear()
   const { data: taxBrackets } = await supabase
@@ -252,11 +300,21 @@ export async function calculateRun(runId: string): Promise<PayrollRun> {
       total_gross: totalGross,
       total_deductions: totalDeductions,
       item_count: items.length,
+      // Surface allowance gap warnings in audit trail
+      employees_needing_review: employeesNeedingReview.length > 0 ? employeesNeedingReview : undefined,
     }),
     created_by: user.id,
   })
 
-  return { ...run, status: 'calculated', total_gross: totalGross, total_deductions: totalDeductions, total_net: totalGross - totalDeductions } as PayrollRun
+  return {
+    ...run,
+    status: 'calculated',
+    total_gross: totalGross,
+    total_deductions: totalDeductions,
+    total_net: totalGross - totalDeductions,
+    // Surface warnings so callers (UI, approval flow) can act on them
+    ...(employeesNeedingReview.length > 0 && { employees_needing_review: employeesNeedingReview }),
+  } as PayrollRun
 }
 
 /**
