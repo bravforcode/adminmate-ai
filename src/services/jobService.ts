@@ -7,7 +7,7 @@ export const jobService = {
     return data
   },
   getById: async (id: string) => {
-    const { data, error } = await supabase.from('jobs').select('*').eq('id', id).single()
+    const { data, error } = await supabase.from('jobs').select('id, company_id, created_by, title, title_th, department, location, employment_type, experience_level, salary_min, salary_max, salary_currency, description, description_th, responsibilities, requirements, nice_to_have, skills_required, status, application_deadline, headcount, filled_count, ai_generated, created_at, updated_at').eq('id', id).single()
     if (error) throw error
     return data
   },

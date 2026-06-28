@@ -43,7 +43,7 @@ export const documentService = {
     const limit = options?.limit ?? 50
     let query = supabase
       .from('documents')
-      .select('*, candidates(full_name), user_profiles!employee_id(full_name)')
+      .select('id, company_id, candidate_id, employee_id, document_type, name, status, due_date, region, reminder_enabled, created_at, updated_at, candidates(full_name), user_profiles!employee_id(full_name)')
       .eq('company_id', companyId)
       .order('created_at', { ascending: false })
       .limit(limit + 1)

@@ -163,7 +163,7 @@ export async function createEmployeeFromOnboarding(
 export async function getEmployee(id: string): Promise<Employee | null> {
   const { data, error } = await supabase
     .from('employees')
-    .select('*, employee_profiles(*), user_profiles!employees_user_profile_id_fkey(full_name, email, avatar_url)')
+    .select('id, company_id, user_profile_id, candidate_id, application_id, legal_entity_id, business_unit_id, cost_center_id, location_id, department_id, team_id, manager_employee_id, employee_number, employment_status, employment_type, hire_date, start_date, end_date, probation_end_date, job_title, position_level, work_email, personal_email, phone, emergency_contact_name, emergency_contact_phone, preferred_language, country_code, timezone, created_by, created_at, updated_at, employee_profiles(*), user_profiles!employees_user_profile_id_fkey(full_name, email, avatar_url)')
     .eq('id', id)
     .single()
   if (error) throw error
@@ -176,7 +176,7 @@ export async function listEmployees(
 ): Promise<Employee[]> {
   let query = supabase
     .from('employees')
-    .select('*, employee_profiles(display_name, first_name, last_name)')
+    .select('id, company_id, user_profile_id, employee_number, employment_status, employment_type, hire_date, start_date, job_title, work_email, personal_email, phone, created_at, updated_at, employee_profiles(display_name, first_name, last_name)')
     .eq('company_id', companyId)
     .order('employee_number')
 

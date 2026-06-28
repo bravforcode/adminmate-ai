@@ -151,7 +151,7 @@ export async function calculateRun(runId: string): Promise<PayrollRun> {
   // Fetch run
   const { data: run } = await supabase
     .from('payroll_runs')
-    .select('*')
+    .select('id, company_id, cycle_id, status, total_gross, total_deductions, total_net, approved_by, approved_at, created_at, updated_at')
     .eq('id', runId)
     .single()
 
@@ -169,7 +169,7 @@ export async function calculateRun(runId: string): Promise<PayrollRun> {
   // Fetch run items
   const { data: items } = await supabase
     .from('payroll_run_items')
-    .select('*')
+    .select('id, company_id, run_id, employee_id, base_salary, overtime_pay, bonus, other_earnings, social_security_employee, social_security_employer, "Withholding_Tax", other_deductions, net_pay, status, created_at, updated_at')
     .eq('run_id', runId)
 
   if (!items || items.length === 0) {
@@ -378,7 +378,7 @@ export async function approveRun(runId: string, approvedBy: string): Promise<Pay
 
   const { data: run } = await supabase
     .from('payroll_runs')
-    .select('*')
+    .select('id, company_id, cycle_id, status, total_gross, total_deductions, total_net, approved_by, approved_at, created_at, updated_at')
     .eq('id', runId)
     .single()
 
@@ -428,7 +428,7 @@ export async function getRun(runId: string): Promise<{ run: PayrollRun; items: P
 
   const { data: run, error: runErr } = await supabase
     .from('payroll_runs')
-    .select('*')
+    .select('id, company_id, cycle_id, status, total_gross, total_deductions, total_net, approved_by, approved_at, created_at, updated_at')
     .eq('id', runId)
     .single()
 
@@ -436,7 +436,7 @@ export async function getRun(runId: string): Promise<{ run: PayrollRun; items: P
 
   const { data: items } = await supabase
     .from('payroll_run_items')
-    .select('*')
+    .select('id, company_id, run_id, employee_id, base_salary, overtime_pay, bonus, other_earnings, social_security_employee, social_security_employer, "Withholding_Tax", other_deductions, net_pay, status, created_at, updated_at')
     .eq('run_id', runId)
     .order('created_at', { ascending: true })
 

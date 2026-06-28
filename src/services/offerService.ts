@@ -57,7 +57,7 @@ export const offerService = {
     return { data: items as (Offer & { created_at?: string; company_id?: string; id: string })[], cursor: nextCursor, hasMore }
   },
   getById: async (id: string, companyId: string) => {
-    const { data, error } = await supabase.from('offers').select('*, candidates(*), jobs(*)').eq('id', id).eq('company_id', companyId).single()
+    const { data, error } = await supabase.from('offers').select('id, company_id, application_id, candidate_id, job_id, position_title, salary_offered, salary_currency, employment_type, start_date, work_hours, benefits, special_conditions, status, sent_at, viewed_at, responded_at, expires_at, candidate_response, created_at, updated_at, candidates(id, full_name, email, phone), jobs(id, title, department, location)').eq('id', id).eq('company_id', companyId).single()
     if (error) throw error
     return data
   },

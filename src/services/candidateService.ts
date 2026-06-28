@@ -55,7 +55,7 @@ export const candidateService = {
     const limit = options?.limit ?? 50
     let query = supabase
       .from('candidates')
-      .select('*, cv_documents(*), applications(status)')
+      .select('id, full_name, email, phone, location, current_position, avatar_url, experience_years, source, created_at, updated_at, cv_documents(id, file_url, is_current), applications(id, status)')
       .eq('company_id', companyId)
       .order('created_at', { ascending: false })
       .limit(limit + 1)
@@ -80,7 +80,7 @@ export const candidateService = {
     return (data as CandidateWithApplications[]) ?? []
   },
   getById: async (id: string, companyId: string) => {
-    const { data, error } = await supabase.from('candidates').select('*, cv_documents(*), applications(*, jobs(title))').eq('id', id).eq('company_id', companyId).single()
+    const { data, error } = await supabase.from('candidates').select('id, company_id, full_name, email, phone, location, current_position, avatar_url, experience_years, source, linkedin_url, portfolio_url, preferred_language, notes, created_at, updated_at, cv_documents(*), applications(id, status, job_id, created_at, jobs(title))').eq('id', id).eq('company_id', companyId).single()
     if (error) throw error
     return data
   },
