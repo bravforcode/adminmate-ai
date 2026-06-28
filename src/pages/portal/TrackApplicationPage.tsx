@@ -50,8 +50,9 @@ export default function TrackApplicationPage() {
         const json = await res.json()
         if (!json.success) throw new Error(json.error)
         setApplication(json.application)
-      } catch (err: any) {
-        if (err.name !== 'AbortError') setError(err.message || 'Failed to track application')
+      } catch (err: unknown) {
+        const msg = err instanceof Error ? err.message : String(err)
+        if (!(err instanceof DOMException && err.name === 'AbortError')) setError(msg || 'Failed to track application')
       } finally {
         setLoading(false)
       }

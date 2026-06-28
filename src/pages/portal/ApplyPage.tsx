@@ -76,8 +76,9 @@ export default function ApplyPage() {
         const json = await res.json()
         if (!json.success) throw new Error(json.error)
         setJob(json.job)
-      } catch (err: any) {
-        if (err.name !== 'AbortError') setError(err.message || 'Failed to load job')
+      } catch (err: unknown) {
+        const msg = err instanceof Error ? err.message : String(err)
+        if (!(err instanceof DOMException && err.name === 'AbortError')) setError(msg || 'Failed to load job')
       } finally {
         setLoading(false)
       }
@@ -135,8 +136,9 @@ export default function ApplyPage() {
         setTrackingToken(json.tracking_token)
         setSubmitted(true)
       }
-    } catch (err: any) {
-      setFormErrors({ submit: err.message || 'Submission failed. Please try again.' })
+    } catch (err: unknown) {
+      const msg = err instanceof Error ? err.message : String(err)
+      setFormErrors({ submit: msg || 'Submission failed. Please try again.' })
     } finally {
       setSubmitting(false)
     }
