@@ -91,10 +91,10 @@ CREATE INDEX IF NOT EXISTS idx_onboarding_template_items_template_id
 -- OFFBOARDING
 -- ============================================================
 
--- offboarding_case_items.case_id (FK to offboarding_cases)
+-- offboarding_case_items.offboarding_case_id (FK to offboarding_cases)
 -- Per-case item drill-down
 CREATE INDEX IF NOT EXISTS idx_offboarding_case_items_case_id
-  ON offboarding_case_items(case_id);
+  ON offboarding_case_items(offboarding_case_id);
 
 -- offboarding_documents.case_id (FK to offboarding_cases)
 CREATE INDEX IF NOT EXISTS idx_offboarding_documents_case_id
