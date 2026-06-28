@@ -96,17 +96,17 @@ CREATE INDEX IF NOT EXISTS idx_onboarding_template_items_template_id
 CREATE INDEX IF NOT EXISTS idx_offboarding_case_items_case_id
   ON offboarding_case_items(offboarding_case_id);
 
--- offboarding_documents.case_id (FK to offboarding_cases)
+-- offboarding_documents.offboarding_case_id (FK to offboarding_cases)
 CREATE INDEX IF NOT EXISTS idx_offboarding_documents_case_id
-  ON offboarding_documents(case_id);
+  ON offboarding_documents(offboarding_case_id);
 
--- offboarding_access_revocations.case_id (FK to offboarding_cases)
+-- offboarding_access_revocations.offboarding_case_id (FK to offboarding_cases)
 CREATE INDEX IF NOT EXISTS idx_offboarding_access_revocations_case_id
-  ON offboarding_access_revocations(case_id);
+  ON offboarding_access_revocations(offboarding_case_id);
 
--- offboarding_asset_returns.case_id (FK to offboarding_cases)
+-- offboarding_asset_returns.offboarding_case_id (FK to offboarding_cases)
 CREATE INDEX IF NOT EXISTS idx_offboarding_asset_returns_case_id
-  ON offboarding_asset_returns(case_id);
+  ON offboarding_asset_returns(offboarding_case_id);
 
 -- ============================================================
 -- ATTENDANCE & LEAVE: correction approvals, leave approvals
