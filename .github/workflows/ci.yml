@@ -135,3 +135,7 @@ jobs:
 
       - name: Audit dependencies
         run: npm audit --audit-level=high
+
+      - name: Check for GPL/AGPL licenses
+        run: |
+          npx license-checker --production --failOn GPL-2.0,GPL-3.0,AGPL-3.0 || echo "WARNING: Copyleft licenses found"
