@@ -25,12 +25,9 @@ CREATE INDEX IF NOT EXISTS idx_jobs_department_trgm
 CREATE INDEX IF NOT EXISTS idx_jobs_location_trgm
   ON jobs USING gin (location gin_trgm_ops);
 
--- Applications: trigram indexes on searchable fields
-CREATE INDEX IF NOT EXISTS idx_applications_candidate_name_trgm
-  ON applications USING gin (candidate_name gin_trgm_ops);
-CREATE INDEX IF NOT EXISTS idx_applications_candidate_email_trgm
-  ON applications USING gin (candidate_email gin_trgm_ops);
+-- Applications: no text columns suitable for trigram search.
+-- Applications have candidate_id (FK), not candidate_name/email.
+-- Search on applications happens through JOINs to candidates table.
 
--- Interviews: trigram index on interviewer name
-CREATE INDEX IF NOT EXISTS idx_interviews_interviewer_name_trgm
-  ON interviews USING gin (interviewer_name gin_trgm_ops);
+-- Interviews: no interviewer_name column exists.
+-- Interviews have interviewer_id (FK to user_profiles), not a name column.
