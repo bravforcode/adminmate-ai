@@ -85,11 +85,12 @@ CREATE INDEX IF NOT EXISTS idx_platform_sync_log_company_id
 
 -- ============================================================
 -- Phase 2: Additional critical indexes from performance audit
---   api_keys.company_id (listed in worst offenders with 0% coverage)
+-- api_keys accessed via client_id → api_clients.company_id (no direct company_id column)
 -- ============================================================
 
-CREATE INDEX IF NOT EXISTS idx_api_keys_company_id
-  ON api_keys(company_id);
+-- api_keys RLS uses: client_id IN (SELECT id FROM api_clients WHERE company_id = safe_user_company_id())
+-- The existing idx_ak_client index on client_id covers this join pattern.
+-- No separate company_id index needed on api_keys.
 
 COMMIT;
 
@@ -111,7 +112,7 @@ DECLARE
     'offboarding_case_items', 'offboarding_documents',
     'offboarding_template_items', 'onboarding_document_requests',
     'onboarding_instance_items', 'onboarding_template_items',
-    'platform_sync_log', 'api_keys'
+    'platform_sync_log'
   ];
   v_table TEXT;
   v_has_index BOOLEAN;
@@ -132,7 +133,7 @@ BEGIN
   END LOOP;
 
   IF v_missing = 0 THEN
-    RAISE NOTICE 'All 24 company_id indexes verified successfully';
+    RAISE NOTICE 'All 23 company_id indexes verified successfully';
   ELSE
     RAISE WARNING '% company_id indexes missing', v_missing;
   END IF;
