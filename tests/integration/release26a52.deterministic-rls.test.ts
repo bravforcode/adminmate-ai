@@ -10,6 +10,12 @@ import { describe, it, expect, beforeAll } from 'vitest'
 
 const SUPABASE_URL = 'http://127.0.0.1:54321'
 const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZS1kZW1vIiwicm9sZSI6ImFub24iLCJleHAiOjE5ODM4MTI5OTZ9.CRXP1A7WOeoJeXxjNni43kdQwgnWNReilDMblYTn_I0'
+const SUPABASE_SERVICE_ROLE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZS1kZW1vIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImV4cCI6MTk4MzgxMjk5Nn0.EGIM96RAZx35lJzdJsyH-qQwv8Hdp7fsn3W0YpN81IU'
+
+const TEST_COMPANIES = [
+  { id: '11111111-1111-1111-1111-111111111111', name: 'Test Company A' },
+  { id: '22222222-2222-2222-2222-222222222222', name: 'Test Company B' },
+]
 
 interface TestUser { email: string; password: string; userId?: string; companyId: string; role: string; token?: string }
 
@@ -44,6 +50,15 @@ async function getToken(email: string, password: string): Promise<string> {
 
 // Deterministic setup: verify profile state before any test assertion
 beforeAll(async () => {
+  // Seed test companies (required for FK constraints on user_profiles.company_id)
+  for (const company of TEST_COMPANIES) {
+    await fetch(`${SUPABASE_URL}/rest/v1/companies`, {
+      method: 'POST',
+      headers: { 'Authorization': `Bearer ${SUPABASE_SERVICE_ROLE_KEY}`, 'apikey': SUPABASE_ANON_KEY, 'Content-Type': 'application/json', 'Prefer': 'resolution=merge-duplicates' },
+      body: JSON.stringify({ id: company.id, name: company.name }),
+    })
+  }
+
   for (const user of USERS) {
     user.token = await getToken(user.email, user.password)
     if (user.token) {
