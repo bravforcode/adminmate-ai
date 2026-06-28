@@ -1,5 +1,6 @@
 import { supabase } from '../../lib/supabase'
 import { hasPermission } from '../permissionService'
+import { logger } from '../../lib/logger'
 
 export interface ExportJob {
   id: string
@@ -154,7 +155,10 @@ export const exportService = {
       .eq('id', jobId)
       .single()
 
-    if (error) return null
+    if (error) {
+      logger.error('Failed to fetch export job', { error: error.message })
+      return null
+    }
     return data as ExportJob
   },
 

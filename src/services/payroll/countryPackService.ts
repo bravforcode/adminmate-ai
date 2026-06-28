@@ -1,4 +1,5 @@
 import { supabase } from '../../lib/supabase'
+import { logger } from '../../lib/logger'
 
 /* ============================================================
    Country Pack Service — Global Payroll Framework
@@ -79,7 +80,11 @@ export async function getActivePack(
     .eq('is_active', true)
     .single()
 
-  if (error || !data) return null
+  if (error) {
+    logger.error('Failed to fetch active country pack', { error: error.message })
+    return null
+  }
+  if (!data) return null
   return data as CountryPack
 }
 
@@ -110,7 +115,11 @@ export async function getRuleVersion(
     .limit(1)
     .single()
 
-  if (error || !data) return null
+  if (error) {
+    logger.error('Failed to fetch rule version', { error: error.message })
+    return null
+  }
+  if (!data) return null
   return data as RuleVersion
 }
 
@@ -174,6 +183,10 @@ export async function getEmployeeTaxProfile(
     .eq('employee_id', employeeId)
     .single()
 
-  if (error || !data) return null
+  if (error) {
+    logger.error('Failed to fetch employee tax profile', { error: error.message })
+    return null
+  }
+  if (!data) return null
   return data as EmployeeTaxProfile
 }
