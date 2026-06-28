@@ -1,17 +1,15 @@
 import { useEffect, useState } from 'react'
 import { Navigate, useLocation } from 'react-router-dom'
 import { useAuthStore } from '../stores/authStore'
+import { getDefaultRoute } from '../lib/navigation'
+
+export { getDefaultRoute }
 
 interface AuthGuardProps {
   children: React.ReactNode
   requiredRoles?: string[]
   requireCompany?: boolean
   callInitSession?: boolean
-}
-
-/** Returns the default landing route for the given role. */
-export function getDefaultRoute(_role?: string | null): string {
-  return '/dashboard'
 }
 
 function useHydrationGuard(): boolean {

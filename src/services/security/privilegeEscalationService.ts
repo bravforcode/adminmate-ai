@@ -1,4 +1,5 @@
 import { supabase } from '../../lib/supabase'
+import { logger } from '../../lib/logger'
 
 export interface PrivilegeChange {
   id: string
@@ -49,7 +50,7 @@ export const privilegeEscalationService = {
       .order('changed_at', { ascending: false })
 
     if (error) {
-      console.error('Failed to fetch privilege changes:', error.message)
+      logger.error('Failed to fetch privilege changes', { error: error.message })
       return { escalated: false, changes: [], detected_at: new Date().toISOString() }
     }
 
@@ -84,7 +85,7 @@ export const privilegeEscalationService = {
     const { data, error } = await query
 
     if (error) {
-      console.error('Failed to fetch audit trail:', error.message)
+      logger.error('Failed to fetch audit trail', { error: error.message })
       return []
     }
 
@@ -100,7 +101,7 @@ export const privilegeEscalationService = {
       .limit(100)
 
     if (snapError) {
-      console.error('Failed to fetch RBAC snapshot:', snapError.message)
+      logger.error('Failed to fetch RBAC snapshot', { error: snapError.message })
       return { compliant: true, violations: [], checked_at: new Date().toISOString() }
     }
 

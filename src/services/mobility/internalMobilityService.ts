@@ -1,4 +1,5 @@
 import { supabase } from '../../lib/supabase'
+import { logger } from '../../lib/logger'
 import { hasPermission } from '../permissionService'
 
 /* ============================================================
@@ -153,7 +154,7 @@ export async function getVisibleJobs(_employeeId: string): Promise<InternalJob[]
     .eq('status', 'open')
     .order('created_at', { ascending: false })
   if (error) {
-    console.error('Failed to fetch internal jobs:', error.message)
+    logger.error('Failed to fetch internal jobs', { error: error.message })
     return []
   }
   return (data ?? []) as unknown as InternalJob[]

@@ -1,4 +1,5 @@
 import { supabase } from '../../lib/supabase'
+import { logger } from '../../lib/logger'
 
 /**
  * Enhanced feature flag service.
@@ -58,7 +59,7 @@ export async function isFeatureEnabled(
   })
 
   if (error) {
-    console.error('Feature flag check failed:', error.message)
+    logger.error('Feature flag check failed', { error: error.message })
     return false
   }
 
@@ -84,7 +85,7 @@ export async function isKillSwitchActive(featureKey: string): Promise<boolean> {
     .maybeSingle()
 
   if (error) {
-    console.error('Kill switch check failed:', error.message)
+    logger.error('Kill switch check failed', { error: error.message })
     return false
   }
 
@@ -109,7 +110,7 @@ export async function evaluateCompanyFlags(
   })
 
   if (error) {
-    console.error('Bulk flag evaluation failed:', error.message)
+    logger.error('Bulk flag evaluation failed', { error: error.message })
     return {}
   }
 
@@ -138,7 +139,7 @@ export async function isBetaEnrolled(featureKey: string, companyId: string): Pro
     )
 
   if (error) {
-    console.error('Beta enrollment check failed:', error.message)
+    logger.error('Beta enrollment check failed', { error: error.message })
     return false
   }
 
@@ -161,7 +162,7 @@ export async function enrollBeta(
     .single()
 
   if (flagError || !flag) {
-    console.error('Beta flag not found:', featureKey)
+    logger.error('Beta flag not found', { featureKey })
     return false
   }
 
@@ -176,7 +177,7 @@ export async function enrollBeta(
     }, { onConflict: 'company_id,feature_flag_id' })
 
   if (error) {
-    console.error('Beta enrollment failed:', error.message)
+    logger.error('Beta enrollment failed', { error: error.message })
     return false
   }
 
@@ -203,7 +204,7 @@ export async function revokeBeta(featureKey: string, companyId: string): Promise
     .eq('feature_flag_id', flag.id)
 
   if (error) {
-    console.error('Beta revocation failed:', error.message)
+    logger.error('Beta revocation failed', { error: error.message })
     return false
   }
 
@@ -221,7 +222,7 @@ export async function setKillSwitch(featureKey: string, activate: boolean): Prom
   })
 
   if (error) {
-    console.error('Kill switch toggle failed:', error.message)
+    logger.error('Kill switch toggle failed', { error: error.message })
     return false
   }
 

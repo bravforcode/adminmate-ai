@@ -1,4 +1,5 @@
 import { supabase } from '../lib/supabase'
+import { logger } from '../lib/logger'
 
 export interface Location {
   id: string
@@ -23,24 +24,24 @@ export interface Location {
 
 export async function getLocations(companyId: string): Promise<Location[]> {
   const { data, error } = await supabase.from('locations').select('*').eq('company_id', companyId).order('name')
-  if (error) { console.error('Failed to fetch locations:', error.message); return [] }
+  if (error) { logger.error('Failed to fetch locations', { error: error.message }); return [] }
   return data ?? []
 }
 
 export async function createLocation(loc: Omit<Location, 'id' | 'created_at' | 'updated_at'>): Promise<Location | null> {
   const { data, error } = await supabase.from('locations').insert(loc).select().single()
-  if (error) { console.error('Failed to create location:', error.message); return null }
+  if (error) { logger.error('Failed to create location', { error: error.message }); return null }
   return data
 }
 
 export async function updateLocation(id: string, updates: Partial<Location>): Promise<Location | null> {
   const { data, error } = await supabase.from('locations').update({ ...updates, updated_at: new Date().toISOString() }).eq('id', id).select().single()
-  if (error) { console.error('Failed to update location:', error.message); return null }
+  if (error) { logger.error('Failed to update location', { error: error.message }); return null }
   return data
 }
 
 export async function deleteLocation(id: string): Promise<boolean> {
   const { error } = await supabase.from('locations').delete().eq('id', id)
-  if (error) { console.error('Failed to delete location:', error.message); return false }
+  if (error) { logger.error('Failed to delete location', { error: error.message }); return false }
   return true
 }

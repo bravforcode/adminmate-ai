@@ -1,4 +1,5 @@
 import { supabase } from '../../lib/supabase'
+import { logger } from '../../lib/logger'
 
 export interface SecurityAuditEvent {
   company_id: string
@@ -64,7 +65,7 @@ export const securityAuditService = {
       .single()
 
     if (error) {
-      console.error('Failed to log security audit event:', error.message)
+      logger.error('Failed to log security audit event', { error: error.message })
       return null
     }
     return data as SecurityAuditLogEntry
@@ -117,7 +118,7 @@ export const securityAuditService = {
       })))
 
     if (insertError) {
-      console.error('Failed to persist RLS verification results:', insertError.message)
+      logger.error('Failed to persist RLS verification results', { error: insertError.message })
     }
 
     return results
@@ -129,7 +130,7 @@ export const securityAuditService = {
       .select('id, name')
 
     if (rolesError) {
-      console.error('Failed to fetch roles:', rolesError.message)
+      logger.error('Failed to fetch roles', { error: rolesError.message })
       return []
     }
 
@@ -138,7 +139,7 @@ export const securityAuditService = {
       .select('id, resource, action')
 
     if (permsError) {
-      console.error('Failed to fetch permissions:', permsError.message)
+      logger.error('Failed to fetch permissions', { error: permsError.message })
       return []
     }
 
@@ -147,7 +148,7 @@ export const securityAuditService = {
       .select('role_id, permission_id')
 
     if (rpError) {
-      console.error('Failed to fetch role_permissions:', rpError.message)
+      logger.error('Failed to fetch role_permissions', { error: rpError.message })
       return []
     }
 
@@ -187,7 +188,7 @@ export const securityAuditService = {
       })
 
     if (insertError) {
-      console.error('Failed to persist RBAC matrix snapshot:', insertError.message)
+      logger.error('Failed to persist RBAC matrix snapshot', { error: insertError.message })
     }
 
     return entries

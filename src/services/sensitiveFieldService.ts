@@ -1,4 +1,5 @@
 import { supabase } from '../lib/supabase'
+import { logger } from '../lib/logger'
 
 /**
  * Client-side helper for sensitive field exclusion.
@@ -15,7 +16,7 @@ export async function getSensitiveFieldNames(): Promise<string[]> {
   }
   const { data, error } = await supabase.rpc('get_sensitive_field_names', {})
   if (error) {
-    console.error('Failed to fetch sensitive fields:', error.message)
+    logger.error('Failed to fetch sensitive fields', { error: error.message })
     return []
   }
   cachedFields = data ?? []

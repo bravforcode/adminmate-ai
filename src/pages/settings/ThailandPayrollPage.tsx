@@ -11,8 +11,10 @@ import {
   ChevronDown,
   ChevronUp,
   AlertTriangle,
+  AlertCircle,
 } from 'lucide-react'
 import toast from 'react-hot-toast'
+import { supabase } from '../../lib/supabase'
 import {
   TH_TAX_BRACKETS_2024,
   TH_SS_RULES,
@@ -35,6 +37,39 @@ export function ThailandPayrollPage() {
     pay_period: 'monthly' as 'monthly' | 'biweekly',
     pay_day: 25,
     province: 'BKK',
+  })
+
+  // Allowance gap: count employees with dependents/marital data for warning
+  const { data: allowanceGapCount } = useQuery({
+    queryKey: ['allowance-gap-count', company?.id],
+    queryFn: async () => {
+      if (!company?.id) return 0
+      const { data: employees } = await supabase
+        .from('employees')
+        .select('id')
+        .eq('company_id', company.id)
+        .eq('employment_status', 'active')
+      if (!employees || employees.length === 0) return 0
+      const employeeIds = employees.map(e => e.id)
+      const { data: taxProfiles } = await supabase
+        .from('employee_tax_profiles')
+        .select('employee_id, marital_status, number_of_dependents, spouse_allowance, child_allowance')
+        .in('employee_id', employeeIds)
+      if (!taxProfiles) return 0
+      let count = 0
+      for (const tp of taxProfiles) {
+        if (
+          (tp.marital_status && tp.marital_status !== 'single') ||
+          (tp.number_of_dependents && tp.number_of_dependents > 0) ||
+          (tp.spouse_allowance && tp.spouse_allowance > 0) ||
+          (tp.child_allowance && tp.child_allowance > 0)
+        ) {
+          count++
+        }
+      }
+      return count
+    },
+    enabled: !!company?.id,
   })
 
   useQuery({
@@ -77,6 +112,20 @@ export function ThailandPayrollPage() {
         <h1 className="text-headline-md font-bold text-on-surface">Thailand Payroll</h1>
         <p className="text-body-md text-on-surface-variant mt-1">Configure Thai payroll rules, tax brackets, and social security</p>
       </div>
+
+      {/* Allowance Gap Warning */}
+      {allowanceGapCount != null && allowanceGapCount > 0 && (
+        <div className="bg-amber-50 border border-amber-200 rounded-xl p-4">
+          <div className="flex items-start gap-3">
+            <AlertCircle size={20} className="text-amber-600 mt-0.5 shrink-0" />
+            <div>
+              <p className="text-sm font-medium text-amber-800">
+                ⚠️ {allowanceGapCount} employee{allowanceGapCount !== 1 ? 's' : ''} have spouse/child/parent allowances on file. These are not yet auto-calculated. Manual review recommended before approving this payroll run.
+              </p>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Payroll Cycle Config */}
       <Card>

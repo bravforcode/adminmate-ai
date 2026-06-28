@@ -1,4 +1,5 @@
 import { supabase } from '../lib/supabase'
+import { logger } from '../lib/logger'
 
 export interface EmployeeReferral {
   id: string
@@ -47,7 +48,7 @@ export async function getReferrals(companyId: string): Promise<EmployeeReferral[
     .eq('company_id', companyId)
     .order('submitted_at', { ascending: false })
   if (error) {
-    console.error('Failed to fetch referrals:', error.message)
+    logger.error('Failed to fetch referrals', { error: error.message })
     return []
   }
   return data ?? []
@@ -62,7 +63,7 @@ export async function getMyReferrals(userId: string, companyId: string): Promise
     .eq('referrer_user_id', userId)
     .order('submitted_at', { ascending: false })
   if (error) {
-    console.error('Failed to fetch my referrals:', error.message)
+    logger.error('Failed to fetch my referrals', { error: error.message })
     return []
   }
   return data ?? []
@@ -76,7 +77,7 @@ export async function getReferralById(id: string): Promise<EmployeeReferral | nu
     .eq('id', id)
     .single()
   if (error) {
-    console.error('Failed to fetch referral:', error.message)
+    logger.error('Failed to fetch referral', { error: error.message })
     return null
   }
   return data
@@ -95,7 +96,7 @@ export async function createReferral(input: CreateReferralInput): Promise<Employ
     .select()
     .single()
   if (error) {
-    console.error('Failed to create referral:', error.message)
+    logger.error('Failed to create referral', { error: error.message })
     return null
   }
   return data
@@ -123,7 +124,7 @@ export async function updateReferralStatus(
     .select()
     .single()
   if (error) {
-    console.error('Failed to update referral status:', error.message)
+    logger.error('Failed to update referral status', { error: error.message })
     return null
   }
   return data
@@ -147,7 +148,7 @@ export async function setReferralBonus(
     .select()
     .single()
   if (error) {
-    console.error('Failed to set referral bonus:', error.message)
+    logger.error('Failed to set referral bonus', { error: error.message })
     return null
   }
   return data
@@ -166,7 +167,7 @@ export async function markBonusPaid(id: string): Promise<EmployeeReferral | null
     .select()
     .single()
   if (error) {
-    console.error('Failed to mark bonus paid:', error.message)
+    logger.error('Failed to mark bonus paid', { error: error.message })
     return null
   }
   return data
@@ -176,7 +177,7 @@ export async function markBonusPaid(id: string): Promise<EmployeeReferral | null
 export async function deleteReferral(id: string): Promise<boolean> {
   const { error } = await supabase.from('employee_referrals').delete().eq('id', id)
   if (error) {
-    console.error('Failed to delete referral:', error.message)
+    logger.error('Failed to delete referral', { error: error.message })
     return false
   }
   return true

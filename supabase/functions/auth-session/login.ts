@@ -32,6 +32,15 @@ export async function handleLogin(req: Request): Promise<Response> {
   const start = Date.now()
 
   try {
+    // Reject oversized request bodies (max 64 KB for login)
+    const contentLength = Number(req.headers.get('content-length') || 0)
+    if (contentLength > 65536) {
+      return new Response(
+        JSON.stringify({ success: false, error: 'Request body too large' }),
+        { status: 413, headers: getJsonHeaders(req) }
+      )
+    }
+
     const supabase = createClient(
       Deno.env.get('SUPABASE_URL')!,
       Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!

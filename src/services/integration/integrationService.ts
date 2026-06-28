@@ -1,4 +1,5 @@
 import { supabase } from '../../lib/supabase'
+import { logger } from '../../lib/logger'
 
 export interface IntegrationProvider {
   id: string
@@ -196,7 +197,7 @@ export const integrationService = {
         payload_hash: hashPayload({ provider: providerKey }),
         status: 'success',
       })
-    if (logError) console.error('Failed to log event:', logError.message)
+    if (logError) logger.error('Failed to log event', { error: logError.message })
 
     return { success: true, message: 'Connection successful' }
   },

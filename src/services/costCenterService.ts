@@ -1,4 +1,5 @@
 import { supabase } from '../lib/supabase'
+import { logger } from '../lib/logger'
 
 export interface CostCenter {
   id: string
@@ -15,24 +16,24 @@ export interface CostCenter {
 
 export async function getCostCenters(companyId: string): Promise<CostCenter[]> {
   const { data, error } = await supabase.from('cost_centers').select('*').eq('company_id', companyId).order('name')
-  if (error) { console.error('Failed to fetch cost centers:', error.message); return [] }
+  if (error) { logger.error('Failed to fetch cost centers', { error: error.message }); return [] }
   return data ?? []
 }
 
 export async function createCostCenter(cc: Omit<CostCenter, 'id' | 'created_at' | 'updated_at'>): Promise<CostCenter | null> {
   const { data, error } = await supabase.from('cost_centers').insert(cc).select().single()
-  if (error) { console.error('Failed to create cost center:', error.message); return null }
+  if (error) { logger.error('Failed to create cost center', { error: error.message }); return null }
   return data
 }
 
 export async function updateCostCenter(id: string, updates: Partial<CostCenter>): Promise<CostCenter | null> {
   const { data, error } = await supabase.from('cost_centers').update({ ...updates, updated_at: new Date().toISOString() }).eq('id', id).select().single()
-  if (error) { console.error('Failed to update cost center:', error.message); return null }
+  if (error) { logger.error('Failed to update cost center', { error: error.message }); return null }
   return data
 }
 
 export async function deleteCostCenter(id: string): Promise<boolean> {
   const { error } = await supabase.from('cost_centers').delete().eq('id', id)
-  if (error) { console.error('Failed to delete cost center:', error.message); return false }
+  if (error) { logger.error('Failed to delete cost center', { error: error.message }); return false }
   return true
 }

@@ -1,4 +1,5 @@
 import { supabase } from '../../lib/supabase'
+import { logger } from '../../lib/logger'
 
 export interface RLSPolicyBaseline {
   table_name: string
@@ -33,7 +34,7 @@ export const rlsDriftService = {
       .rpc('get_rls_policies', { p_company_id: companyId })
 
     if (error) {
-      console.error('Failed to fetch current RLS policies:', error.message)
+      logger.error('Failed to fetch current RLS policies', { error: error.message })
       return { detected: false, changes: [], checked_at: new Date().toISOString() }
     }
 
@@ -126,7 +127,7 @@ export const rlsDriftService = {
       })
 
     if (error) {
-      console.error('Failed to alert on RLS drift:', error.message)
+      logger.error('Failed to alert on RLS drift', { error: error.message })
       return false
     }
 

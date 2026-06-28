@@ -1,4 +1,5 @@
 import { supabase } from '../lib/supabase'
+import { logger } from '../lib/logger'
 
 /**
  * Server-side permission check via Supabase RPC.
@@ -11,7 +12,7 @@ export async function hasPermission(resource: string, action: string): Promise<b
     p_action: action,
   })
   if (error) {
-    console.error('Permission check failed:', error.message)
+    logger.error('Permission check failed', { error: error.message })
     return false
   }
   return data === true
@@ -22,7 +23,7 @@ export async function hasRole(roleName: string): Promise<boolean> {
     p_role_name: roleName,
   })
   if (error) {
-    console.error('Role check failed:', error.message)
+    logger.error('Role check failed', { error: error.message })
     return false
   }
   return data === true
@@ -33,7 +34,7 @@ export async function hasAnyRole(roleNames: string[]): Promise<boolean> {
     p_role_names: roleNames,
   })
   if (error) {
-    console.error('Role check failed:', error.message)
+    logger.error('Role check failed', { error: error.message })
     return false
   }
   return data === true
@@ -42,7 +43,7 @@ export async function hasAnyRole(roleNames: string[]): Promise<boolean> {
 export async function getUserRoleNames(): Promise<string[]> {
   const { data, error } = await supabase.rpc('user_role_names', {})
   if (error) {
-    console.error('Failed to fetch role names:', error.message)
+    logger.error('Failed to fetch role names', { error: error.message })
     return []
   }
   return data ?? []

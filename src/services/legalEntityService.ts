@@ -1,4 +1,5 @@
 import { supabase } from '../lib/supabase'
+import { logger } from '../lib/logger'
 
 export interface LegalEntity {
   id: string
@@ -27,7 +28,7 @@ export async function getLegalEntities(companyId: string): Promise<LegalEntity[]
     .eq('company_id', companyId)
     .order('name')
   if (error) {
-    console.error('Failed to fetch legal entities:', error.message)
+    logger.error('Failed to fetch legal entities', { error: error.message })
     return []
   }
   return data ?? []
@@ -40,7 +41,7 @@ export async function getLegalEntity(id: string): Promise<LegalEntity | null> {
     .eq('id', id)
     .single()
   if (error) {
-    console.error('Failed to fetch legal entity:', error.message)
+    logger.error('Failed to fetch legal entity', { error: error.message })
     return null
   }
   return data
@@ -53,7 +54,7 @@ export async function createLegalEntity(entity: Omit<LegalEntity, 'id' | 'create
     .select()
     .single()
   if (error) {
-    console.error('Failed to create legal entity:', error.message)
+    logger.error('Failed to create legal entity', { error: error.message })
     return null
   }
   return data
@@ -67,7 +68,7 @@ export async function updateLegalEntity(id: string, updates: Partial<LegalEntity
     .select()
     .single()
   if (error) {
-    console.error('Failed to update legal entity:', error.message)
+    logger.error('Failed to update legal entity', { error: error.message })
     return null
   }
   return data
@@ -76,7 +77,7 @@ export async function updateLegalEntity(id: string, updates: Partial<LegalEntity
 export async function deleteLegalEntity(id: string): Promise<boolean> {
   const { error } = await supabase.from('legal_entities').delete().eq('id', id)
   if (error) {
-    console.error('Failed to delete legal entity:', error.message)
+    logger.error('Failed to delete legal entity', { error: error.message })
     return false
   }
   return true

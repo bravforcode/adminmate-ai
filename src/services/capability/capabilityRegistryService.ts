@@ -1,4 +1,5 @@
 import { supabase } from '../../lib/supabase'
+import { logger } from '../../lib/logger'
 
 export type CapabilityStatus =
   | 'complete'
@@ -47,7 +48,7 @@ export async function getCapabilities(_companyId?: string): Promise<FeatureCapab
     .order('feature_key', { ascending: true })
 
   if (error) {
-    console.error('Failed to fetch capabilities:', error.message)
+    logger.error('Failed to fetch capabilities', { error: error.message })
     return []
   }
 
@@ -62,7 +63,7 @@ export async function getCapability(featureKey: string): Promise<FeatureCapabili
     .single()
 
   if (error) {
-    console.error(`Failed to fetch capability ${featureKey}:`, error.message)
+    logger.error(`Failed to fetch capability ${featureKey}`, { error: error.message })
     return null
   }
 
@@ -79,7 +80,7 @@ export async function updateCapabilityStatus(
     .eq('feature_key', featureKey)
 
   if (error) {
-    console.error(`Failed to update capability ${featureKey}:`, error.message)
+    logger.error(`Failed to update capability ${featureKey}`, { error: error.message })
     return false
   }
 

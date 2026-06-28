@@ -29,6 +29,12 @@ serve(async (req) => {
       return new Response(JSON.stringify({ success: false, error: 'Method not allowed' }), { status: 405, headers: h })
     }
 
+    // Reject oversized request bodies (max 64 KB for chat)
+    const contentLength = Number(req.headers.get('content-length') || 0)
+    if (contentLength > 65536) {
+      return new Response(JSON.stringify({ success: false, error: 'Request body too large' }), { status: 413, headers: h })
+    }
+
     const supabase = createClient(Deno.env.get('SUPABASE_URL')!, Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!)
     const user = await verifyAuth(req, supabase)
     if (!user) return new Response(JSON.stringify({ success: false, error: 'Unauthorized' }), { status: 401, headers: h })

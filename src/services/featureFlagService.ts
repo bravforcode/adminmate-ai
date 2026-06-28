@@ -1,4 +1,5 @@
 import { supabase } from '../lib/supabase'
+import { logger } from '../lib/logger'
 
 /**
  * Feature flag service.
@@ -16,7 +17,7 @@ export async function isFeatureEnabled(featureKey: string, companyId?: string): 
     p_company_id: companyId ?? null,
   })
   if (error) {
-    console.error('Feature flag check failed:', error.message)
+    logger.error('Feature flag check failed', { error: error.message })
     return false
   }
   flagCache[cacheKey] = data === true
