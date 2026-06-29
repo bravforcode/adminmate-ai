@@ -39,10 +39,6 @@ export interface WebhookDeliveryAttempt {
 const MAX_RETRIES = 5
 const BASE_BACKOFF_MS = 1000
 
-function sha256(input: string): string {
-  return crypto.createHash('sha256').update(input).digest('hex')
-}
-
 function computeHmacSha256(secret: string, body: string): string {
   return crypto.createHmac('sha256', secret).update(body).digest('hex')
 }
@@ -58,8 +54,6 @@ export const webhookService = {
       throw new Error('Insufficient permissions: webhook_write required')
     }
 
-    const secretHash = sha256(input.secret)
-
     const { data, error } = await supabase
       .from('webhook_subscriptions')
       .insert({
@@ -67,7 +61,7 @@ export const webhookService = {
         client_id: input.client_id,
         event_types: input.event_types,
         url: input.url,
-        secret_hash: secretHash,
+        secret_hash: input.secret,
       })
       .select()
       .single()

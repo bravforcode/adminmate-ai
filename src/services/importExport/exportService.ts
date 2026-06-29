@@ -92,10 +92,11 @@ export const exportService = {
       .update({ status: 'generating' })
       .eq('id', jobId)
 
-    const tableName = job.entity_type === 'candidates' ? 'candidates' :
-      job.entity_type === 'jobs' ? 'jobs' :
-      job.entity_type === 'employees' ? 'employees' :
-      job.entity_type
+    const ALLOWED_TABLES = new Set(['candidates', 'jobs', 'employees'])
+    if (!ALLOWED_TABLES.has(job.entity_type)) {
+      throw new Error(`Export not allowed for entity type: ${job.entity_type}`)
+    }
+    const tableName = job.entity_type
 
     let query = supabase.from(tableName).select('*').eq('company_id', job.company_id)
 

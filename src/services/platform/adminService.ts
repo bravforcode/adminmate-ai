@@ -68,6 +68,16 @@ export const adminService = {
     const { data: { user } } = await supabase.auth.getUser()
     if (!user) throw new Error('Not authenticated')
 
+    // Verify the caller is a platform_owner
+    const { data: callerAdmin, error: callerError } = await supabase
+      .from('platform_admin_users')
+      .select('id, role')
+      .eq('user_id', user.id)
+      .single()
+
+    if (callerError || !callerAdmin) throw new Error('Not a platform admin user')
+    if (callerAdmin.role !== 'owner') throw new Error('Only platform_owner can grant support access')
+
     const { data: grant, error } = await supabase
       .from('support_access_grants')
       .insert({
@@ -75,12 +85,7 @@ export const adminService = {
         company_id: companyId,
         reason,
         expires_at: expiresAt,
-        granted_by: (await supabase
-          .from('platform_admin_users')
-          .select('id')
-          .eq('user_id', user.id)
-          .single()
-        ).data?.id ?? user.id,
+        granted_by: callerAdmin.id,
       })
       .select()
       .single()
@@ -89,12 +94,7 @@ export const adminService = {
 
     // Log to platform_audit_logs — impersonation is NEVER silent
     await adminService.logPlatformAction(
-      (await supabase
-        .from('platform_admin_users')
-        .select('id')
-        .eq('user_id', user.id)
-        .single()
-      ).data?.id ?? user.id,
+      callerAdmin.id,
       companyId,
       'support_access_granted',
       {
