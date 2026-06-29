@@ -62,22 +62,22 @@ describe('adminService', () => {
       let callCount = 0
       mockFrom.mockImplementation((table: string) => {
         callCount++
-        if (table === 'support_access_grants' && callCount === 1) {
-          // First call: insert grant
-          return {
-            insert: () => ({
-              select: () => ({
-                single: () => Promise.resolve({ data: insertedGrant, error: null }),
-              }),
-            }),
-          }
-        }
         if (table === 'platform_admin_users') {
-          // Lookup admin user ID
+          // Lookup admin user ID (first call after auth)
           return {
             select: () => ({
               eq: () => ({
                 single: () => Promise.resolve({ data: mockAdmin, error: null }),
+              }),
+            }),
+          }
+        }
+        if (table === 'support_access_grants' && callCount === 2) {
+          // Second call: insert grant
+          return {
+            insert: () => ({
+              select: () => ({
+                single: () => Promise.resolve({ data: insertedGrant, error: null }),
               }),
             }),
           }
@@ -257,20 +257,22 @@ describe('adminService', () => {
       let callCount = 0
       mockFrom.mockImplementation((table: string) => {
         callCount++
-        if (table === 'support_access_grants' && callCount === 1) {
-          return {
-            insert: () => ({
-              select: () => ({
-                single: () => Promise.resolve({ data: insertedGrant, error: null }),
-              }),
-            }),
-          }
-        }
         if (table === 'platform_admin_users') {
+          // Lookup admin user ID (first call after auth)
           return {
             select: () => ({
               eq: () => ({
                 single: () => Promise.resolve({ data: mockAdmin, error: null }),
+              }),
+            }),
+          }
+        }
+        if (table === 'support_access_grants' && callCount === 2) {
+          // Second call: insert grant
+          return {
+            insert: () => ({
+              select: () => ({
+                single: () => Promise.resolve({ data: insertedGrant, error: null }),
               }),
             }),
           }

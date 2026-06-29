@@ -2,6 +2,7 @@ import { describe, it, expect, vi, beforeEach } from 'vitest'
 
 const mockSupabase = vi.hoisted(() => ({
   from: vi.fn(),
+  rpc: vi.fn(),
 }))
 
 vi.mock('../../../src/lib/supabase', () => ({ supabase: mockSupabase }))
@@ -9,7 +10,10 @@ vi.mock('../../../src/lib/supabase', () => ({ supabase: mockSupabase }))
 import { jobService } from '../../../src/services/jobService'
 
 describe('jobService', () => {
-  beforeEach(() => vi.clearAllMocks())
+  beforeEach(() => {
+    vi.clearAllMocks()
+    mockSupabase.rpc.mockResolvedValue({ data: true, error: null })
+  })
 
   it('getAll: returns jobs filtered by companyId', async () => {
     const mockJobs = [{ id: '1', title: 'Developer', company_id: 'c1', status: 'active' }]

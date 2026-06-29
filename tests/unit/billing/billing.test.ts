@@ -45,6 +45,7 @@ import { subscriptionService } from '../../../src/services/billing/subscriptionS
 describe('subscriptionService', () => {
   beforeEach(() => {
     vi.clearAllMocks()
+    mockRpc.mockResolvedValue({ data: true, error: null })
   })
 
   describe('getPlans', () => {

@@ -154,7 +154,7 @@ describe('webhookService', () => {
   })
 
   describe('createSubscription', () => {
-    it('hashes secret before storing', async () => {
+    it('stores raw secret for HMAC verification', async () => {
       const chain = makeChain({ data: {}, error: null })
       mockFrom.mockReturnValue(chain)
 
@@ -168,7 +168,7 @@ describe('webhookService', () => {
 
       expect(chain.insert).toHaveBeenCalledWith(
         expect.objectContaining({
-          secret_hash: crypto.createHash('sha256').update('mysecret123').digest('hex'),
+          secret_hash: 'mysecret123',
         })
       )
     })
