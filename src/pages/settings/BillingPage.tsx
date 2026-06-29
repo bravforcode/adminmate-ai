@@ -178,11 +178,11 @@ export default function BillingPage() {
 
                 <ul className="mt-6 space-y-2">
                   {[
-                    { text: `${limits.hrUsers} HR users`, check: true },
-                    { text: `${limits.employees} employees`, check: true },
-                    { text: limits.jobs === Infinity ? 'Unlimited jobs' : `${limits.jobs} jobs`, check: true },
-                    { text: limits.candidates === Infinity ? 'Unlimited candidates' : `${limits.candidates} candidates`, check: true },
-                    { text: `${limits.aiMessagesPerMonth} AI messages/mo`, check: true },
+                    { text: t('billing.feature_count_hr_users', { count: limits.hrUsers }), check: true },
+                    { text: t('billing.feature_count_employees', { count: limits.employees }), check: true },
+                    { text: limits.jobs === Infinity ? t('billing.feature_unlimited_jobs') : t('billing.feature_count_jobs', { count: limits.jobs }), check: true },
+                    { text: limits.candidates === Infinity ? t('billing.feature_unlimited_candidates') : t('billing.feature_count_candidates', { count: limits.candidates }), check: true },
+                    { text: t('billing.feature_count_ai_messages', { count: limits.aiMessagesPerMonth }), check: true },
                     { text: t('billing.feature_esign', 'E-signature'), check: limits.documentSigning },
                     { text: t('billing.feature_pdpa', 'PDPA tools'), check: limits.pdpaTools },
                     { text: t('billing.feature_bulk', 'Bulk import'), check: limits.bulkImport },

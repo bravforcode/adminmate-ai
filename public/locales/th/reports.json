@@ -66,5 +66,12 @@
     "toggle_enable": "เปิดใช้งาน",
     "toggle_disable": "ปิดใช้งาน",
     "delete": "ลบ"
+  },
+  "pa": {
+    "total_applications": "ใบสมัครทั้งหมด",
+    "hired": "ได้รับการว่าจ้าง",
+    "rejected": "ไม่ผ่านการคัดเลือก",
+    "high": "สูง",
+    "normal": "ปกติ"
   }
 }

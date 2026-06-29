@@ -31,8 +31,7 @@ const STATUS_CONFIG: Record<string, { icon: typeof CheckCircle; color: string; l
 
 export default function TrackApplicationPage() {
   const { trackingToken } = useParams<{ trackingToken: string }>()
-  const { i18n } = useTranslation()
-  const isThai = i18n.language === 'th'
+  const { t, i18n } = useTranslation('portal')
 
   const [application, setApplication] = useState<ApplicationStatus | null>(null)
   const [loading, setLoading] = useState(true)
@@ -75,13 +74,13 @@ export default function TrackApplicationPage() {
         <div className="max-w-md w-full text-center">
           <AlertCircle className="w-16 h-16 mx-auto text-red-400 mb-4" />
           <h1 className="text-2xl font-bold text-[var(--color-text-primary)] mb-2">
-            {isThai ? 'ไม่พบใบสมัคร' : 'Application Not Found'}
+            {t('track.not_found')}
           </h1>
           <p className="text-secondary mb-6">
-            {error || (isThai ? 'รหัสติดตามไม่ถูกต้อง' : 'Invalid tracking code.')}
+            {error || t('track.not_found_msg')}
           </p>
           <Link to="/" className="text-[var(--color-primary)] hover:underline">
-            {isThai ? 'กลับหน้าแรก' : 'Back to home'}
+            {t('apply.back_home')}
           </Link>
         </div>
       </div>
@@ -103,7 +102,7 @@ export default function TrackApplicationPage() {
 
       <main className="max-w-3xl mx-auto px-4 py-8">
         <h1 className="text-2xl font-bold text-[var(--color-text-primary)] mb-6">
-          {isThai ? 'ติดตามใบสมัคร' : 'Application Status'}
+          {t('track.title')}
         </h1>
 
         {/* Status card */}
@@ -114,7 +113,7 @@ export default function TrackApplicationPage() {
             </div>
             <div>
               <h2 className="font-semibold text-[var(--color-text-primary)]">
-                {statusConfig.label[isThai ? 'th' : 'en']}
+                {t(`track.statuses.${application.status}`, statusConfig.label.en)}
               </h2>
               <p className="text-sm text-secondary">
                 {application.job_title}
@@ -123,19 +122,19 @@ export default function TrackApplicationPage() {
           </div>
           <div className="border-t border-[var(--color-border)] pt-4 space-y-2 text-sm">
             <div className="flex justify-between">
-              <span className="text-secondary">{isThai ? 'บริษัท' : 'Company'}</span>
+              <span className="text-secondary">{t('track.company')}</span>
               <span className="text-[var(--color-text-primary)] font-medium">{application.company_name}</span>
             </div>
             <div className="flex justify-between">
-              <span className="text-secondary">{isThai ? 'วันที่สมัคร' : 'Applied'}</span>
+              <span className="text-secondary">{t('track.applied')}</span>
               <span className="text-[var(--color-text-primary)]">
-                {new Date(application.applied_at).toLocaleDateString(isThai ? 'th-TH' : 'en-US')}
+                {new Date(application.applied_at).toLocaleDateString(i18n.language === 'th' ? 'th-TH' : 'en-US')}
               </span>
             </div>
             <div className="flex justify-between">
-              <span className="text-secondary">{isThai ? 'สถานะ' : 'Status'}</span>
+              <span className="text-secondary">{t('track.status')}</span>
               <span className={`font-medium ${statusConfig.color}`}>
-                {statusConfig.label[isThai ? 'th' : 'en']}
+                {t(`track.statuses.${application.status}`, statusConfig.label.en)}
               </span>
             </div>
           </div>
@@ -144,13 +143,11 @@ export default function TrackApplicationPage() {
         {/* Tracking code */}
         <div className="bg-[var(--color-surface)] rounded-2xl border border-[var(--color-border)] p-6 mb-8">
           <p className="text-sm text-secondary mb-1">
-            {isThai ? 'รหัสติดตามของคุณ' : 'Your Tracking Code'}
+            {t('track.your_code')}
           </p>
           <p className="font-mono text-lg font-bold text-[var(--color-primary)]">{trackingToken}</p>
           <p className="text-xs text-[var(--color-text-muted)] mt-2">
-            {isThai
-              ? 'เก็บรหัสนี้ไว้เพื่อตรวจสอบสถานะใบสมัครของคุณ'
-              : 'Save this code to check your application status later.'}
+            {t('track.save_code')}
           </p>
         </div>
 

@@ -314,7 +314,7 @@ export function EngagementPage() {
               ) : (
                 <div className="space-y-4">
                   {[
-                    { label: t('culture.engagement_score', 'Engagement Score'), value: '78%', desc: t('culture.engagement_desc', 'Based on survey responses'), color: 'text-success' },
+                    { label: t('culture.engagement_score', 'Engagement Score'), value: 'N/A', desc: t('culture.engagement_desc', 'Based on survey responses'), color: 'text-success' },
                     { label: t('culture.participation_rate', 'Survey Participation'), value: `${surveys.length > 0 ? Math.round(surveys.reduce((s, sv) => s + sv.response_count, 0) / Math.max(surveys.length, 1)) : 0}%`, desc: t('culture.participation_desc', 'Average response rate'), color: 'text-primary' },
                     { label: t('culture.recognition_rate', 'Recognition Rate'), value: `${recognitions.length}`, desc: t('culture.recognition_desc', 'Total recognitions this period'), color: 'text-tertiary' },
                     { label: t('culture.nps_score', 'eNPS Score'), value: enps ? String(enps.score) : '-', desc: t('culture.nps_desc', 'Employee Net Promoter Score'), color: enps && enps.score >= 0 ? 'text-success' : 'text-error' },

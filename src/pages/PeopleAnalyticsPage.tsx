@@ -343,7 +343,7 @@ export function PeopleAnalyticsPage() {
             <KPICard title={t('pa.total_employees', 'Total Employees')} value={metrics.totalEmployees} icon={Users} iconBg="bg-primary/10" iconColor="text-primary" />
             <KPICard title={t('pa.new_hires', 'New Hires')} value={metrics.newHires} subtitle={t('pa.this_period', 'This period')} icon={UserPlus} iconBg="bg-green-50" iconColor="text-green-600" trend={`${metrics.newHires}`} trendUp={metrics.newHires > 0} />
             <KPICard title={t('pa.departures', 'Departures')} value={metrics.departures} icon={UserMinus} iconBg="bg-red-50" iconColor="text-red-600" />
-            <KPICard title={t('pa.turnover_rate', 'Turnover Rate')} value={`${metrics.turnoverRate}%`} icon={TrendingDown} iconBg="bg-orange-50" iconColor="text-orange-600" trend={parseFloat(metrics.turnoverRate) > 15 ? 'High' : 'Normal'} trendUp={parseFloat(metrics.turnoverRate) <= 15} />
+            <KPICard title={t('pa.turnover_rate', 'Turnover Rate')} value={`${metrics.turnoverRate}%`} icon={TrendingDown} iconBg="bg-orange-50" iconColor="text-orange-600" trend={parseFloat(metrics.turnoverRate) > 15 ? t('pa.high', 'High') : t('pa.normal', 'Normal')} trendUp={parseFloat(metrics.turnoverRate) <= 15} />
           </div>
 
           {/* Demographics */}
@@ -433,9 +433,9 @@ export function PeopleAnalyticsPage() {
                   </div>
                 </div>
                 <div className="space-y-1 text-sm">
-                  <div className="flex justify-between"><span className="text-on-surface-variant">Total Applications</span><span className="font-semibold">{metrics.totalApps}</span></div>
-                  <div className="flex justify-between"><span className="text-on-surface-variant">Hired</span><span className="font-semibold text-green-600">{metrics.hiredCount}</span></div>
-                  <div className="flex justify-between"><span className="text-on-surface-variant">Rejected</span><span className="font-semibold text-red-600">{metrics.rejectedCount}</span></div>
+                  <div className="flex justify-between"><span className="text-on-surface-variant">{t('pa.total_applications', 'Total Applications')}</span><span className="font-semibold">{metrics.totalApps}</span></div>
+                  <div className="flex justify-between"><span className="text-on-surface-variant">{t('pa.hired', 'Hired')}</span><span className="font-semibold text-green-600">{metrics.hiredCount}</span></div>
+                  <div className="flex justify-between"><span className="text-on-surface-variant">{t('pa.rejected', 'Rejected')}</span><span className="font-semibold text-red-600">{metrics.rejectedCount}</span></div>
                 </div>
               </CardContent>
             </Card>

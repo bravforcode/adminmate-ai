@@ -356,7 +356,7 @@ export function ReportsPage() {
               icon={Gauge}
               iconBg="bg-primary-fixed"
               iconColor="text-primary"
-              trend={kpis?.hiredCount ? `${kpis.hiredCount} hired` : 'No data'}
+              trend={kpis?.hiredCount ? t('kpi.hired', { count: kpis.hiredCount }) : t('kpi.no_data')}
               trendUp
               trendBg="bg-surface-container-low"
               trendColor="text-primary"
@@ -369,7 +369,7 @@ export function ReportsPage() {
               icon={DollarSign}
               iconBg="bg-error-container"
               iconColor="text-error"
-              trend={`${kpis?.hiredCount || 0} hires`}
+              trend={t('kpi.hires', { count: kpis?.hiredCount || 0 })}
               trendUp={false}
               trendBg="bg-error-container"
               trendColor="text-error"
@@ -382,7 +382,7 @@ export function ReportsPage() {
               icon={UserCheck}
               iconBg="bg-tertiary-fixed"
               iconColor="text-tertiary"
-              trend={kpis?.totalChecklists ? `${kpis.completedChecklists}/${kpis.totalChecklists}` : 'No data'}
+              trend={kpis?.totalChecklists ? `${kpis.completedChecklists}/${kpis.totalChecklists}` : t('kpi.no_data')}
               trendUp
               trendBg="bg-surface-container-low"
               trendColor="text-tertiary"
