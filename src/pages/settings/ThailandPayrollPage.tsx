@@ -1,4 +1,5 @@
 import { useState, useMemo } from 'react'
+import { useTranslation } from 'react-i18next'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { useAuthStore } from '../../stores/authStore'
 import {
@@ -25,8 +26,10 @@ import {
 } from '../../services/payroll/thailandPayrollService'
 import { Card, CardHeader, CardContent, CardTitle } from '../../components/ui/Card'
 import { Button } from '../../components/ui/Button'
+import { LoadingState } from '../../components/shared/LoadingState'
 
 export function ThailandPayrollPage() {
+  const { t } = useTranslation(['thailand_payroll', 'common'])
   const company = useAuthStore(s => s.company)
   const queryClient = useQueryClient()
   const [showTaxBrackets, setShowTaxBrackets] = useState(false)
@@ -72,7 +75,7 @@ export function ThailandPayrollPage() {
     enabled: !!company?.id,
   })
 
-  useQuery({
+  const { isLoading: configLoading, error: configError } = useQuery({
     queryKey: ['payroll-config', 'TH', company?.id],
     queryFn: async () => {
       if (!company?.id) return null
@@ -96,7 +99,7 @@ export function ThailandPayrollPage() {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['payroll-config', 'TH', company?.id] })
-      toast.success('Payroll configuration saved')
+      toast.success(t('config_saved'))
     },
     onError: (e: Error) => toast.error(e.message),
   })
@@ -113,6 +116,25 @@ export function ThailandPayrollPage() {
         <p className="text-body-md text-on-surface-variant mt-1">Configure Thai payroll rules, tax brackets, and social security</p>
       </div>
 
+      {/* Loading State */}
+      {configLoading && (
+        <LoadingState variant="cards" rows={2} message="Loading payroll configuration..." />
+      )}
+
+      {/* Error State */}
+      {configError && (
+        <div className="bg-red-50 border border-red-200 rounded-xl p-4">
+          <div className="flex items-start gap-3">
+            <AlertCircle size={20} className="text-red-600 mt-0.5 shrink-0" />
+            <div>
+              <p className="text-sm font-medium text-red-800">
+                Failed to load payroll configuration: {configError.message}
+              </p>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Allowance Gap Warning */}
       {allowanceGapCount != null && allowanceGapCount > 0 && (
         <div className="bg-amber-50 border border-amber-200 rounded-xl p-4">
@@ -120,7 +142,7 @@ export function ThailandPayrollPage() {
             <AlertCircle size={20} className="text-amber-600 mt-0.5 shrink-0" />
             <div>
               <p className="text-sm font-medium text-amber-800">
-                ⚠️ {allowanceGapCount} employee{allowanceGapCount !== 1 ? 's' : ''} have spouse/child/parent allowances on file. These are not yet auto-calculated. Manual review recommended before approving this payroll run.
+                ⚠️ {t('allowance_gap_warning', { count: allowanceGapCount })}
               </p>
             </div>
           </div>
@@ -131,23 +153,23 @@ export function ThailandPayrollPage() {
       <Card>
         <CardHeader className="flex-row items-center gap-2">
           <Calculator size={20} className="text-primary" />
-          <CardTitle>Payroll Cycle</CardTitle>
+          <CardTitle>{t('payroll_cycle')}</CardTitle>
         </CardHeader>
         <CardContent>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
             <div>
-              <label className="block text-sm font-medium mb-1 text-on-surface-variant">Pay Period</label>
+              <label className="block text-sm font-medium mb-1 text-on-surface-variant">{t('pay_period')}</label>
               <select
                 value={config.pay_period}
                 onChange={e => setConfig(p => ({ ...p, pay_period: e.target.value as 'monthly' | 'biweekly' }))}
                 className="w-full px-3 py-2 rounded-lg border border-outline-variant bg-surface-container-lowest focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all"
               >
-                <option value="monthly">Monthly</option>
-                <option value="biweekly">Bi-weekly</option>
+                <option value="monthly">{t('monthly')}</option>
+                <option value="biweekly">{t('biweekly')}</option>
               </select>
             </div>
             <div>
-              <label className="block text-sm font-medium mb-1 text-on-surface-variant">Pay Day</label>
+              <label className="block text-sm font-medium mb-1 text-on-surface-variant">{t('pay_day')}</label>
               <input
                 type="number"
                 min={1}
@@ -158,7 +180,7 @@ export function ThailandPayrollPage() {
               />
             </div>
             <div>
-              <label className="block text-sm font-medium mb-1 text-on-surface-variant">Province</label>
+              <label className="block text-sm font-medium mb-1 text-on-surface-variant">{t('province')}</label>
               <select
                 value={config.province}
                 onChange={e => setConfig(p => ({ ...p, province: e.target.value }))}
@@ -178,7 +200,7 @@ export function ThailandPayrollPage() {
               onClick={() => saveMutation.mutate()}
               disabled={saveMutation.isPending}
             >
-              {saveMutation.isPending ? 'Saving...' : 'Save Configuration'}
+              {saveMutation.isPending ? t('saving') : t('save_config')}
             </Button>
           </div>
         </CardContent>
@@ -192,7 +214,7 @@ export function ThailandPayrollPage() {
         >
           <div className="flex items-center gap-2">
             <Receipt size={20} className="text-primary" />
-            <CardTitle>Thai Progressive Tax Brackets (2024)</CardTitle>
+            <CardTitle>{t('tax_brackets_title')}</CardTitle>
           </div>
           {showTaxBrackets ? <ChevronUp size={20} /> : <ChevronDown size={20} />}
         </CardHeader>
@@ -202,9 +224,9 @@ export function ThailandPayrollPage() {
               <table className="w-full text-sm">
                 <thead>
                   <tr className="border-b border-outline-variant">
-                    <th className="text-left py-2 px-3 text-on-surface-variant font-medium">Income Range (THB)</th>
-                    <th className="text-right py-2 px-3 text-on-surface-variant font-medium">Tax Rate</th>
-                    <th className="text-right py-2 px-3 text-on-surface-variant font-medium">Example Tax</th>
+                    <th className="text-left py-2 px-3 text-on-surface-variant font-medium">{t('income_range')}</th>
+                    <th className="text-right py-2 px-3 text-on-surface-variant font-medium">{t('tax_rate')}</th>
+                    <th className="text-right py-2 px-3 text-on-surface-variant font-medium">{t('example_tax')}</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -215,7 +237,7 @@ export function ThailandPayrollPage() {
                       </td>
                       <td className="py-2 px-3 text-right font-medium">{b.rate}%</td>
                       <td className="py-2 px-3 text-right text-on-surface-variant">
-                        {b.max ? `≤ ${((b.max - b.min) * b.rate / 100).toLocaleString()} THB` : 'Progressive'}
+                        {b.max ? `≤ ${((b.max - b.min) * b.rate / 100).toLocaleString()} THB` : t('progressive')}
                       </td>
                     </tr>
                   ))}

@@ -12,6 +12,7 @@ import { Button } from '../../components/ui/Button'
 import { useUpcomingInterviews } from '../../hooks/useInterviews'
 
 import { Offer } from '../../types/models'
+import { LoadingState } from '../../components/shared/LoadingState'
 
 const STATUS_COLORS: Record<string, string> = {
   draft: 'bg-surface-container dark:bg-surface-container text-on-surface-variant dark:text-on-surface-variant',
@@ -133,7 +134,7 @@ export function HiringPage() {
               </span>
             </div>
             {isLoading ? (
-              <div className="text-center py-12 text-on-surface-variant dark:text-on-surface-variant">{t('loading', { ns: 'common' })}</div>
+              <LoadingState variant="table" rows={4} message={t('loading', { ns: 'common' })} />
             ) : (
               <div className="table-scroll">
                 <table role="table" className="table-card-mobile w-full text-left border-collapse min-w-[500px]">

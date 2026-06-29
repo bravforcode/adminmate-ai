@@ -16,6 +16,7 @@ import {
 } from 'lucide-react'
 import { cn } from '../../lib/utils'
 import { LoadingState } from '../../components/shared/LoadingState'
+import QRCode from 'qrcode'
 
 interface MFAStatus {
   enrolled: boolean
@@ -43,6 +44,7 @@ export function SecurityPage() {
   const [disabling, setDisabling] = useState(false)
   const [disableCode, setDisableCode] = useState('')
   const [showDisableConfirm, setShowDisableConfirm] = useState(false)
+  const [qrDataUrl, setQrDataUrl] = useState<string | null>(null)
 
   const fetchMFAStatus = useCallback(async () => {
     if (!profile?.id) return
@@ -97,6 +99,14 @@ export function SecurityPage() {
         factorId: result.data.factor_id,
         totpUri: result.data.totp_uri,
       })
+
+      // Generate QR code locally to avoid leaking TOTP URI to third-party services
+      const dataUrl = await QRCode.toDataURL(result.data.totp_uri, {
+        width: 200,
+        margin: 2,
+        color: { dark: '#000000', light: '#ffffff' },
+      })
+      setQrDataUrl(dataUrl)
     } catch (err: unknown) {
       toast.error(err instanceof Error ? err.message : t('mfa.setup_error'))
     }
@@ -286,11 +296,17 @@ export function SecurityPage() {
               </h4>
               <div className="flex flex-col sm:flex-row gap-6">
                 <div className="bg-white p-4 rounded-lg flex items-center justify-center">
-                  <img
-                    src={`https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(setupState.totpUri)}`}
-                    alt="MFA QR Code"
-                    className="w-48 h-48"
-                  />
+                  {qrDataUrl ? (
+                    <img
+                      src={qrDataUrl}
+                      alt="MFA QR Code"
+                      className="w-48 h-48"
+                    />
+                  ) : (
+                    <div className="w-48 h-48 flex items-center justify-center text-on-surface-variant text-sm">
+                      <Loader2 size={24} className="animate-spin" />
+                    </div>
+                  )}
                 </div>
                 <div className="flex-1 space-y-3">
                   <p className="text-sm text-on-surface-variant">
@@ -337,6 +353,7 @@ export function SecurityPage() {
               onClick={() => {
                 setSetupState(null)
                 setVerifyCode('')
+                setQrDataUrl(null)
               }}
               className="text-sm text-on-surface-variant hover:text-on-surface"
             >

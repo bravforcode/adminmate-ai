@@ -33,8 +33,8 @@ export function CandidateDetailPage() {
               {candidate.email && <span className="flex items-center gap-1"><Mail size={14} /> {candidate.email}</span>}
               {candidate.phone && <span className="flex items-center gap-1"><Phone size={14} /> {candidate.phone}</span>}
               {candidate.location && <span className="flex items-center gap-1"><MapPin size={14} /> {candidate.location}</span>}
-              {candidate.linkedin_url && <a href={candidate.linkedin_url} target="_blank" className="flex items-center gap-1 text-primary hover:underline"><Linkedin size={14} /> LinkedIn</a>}
-              {candidate.portfolio_url && <a href={candidate.portfolio_url} target="_blank" className="flex items-center gap-1 text-primary hover:underline"><Globe size={14} /> {t('recruitment.candidates.portfolio', 'Portfolio')}</a>}
+              {candidate.linkedin_url && <a href={candidate.linkedin_url} target="_blank" rel="noopener noreferrer" className="flex items-center gap-1 text-primary hover:underline"><Linkedin size={14} /> LinkedIn</a>}
+              {candidate.portfolio_url && <a href={candidate.portfolio_url} target="_blank" rel="noopener noreferrer" className="flex items-center gap-1 text-primary hover:underline"><Globe size={14} /> {t('recruitment.candidates.portfolio', 'Portfolio')}</a>}
             </div>
           </div>
         </div>
