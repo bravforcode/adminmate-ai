@@ -1,5 +1,7 @@
 import { describe, it, expect } from 'vitest'
 
+// ⚠️ DOCUMENTATION ONLY — not a functional test. Tests hardcoded values, not service behavior.
+
 /* ============================================================
    Release 11 — Compliance Framework Tests
    Proves: anonymous report cannot be deanonymized,
@@ -10,7 +12,7 @@ import { describe, it, expect } from 'vitest'
 // ── Anonymous Report Cannot Be Deanonymized ──
 
 describe('Compliance — Anonymous Report Cannot Be Deanonymized', () => {
-  it('whistleblower report has no employee_id column', () => {
+  it.skip('whistleblower report has no employee_id column', () => {
     const report = {
       id: 'wb-1',
       company_id: 'company-1',
@@ -23,7 +25,7 @@ describe('Compliance — Anonymous Report Cannot Be Deanonymized', () => {
     expect(report.anonymous_id).toBeTruthy()
   })
 
-  it('anonymous_id is a generated string, not a foreign key', () => {
+  it.skip('anonymous_id is a generated string, not a foreign key', () => {
     const anonymousId = `ANON-${Math.random().toString(36).substring(2, 10).toUpperCase()}`
     expect(anonymousId).toMatch(/^ANON-[A-Z0-9]+$/)
     // It must NOT be a UUID format
@@ -31,7 +33,7 @@ describe('Compliance — Anonymous Report Cannot Be Deanonymized', () => {
     expect(uuidPattern.test(anonymousId)).toBe(false)
   })
 
-  it('RLS policy for whistleblower_reports does not expose reporter identity', () => {
+  it.skip('RLS policy for whistleblower_reports does not expose reporter identity', () => {
     // Whistleblower SELECT policy only checks company_id + role
     // It does NOT join with auth.users or expose reporter_id
     const selectPolicy = 'company_id = safe_user_company_id() AND safe_user_role() IN (\'admin\', \'hr_manager\')'
@@ -39,13 +41,13 @@ describe('Compliance — Anonymous Report Cannot Be Deanonymized', () => {
     expect(selectPolicy).not.toContain('employee_id')
   })
 
-  it('whistleblower insert does not require reporter_id', () => {
+  it.skip('whistleblower insert does not require reporter_id', () => {
     // The INSERT policy only checks company_id — no reporter_id column exists
     const insertPolicy = 'company_id = safe_user_company_id()'
     expect(insertPolicy).not.toContain('reporter_id')
   })
 
-  it('whistleblower report cannot be linked back to user via audit log', () => {
+  it.skip('whistleblower report cannot be linked back to user via audit log', () => {
     const auditEntry = {
       action: 'whistleblower_report_created',
       entity_type: 'whistleblower_report',
@@ -56,7 +58,7 @@ describe('Compliance — Anonymous Report Cannot Be Deanonymized', () => {
     expect(auditEntry.details).not.toHaveProperty('employee_id')
   })
 
-  it('anonymous_id format is unlinkable to any user table', () => {
+  it.skip('anonymous_id format is unlinkable to any user table', () => {
     const anonymousIds = [
       'ANON-A7B3C9',
       'ANON-X1Y2Z3',
@@ -74,7 +76,7 @@ describe('Compliance — Anonymous Report Cannot Be Deanonymized', () => {
 // ── Deletion Requires Approval ──
 
 describe('Compliance — Deletion Requires Approval', () => {
-  it('privacy request for erasure starts as pending', () => {
+  it.skip('privacy request for erasure starts as pending', () => {
     const request = {
       request_type: 'erasure',
       status: 'pending',
@@ -83,7 +85,7 @@ describe('Compliance — Deletion Requires Approval', () => {
     expect(request.request_type).toBe('erasure')
   })
 
-  it('erasure request transitions require admin/hr_manager approval', () => {
+  it.skip('erasure request transitions require admin/hr_manager approval', () => {
     const validTransitions: Record<string, string[]> = {
       pending: ['in_progress', 'rejected'],
       in_progress: ['completed', 'rejected'],
@@ -95,7 +97,7 @@ describe('Compliance — Deletion Requires Approval', () => {
     expect(validTransitions['pending']).not.toContain('completed')
   })
 
-  it('completed erasure requires completed_at timestamp', () => {
+  it.skip('completed erasure requires completed_at timestamp', () => {
     const request = {
       status: 'completed',
       completed_at: '2024-06-20T10:00:00Z',
@@ -104,7 +106,7 @@ describe('Compliance — Deletion Requires Approval', () => {
     expect(new Date(request.completed_at).getTime()).toBeGreaterThan(0)
   })
 
-  it('data deletion checks legal hold before proceeding', () => {
+  it.skip('data deletion checks legal hold before proceeding', () => {
     const legalHolds = [
       { entity_type: 'employee', entity_id: 'emp-1', status: 'active' },
     ]
@@ -116,7 +118,7 @@ describe('Compliance — Deletion Requires Approval', () => {
     // Deletion MUST be blocked
   })
 
-  it('deletion without legal hold is allowed', () => {
+  it.skip('deletion without legal hold is allowed', () => {
     const legalHolds: Array<{ entity_type: string; entity_id: string; status: string }> = []
     const entityId = 'emp-2'
     const isHeld = legalHolds.some(
@@ -125,7 +127,7 @@ describe('Compliance — Deletion Requires Approval', () => {
     expect(isHeld).toBe(false)
   })
 
-  it('data retention policy requires admin/hr_manager to manage', () => {
+  it.skip('data retention policy requires admin/hr_manager to manage', () => {
     const policy = {
       entity_type: 'candidate',
       retention_days: 365,
@@ -140,7 +142,7 @@ describe('Compliance — Deletion Requires Approval', () => {
 // ── Legal Hold Blocks Purge ──
 
 describe('Compliance — Legal Hold Blocks Purge', () => {
-  it('active legal hold prevents entity deletion', () => {
+  it.skip('active legal hold prevents entity deletion', () => {
     const legalHold = {
       id: 'lh-1',
       entity_type: 'employee',
@@ -155,7 +157,7 @@ describe('Compliance — Legal Hold Blocks Purge', () => {
     expect(canPurge).toBe(false)
   })
 
-  it('released legal hold does not block purge', () => {
+  it.skip('released legal hold does not block purge', () => {
     const legalHold = {
       id: 'lh-2',
       entity_type: 'employee',
@@ -168,7 +170,7 @@ describe('Compliance — Legal Hold Blocks Purge', () => {
     expect(canPurge).toBe(true)
   })
 
-  it('multiple legal holds on same entity block purge if any active', () => {
+  it.skip('multiple legal holds on same entity block purge if any active', () => {
     const holds = [
       { entity_id: 'emp-1', status: 'released' },
       { entity_id: 'emp-1', status: 'active' },
@@ -177,7 +179,7 @@ describe('Compliance — Legal Hold Blocks Purge', () => {
     expect(anyActive).toBe(true)
   })
 
-  it('legal hold requires reason', () => {
+  it.skip('legal hold requires reason', () => {
     const hold = {
       reason: 'Pending employment tribunal case #2024-001',
       placed_by: 'hr-manager-1',
@@ -186,7 +188,7 @@ describe('Compliance — Legal Hold Blocks Purge', () => {
     expect(hold.reason.length).toBeGreaterThan(0)
   })
 
-  it('legal hold placement is audited', () => {
+  it.skip('legal hold placement is audited', () => {
     const auditEntry = {
       action: 'legal_hold_placed',
       entity_type: 'legal_hold',
@@ -201,7 +203,7 @@ describe('Compliance — Legal Hold Blocks Purge', () => {
     expect(auditEntry.details.reason).toBeTruthy()
   })
 
-  it('legal hold check on positive match is audited', () => {
+  it.skip('legal hold check on positive match is audited', () => {
     const auditEntry = {
       action: 'legal_hold_check_positive',
       entity_type: 'legal_hold',
@@ -215,7 +217,7 @@ describe('Compliance — Legal Hold Blocks Purge', () => {
 // ── Sensitive Field Access Logged ──
 
 describe('Compliance — Sensitive Field Access Logged', () => {
-  it('privacy request creation logs audit entry', () => {
+  it.skip('privacy request creation logs audit entry', () => {
     const auditEntry = {
       action: 'privacy_request_created',
       entity_type: 'privacy_request',
@@ -229,7 +231,7 @@ describe('Compliance — Sensitive Field Access Logged', () => {
     expect(auditEntry.details.request_type).toBeTruthy()
   })
 
-  it('grievance creation logs audit entry', () => {
+  it.skip('grievance creation logs audit entry', () => {
     const auditEntry = {
       action: 'grievance_created',
       entity_type: 'grievance_case',
@@ -239,7 +241,7 @@ describe('Compliance — Sensitive Field Access Logged', () => {
     expect(auditEntry.action).toBe('grievance_created')
   })
 
-  it('whistleblower report creation logs audit entry without anonymous_id', () => {
+  it.skip('whistleblower report creation logs audit entry without anonymous_id', () => {
     const auditEntry = {
       action: 'whistleblower_report_created',
       entity_type: 'whistleblower_report',
@@ -251,7 +253,7 @@ describe('Compliance — Sensitive Field Access Logged', () => {
     expect(auditEntry.details).not.toHaveProperty('anonymous_id')
   })
 
-  it('safety incident creation logs audit entry', () => {
+  it.skip('safety incident creation logs audit entry', () => {
     const auditEntry = {
       action: 'safety_incident_created',
       entity_type: 'health_safety_incident',
@@ -262,7 +264,7 @@ describe('Compliance — Sensitive Field Access Logged', () => {
     expect(auditEntry.details.severity).toBe('critical')
   })
 
-  it('audit log entries have timestamp', () => {
+  it.skip('audit log entries have timestamp', () => {
     const entry = {
       action: 'privacy_request_created',
       created_at: new Date().toISOString(),
@@ -271,7 +273,7 @@ describe('Compliance — Sensitive Field Access Logged', () => {
     expect(new Date(entry.created_at).getTime()).toBeGreaterThan(0)
   })
 
-  it('all compliance actions produce audit entries', () => {
+  it.skip('all compliance actions produce audit entries', () => {
     const complianceActions = [
       'privacy_request_created',
       'grievance_created',
@@ -290,7 +292,7 @@ describe('Compliance — Sensitive Field Access Logged', () => {
 // ── RLS Isolation ──
 
 describe('Compliance — RLS Isolation', () => {
-  it('all compliance tables use company_id for RLS', () => {
+  it.skip('all compliance tables use company_id for RLS', () => {
     const tables = [
       'privacy_requests',
       'data_retention_policies',
@@ -304,7 +306,7 @@ describe('Compliance — RLS Isolation', () => {
     }
   })
 
-  it('privacy requests are scoped to company_id', () => {
+  it.skip('privacy requests are scoped to company_id', () => {
     const requests = [
       { id: 'pr-1', company_id: 'company-A', employee_id: 'emp-1' },
       { id: 'pr-2', company_id: 'company-B', employee_id: 'emp-2' },
@@ -314,7 +316,7 @@ describe('Compliance — RLS Isolation', () => {
     expect(companyARequests[0].id).toBe('pr-1')
   })
 
-  it('grievance cases are scoped to company_id', () => {
+  it.skip('grievance cases are scoped to company_id', () => {
     const cases = [
       { id: 'gc-1', company_id: 'company-A', reporter_id: 'user-1' },
       { id: 'gc-2', company_id: 'company-B', reporter_id: 'user-2' },
@@ -323,7 +325,7 @@ describe('Compliance — RLS Isolation', () => {
     expect(companyACases).toHaveLength(1)
   })
 
-  it('whistleblower reports are scoped to company_id', () => {
+  it.skip('whistleblower reports are scoped to company_id', () => {
     const reports = [
       { id: 'wb-1', company_id: 'company-A', anonymous_id: 'ANON-1' },
       { id: 'wb-2', company_id: 'company-B', anonymous_id: 'ANON-2' },
@@ -332,7 +334,7 @@ describe('Compliance — RLS Isolation', () => {
     expect(companyAReports).toHaveLength(1)
   })
 
-  it('legal holds are scoped to company_id', () => {
+  it.skip('legal holds are scoped to company_id', () => {
     const holds = [
       { id: 'lh-1', company_id: 'company-A', entity_id: 'emp-1' },
       { id: 'lh-2', company_id: 'company-B', entity_id: 'emp-2' },
@@ -341,7 +343,7 @@ describe('Compliance — RLS Isolation', () => {
     expect(companyAHolds).toHaveLength(1)
   })
 
-  it('safety incidents are scoped to company_id', () => {
+  it.skip('safety incidents are scoped to company_id', () => {
     const incidents = [
       { id: 'hsi-1', company_id: 'company-A', reporter_id: 'user-1' },
       { id: 'hsi-2', company_id: 'company-B', reporter_id: 'user-2' },
@@ -350,14 +352,14 @@ describe('Compliance — RLS Isolation', () => {
     expect(companyAIncidents).toHaveLength(1)
   })
 
-  it('cross-company compliance access is denied', () => {
+  it.skip('cross-company compliance access is denied', () => {
     const userCompanyId = 'company-A'
     const resourceCompanyId = 'company-B'
     const hasAccess = userCompanyId === resourceCompanyId
     expect(hasAccess).toBe(false)
   })
 
-  it('employee can only see own privacy requests', () => {
+  it.skip('employee can only see own privacy requests', () => {
     const requests = [
       { id: 'pr-1', employee_id: 'emp-1' },
       { id: 'pr-2', employee_id: 'emp-2' },
@@ -368,7 +370,7 @@ describe('Compliance — RLS Isolation', () => {
     expect(visible[0].id).toBe('pr-1')
   })
 
-  it('employee can only see own grievance cases', () => {
+  it.skip('employee can only see own grievance cases', () => {
     const cases = [
       { id: 'gc-1', reporter_id: 'user-1' },
       { id: 'gc-2', reporter_id: 'user-2' },
@@ -379,7 +381,7 @@ describe('Compliance — RLS Isolation', () => {
     expect(visible[0].id).toBe('gc-1')
   })
 
-  it('whistleblower reports are not visible to regular employees', () => {
+  it.skip('whistleblower reports are not visible to regular employees', () => {
     const userRole = 'employee'
     const allowedRoles = ['admin', 'hr_manager']
     expect(allowedRoles).not.toContain(userRole)
@@ -389,37 +391,37 @@ describe('Compliance — RLS Isolation', () => {
 // ── RBAC ──
 
 describe('Compliance — RBAC', () => {
-  it('compliance_read permission exists', () => {
+  it.skip('compliance_read permission exists', () => {
     const permissions = ['compliance_read', 'compliance_write', 'compliance_legal_hold', 'compliance_privacy_request']
     expect(permissions).toContain('compliance_read')
   })
 
-  it('compliance_write permission exists', () => {
+  it.skip('compliance_write permission exists', () => {
     const permissions = ['compliance_read', 'compliance_write', 'compliance_legal_hold', 'compliance_privacy_request']
     expect(permissions).toContain('compliance_write')
   })
 
-  it('whistleblower_read permission exists', () => {
+  it.skip('whistleblower_read permission exists', () => {
     const permissions = ['whistleblower_read', 'whistleblower_write']
     expect(permissions).toContain('whistleblower_read')
   })
 
-  it('whistleblower_write permission exists', () => {
+  it.skip('whistleblower_write permission exists', () => {
     const permissions = ['whistleblower_read', 'whistleblower_write']
     expect(permissions).toContain('whistleblower_write')
   })
 
-  it('health_safety_read permission exists', () => {
+  it.skip('health_safety_read permission exists', () => {
     const permissions = ['health_safety_read', 'health_safety_write']
     expect(permissions).toContain('health_safety_read')
   })
 
-  it('health_safety_write permission exists', () => {
+  it.skip('health_safety_write permission exists', () => {
     const permissions = ['health_safety_read', 'health_safety_write']
     expect(permissions).toContain('health_safety_write')
   })
 
-  it('admin has full compliance permissions', () => {
+  it.skip('admin has full compliance permissions', () => {
     const adminPerms = [
       'compliance_read', 'compliance_write', 'compliance_legal_hold',
       'compliance_privacy_request', 'whistleblower_read', 'whistleblower_write',
@@ -428,7 +430,7 @@ describe('Compliance — RBAC', () => {
     expect(adminPerms.length).toBe(8)
   })
 
-  it('hr_manager has compliance + whistleblower permissions', () => {
+  it.skip('hr_manager has compliance + whistleblower permissions', () => {
     const hrManagerPerms = [
       'compliance_read', 'compliance_write',
       'whistleblower_read', 'whistleblower_write',
@@ -438,13 +440,13 @@ describe('Compliance — RBAC', () => {
     expect(hrManagerPerms).toContain('whistleblower_write')
   })
 
-  it('employee has no whistleblower permissions', () => {
+  it.skip('employee has no whistleblower permissions', () => {
     const employeePerms = ['document_read', 'leave_read', 'attendance_read']
     expect(employeePerms).not.toContain('whistleblower_read')
     expect(employeePerms).not.toContain('whistleblower_write')
   })
 
-  it('auditor has read-only whistleblower access', () => {
+  it.skip('auditor has read-only whistleblower access', () => {
     const auditorPerms = ['whistleblower_read']
     expect(auditorPerms).toContain('whistleblower_read')
     expect(auditorPerms).not.toContain('whistleblower_write')
@@ -454,7 +456,7 @@ describe('Compliance — RBAC', () => {
 // ── Health & Safety Severity & Status ──
 
 describe('Compliance — Health & Safety Incidents', () => {
-  it('severity levels are valid', () => {
+  it.skip('severity levels are valid', () => {
     const validSeverities = ['minor', 'moderate', 'serious', 'critical']
     expect(validSeverities).toContain('minor')
     expect(validSeverities).toContain('moderate')
@@ -462,7 +464,7 @@ describe('Compliance — Health & Safety Incidents', () => {
     expect(validSeverities).toContain('critical')
   })
 
-  it('incident status transitions are valid', () => {
+  it.skip('incident status transitions are valid', () => {
     const validTransitions: Record<string, string[]> = {
       reported: ['investigating'],
       investigating: ['resolved', 'closed'],
@@ -474,7 +476,7 @@ describe('Compliance — Health & Safety Incidents', () => {
     expect(validTransitions['closed'].length).toBe(0)
   })
 
-  it('incident requires incident_date', () => {
+  it.skip('incident requires incident_date', () => {
     const incident = {
       incident_date: '2024-06-15',
       description: 'Slip on wet floor',
@@ -484,7 +486,7 @@ describe('Compliance — Health & Safety Incidents', () => {
     expect(new Date(incident.incident_date).getTime()).toBeGreaterThan(0)
   })
 
-  it('critical severity triggers investigation', () => {
+  it.skip('critical severity triggers investigation', () => {
     const incident = { severity: 'critical', status: 'reported' }
     const shouldInvestigate = incident.severity === 'critical' || incident.severity === 'serious'
     expect(shouldInvestigate).toBe(true)

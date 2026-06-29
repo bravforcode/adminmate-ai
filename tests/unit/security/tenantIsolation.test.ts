@@ -1,5 +1,7 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest'
 
+// ⚠️ DOCUMENTATION ONLY — not a functional test. Tests hardcoded values, not service behavior.
+
 /* ============================================================
    Release 26A — Tenant Isolation RLS Attack Tests
    
@@ -48,7 +50,7 @@ function createScopedMock(companyId: string) {
 // ── Classification Tests ──
 
 describe('26A — Table Classification', () => {
-  it('global reference tables are correctly classified', () => {
+  it.skip('global reference tables are correctly classified', () => {
     const globalTables = [
       'document_type_configs',
       'immigration_case_types',
@@ -70,7 +72,7 @@ describe('26A — Table Classification', () => {
     expect(globalTables.length).toBeGreaterThan(0)
   })
 
-  it('tenant data tables are correctly classified', () => {
+  it.skip('tenant data tables are correctly classified', () => {
     const tenantTables = [
       'jobs', 'candidates', 'applications', 'documents',
       'interviews', 'offers', 'onboarding_checklists', 'onboarding_tasks',
@@ -81,7 +83,7 @@ describe('26A — Table Classification', () => {
     expect(tenantTables.length).toBeGreaterThan(0)
   })
 
-  it('platform_admin tables are correctly classified', () => {
+  it.skip('platform_admin tables are correctly classified', () => {
     const platformTables = [
       'integration_providers',
       'security_audit_log',
@@ -94,7 +96,7 @@ describe('26A — Table Classification', () => {
 // ── Cross-Tenant Attack Tests ──
 
 describe('26A — Cross-Tenant Attack Prevention', () => {
-  it('company_id is resolved server-side, not from client', () => {
+  it.skip('company_id is resolved server-side, not from client', () => {
     // Contract: safe_user_company_id() reads from auth.users/user_profiles
     // Client cannot supply company_id to override
     const clientPayload = { company_id: 'evil-company-id' }
@@ -102,7 +104,7 @@ describe('26A — Cross-Tenant Attack Prevention', () => {
     expect(clientPayload.company_id).not.toBe(serverResolved)
   })
 
-  it('UPDATE cannot mutate company_id to another company', () => {
+  it.skip('UPDATE cannot mutate company_id to another company', () => {
     // Contract: UPDATE policy uses WITH CHECK (company_id = safe_user_company_id())
     // If user tries to UPDATE row's company_id to another company, CHECK fails
     const currentCompanyId = 'company-a'
@@ -112,7 +114,7 @@ describe('26A — Cross-Tenant Attack Prevention', () => {
     expect(wouldPass).toBe(false)
   })
 
-  it('INSERT cannot create row with another company_id', () => {
+  it.skip('INSERT cannot create row with another company_id', () => {
     // Contract: INSERT policy uses WITH CHECK (company_id = safe_user_company_id())
     const userCompanyId = 'company-a'
     const attemptedCompanyId = 'company-b'
@@ -120,7 +122,7 @@ describe('26A — Cross-Tenant Attack Prevention', () => {
     expect(wouldPass).toBe(false)
   })
 
-  it('DELETE cannot remove rows from another company', () => {
+  it.skip('DELETE cannot remove rows from another company', () => {
     // Contract: DELETE policy uses USING (company_id = safe_user_company_id())
     const userCompanyId = 'company-a'
     const targetCompanyId = 'company-b'
@@ -128,7 +130,7 @@ describe('26A — Cross-Tenant Attack Prevention', () => {
     expect(wouldPass).toBe(false)
   })
 
-  it('SELECT cannot read rows from another company', () => {
+  it.skip('SELECT cannot read rows from another company', () => {
     // Contract: SELECT policy uses USING (company_id = safe_user_company_id())
     const userCompanyId = 'company-a'
     const targetCompanyId = 'company-b'
@@ -140,13 +142,13 @@ describe('26A — Cross-Tenant Attack Prevention', () => {
 // ── Global Reference Table Tests ──
 
 describe('26A — Global Reference Table Security', () => {
-  it('document_type_configs: authenticated user can read', () => {
+  it.skip('document_type_configs: authenticated user can read', () => {
     // Contract: SELECT USING (true) — any authenticated user
     const canRead = true
     expect(canRead).toBe(true)
   })
 
-  it('document_type_configs: normal user cannot INSERT', () => {
+  it.skip('document_type_configs: normal user cannot INSERT', () => {
     // Contract: INSERT TO service_role only
     const userRole = 'admin'
     const isServiceRole = false
@@ -154,37 +156,37 @@ describe('26A — Global Reference Table Security', () => {
     expect(canInsert).toBe(false)
   })
 
-  it('document_type_configs: normal user cannot UPDATE', () => {
+  it.skip('document_type_configs: normal user cannot UPDATE', () => {
     // Contract: UPDATE TO service_role only
     const isServiceRole = false
     const canUpdate = isServiceRole
     expect(canUpdate).toBe(false)
   })
 
-  it('document_type_configs: normal user cannot DELETE', () => {
+  it.skip('document_type_configs: normal user cannot DELETE', () => {
     // Contract: DELETE TO service_role only
     const isServiceRole = false
     const canDelete = isServiceRole
     expect(canDelete).toBe(false)
   })
 
-  it('th_tax_brackets: authenticated user can read', () => {
+  it.skip('th_tax_brackets: authenticated user can read', () => {
     const canRead = true
     expect(canRead).toBe(true)
   })
 
-  it('th_tax_brackets: normal user cannot modify tax rules', () => {
+  it.skip('th_tax_brackets: normal user cannot modify tax rules', () => {
     const isServiceRole = false
     const canModify = isServiceRole
     expect(canModify).toBe(false)
   })
 
-  it('th_social_security_rules: authenticated user can read', () => {
+  it.skip('th_social_security_rules: authenticated user can read', () => {
     const canRead = true
     expect(canRead).toBe(true)
   })
 
-  it('th_social_security_rules: normal user cannot modify SS rules', () => {
+  it.skip('th_social_security_rules: normal user cannot modify SS rules', () => {
     const isServiceRole = false
     const canModify = isServiceRole
     expect(canModify).toBe(false)
@@ -194,7 +196,7 @@ describe('26A — Global Reference Table Security', () => {
 // ── Service-Role Edge Function Tests ──
 
 describe('26A — Edge Function Authorization', () => {
-  it('edge functions must verify auth before data access', () => {
+  it.skip('edge functions must verify auth before data access', () => {
     // Contract: every edge function calls verifyAuth()
     const edgeFunctions = [
       'submit-application', 'get-public-job', 'track-application',
@@ -207,14 +209,14 @@ describe('26A — Edge Function Authorization', () => {
     expect(edgeFunctions.length).toBeGreaterThan(0)
   })
 
-  it('edge functions resolve company_id server-side', () => {
+  it.skip('edge functions resolve company_id server-side', () => {
     // Contract: company_id comes from DB lookup, not client payload
     const clientPayload = { company_id: 'evil' }
     const serverResolved = 'real-company-id'
     expect(clientPayload.company_id).not.toBe(serverResolved)
   })
 
-  it('edge functions never trust client-provided company_id', () => {
+  it.skip('edge functions never trust client-provided company_id', () => {
     // Contract: even if client sends company_id, it's ignored
     const clientCompanyId = 'client-company'
     const actualCompanyId = 'server-resolved'
@@ -226,29 +228,29 @@ describe('26A — Edge Function Authorization', () => {
 // ── Messaging Table Tests ──
 
 describe('26A — Messaging Table Security', () => {
-  it('chat_platform_connections requires company_id scoping', () => {
+  it.skip('chat_platform_connections requires company_id scoping', () => {
     // Contract: RLS USING (company_id = safe_user_company_id())
     const table = 'chat_platform_connections'
     expect(table).toBeDefined()
   })
 
-  it('messages requires company_id scoping', () => {
+  it.skip('messages requires company_id scoping', () => {
     const table = 'messages'
     expect(table).toBeDefined()
   })
 
-  it('conversation_threads requires company_id scoping', () => {
+  it.skip('conversation_threads requires company_id scoping', () => {
     const table = 'conversation_threads'
     expect(table).toBeDefined()
   })
 
-  it('message_queue is service_role only', () => {
+  it.skip('message_queue is service_role only', () => {
     // Contract: FOR ALL TO service_role
     const access = 'service_role'
     expect(access).toBe('service_role')
   })
 
-  it('platform_sync_log is service_role only', () => {
+  it.skip('platform_sync_log is service_role only', () => {
     const access = 'service_role'
     expect(access).toBe('service_role')
   })
@@ -257,26 +259,26 @@ describe('26A — Messaging Table Security', () => {
 // ── Candidate Portal Token Tests ──
 
 describe('26A — Public Token Security', () => {
-  it('upload token expires after 7 days', () => {
+  it.skip('upload token expires after 7 days', () => {
     const expiryMs = 7 * 24 * 60 * 60 * 1000
     expect(expiryMs).toBe(604800000)
   })
 
-  it('expired token is rejected', () => {
+  it.skip('expired token is rejected', () => {
     const tokenExpiry = new Date('2024-01-01')
     const now = new Date('2024-01-10')
     const isExpired = now > tokenExpiry
     expect(isExpired).toBe(true)
   })
 
-  it('token validates against hashed value, not raw', () => {
+  it.skip('token validates against hashed value, not raw', () => {
     // Contract: DB stores SHA-256 hash, not raw token
     const rawToken = 'abc123'
     const storedHash = 'sha256-of-abc123'
     expect(rawToken).not.toBe(storedHash)
   })
 
-  it('public job route only returns published active jobs', () => {
+  it.skip('public job route only returns published active jobs', () => {
     // Contract: get_public_job checks is_published AND status = 'active'
     const job = { is_published: true, status: 'active' }
     const isVisible = job.is_published && job.status === 'active'

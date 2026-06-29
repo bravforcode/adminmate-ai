@@ -1,5 +1,7 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest'
 
+// ⚠️ DOCUMENTATION ONLY — not a functional test. Tests hardcoded values, not service behavior.
+
 /* ============================================================
    Release 26A.1 — RLS Proof: Service-Layer Attack Matrix
    
@@ -62,14 +64,14 @@ function createStrictMock(userCompanyId: string, userRole: string, userId: strin
 // ── chat_messages Attack Tests ──
 
 describe('26A.1 — chat_messages RLS Proof', () => {
-  it('Company A user can read own messages', () => {
+  it.skip('Company A user can read own messages', () => {
     const mock = createStrictMock('company-a', 'employee', 'user-1')
     // SELECT with user_id = auth.uid() should work
     const canRead = true // policy: user_id = auth.uid() OR (company_id = safe_user_company_id() AND role IN admin,hr)
     expect(canRead).toBe(true)
   })
 
-  it('Company A employee cannot read Company B messages', () => {
+  it.skip('Company A employee cannot read Company B messages', () => {
     // Policy: SELECT requires user_id = auth.uid() OR (company_id = safe_user_company_id() AND role IN admin,hr)
     // Company A employee querying Company B messages: user_id won't match, company_id won't match
     const userCompanyId = 'company-a'
@@ -78,7 +80,7 @@ describe('26A.1 — chat_messages RLS Proof', () => {
     expect(wouldPass).toBe(false)
   })
 
-  it('Company A HR can read all Company A messages', () => {
+  it.skip('Company A HR can read all Company A messages', () => {
     // Policy: company_id = safe_user_company_id() AND role IN ('admin','hr_manager','hr_staff')
     const userCompanyId = 'company-a'
     const targetCompanyId = 'company-a'
@@ -87,7 +89,7 @@ describe('26A.1 — chat_messages RLS Proof', () => {
     expect(wouldPass).toBe(true)
   })
 
-  it('Company A employee cannot INSERT with Company B company_id', () => {
+  it.skip('Company A employee cannot INSERT with Company B company_id', () => {
     // Policy: INSERT WITH CHECK user_id = auth.uid() AND company_id = safe_user_company_id()
     const userCompanyId = 'company-a'
     const attemptedCompanyId = 'company-b'
@@ -95,7 +97,7 @@ describe('26A.1 — chat_messages RLS Proof', () => {
     expect(wouldPass).toBe(false)
   })
 
-  it('Company A user cannot UPDATE own row company_id to Company B', () => {
+  it.skip('Company A user cannot UPDATE own row company_id to Company B', () => {
     // Policy: UPDATE WITH CHECK user_id = auth.uid()
     // But changing company_id would violate the row's existing company_id
     const userCompanyId = 'company-a'
@@ -104,7 +106,7 @@ describe('26A.1 — chat_messages RLS Proof', () => {
     expect(wouldPass).toBe(false)
   })
 
-  it('Company A user cannot DELETE Company B messages', () => {
+  it.skip('Company A user cannot DELETE Company B messages', () => {
     // Policy: DELETE requires user_id = auth.uid() OR (company_id = safe_user_company_id() AND role IN admin,hr_manager)
     const userCompanyId = 'company-a'
     const targetCompanyId = 'company-b'
@@ -112,7 +114,7 @@ describe('26A.1 — chat_messages RLS Proof', () => {
     expect(wouldPass).toBe(false)
   })
 
-  it('Anonymous user cannot access chat_messages', () => {
+  it.skip('Anonymous user cannot access chat_messages', () => {
     // Policy: FOR SELECT TO authenticated — anon role not included
     const isAuthenticated = false
     const canAccess = isAuthenticated
@@ -123,7 +125,7 @@ describe('26A.1 — chat_messages RLS Proof', () => {
 // ── messages Attack Tests ──
 
 describe('26A.1 — messages RLS Proof', () => {
-  it('Company A HR can read Company A messages', () => {
+  it.skip('Company A HR can read Company A messages', () => {
     const userCompanyId = 'company-a'
     const targetCompanyId = 'company-a'
     const userRole = 'hr_manager'
@@ -131,14 +133,14 @@ describe('26A.1 — messages RLS Proof', () => {
     expect(wouldPass).toBe(true)
   })
 
-  it('Company B cannot read Company A messages', () => {
+  it.skip('Company B cannot read Company A messages', () => {
     const userCompanyId = 'company-b'
     const targetCompanyId = 'company-a'
     const wouldPass = targetCompanyId === userCompanyId
     expect(wouldPass).toBe(false)
   })
 
-  it('Company A employee cannot read HR internal messages (non-sender)', () => {
+  it.skip('Company A employee cannot read HR internal messages (non-sender)', () => {
     // Policy: platform_user_id = auth.uid()::text OR role IN admin/hr
     // Employee sending messages to HR: employee can read own sent messages
     // But cannot read HR-to-HR messages
@@ -148,7 +150,7 @@ describe('26A.1 — messages RLS Proof', () => {
     expect(canRead).toBe(false)
   })
 
-  it('Company A user cannot INSERT with Company B company_id', () => {
+  it.skip('Company A user cannot INSERT with Company B company_id', () => {
     const userCompanyId = 'company-a'
     const attemptedCompanyId = 'company-b'
     const wouldPass = attemptedCompanyId === userCompanyId
@@ -159,20 +161,20 @@ describe('26A.1 — messages RLS Proof', () => {
 // ── conversation_threads Attack Tests ──
 
 describe('26A.1 — conversation_threads RLS Proof', () => {
-  it('Company A participant can read own threads', () => {
+  it.skip('Company A participant can read own threads', () => {
     const isParticipant = true
     const canRead = isParticipant
     expect(canRead).toBe(true)
   })
 
-  it('Company B cannot read Company A threads', () => {
+  it.skip('Company B cannot read Company A threads', () => {
     const userCompanyId = 'company-b'
     const targetCompanyId = 'company-a'
     const wouldPass = targetCompanyId === userCompanyId
     expect(wouldPass).toBe(false)
   })
 
-  it('Company A employee cannot read HR-only threads', () => {
+  it.skip('Company A employee cannot read HR-only threads', () => {
     const isParticipant = false
     const isAdmin = false
     const canRead = isParticipant || isAdmin
@@ -183,24 +185,24 @@ describe('26A.1 — conversation_threads RLS Proof', () => {
 // ── Global Reference Table Tests ──
 
 describe('26A.1 — document_type_configs RLS Proof', () => {
-  it('Any authenticated user can read', () => {
+  it.skip('Any authenticated user can read', () => {
     const canRead = true // USING(true) for SELECT
     expect(canRead).toBe(true)
   })
 
-  it('Normal user cannot INSERT (service_role only)', () => {
+  it.skip('Normal user cannot INSERT (service_role only)', () => {
     const isServiceRole = false
     const canInsert = isServiceRole
     expect(canInsert).toBe(false)
   })
 
-  it('Normal user cannot UPDATE (service_role only)', () => {
+  it.skip('Normal user cannot UPDATE (service_role only)', () => {
     const isServiceRole = false
     const canUpdate = isServiceRole
     expect(canUpdate).toBe(false)
   })
 
-  it('Normal user cannot DELETE (service_role only)', () => {
+  it.skip('Normal user cannot DELETE (service_role only)', () => {
     const isServiceRole = false
     const canDelete = isServiceRole
     expect(canDelete).toBe(false)
@@ -208,18 +210,18 @@ describe('26A.1 — document_type_configs RLS Proof', () => {
 })
 
 describe('26A.1 — th_tax_brackets RLS Proof', () => {
-  it('Any authenticated user can read tax brackets', () => {
+  it.skip('Any authenticated user can read tax brackets', () => {
     const canRead = true
     expect(canRead).toBe(true)
   })
 
-  it('Normal user cannot modify tax rules', () => {
+  it.skip('Normal user cannot modify tax rules', () => {
     const isServiceRole = false
     const canModify = isServiceRole
     expect(canModify).toBe(false)
   })
 
-  it('Admin cannot directly modify tax rules via client', () => {
+  it.skip('Admin cannot directly modify tax rules via client', () => {
     // Policy: INSERT/UPDATE/DELETE TO service_role only
     // Admin is NOT service_role — RLS blocks direct writes
     // Must go through edge function (service_role path)
@@ -232,12 +234,12 @@ describe('26A.1 — th_tax_brackets RLS Proof', () => {
 })
 
 describe('26A.1 — th_social_security_rules RLS Proof', () => {
-  it('Any authenticated user can read SS rules', () => {
+  it.skip('Any authenticated user can read SS rules', () => {
     const canRead = true
     expect(canRead).toBe(true)
   })
 
-  it('Normal user cannot modify SS rules', () => {
+  it.skip('Normal user cannot modify SS rules', () => {
     const isServiceRole = false
     const canModify = isServiceRole
     expect(canModify).toBe(false)
@@ -247,21 +249,21 @@ describe('26A.1 — th_social_security_rules RLS Proof', () => {
 // ── chat_platform_connections Attack Tests ──
 
 describe('26A.1 — chat_platform_connections RLS Proof', () => {
-  it('Company A admin can read own connections', () => {
+  it.skip('Company A admin can read own connections', () => {
     const userCompanyId = 'company-a'
     const targetCompanyId = 'company-a'
     const wouldPass = targetCompanyId === userCompanyId
     expect(wouldPass).toBe(true)
   })
 
-  it('Company B cannot read Company A connections', () => {
+  it.skip('Company B cannot read Company A connections', () => {
     const userCompanyId = 'company-b'
     const targetCompanyId = 'company-a'
     const wouldPass = targetCompanyId === userCompanyId
     expect(wouldPass).toBe(false)
   })
 
-  it('Company A employee cannot modify connections (admin only)', () => {
+  it.skip('Company A employee cannot modify connections (admin only)', () => {
     const userRole = 'employee'
     const canModify = ['admin'].includes(userRole)
     expect(canModify).toBe(false)
@@ -271,7 +273,7 @@ describe('26A.1 — chat_platform_connections RLS Proof', () => {
 // ── Service-Role Edge Function Tests ──
 
 describe('26A.1 — Edge Function Security Contract', () => {
-  it('every edge function must call verifyAuth', () => {
+  it.skip('every edge function must call verifyAuth', () => {
     // Contract: no edge function should skip auth check
     const edgeFunctionsRequiringAuth = [
       'submit-application', 'get-public-job', 'track-application',
@@ -290,7 +292,7 @@ describe('26A.1 — Edge Function Security Contract', () => {
     expect(authRequired.length).toBeGreaterThan(0)
   })
 
-  it('edge functions resolve company_id server-side', () => {
+  it.skip('edge functions resolve company_id server-side', () => {
     // Contract: company_id comes from DB lookup, not client payload
     const clientCompanyId = 'client-supplied-company'
     const serverCompanyId = 'server-resolved-company'
@@ -298,7 +300,7 @@ describe('26A.1 — Edge Function Security Contract', () => {
     expect(clientCompanyId).not.toBe(serverCompanyId)
   })
 
-  it('SECURITY DEFINER functions have safe search_path', () => {
+  it.skip('SECURITY DEFINER functions have safe search_path', () => {
     // Contract: all SECURITY DEFINER functions should SET search_path = public
     // This prevents search_path injection attacks
     const functionsWithSearchPath = [
@@ -317,7 +319,7 @@ describe('26A.1 — Edge Function Security Contract', () => {
 // ── Policy Permissive Check ──
 
 describe('26A.1 — Policy Permissive Audit', () => {
-  it('no tenant table has USING(true) for anon role', () => {
+  it.skip('no tenant table has USING(true) for anon role', () => {
     // Contract: tenant tables must not be accessible by anon
     const tenantTables = [
       'chat_messages', 'chat_platform_connections',
@@ -328,7 +330,7 @@ describe('26A.1 — Policy Permissive Audit', () => {
     expect(tenantTables.length).toBe(7)
   })
 
-  it('global reference tables have permissive SELECT for authenticated', () => {
+  it.skip('global reference tables have permissive SELECT for authenticated', () => {
     // Contract: SELECT USING(true) TO authenticated
     const globalTables = [
       'document_type_configs', 'immigration_case_types',
@@ -337,7 +339,7 @@ describe('26A.1 — Policy Permissive Audit', () => {
     expect(globalTables.length).toBe(4)
   })
 
-  it('no broad permissive FOR ALL policy on tenant tables', () => {
+  it.skip('no broad permissive FOR ALL policy on tenant tables', () => {
     // Contract: tenant tables should not have FOR ALL USING(true)
     // They should have separate SELECT/INSERT/UPDATE/DELETE policies
     const tenantTablesNeedingSeparatePolicies = [
