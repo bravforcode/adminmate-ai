@@ -256,7 +256,7 @@ export function ThailandPayrollPage() {
         >
           <div className="flex items-center gap-2">
             <Users size={20} className="text-primary" />
-            <CardTitle>Social Security Fund (SSF)</CardTitle>
+            <CardTitle>{t('ssf_title')}</CardTitle>
           </div>
           {showSSDetails ? <ChevronUp size={20} /> : <ChevronDown size={20} />}
         </CardHeader>
@@ -264,15 +264,15 @@ export function ThailandPayrollPage() {
           <CardContent>
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-4">
               <div className="p-3 bg-surface-container-low rounded-lg">
-                <p className="text-xs text-on-surface-variant">Employee Rate</p>
+                <p className="text-xs text-on-surface-variant">{t('employee_rate')}</p>
                 <p className="text-lg font-semibold">{TH_SS_RULES.employeeRate}%</p>
               </div>
               <div className="p-3 bg-surface-container-low rounded-lg">
-                <p className="text-xs text-on-surface-variant">Employer Rate</p>
+                <p className="text-xs text-on-surface-variant">{t('employer_rate')}</p>
                 <p className="text-lg font-semibold">{TH_SS_RULES.employerRate}%</p>
               </div>
               <div className="p-3 bg-surface-container-low rounded-lg">
-                <p className="text-xs text-on-surface-variant">Salary Cap</p>
+                <p className="text-xs text-on-surface-variant">{t('salary_cap')}</p>
                 <p className="text-lg font-semibold">{TH_SS_RULES.maxSalary.toLocaleString()} THB/mo</p>
               </div>
             </div>
@@ -280,7 +280,7 @@ export function ThailandPayrollPage() {
               <div className="flex items-start gap-2">
                 <AlertTriangle size={16} className="text-amber-600 mt-0.5" />
                 <p className="text-sm text-amber-800">
-                  Minimum salary for SS: {TH_SS_RULES.minSalary.toLocaleString()} THB. Maximum contribution: {TH_SS_RULES.maxSalary.toLocaleString()} THB/month (5% = {TH_SS_RULES.maxSalary * TH_SS_RULES.employeeRate / 100} THB).
+                  {t('ss_info', { min: TH_SS_RULES.minSalary.toLocaleString(), max: TH_SS_RULES.maxSalary.toLocaleString(), contribution: TH_SS_RULES.maxSalary * TH_SS_RULES.employeeRate / 100 })}
                 </p>
               </div>
             </div>
@@ -292,11 +292,11 @@ export function ThailandPayrollPage() {
       <Card>
         <CardHeader className="flex-row items-center gap-2">
           <MapPin size={20} className="text-primary" />
-          <CardTitle>Provincial Tax</CardTitle>
+          <CardTitle>{t('provincial_tax')}</CardTitle>
         </CardHeader>
         <CardContent>
           <p className="text-sm text-on-surface-variant mb-3">
-            Bangkok (BKK) has 0% provincial tax. Other provinces apply 0.1%.
+            {t('provincial_tax_desc')}
           </p>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
             {TH_PROVINCES.map(p => (
@@ -315,12 +315,12 @@ export function ThailandPayrollPage() {
       <Card>
         <CardHeader className="flex-row items-center gap-2">
           <DollarSign size={20} className="text-primary" />
-          <CardTitle>Payroll Preview</CardTitle>
+          <CardTitle>{t('payroll_preview')}</CardTitle>
         </CardHeader>
         <CardContent>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
             <div>
-              <label className="block text-sm font-medium mb-1 text-on-surface-variant">Monthly Salary (THB)</label>
+              <label className="block text-sm font-medium mb-1 text-on-surface-variant">{t('monthly_salary')}</label>
               <input
                 type="number"
                 min={0}
@@ -331,7 +331,7 @@ export function ThailandPayrollPage() {
               />
             </div>
             <div>
-              <label className="block text-sm font-medium mb-1 text-on-surface-variant">Province</label>
+              <label className="block text-sm font-medium mb-1 text-on-surface-variant">{t('province')}</label>
               <select
                 value={previewProvince}
                 onChange={e => setPreviewProvince(e.target.value)}
@@ -345,16 +345,16 @@ export function ThailandPayrollPage() {
           </div>
 
           <div className="bg-surface-container-low rounded-xl p-4 space-y-3">
-            <div className="flex justify-between py-1"><span className="text-sm text-on-surface-variant">Gross Monthly Income</span><span className="text-sm font-medium">{preview.grossIncome.toLocaleString()} THB</span></div>
+            <div className="flex justify-between py-1"><span className="text-sm text-on-surface-variant">{t('gross_monthly_income')}</span><span className="text-sm font-medium">{preview.grossIncome.toLocaleString()} THB</span></div>
             <div className="border-t border-outline-variant" />
-            <div className="flex justify-between py-1"><span className="text-sm text-on-surface-variant">Social Security (Employee)</span><span className="text-sm font-medium text-red-600">-{preview.socialSecurityEmployee.toLocaleString()} THB</span></div>
-            <div className="flex justify-between py-1"><span className="text-sm text-on-surface-variant">Withholding Tax (Monthly)</span><span className="text-sm font-medium text-red-600">-{preview.withholdingTax.toLocaleString()} THB</span></div>
-            <div className="flex justify-between py-1"><span className="text-sm text-on-surface-variant">Provincial Tax (Monthly)</span><span className="text-sm font-medium text-red-600">-{preview.provincialTax.toLocaleString()} THB</span></div>
+            <div className="flex justify-between py-1"><span className="text-sm text-on-surface-variant">{t('ss_employee')}</span><span className="text-sm font-medium text-red-600">-{preview.socialSecurityEmployee.toLocaleString()} THB</span></div>
+            <div className="flex justify-between py-1"><span className="text-sm text-on-surface-variant">{t('withholding_tax')}</span><span className="text-sm font-medium text-red-600">-{preview.withholdingTax.toLocaleString()} THB</span></div>
+            <div className="flex justify-between py-1"><span className="text-sm text-on-surface-variant">{t('provincial_tax_monthly')}</span><span className="text-sm font-medium text-red-600">-{preview.provincialTax.toLocaleString()} THB</span></div>
             <div className="border-t border-outline-variant" />
-            <div className="flex justify-between py-1"><span className="text-sm text-on-surface-variant">Social Security (Employer)</span><span className="text-sm font-medium text-blue-600">{preview.socialSecurityEmployer.toLocaleString()} THB</span></div>
+            <div className="flex justify-between py-1"><span className="text-sm text-on-surface-variant">{t('ss_employer')}</span><span className="text-sm font-medium text-blue-600">{preview.socialSecurityEmployer.toLocaleString()} THB</span></div>
             <div className="border-t border-outline-variant" />
-            <div className="flex justify-between py-2"><span className="text-sm font-semibold text-on-surface">Net Pay</span><span className="text-lg font-bold text-primary">{preview.netPay.toLocaleString()} THB</span></div>
-            <div className="flex justify-between py-1"><span className="text-xs text-on-surface-variant">Effective Tax Rate</span><span className="text-xs font-medium">{preview.effectiveTaxRate}%</span></div>
+            <div className="flex justify-between py-2"><span className="text-sm font-semibold text-on-surface">{t('net_pay')}</span><span className="text-lg font-bold text-primary">{preview.netPay.toLocaleString()} THB</span></div>
+            <div className="flex justify-between py-1"><span className="text-xs text-on-surface-variant">{t('effective_tax_rate')}</span><span className="text-xs font-medium">{preview.effectiveTaxRate}%</span></div>
           </div>
         </CardContent>
       </Card>

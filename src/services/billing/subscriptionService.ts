@@ -1,4 +1,5 @@
 import { supabase } from '../../lib/supabase'
+import { hasPermission } from '../permissionService'
 
 export interface Plan {
   id: string
@@ -70,6 +71,10 @@ export const subscriptionService = {
   },
 
   async createSubscription(companyId: string, planId: string): Promise<Subscription> {
+    if (!(await hasPermission('subscription', 'write'))) {
+      throw new Error('Permission denied: subscription.write')
+    }
+
     // Prevent duplicate active/trialing subscriptions
     const existing = await this.getSubscription(companyId)
     if (existing && ['active', 'trialing'].includes(existing.status)) {

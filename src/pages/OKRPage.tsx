@@ -3,11 +3,10 @@ import { useTranslation } from 'react-i18next'
 import { useQuery } from '@tanstack/react-query'
 import { supabase } from '../lib/supabase'
 import { useAuthStore } from '../stores/authStore'
-import { Target, TrendingUp, AlertTriangle, CheckCircle2, ChevronDown, ChevronRight, Plus } from 'lucide-react'
+import { Target, TrendingUp, AlertTriangle, CheckCircle2, ChevronDown, ChevronRight, Construction } from 'lucide-react'
 import { LoadingState } from '../components/shared/LoadingState'
 import { EmptyState } from '../components/shared/EmptyState'
 import { ErrorState } from '../components/shared/ErrorState'
-import { Button } from '../components/ui/Button'
 import type { OkrObjective, OkrKeyResult } from '../services/performance/performanceService'
 
 type OkrStatus = 'on_track' | 'at_risk' | 'behind' | 'completed'
@@ -104,7 +103,6 @@ export function OKRPage() {
   const { t } = useTranslation(['performance', 'common'])
   const company = useAuthStore(s => s.company)
   const [viewMode, setViewMode] = useState<'all' | 'on_track' | 'at_risk' | 'behind' | 'completed'>('all')
-  const [showCreateForm, setShowCreateForm] = useState(false)
 
   const { data: objectives, isLoading: objLoading, isError: objError, refetch: refetchObj } = useQuery({
     queryKey: ['okr', 'objectives', company?.id],
@@ -170,14 +168,10 @@ export function OKRPage() {
           <h1 className="text-headline-md font-bold text-on-surface dark:text-on-surface">{t('okr_title', 'OKRs & Goals')}</h1>
           <p className="text-body-md text-on-surface-variant dark:text-on-surface-variant mt-1">{t('okr_subtitle', 'Track objectives, key results, and alignment across the organization')}</p>
         </div>
-        <Button
-          variant="default"
-          size="md"
-          icon={<Plus size={16} />}
-          onClick={() => setShowCreateForm(!showCreateForm)}
-        >
-          {t('create_okr', 'Create OKR')}
-        </Button>
+        <div className="flex items-center gap-2 px-4 py-2 rounded-lg bg-surface-container-high dark:bg-surface-container text-on-surface-variant dark:text-on-surface-variant text-sm">
+          <Construction size={16} />
+          <span>{t('coming_soon', 'Coming Soon')}</span>
+        </div>
       </div>
 
       <div className="grid grid-cols-2 sm:grid-cols-5 gap-3">
@@ -214,38 +208,6 @@ export function OKRPage() {
         </div>
         <p className="text-xs text-on-surface-variant dark:text-on-surface-variant">{avgProgress}% {t('average', 'average')} · {statusCounts.total} {t('objectives', 'objectives')}</p>
       </div>
-
-      {showCreateForm && (
-        <div className="bg-surface dark:bg-surface rounded-xl border border-primary dark:border-accent-dim p-5">
-          <h3 className="text-title-sm font-semibold text-on-surface dark:text-on-surface mb-4">{t('create_new_okr', 'Create New OKR')}</h3>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <div>
-              <label className="block text-xs font-medium text-on-surface-variant dark:text-on-surface-variant mb-1">{t('objective_label', 'Objective')}</label>
-              <input className="w-full px-3 py-2 rounded-lg border border-outline-variant dark:border-outline bg-surface-container-lowest dark:bg-surface-container-lowest text-on-surface dark:text-on-surface text-sm focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none" placeholder={t('objective_placeholder', 'e.g. Improve customer satisfaction')} />
-            </div>
-            <div>
-              <label className="block text-xs font-medium text-on-surface-variant dark:text-on-surface-variant mb-1">{t('cycle', 'Cycle')}</label>
-              <select className="w-full px-3 py-2 rounded-lg border border-outline-variant dark:border-outline bg-surface-container-lowest dark:bg-surface-container-lowest text-on-surface dark:text-on-surface text-sm focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none">
-                <option value="">{t('select_cycle', 'Select cycle')}</option>
-              </select>
-            </div>
-            <div className="sm:col-span-2">
-              <label className="block text-xs font-medium text-on-surface-variant dark:text-on-surface-variant mb-1">{t('key_results', 'Key Results')}</label>
-              <div className="space-y-2">
-                <div className="flex gap-2">
-                  <input className="flex-1 px-3 py-2 rounded-lg border border-outline-variant dark:border-outline bg-surface-container-lowest dark:bg-surface-container-lowest text-on-surface dark:text-on-surface text-sm focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none" placeholder={t('kr_placeholder', 'e.g. Achieve NPS score of 70+')} />
-                  <input type="number" className="w-24 px-3 py-2 rounded-lg border border-outline-variant dark:border-outline bg-surface-container-lowest dark:bg-surface-container-lowest text-on-surface dark:text-on-surface text-sm focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none" placeholder={t('target', 'Target')} />
-                </div>
-                <Button variant="ghost" size="sm" icon={<Plus size={14} />}>{t('add_key_result', 'Add Key Result')}</Button>
-              </div>
-            </div>
-          </div>
-          <div className="flex justify-end gap-2 mt-4">
-            <Button variant="ghost" size="sm" onClick={() => setShowCreateForm(false)}>{t('cancel', 'Cancel')}</Button>
-            <Button variant="default" size="sm">{t('save_okr', 'Save OKR')}</Button>
-          </div>
-        </div>
-      )}
 
       {isLoading ? (
             <LoadingState variant="cards" rows={4} message={t('common:loading')} />

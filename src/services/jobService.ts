@@ -1,4 +1,5 @@
 import { supabase } from '../lib/supabase'
+import { hasPermission } from './permissionService'
 
 export const jobService = {
   getAll: async (companyId: string) => {
@@ -12,11 +13,17 @@ export const jobService = {
     return data
   },
   create: async (job: Record<string, unknown>) => {
+    if (!(await hasPermission('job', 'write'))) {
+      throw new Error('Permission denied: job.write')
+    }
     const { data, error } = await supabase.from('jobs').insert(job).select().single()
     if (error) throw error
     return data
   },
   update: async (id: string, updates: Record<string, unknown>) => {
+    if (!(await hasPermission('job', 'write'))) {
+      throw new Error('Permission denied: job.write')
+    }
     const { data, error } = await supabase.from('jobs').update(updates).eq('id', id).select().single()
     if (error) throw error
     return data
