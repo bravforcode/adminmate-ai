@@ -277,4 +277,94 @@ export const attendanceService = {
 
     return data
   },
+
+  /**
+   * Reject a correction request.
+   */
+  async rejectCorrection(
+    id: string,
+    rejectedBy: string,
+    reason: string
+  ): Promise<AttendanceCorrection> {
+    if (!reason || reason.trim().length < 3) {
+      throw new Error('Rejection reason is required (min 3 characters)')
+    }
+
+    const { data: correction, error: fetchErr } = await supabase
+      .from('attendance_corrections')
+      .select('id, company_id, status')
+      .eq('id', id)
+      .single()
+
+    if (fetchErr) throw fetchErr
+    if (correction.status !== 'pending') throw new Error('Correction is not pending')
+
+    const { data, error } = await supabase
+      .from('attendance_corrections')
+      .update({ status: 'rejected', approved_by: rejectedBy, approved_at: new Date().toISOString() })
+      .eq('id', id)
+      .select()
+      .single()
+
+    if (error) throw error
+
+    await supabase.from('audit_logs').insert({
+      company_id: correction.company_id,
+      action: 'attendance.correction_rejected',
+      resource_type: 'attendance_corrections',
+      resource_id: id,
+      details: JSON.stringify({ rejected_by: rejectedBy, reason }),
+    })
+
+    return data
+  },
+
+  /**
+   * Calculate overtime hours for an attendance record.
+   * Standard work hours = 8. OT = max(0, hours_worked - 8).
+   */
+  calculateOvertime(checkIn: string, checkOut: string, standardHours = 8): number {
+    const start = new Date(checkIn).getTime()
+    const end = new Date(checkOut).getTime()
+    if (end <= start) return 0
+    const hoursWorked = (end - start) / (1000 * 60 * 60)
+    return Math.round(Math.max(0, hoursWorked - standardHours) * 100) / 100
+  },
+
+  /**
+   * Get attendance summary for a date range.
+   */
+  async getAttendanceSummary(
+    companyId: string,
+    employeeId: string,
+    dateFrom: string,
+    dateTo: string
+  ): Promise<{ totalDays: number; presentDays: number; absentDays: number; lateDays: number; totalHours: number; overtimeHours: number }> {
+    const { data, error } = await supabase
+      .from('attendance_records')
+      .select('status, hours_worked, overtime_hours')
+      .eq('company_id', companyId)
+      .eq('employee_id', employeeId)
+      .gte('work_date', dateFrom)
+      .lte('work_date', dateTo)
+
+    if (error) throw error
+
+    const records = data ?? []
+    let totalHours = 0
+    let overtimeHours = 0
+    let presentDays = 0
+    let lateDays = 0
+    let absentDays = 0
+
+    for (const r of records) {
+      if (r.hours_worked) totalHours += r.hours_worked
+      overtimeHours += r.overtime_hours ?? 0
+      if (r.status === 'present') presentDays++
+      else if (r.status === 'late') lateDays++
+      else if (r.status === 'absent') absentDays++
+    }
+
+    return { totalDays: records.length, presentDays, absentDays, lateDays, totalHours: Math.round(totalHours * 10) / 10, overtimeHours: Math.round(overtimeHours * 10) / 10 }
+  },
 }

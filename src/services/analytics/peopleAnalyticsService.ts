@@ -58,7 +58,7 @@ const SENSITIVE_FIELDS = [
   'bank_account', 'salary', 'date_of_birth', 'social_security_number',
 ]
 
-function excludeSensitiveFields<T extends Record<string, unknown>>(row: T): T {
+export function excludeSensitiveFields<T extends Record<string, unknown>>(row: T): T {
   const result = { ...row }
   for (const field of SENSITIVE_FIELDS) {
     if (field in result) {
@@ -68,7 +68,7 @@ function excludeSensitiveFields<T extends Record<string, unknown>>(row: T): T {
   return result
 }
 
-function stripSensitiveFromInsights(insights: PredictiveInsight[]): PredictiveInsight[] {
+export function stripSensitiveFromInsights(insights: PredictiveInsight[]): PredictiveInsight[] {
   return insights.map(insight => ({
     ...insight,
     evidence: (insight.evidence ?? []).map((e: unknown) => {

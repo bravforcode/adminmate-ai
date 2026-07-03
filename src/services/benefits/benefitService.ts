@@ -1,4 +1,5 @@
 import { supabase } from '../../lib/supabase'
+import { hasPermission } from '../permissionService'
 
 /* ============================================================
    Benefits Administration Service
@@ -113,6 +114,9 @@ export const benefitService = {
   },
 
   async enrollEmployee(companyId: string, input: EnrollEmployeeInput): Promise<BenefitEnrollment> {
+    const canEnroll = await hasPermission('benefit', 'enroll')
+    if (!canEnroll) throw new Error('Requires benefit_enroll permission')
+
     // Check eligibility before enrolling
     const eligible = await this.checkEligibility(companyId, input.employee_id, input.plan_id)
     if (!eligible.eligible) {

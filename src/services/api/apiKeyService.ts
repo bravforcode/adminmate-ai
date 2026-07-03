@@ -1,5 +1,6 @@
 import { supabase } from '../../lib/supabase'
 import { hasPermission } from '../permissionService'
+import { logger } from '../../lib/logger'
 import crypto from 'crypto'
 
 export interface ApiClientInput {
@@ -98,7 +99,11 @@ export const apiKeyService = {
       .eq('is_active', true)
       .single()
 
-    if (error || !data) return null
+    if (error) {
+      logger.error('Failed to validate API key', { error: error.message })
+      return null
+    }
+    if (!data) return null
 
     const key = data as ApiKeyRecord
     if (key.expires_at && new Date(key.expires_at) < new Date()) return null

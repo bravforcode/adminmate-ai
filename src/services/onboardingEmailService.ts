@@ -52,4 +52,12 @@ export const onboardingEmailService = {
       type: '30_day_review',
     })
   },
+
+  sendDocumentRequestEmail(recipient: { email: string; full_name: string }, documentType: string, uploadUrl: string) {
+    return invokeSendEmail(recipient.email, 'document_request', {
+      fullName: recipient.full_name,
+      documentType,
+      uploadUrl,
+    })
+  },
 }

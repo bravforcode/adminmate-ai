@@ -39,6 +39,31 @@ export interface DocumentWithRelations extends CreateDocumentInput {
 }
 
 export const documentService = {
+  /**
+   * Create document with PDPA consent enforcement.
+   * Sensitive documents (id_card, bank_account, etc.) require consent before storage.
+   */
+  create: async (doc: CreateDocumentInput, consentGiven?: boolean): Promise<Record<string, unknown>> => {
+    // PDPA: sensitive document types require explicit consent
+    const SENSITIVE_TYPES = ['id_card', 'house_registration', 'bank_account', 'medical_certificate']
+    if (SENSITIVE_TYPES.includes(doc.document_type) && !consentGiven) {
+      throw new Error('PDPA consent required for sensitive document type: ' + doc.document_type)
+    }
+
+    const { data, error } = await supabase.from('documents').insert(doc).select().single()
+    if (error) throw error
+
+    // Audit log for document creation
+    await supabase.from('audit_logs').insert({
+      company_id: doc.company_id,
+      action: 'document.created',
+      resource_type: 'document',
+      resource_id: data.id,
+      details: JSON.stringify({ document_type: doc.document_type, name: doc.name, has_consent: !!consentGiven }),
+    })
+
+    return data
+  },
   getAll: async (companyId: string, options?: { cursor?: string; limit?: number }): Promise<PaginatedResult<DocumentWithRelations>> => {
     const limit = options?.limit ?? 50
     let query = supabase
@@ -67,11 +92,7 @@ export const documentService = {
     if (error) throw error
     return data
   },
-  create: async (doc: CreateDocumentInput) => {
-    const { data, error } = await supabase.from('documents').insert(doc).select().single()
-    if (error) throw error
-    return data
-  },
+
   update: async (id: string, updates: UpdateDocumentInput, companyId: string) => {
     const { data, error } = await supabase.from('documents').update(updates).eq('id', id).eq('company_id', companyId).select().single()
     if (error) throw error

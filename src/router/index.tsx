@@ -54,8 +54,19 @@ const AttendancePage = lazy(() => import('../pages/AttendancePage'))
 const LeavePage = lazy(() => import('../pages/LeavePage'))
 const PeopleAnalyticsPage = lazy(() => import('../pages/PeopleAnalyticsPage'))
 const NotFoundPage = lazy(() => import('../pages/NotFoundPage'))
+
+// Messaging pages
+const MessagesPage = lazy(() => import('../pages/messages/MessagesPage'))
+const NotificationCenterPage = lazy(() => import('../pages/messages/NotificationCenter'))
+const EmployeeListPage = lazy(() => import('../pages/employees/EmployeeListPage'))
+const EmployeeDetailPage = lazy(() => import('../pages/employees/EmployeeDetailPage'))
 const ApplyPage = lazy(() => import('../pages/portal/ApplyPage'))
 const TrackApplicationPage = lazy(() => import('../pages/portal/TrackApplicationPage'))
+
+// Payroll pages
+const PayrollDashboardPage = lazy(() => import('../pages/payroll/PayrollDashboardPage'))
+const PayrollRunPage = lazy(() => import('../pages/payroll/PayrollRunPage'))
+const PayslipPage = lazy(() => import('../pages/payroll/PayslipPage'))
 
 const HR_ROLES = ['admin', 'hr', 'manager']
 
@@ -136,6 +147,22 @@ export const router = createBrowserRouter([
         element: (
           <AuthGuard callInitSession={false} requiredRoles={HR_ROLES}>
             <AnimatedPage><DashboardPage /></AnimatedPage>
+          </AuthGuard>
+        ),
+      },
+      {
+        path: '/employees',
+        element: (
+          <AuthGuard callInitSession={false} requiredRoles={HR_ROLES}>
+            <AnimatedPage><EmployeeListPage /></AnimatedPage>
+          </AuthGuard>
+        ),
+      },
+      {
+        path: '/employees/:id',
+        element: (
+          <AuthGuard callInitSession={false} requiredRoles={HR_ROLES}>
+            <AnimatedPage><EmployeeDetailPage /></AnimatedPage>
           </AuthGuard>
         ),
       },
@@ -294,6 +321,22 @@ export const router = createBrowserRouter([
         ),
       },
       {
+        path: '/messages',
+        element: (
+          <AuthGuard callInitSession={false} requiredRoles={HR_ROLES}>
+            <AnimatedPage><MessagesPage /></AnimatedPage>
+          </AuthGuard>
+        ),
+      },
+      {
+        path: '/notifications',
+        element: (
+          <AuthGuard callInitSession={false} requiredRoles={HR_ROLES}>
+            <AnimatedPage><NotificationCenterPage /></AnimatedPage>
+          </AuthGuard>
+        ),
+      },
+      {
         path: '/health',
         element: (
           <AuthGuard callInitSession={false} requiredRoles={HR_ROLES}>
@@ -394,6 +437,39 @@ export const router = createBrowserRouter([
         element: (
           <AuthGuard callInitSession={false} requiredRoles={HR_ROLES}>
             <AnimatedPage><ThailandPayrollPage /></AnimatedPage>
+          </AuthGuard>
+        ),
+      },
+      // ── Payroll routes ──────────────────────────────────────────
+      {
+        path: '/payroll',
+        element: (
+          <AuthGuard callInitSession={false} requiredRoles={HR_ROLES}>
+            <AnimatedPage><PayrollDashboardPage /></AnimatedPage>
+          </AuthGuard>
+        ),
+      },
+      {
+        path: '/payroll/run',
+        element: (
+          <AuthGuard callInitSession={false} requiredRoles={HR_ROLES}>
+            <AnimatedPage><PayrollRunPage /></AnimatedPage>
+          </AuthGuard>
+        ),
+      },
+      {
+        path: '/payroll/run/:runId',
+        element: (
+          <AuthGuard callInitSession={false} requiredRoles={HR_ROLES}>
+            <AnimatedPage><PayrollRunPage /></AnimatedPage>
+          </AuthGuard>
+        ),
+      },
+      {
+        path: '/payroll/payslip/:employeeId',
+        element: (
+          <AuthGuard callInitSession={false} requiredRoles={HR_ROLES}>
+            <AnimatedPage><PayslipPage /></AnimatedPage>
           </AuthGuard>
         ),
       },

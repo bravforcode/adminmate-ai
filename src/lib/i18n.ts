@@ -5,6 +5,15 @@ import Backend from 'i18next-http-backend'
 
 const STORAGE_KEY = 'adminmate-language'
 
+// Supported languages — extend as translations are added
+export const SUPPORTED_LANGUAGES = [
+  'en', 'th', 'vi', 'zh', 'id',
+  'ms', 'ja', 'ko', 'hi', 'ar',
+  'pt', 'es', 'fr', 'de', 'ru',
+] as const
+
+export type SupportedLanguage = typeof SUPPORTED_LANGUAGES[number]
+
 i18n
   .use(Backend)
   .use(LanguageDetector)
@@ -16,11 +25,21 @@ i18n
       vi: ['en'],
       zh: ['en'],
       id: ['en'],
+      ms: ['en'],
+      ja: ['en'],
+      ko: ['en'],
+      hi: ['en'],
+      ar: ['en'],
+      pt: ['en'],
+      es: ['en'],
+      fr: ['en'],
+      de: ['en'],
+      ru: ['en'],
     },
-    supportedLngs: ['th', 'en', 'vi', 'zh', 'id'],
+    supportedLngs: [...SUPPORTED_LANGUAGES],
     load: 'languageOnly',
     nonExplicitSupportedLngs: true,
-    ns: ['common', 'chat', 'recruitment', 'hiring', 'onboarding', 'documents', 'compliance', 'reports', 'dashboard', 'health', 'system', 'calendar', 'portal'],
+    ns: ['common', 'chat', 'recruitment', 'hiring', 'onboarding', 'documents', 'compliance', 'reports', 'dashboard', 'health', 'system', 'calendar', 'portal', 'messages', 'notifications', 'billing'],
     defaultNS: 'common',
     backend: {
       loadPath: '/locales/{{lng}}/{{ns}}.json',
@@ -40,7 +59,7 @@ i18n
 
 if (typeof window !== 'undefined') {
   const cached = window.localStorage.getItem(STORAGE_KEY)
-  if (cached && ['th', 'en', 'vi', 'zh', 'id'].includes(cached)) {
+  if (cached && SUPPORTED_LANGUAGES.includes(cached as SupportedLanguage)) {
     i18n.changeLanguage(cached)
   }
 }

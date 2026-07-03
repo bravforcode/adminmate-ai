@@ -1,4 +1,5 @@
 import { supabase } from '../../lib/supabase'
+import { hasPermission } from '../permissionService'
 
 /* ============================================================
    Employee Service
@@ -195,6 +196,9 @@ export async function updateEmployee(
   id: string,
   updates: Partial<Employee>
 ): Promise<Employee> {
+  const canWrite = await hasPermission('employee', 'write')
+  if (!canWrite) throw new Error('Requires employee_write permission')
+
   const { data, error } = await supabase
     .from('employees')
     .update({ ...updates, updated_at: new Date().toISOString() })

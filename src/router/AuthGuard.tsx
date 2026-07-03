@@ -45,6 +45,12 @@ export function AuthGuard({ children, requiredRoles, requireCompany = true, call
   }
 
   if (!isAuthenticated()) {
+    // Demo mode: auto-init demo user when Supabase is unreachable
+    const isDemo = import.meta.env.VITE_DEMO_MODE === 'true' || !import.meta.env.VITE_SUPABASE_URL
+    if (isDemo) {
+      useAuthStore.getState().initDemo()
+      return <>{children}</>
+    }
     return <Navigate to="/login" state={{ from: location }} replace />
   }
 

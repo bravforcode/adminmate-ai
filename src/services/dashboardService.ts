@@ -1,4 +1,5 @@
 import { supabase } from '../lib/supabase'
+import { logger } from '../lib/logger'
 
 export interface DashboardStats {
   active_jobs: number
@@ -33,7 +34,7 @@ export const dashboardService = {
   getStats: async (companyId: string): Promise<DashboardStats | null> => {
     const { data, error } = await supabase.rpc('get_dashboard_stats', { p_company_id: companyId })
     if (error) {
-      if (import.meta.env.DEV) console.warn('get_dashboard_stats RPC failed, falling back to direct queries:', error.message)
+      logger.error('get_dashboard_stats RPC failed', { error: error.message })
       return null
     }
     return (data as DashboardStats) ?? null

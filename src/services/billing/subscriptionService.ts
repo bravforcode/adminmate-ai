@@ -37,6 +37,18 @@ export interface UsageCheckResult {
   is_unlimited: boolean
 }
 
+export interface PaymentRecord {
+  id: string
+  company_id: string
+  amount: number
+  currency: string
+  status: 'succeeded' | 'failed' | 'pending' | 'refunded'
+  payment_method: string | null
+  stripe_payment_id: string | null
+  description: string | null
+  created_at: string
+}
+
 export const subscriptionService = {
   async getPlans(): Promise<Plan[]> {
     const { data, error } = await supabase
@@ -145,5 +157,59 @@ export const subscriptionService = {
     })
     if (error) throw error
     return data === true
+  },
+
+  async cancelSubscription(companyId: string): Promise<Subscription> {
+    if (!(await hasPermission('subscription', 'write'))) {
+      throw new Error('Permission denied: subscription.write')
+    }
+
+    const existing = await this.getSubscription(companyId)
+    if (!existing) throw new Error('No active subscription found')
+    if (existing.status === 'canceled') throw new Error('Subscription already canceled')
+
+    const { data, error } = await supabase
+      .from('subscriptions')
+      .update({
+        status: 'canceled',
+        cancel_at: new Date().toISOString(),
+      })
+      .eq('company_id', companyId)
+      .select()
+      .single()
+    if (error) throw error
+    return data
+  },
+
+  async getPaymentHistory(companyId: string, limit = 20): Promise<PaymentRecord[]> {
+    const { data, error } = await supabase
+      .from('payment_history')
+      .select('*')
+      .eq('company_id', companyId)
+      .order('created_at', { ascending: false })
+      .limit(limit)
+    if (error) throw error
+    return (data ?? []) as PaymentRecord[]
+  },
+
+  async updateSubscriptionPlan(companyId: string, newPlanId: string): Promise<Subscription> {
+    if (!(await hasPermission('subscription', 'write'))) {
+      throw new Error('Permission denied: subscription.write')
+    }
+
+    const existing = await this.getSubscription(companyId)
+    if (!existing) throw new Error('No subscription found')
+    if (!['active', 'trialing'].includes(existing.status)) {
+      throw new Error('Can only update active or trialing subscriptions')
+    }
+
+    const { data, error } = await supabase
+      .from('subscriptions')
+      .update({ plan_id: newPlanId })
+      .eq('company_id', companyId)
+      .select()
+      .single()
+    if (error) throw error
+    return data
   },
 }

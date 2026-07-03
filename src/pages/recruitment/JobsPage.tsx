@@ -25,6 +25,7 @@ export function JobsPage() {
   const [searchInput, setSearchInput] = useState('')
   const [search, setSearch] = useState('')
   const [deleteJobId, setDeleteJobId] = useState<string | null>(null)
+  const [statusFilter, setStatusFilter] = useState<string>('')
 
   useEffect(() => {
     const timer = setTimeout(() => setSearch(searchInput), 300)
@@ -51,11 +52,13 @@ export function JobsPage() {
     setDeleteJobId(null)
   }
 
-  const filtered = useMemo(() => jobs?.filter(j =>
-    !search ||
-    j.title?.toLowerCase().includes(search.toLowerCase()) ||
-    j.department?.toLowerCase().includes(search.toLowerCase())
-  ), [jobs, search])
+  const filtered = useMemo(() => jobs?.filter(j => {
+    const matchesSearch = !search ||
+      j.title?.toLowerCase().includes(search.toLowerCase()) ||
+      j.department?.toLowerCase().includes(search.toLowerCase())
+    const matchesStatus = !statusFilter || j.status === statusFilter
+    return matchesSearch && matchesStatus
+  }), [jobs, search, statusFilter])
 
   const handleSearchChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => setSearchInput(e.target.value), [])
 
@@ -104,14 +107,27 @@ export function JobsPage() {
         </div>
       </div>
 
-      <div className="relative max-w-sm">
-        <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant dark:text-on-surface-variant size-4" />
-        <input
-          value={searchInput}
-          onChange={handleSearchChange}
-          className="w-full pl-10 pr-4 py-3 rounded-xl border border-outline-variant dark:border-outline bg-surface-container-lowest dark:bg-surface-container-lowest text-on-surface dark:text-on-surface focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all duration-200 outline-none text-sm placeholder:text-on-surface-variant/50"
-          placeholder={t('jobs.search_placeholder')}
-        />
+      <div className="flex flex-col sm:flex-row gap-3">
+        <div className="relative max-w-sm flex-1">
+          <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant dark:text-on-surface-variant size-4" />
+          <input
+            value={searchInput}
+            onChange={handleSearchChange}
+            className="w-full pl-10 pr-4 py-3 rounded-xl border border-outline-variant dark:border-outline bg-surface-container-lowest dark:bg-surface-container-lowest text-on-surface dark:text-on-surface focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all duration-200 outline-none text-sm placeholder:text-on-surface-variant/50"
+            placeholder={t('jobs.search_placeholder')}
+          />
+        </div>
+        <select
+          value={statusFilter}
+          onChange={e => setStatusFilter(e.target.value)}
+          className="px-4 py-3 rounded-xl border border-outline-variant dark:border-outline bg-surface-container-lowest dark:bg-surface-container-lowest text-on-surface dark:text-on-surface text-sm outline-none appearance-none cursor-pointer"
+        >
+          <option value="">{t('jobs.all_statuses', 'All Statuses')}</option>
+          <option value="draft">{t('jobs.status_draft', 'Draft')}</option>
+          <option value="published">{t('jobs.status_published', 'Published')}</option>
+          <option value="closed">{t('jobs.status_closed', 'Closed')}</option>
+          <option value="archived">{t('jobs.status_archived', 'Archived')}</option>
+        </select>
       </div>
 
       {showForm && (

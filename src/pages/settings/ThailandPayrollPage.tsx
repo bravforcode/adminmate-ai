@@ -1,6 +1,7 @@
 import { useState, useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
+import { useNavigate } from 'react-router-dom'
 import { useAuthStore } from '../../stores/authStore'
 import {
   Calculator,
@@ -13,6 +14,9 @@ import {
   ChevronUp,
   AlertTriangle,
   AlertCircle,
+  FileText,
+  ArrowRight,
+  Clock,
 } from 'lucide-react'
 import toast from 'react-hot-toast'
 import { supabase } from '../../lib/supabase'
@@ -32,6 +36,7 @@ export function ThailandPayrollPage() {
   const { t } = useTranslation(['thailand_payroll', 'common'])
   const company = useAuthStore(s => s.company)
   const queryClient = useQueryClient()
+  const navigate = useNavigate()
   const [showTaxBrackets, setShowTaxBrackets] = useState(false)
   const [showSSDetails, setShowSSDetails] = useState(false)
   const [previewSalary, setPreviewSalary] = useState(50000)
@@ -40,6 +45,9 @@ export function ThailandPayrollPage() {
     pay_period: 'monthly' as 'monthly' | 'biweekly',
     pay_day: 25,
     province: 'BKK',
+    ot_weekday_rate: 1.5,
+    ot_weekend_rate: 2.0,
+    ot_holiday_rate: 3.0,
   })
 
   // Allowance gap: count employees with dependents/marital data for warning
@@ -85,6 +93,9 @@ export function ThailandPayrollPage() {
           pay_period: result.pay_period || 'monthly',
           pay_day: result.pay_day || 25,
           province: result.province || 'BKK',
+          ot_weekday_rate: result.ot_weekday_rate ?? 1.5,
+          ot_weekend_rate: result.ot_weekend_rate ?? 2.0,
+          ot_holiday_rate: result.ot_holiday_rate ?? 3.0,
         })
       }
       return result
@@ -114,6 +125,49 @@ export function ThailandPayrollPage() {
       <div>
         <h1 className="text-headline-md font-bold text-on-surface">Thailand Payroll</h1>
         <p className="text-body-md text-on-surface-variant mt-1">Configure Thai payroll rules, tax brackets, and social security</p>
+      </div>
+
+      {/* Quick Navigation to Payroll Module */}
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+        <button
+          onClick={() => navigate('/payroll')}
+          className="flex items-center gap-3 p-4 rounded-xl border border-outline-variant bg-surface hover:bg-surface-container-low transition-colors text-left"
+        >
+          <div className="p-2 rounded-lg bg-primary/10">
+            <DollarSign size={20} className="text-primary" />
+          </div>
+          <div>
+            <p className="text-sm font-medium text-on-surface">Payroll Dashboard</p>
+            <p className="text-xs text-on-surface-variant">Overview &amp; cost summary</p>
+          </div>
+          <ArrowRight size={16} className="ml-auto text-on-surface-variant" />
+        </button>
+        <button
+          onClick={() => navigate('/payroll/run')}
+          className="flex items-center gap-3 p-4 rounded-xl border border-outline-variant bg-surface hover:bg-surface-container-low transition-colors text-left"
+        >
+          <div className="p-2 rounded-lg bg-green-500/10">
+            <Clock size={20} className="text-green-600" />
+          </div>
+          <div>
+            <p className="text-sm font-medium text-on-surface">Run Payroll</p>
+            <p className="text-xs text-on-surface-variant">Calculate &amp; approve</p>
+          </div>
+          <ArrowRight size={16} className="ml-auto text-on-surface-variant" />
+        </button>
+        <button
+          onClick={() => navigate('/payroll')}
+          className="flex items-center gap-3 p-4 rounded-xl border border-outline-variant bg-surface hover:bg-surface-container-low transition-colors text-left"
+        >
+          <div className="p-2 rounded-lg bg-blue-500/10">
+            <FileText size={20} className="text-blue-600" />
+          </div>
+          <div>
+            <p className="text-sm font-medium text-on-surface">Payslips</p>
+            <p className="text-xs text-on-surface-variant">View &amp; download</p>
+          </div>
+          <ArrowRight size={16} className="ml-auto text-on-surface-variant" />
+        </button>
       </div>
 
       {/* Loading State */}
@@ -191,6 +245,52 @@ export function ThailandPayrollPage() {
                 ))}
               </select>
             </div>
+          </div>
+
+          {/* OT Rates */}
+          <div className="mt-4">
+            <p className="text-sm font-medium text-on-surface-variant mb-3">Overtime Rates (multiplier)</p>
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+              <div>
+                <label className="block text-xs mb-1 text-on-surface-variant">Weekday OT</label>
+                <input
+                  type="number"
+                  min={1}
+                  max={5}
+                  step={0.1}
+                  value={config.ot_weekday_rate}
+                  onChange={e => setConfig(p => ({ ...p, ot_weekday_rate: Number(e.target.value) }))}
+                  className="w-full px-3 py-2 rounded-lg border border-outline-variant bg-surface-container-lowest focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all text-sm"
+                />
+              </div>
+              <div>
+                <label className="block text-xs mb-1 text-on-surface-variant">Weekend OT</label>
+                <input
+                  type="number"
+                  min={1}
+                  max={5}
+                  step={0.1}
+                  value={config.ot_weekend_rate}
+                  onChange={e => setConfig(p => ({ ...p, ot_weekend_rate: Number(e.target.value) }))}
+                  className="w-full px-3 py-2 rounded-lg border border-outline-variant bg-surface-container-lowest focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all text-sm"
+                />
+              </div>
+              <div>
+                <label className="block text-xs mb-1 text-on-surface-variant">Holiday OT</label>
+                <input
+                  type="number"
+                  min={1}
+                  max={5}
+                  step={0.1}
+                  value={config.ot_holiday_rate}
+                  onChange={e => setConfig(p => ({ ...p, ot_holiday_rate: Number(e.target.value) }))}
+                  className="w-full px-3 py-2 rounded-lg border border-outline-variant bg-surface-container-lowest focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all text-sm"
+                />
+              </div>
+            </div>
+            <p className="text-xs text-on-surface-variant mt-2">
+              Thai Labor Protection Act §24: Weekday 1.5×, Weekend 2×, Holiday 3×
+            </p>
           </div>
           <div className="mt-4 flex justify-end">
             <Button

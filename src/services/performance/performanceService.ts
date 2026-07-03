@@ -302,4 +302,185 @@ export const performanceService = {
     if (error) throw new Error(`Failed to create 9-box assessment: ${error.message}`)
     return data as NineBoxAssessment
   },
+
+  // ── OKR CRUD ──
+
+  async createObjective(
+    companyId: string,
+    input: { employee_id: string; cycle_id: string; title: string }
+  ): Promise<OkrObjective> {
+    if (!input.title || input.title.trim().length === 0) {
+      throw new Error('Objective title is required')
+    }
+    const { data, error } = await supabase
+      .from('okr_objectives')
+      .insert({
+        company_id: companyId,
+        employee_id: input.employee_id,
+        cycle_id: input.cycle_id,
+        title: input.title.trim(),
+        progress: 0,
+        status: 'on_track',
+      })
+      .select()
+      .single()
+    if (error) throw new Error(`Failed to create objective: ${error.message}`)
+    return data as OkrObjective
+  },
+
+  async updateObjectiveProgress(
+    companyId: string,
+    objectiveId: string,
+    progress: number,
+    status?: OkrStatus
+  ): Promise<OkrObjective> {
+    if (progress < 0 || progress > 100) {
+      throw new Error('Progress must be between 0 and 100')
+    }
+    const update: Record<string, unknown> = { progress }
+    if (status) update.status = status
+    const { data, error } = await supabase
+      .from('okr_objectives')
+      .update(update)
+      .eq('id', objectiveId)
+      .eq('company_id', companyId)
+      .select()
+      .single()
+    if (error) throw new Error(`Failed to update objective: ${error.message}`)
+    return data as OkrObjective
+  },
+
+  async addKeyResult(
+    companyId: string,
+    input: { objective_id: string; title: string; target_value: number; unit?: string }
+  ): Promise<OkrKeyResult> {
+    if (!input.title || input.title.trim().length === 0) {
+      throw new Error('Key result title is required')
+    }
+    if (input.target_value <= 0) {
+      throw new Error('Target value must be positive')
+    }
+    const { data, error } = await supabase
+      .from('okr_key_results')
+      .insert({
+        company_id: companyId,
+        objective_id: input.objective_id,
+        title: input.title.trim(),
+        target_value: input.target_value,
+        current_value: 0,
+        unit: input.unit ?? null,
+      })
+      .select()
+      .single()
+    if (error) throw new Error(`Failed to add key result: ${error.message}`)
+    return data as OkrKeyResult
+  },
+
+  async updateKeyResultProgress(
+    companyId: string,
+    keyResultId: string,
+    currentValue: number
+  ): Promise<OkrKeyResult> {
+    if (currentValue < 0) {
+      throw new Error('Current value cannot be negative')
+    }
+    const { data, error } = await supabase
+      .from('okr_key_results')
+      .update({ current_value: currentValue })
+      .eq('id', keyResultId)
+      .eq('company_id', companyId)
+      .select()
+      .single()
+    if (error) throw new Error(`Failed to update key result: ${error.message}`)
+    return data as OkrKeyResult
+  },
+
+  // ── Review Confidentiality ──
+
+  async getReviewById(
+    companyId: string,
+    reviewId: string,
+    viewerId: string,
+    viewerRole: string
+  ): Promise<PerformanceReview | null> {
+    const { data, error } = await supabase
+      .from('performance_reviews')
+      .select('*')
+      .eq('id', reviewId)
+      .eq('company_id', companyId)
+      .single()
+
+    if (error) return null
+    if (!data) return null
+
+    // Confidentiality: only employee, reviewer, HR, admin, auditor can view
+    const allowed = ['owner', 'admin', 'hr_manager', 'auditor']
+    if (allowed.includes(viewerRole)) return data as PerformanceReview
+    if (data.employee_id === viewerId) return data as PerformanceReview
+    if (data.reviewer_id === viewerId) return data as PerformanceReview
+
+    // Deny access
+    return null
+  },
+
+  async getReviewsByCycle(
+    companyId: string,
+    cycleId: string
+  ): Promise<PerformanceReview[]> {
+    const { data, error } = await supabase
+      .from('performance_reviews')
+      .select('*')
+      .eq('company_id', companyId)
+      .eq('cycle_id', cycleId)
+      .order('created_at', { ascending: false })
+    if (error) throw new Error(`Failed to fetch reviews: ${error.message}`)
+    return (data ?? []) as PerformanceReview[]
+  },
+
+  // ── Feedback ──
+
+  async addFeedback(
+    companyId: string,
+    reviewId: string,
+    _reviewerId: string,
+    feedback: { criterion_key: string; rating: number; evidence: string; confidence: ConfidenceLevel }
+  ): Promise<ReviewResponse> {
+    if (!feedback.evidence || feedback.evidence.trim().length === 0) {
+      throw new Error('Evidence is required when providing feedback')
+    }
+    if (!feedback.confidence) {
+      throw new Error('Confidence level is required when providing feedback')
+    }
+    if (feedback.rating < 1 || feedback.rating > 5) {
+      throw new Error('Rating must be between 1 and 5')
+    }
+    const { data, error } = await supabase
+      .from('review_responses')
+      .insert({
+        company_id: companyId,
+        review_id: reviewId,
+        criterion_key: feedback.criterion_key,
+        rating: feedback.rating,
+        evidence: feedback.evidence.trim(),
+        confidence: feedback.confidence,
+      })
+      .select()
+      .single()
+    if (error) throw new Error(`Failed to add feedback: ${error.message}`)
+    return data as ReviewResponse
+  },
+
+  async getFeedbackForReview(
+    companyId: string,
+    reviewId: string
+  ): Promise<ReviewResponse[]> {
+    const { data, error } = await supabase
+      .from('review_responses')
+      .select('*')
+      .eq('company_id', companyId)
+      .eq('review_id', reviewId)
+      .order('created_at')
+    if (error) throw new Error(`Failed to fetch feedback: ${error.message}`)
+    return (data ?? []) as ReviewResponse[]
+  },
 }

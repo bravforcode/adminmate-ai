@@ -1,4 +1,5 @@
 import { supabase } from '../lib/supabase'
+import { hasPermission } from './permissionService'
 
 export interface ImportError {
   row: number
@@ -56,6 +57,9 @@ export const bulkImportService = {
   },
 
   async importCandidates(csvData: Record<string, string>[], companyId: string): Promise<ImportResult> {
+    const allowed = await hasPermission('import_export', 'write')
+    if (!allowed) throw new Error('Requires import_export_write permission')
+
     const errors = validateRows(csvData, 'candidates')
     if (errors.length > 0) return { success: 0, errors }
 
@@ -82,6 +86,9 @@ export const bulkImportService = {
   },
 
   async importJobs(csvData: Record<string, string>[], companyId: string): Promise<ImportResult> {
+    const allowed = await hasPermission('import_export', 'write')
+    if (!allowed) throw new Error('Requires import_export_write permission')
+
     const errors = validateRows(csvData, 'jobs')
     if (errors.length > 0) return { success: 0, errors }
 

@@ -20,7 +20,7 @@ export function useCreateDocument() {
   const qc = useQueryClient()
   const company = useAuthStore(s => s.company)
   return useMutation({
-    mutationFn: documentService.create,
+    mutationFn: ({ doc, consentGiven }: { doc: import('../services/documentService').CreateDocumentInput; consentGiven?: boolean }) => documentService.create(doc, consentGiven),
     onSuccess: () => {
       qc.invalidateQueries({ queryKey: ['documents', company?.id] })
       toast.success(i18n.t('documents:document_created'))

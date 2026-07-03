@@ -1,4 +1,5 @@
 import { supabase } from '../../lib/supabase'
+import { hasPermission } from '../permissionService'
 import type { MessageChannel } from './providers/types'
 
 /* ============================================================
@@ -59,6 +60,9 @@ export async function getActiveTemplates(companyId: string): Promise<MessageTemp
 export async function createTemplate(
   template: Omit<MessageTemplate, 'id' | 'created_at' | 'updated_at'>
 ): Promise<MessageTemplate> {
+  const canWrite = await hasPermission('message_template', 'write')
+  if (!canWrite) throw new Error('Requires message_template_write permission')
+
   const { data, error } = await supabase
     .from('message_templates')
     .insert(template)
@@ -72,6 +76,9 @@ export async function updateTemplate(
   id: string,
   updates: Partial<MessageTemplate>
 ): Promise<MessageTemplate> {
+  const canWrite = await hasPermission('message_template', 'write')
+  if (!canWrite) throw new Error('Requires message_template_write permission')
+
   const { data, error } = await supabase
     .from('message_templates')
     .update({ ...updates, updated_at: new Date().toISOString() })
@@ -91,6 +98,9 @@ export async function toggleTemplateActive(id: string, isActive: boolean): Promi
 }
 
 export async function deleteTemplate(id: string): Promise<void> {
+  const canWrite = await hasPermission('message_template', 'write')
+  if (!canWrite) throw new Error('Requires message_template_write permission')
+
   const { error } = await supabase.from('message_templates').delete().eq('id', id)
   if (error) throw error
 }

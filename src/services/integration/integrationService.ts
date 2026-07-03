@@ -90,7 +90,11 @@ export const integrationService = {
       .select('id')
       .eq('provider_key', providerKey)
       .single()
-    if (providerError || !provider) return null
+    if (providerError) {
+      logger.error('Failed to look up integration provider', { providerKey, error: providerError.message })
+      return null
+    }
+    if (!provider) return null
 
     const { data, error } = await supabase
       .from('integration_configs')

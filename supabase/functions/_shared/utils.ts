@@ -15,6 +15,9 @@ const ALLOWED_ORIGINS = [
   'https://www.adminmate.ai',
   'https://adminmate-ai.vercel.app',
   'https://adminmate-ejlj6q10v-phirawits-projects.vercel.app',
+  'https://adminmate-b8wifowwq-phirawits-projects.vercel.app',
+  'https://adminmate-5pyslc95u-phirawits-projects.vercel.app',
+  'https://adminmate-jfsc1pr9v-phirawits-projects.vercel.app',
 ]
 
 function getAllowedOrigin(req: Request): string {
