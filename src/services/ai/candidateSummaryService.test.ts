@@ -16,7 +16,7 @@ function createChain(result: unknown, error: unknown = null) {
   const chain: Record<string, any> = {}
   const methods = ['select', 'insert', 'update', 'delete', 'eq', 'single', 'maybeSingle', 'order', 'limit']
   methods.forEach((m) => { chain[m] = vi.fn(() => chain) })
-  chain.then = (resolve: Function, reject?: Function) => {
+  chain.then = (resolve: (v: unknown) => unknown, reject?: (e: unknown) => unknown) => {
     if (error && reject) return reject(error)
     return resolve({ data: result, error })
   }

@@ -1,5 +1,5 @@
 import { serve } from 'https://deno.land/std@0.168.0/http/server.ts'
-import { createClient } from 'https://esm.sh/@supabase/supabase-js@2'
+import { getServiceClient } from '../_shared/supabaseClient.ts'
 import {
   getCorsHeaders,
   handleCorsPreflight,
@@ -25,7 +25,7 @@ serve(async (req) => {
       })
     }
 
-    const supabase = createClient(Deno.env.get('SUPABASE_URL')!, Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!)
+    const supabase = getServiceClient()
     const user = await verifyAuth(req, supabase)
     if (!user) {
       return new Response(JSON.stringify({ success: false, error: 'Unauthorized' }), {
@@ -47,7 +47,7 @@ serve(async (req) => {
     const { data: profile } = await supabase.from('user_profiles').select('*').eq('id', targetUserId).single()
 
     const isSelf = targetUserId === user.id
-    const { data: profileCheck } = await supabase.from('user_profiles').select('role').eq('id', user.id).single()
+    const { data: profileCheck } = await supabase.from('user_profiles').select('role, company_id').eq('id', user.id).single()
     if (!isSelf && profileCheck?.role !== 'admin') {
       return new Response(JSON.stringify({ success: false, error: 'Only admins can export other users\' data' }), {
         status: 403,
@@ -55,7 +55,15 @@ serve(async (req) => {
       })
     }
 
-    const effectiveCompanyId = companyId || profile?.company_id
+    // SECURITY: Verify target user belongs to the same company as the caller
+    if (!isSelf && profile?.company_id !== profileCheck?.company_id) {
+      return new Response(JSON.stringify({ success: false, error: 'Cannot export data from another company' }), {
+        status: 403,
+        headers: { ...getCorsHeaders(req), 'Content-Type': 'application/json' },
+      })
+    }
+
+    const effectiveCompanyId = profile?.company_id
 
     // Look up candidate records linked to user (by email) for applications & documents cross-ref
     const { data: userCandidates } = await supabase

@@ -13,6 +13,23 @@ export function freshEmail() {
 // ─── Navigate to login form (handles role-select step) ──────────
 async function goToLoginForm(page: Page) {
   await page.goto('/login')
+  // Neutralize storageState side effects before every UI login:
+  // 1. A stale Supabase session in localStorage makes autoRefreshToken fire with a
+  //    dead refresh_token → SIGNED_OUT → onAuthStateChange clears user → AuthGuard
+  //    bounces the freshly signed-in page back to /login (intermittent, killed 40+
+  //    chromium-hr tests). Clear unconditionally — every test does a UI login anyway.
+  // 2. Without the tour-completed flag, OnboardingTour auto-starts 2s after profile
+  //    load and its overlay intercepts pointer events on app pages.
+  const hadSession = await page.evaluate(() => {
+    const had = window.localStorage.getItem('adminmate-auth-token') !== null
+    window.localStorage.removeItem('adminmate-auth-token')
+    window.localStorage.removeItem('adminmate-auth')
+    window.localStorage.setItem('adminmate_tour_completed_onboarding', 'true')
+    return had
+  })
+  // Reboot so the in-memory Supabase client (already initialized with the stale
+  // session + running refresh timer) starts clean.
+  if (hadSession) await page.reload()
   // The login page has a role-select step first — click the HR card to proceed
   const hrCard = page.locator('#role-card-hr')
   await hrCard.waitFor({ state: 'visible', timeout: 15_000 })
@@ -48,18 +65,12 @@ async function completeCompanySetup(page: Page) {
 
 /**
  * Ensure the page is authenticated as HR.
- * If storageState is active (Supabase auth cookie exists), skips login.
- * Otherwise performs a full UI login via signInAsHR.
- * Use this in HR specs that may run with or without storageState.
+ *
+ * Stale-session clearing lives in goToLoginForm (the common path for every
+ * UI login), so this is just the full login flow — signInAsHR also handles
+ * completeCompanySetup.
  */
 export async function ensureHRAuthenticated(page: Page) {
-  // Check if Supabase auth cookie exists (indicates valid storageState)
-  const cookies = await page.context().cookies()
-  const hasAuthCookie = cookies.some(c => c.name === 'sb-' || c.name.includes('auth'))
-  if (hasAuthCookie) {
-    return // Authenticated via storageState — skip UI login
-  }
-  // No auth cookie — perform full UI login
   await signInAsHR(page)
 }
 
@@ -140,8 +151,24 @@ export async function signOut(page: Page) {
 
 // ─── Navigation Helpers ──────────────────────────────────────────
 export async function waitForPageReady(page: Page) {
-  await page.waitForLoadState('networkidle', { timeout: 20_000 }).catch(() => {})
-  await page.locator('[class*="skeleton"], [class*="loading"]').first().waitFor({ state: 'hidden', timeout: 5_000 }).catch(() => {})
+  // On full page.reload/goto, the Supabase client re-initializes from localStorage
+  // and the parent AppLayout's AuthGuard calls initSession which sets isLoading=true.
+  // Child routes (callInitSession={false}) inherit this loading state. The initSession
+  // call includes supabase.auth.getSession() which can take several seconds on a cold
+  // client init. Using networkidle is unreliable (realtime WebSocket), so we wait for
+  // actual page content to appear instead.
+  await page.waitForLoadState('domcontentloaded', { timeout: 20_000 }).catch(() => {})
+  // Wait for the AuthGuard loading spinner to disappear (up to 25s for slow Supabase init).
+  await page
+    .locator('[data-testid="auth-guard-loading"]')
+    .waitFor({ state: 'hidden', timeout: 25_000 })
+    .catch(() => {})
+  // Also wait for any real content to render (covers CompanySetupGuard spinner too).
+  await page
+    .locator('h1, h2, h3, main, nav, aside, [class*="card"], [class*="skeleton"], form')
+    .first()
+    .waitFor({ state: 'visible', timeout: 15_000 })
+    .catch(() => {})
 }
 
 export async function navigateTo(page: Page, path: string) {
@@ -158,6 +185,10 @@ export async function navigateTo(page: Page, path: string) {
       window.history.pushState({}, '', p)
       window.dispatchEvent(new PopStateEvent('popstate'))
     }, path)
+    // Give React Router time to unmount old route + mount new route.
+    // Without this, waitForPageReady's content check matches the OLD page's
+    // elements and returns before the new route renders → count()=0 race.
+    await page.waitForTimeout(800)
     await waitForPageReady(page)
     // If SPA nav redirected to login (session lost), fall back to full navigation
     if (page.url().includes('/login')) {

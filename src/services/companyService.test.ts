@@ -8,7 +8,7 @@ function createChain(result: unknown, error: unknown = null) {
     chain[m] = vi.fn(() => chain)
   })
   // Make the chain itself thenable (Supabase chains resolve when awaited)
-  chain.then = (resolve: Function, reject?: Function) => {
+  chain.then = (resolve: (v: unknown) => unknown, reject?: (e: unknown) => unknown) => {
     if (error && reject) return reject(error)
     return resolve({ data: result, error })
   }

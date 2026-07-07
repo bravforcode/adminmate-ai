@@ -23,12 +23,11 @@ export default defineConfig({
           'vendor-query': ['@tanstack/react-query'],
           'vendor-supabase': ['@supabase/supabase-js'],
           'vendor-i18n': ['react-i18next', 'i18next'],
-          'vendor-pdf': ['@react-pdf/renderer'],
           'vendor-charts': ['recharts'],
           'vendor-motion': ['motion'],
         },
       },
     },
-    chunkSizeWarningLimit: 1500,
+    chunkSizeWarningLimit: 500,
   },
 })

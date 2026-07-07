@@ -2,8 +2,9 @@ import { serve } from 'https://deno.land/std@0.168.0/http/server.ts'
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2'
 import {
   getCorsHeaders, getJsonHeaders, handleCorsPreflight,
-  verifyAuth, enforceRateLimit, logRequest, getGeminiKey,
+  verifyAuth, enforceRateLimit, logRequest,
 } from '../_shared/utils.ts'
+import { callAi } from '../_shared/openrouter.ts'
 import { errorResponse } from '../_shared/errorHandler.ts'
 import { excludeSensitiveFieldsForAI, validateNoSensitiveFields } from '../_shared/sensitiveFields.ts'
 
@@ -126,16 +127,6 @@ serve(async (req) => {
     const { sanitized, excluded } = excludeSensitiveFieldsForAI(candidatePayload)
     validateNoSensitiveFields(sanitized) // throws if violation
 
-    // Check for Gemini API key
-    const geminiKey = getGeminiKey()
-    if (!geminiKey) {
-      return new Response(JSON.stringify({
-        success: false,
-        error: 'AI provider not configured. Contact administrator.',
-        code: 'AI_NOT_CONFIGURED',
-      }), { status: 503, headers: h })
-    }
-
     // Build job requirements context
     const jobContext = [
       `Job: ${job.title}${job.title_th ? ` / ${job.title_th}` : ''}`,
@@ -147,10 +138,6 @@ serve(async (req) => {
       job.skills_required?.length ? `Required Skills: ${job.skills_required.join(', ')}` : '',
       job.requirements?.length ? `Requirements: ${job.requirements.join('; ')}` : '',
     ].filter(Boolean).join('\n')
-
-    // Call Gemini for scoring
-    const { GoogleGenAI } = await import('https://esm.sh/@google/genai@0.9.0')
-    const genai = new GoogleGenAI({ apiKey: geminiKey })
 
     const systemPrompt = `You are an evidence-based HR scoring assistant. You evaluate candidates against job requirements using ONLY the evidence provided.
 
@@ -198,18 +185,7 @@ ${SCORING_CRITERIA.map(c => `- ${c.label}: ${(c.weight * 100)}%`).join('\n')}
 
 Return ONLY valid JSON matching the schema. No markdown, no explanation outside JSON.`
 
-    const response = await genai.models.generateContent({
-      model: 'gemini-2.5-flash',
-      contents: [{ role: 'user', parts: [{ text: userPrompt }] }],
-      config: {
-        systemInstruction: systemPrompt,
-        responseMimeType: 'application/json',
-        temperature: 0.3,
-        maxOutputTokens: 4096,
-      },
-    })
-
-    const responseText = response.text ?? ''
+    const responseText = await callAi(systemPrompt, userPrompt, { temperature: 0.3, maxTokens: 4096 });
     let result: any
     try {
       result = JSON.parse(responseText)
@@ -251,7 +227,7 @@ Return ONLY valid JSON matching the schema. No markdown, no explanation outside 
       gaps: result.gaps || [],
       sensitiveFieldsExcluded: excluded,
       humanOverrideRequired: true as const,
-      modelName: 'gemini-2.5-flash',
+      modelName: 'openrouter',
       promptVersion: PROMPT_VERSION,
       scoringVersion: SCORING_VERSION,
       createdAt: new Date().toISOString(),
@@ -290,7 +266,7 @@ Return ONLY valid JSON matching the schema. No markdown, no explanation outside 
       application_id: application_id || null,
       run_type: 'match_score',
       status: 'completed',
-      model_name: 'gemini-2.5-flash',
+      model_name: 'openrouter',
       prompt_version: PROMPT_VERSION,
       output_summary: `Score: ${matchResult.overallScore}, Recommendation: ${matchResult.recommendation}, Confidence: ${matchResult.confidence}`,
       created_by: user.id,
@@ -310,7 +286,7 @@ Return ONLY valid JSON matching the schema. No markdown, no explanation outside 
         company_id: companyId,
         run_type: 'match_score',
         status: 'failed',
-        model_name: 'gemini-2.5-flash',
+        model_name: 'openrouter',
         prompt_version: PROMPT_VERSION,
         error_message: String(err).slice(0, 1000),
         created_by: userId,

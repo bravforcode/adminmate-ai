@@ -437,9 +437,13 @@ describe('API Contract — Error Sanitization', () => {
     expect(msg).not.toContain('policy')
   })
 
-  it('sanitizes non-Error values', () => {
+  it('passes plain strings through verbatim (edge function contract)', () => {
+    // sanitizeError passes plain strings through unchanged — this is the
+    // intentional edge function error contract: errorResponse(msg) with a
+    // plain string returns it verbatim so callers control the user-facing
+    // message. Only raw Error objects get mapped to safe generic strings.
     const msg = sanitizeError('some raw string')
-    expect(msg).toBe('An unexpected error occurred.')
+    expect(msg).toBe('some raw string')
   })
 
   it('sanitizes null/undefined', () => {

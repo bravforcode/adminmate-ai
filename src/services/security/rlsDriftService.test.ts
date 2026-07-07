@@ -143,7 +143,7 @@ describe('rlsDriftService', () => {
       const chain: Record<string, any> = {}
       const methods = ['select', 'insert', 'update', 'delete', 'eq', 'single', 'maybeSingle']
       methods.forEach((m) => { chain[m] = vi.fn(() => chain) })
-      chain.then = (resolve: Function) => resolve({ data: { id: 'alert-1' }, error: null })
+      chain.then = (resolve: (v: unknown) => unknown) => resolve({ data: { id: 'alert-1' }, error: null })
       mockFrom.mockReturnValue(chain)
 
       const driftResult = {

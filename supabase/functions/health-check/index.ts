@@ -1,16 +1,12 @@
 import { serve } from "https://deno.land/std@0.177.0/http/server.ts"
-import { createClient } from "https://esm.sh/@supabase/supabase-js@2"
-
-const corsHeaders = {
-  "Access-Control-Allow-Origin": "*",
-  "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
-}
+import { getServiceClient } from '../_shared/supabaseClient.ts'
+import { getCorsHeaders, handleCorsPreflight } from '../_shared/utils.ts'
 
 serve(async (req: Request) => {
-  if (req.method === "OPTIONS") {
-    return new Response("ok", { headers: corsHeaders })
-  }
+  const preflight = handleCorsPreflight(req)
+  if (preflight) return preflight
 
+  const cors = getCorsHeaders(req)
   const url = new URL(req.url)
   const isInternal = req.headers.get("X-Health-Check-Key") === Deno.env.get("HEALTH_CHECK_KEY")
 
@@ -25,7 +21,7 @@ serve(async (req: Request) => {
     if (!supabaseUrl || !supabaseKey) {
       checks.database = { status: "error", error: "Missing env vars" }
     } else {
-      const supabase = createClient(supabaseUrl, supabaseKey)
+      const supabase = getServiceClient()
       const { error } = await supabase.from("companies").select("id").limit(1)
       checks.database = {
         status: error ? "error" : "ok",
@@ -99,7 +95,7 @@ serve(async (req: Request) => {
     JSON.stringify(isInternal ? internalResponse : publicResponse),
     {
       status: allOk ? 200 : 503,
-      headers: { ...corsHeaders, "Content-Type": "application/json" },
+      headers: { ...cors, "Content-Type": "application/json" },
     }
   )
 })

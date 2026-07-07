@@ -1,9 +1,4 @@
 import { defineConfig } from '@playwright/test'
-import { fileURLToPath } from 'url'
-import path from 'path'
-
-const __filename = fileURLToPath(import.meta.url)
-const __dirname = path.dirname(__filename)
 
 export default defineConfig({
   testDir: './e2e',
@@ -38,7 +33,10 @@ export default defineConfig({
       ],
       use: { browserName: 'chromium' },
     },
-    // HR specs: pre-authenticated via storageState (depends on setup)
+    // HR specs: fresh UI login per spec (no storageState).
+    // storageState caused signInWithPassword to hang — the preloaded Supabase
+    // session conflicted with the new signIn call (client lock). Fresh login
+    // per spec is slower but reliable and matches chromium-auth (which passes).
     {
       name: 'chromium-hr',
       testIgnore: [
@@ -50,9 +48,7 @@ export default defineConfig({
       ],
       use: {
         browserName: 'chromium',
-        storageState: path.join(__dirname, 'playwright/.auth/hr.json'),
       },
-      dependencies: ['setup'],
     },
   ],
   webServer: process.env.E2E_BASE_URL ? undefined : {

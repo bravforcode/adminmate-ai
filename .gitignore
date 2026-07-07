@@ -4,6 +4,10 @@ dist/
 .env.local
 .env.*.local
 .env.production
+.env.vercel
+
+# Database backups — production data, never commit
+backups/
 *.log
 .DS_Store
 supabase/.branches/

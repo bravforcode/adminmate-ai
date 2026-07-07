@@ -1,0 +1,32 @@
+{
+  "js_component_framework": {
+    "weights": {
+      "w_recency": 0.35,
+      "w_frequency": 0.25,
+      "w_semantic": 0.25,
+      "w_entropy": 0.15,
+      "w_resonance": 0.08,
+      "decay_half_life": 12.0,
+      "min_relevance": 0.05,
+      "exploration_rate": 0.1
+    },
+    "sample_count": 0,
+    "confidence": 0.5,
+    "created_at": 1783358043.354877,
+    "fingerprint": {
+      "lang_python": 0.002183406113537118,
+      "lang_rust": 0.0,
+      "lang_js_ts": 0.601528384279476,
+      "lang_other": 0.3962882096069869,
+      "avg_file_size": 0.7079454788525588,
+      "func_density": 0.09585910669026534,
+      "class_ratio": 0.3386243386243386,
+      "import_density": 0.32662756774150264,
+      "test_ratio": 0.21179039301310043,
+      "module_count": 0.7351220597983265,
+      "ffi_ratio": 0.0,
+      "entropy_mean": 0.4332951157243851,
+      "entropy_var": 0.016859624395453684
+    }
+  }
+}

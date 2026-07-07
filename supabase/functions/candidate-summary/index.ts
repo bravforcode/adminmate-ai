@@ -2,8 +2,9 @@ import { serve } from 'https://deno.land/std@0.168.0/http/server.ts'
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2'
 import {
   getCorsHeaders, getJsonHeaders, handleCorsPreflight,
-  verifyAuth, enforceRateLimit, getGeminiKey,
+  verifyAuth, enforceRateLimit,
 } from '../_shared/utils.ts'
+import { callAi } from '../_shared/openrouter.ts'
 import { excludeSensitiveFieldsForAI } from '../_shared/sensitiveFields.ts'
 
 const FN = 'candidate-summary'
@@ -96,17 +97,6 @@ serve(async (req) => {
     // CRITICAL: Exclude sensitive fields
     const { sanitized, excluded } = excludeSensitiveFieldsForAI(candidatePayload)
 
-    // Check Gemini key
-    const geminiKey = getGeminiKey()
-    if (!geminiKey) {
-      return new Response(JSON.stringify({
-        success: false, error: 'AI provider not configured', code: 'AI_NOT_CONFIGURED',
-      }), { status: 503, headers: h })
-    }
-
-    const { GoogleGenAI } = await import('https://esm.sh/@google/genai@latest')
-    const genai = new GoogleGenAI({ apiKey: geminiKey })
-
     const systemPrompt = `You are an HR candidate analyst. Summarize the candidate profile objectively based ONLY on provided evidence.
 
 RULES:
@@ -132,18 +122,7 @@ ${JSON.stringify(sanitized, null, 2)}
 
 Return ONLY valid JSON matching the schema.`
 
-    const response = await genai.models.generateContent({
-      model: 'gemini-2.5-flash',
-      contents: [{ role: 'user', parts: [{ text: userPrompt }] }],
-      config: {
-        systemInstruction: systemPrompt,
-        responseMimeType: 'application/json',
-        temperature: 0.3,
-        maxOutputTokens: 2048,
-      },
-    })
-
-    const responseText = response.text ?? ''
+    const responseText = await callAi(systemPrompt, userPrompt, { temperature: 0.3, maxTokens: 2048 });
     let result: any
     try { result = JSON.parse(responseText) }
     catch {
@@ -181,7 +160,7 @@ Return ONLY valid JSON matching the schema.`
       application_id: application_id || null,
       run_type: 'candidate_summary',
       status: 'completed',
-      model_name: 'gemini-2.5-flash',
+      model_name: 'openrouter',
       prompt_version: PROMPT_VERSION,
       output_summary: result.summary?.slice(0, 500),
       created_by: user.id,

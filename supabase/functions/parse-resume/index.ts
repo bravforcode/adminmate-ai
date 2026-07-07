@@ -1,16 +1,15 @@
 import { serve } from 'https://deno.land/std@0.168.0/http/server.ts'
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2'
-import { GoogleGenAI } from 'https://esm.sh/@google/genai@latest'
 import {
   getCorsHeaders,
   getJsonHeaders,
   handleCorsPreflight,
   verifyAuth,
   enforceRateLimit,
-  getGeminiKey,
   checkAILimit,
   logRequest,
 } from '../_shared/utils.ts'
+import { callAi } from '../_shared/openrouter.ts'
 import { errorResponse } from '../_shared/errorHandler.ts'
 
 const FN = 'parse-resume'
@@ -109,18 +108,9 @@ serve(async (req) => {
       return new Response(JSON.stringify({ success: false, error: 'CV file is empty or unreadable' }), { status: 422, headers: h })
     }
 
-    const ai = new GoogleGenAI({ apiKey: getGeminiKey() })
-    const response = await ai.models.generateContent({
-      model: 'gemini-2.5-flash',
-      config: {
-        systemInstruction: `Extract structured data from this resume text. Return ONLY valid JSON: { "full_name": "string", "email": "string", "phone": "string", "location": "string", "linkedin_url": "string", "portfolio_url": "string", "summary": "string", "total_experience_years": number, "work_experience": [{"company":"string","title":"string","start_date":"string","end_date":"string","description":"string","skills_used":["string"]}], "education": [{"institution":"string","degree":"string","field":"string","start_date":"string","end_date":"string"}], "skills": [{"name":"string","level":"string","years":number}], "languages": [{"name":"string","level":"string"}], "certifications": [{"name":"string","issuer":"string","date":"string"}] }`,
-        temperature: 0.1,
-        maxOutputTokens: 4096,
-      },
-      contents: fileText.slice(0, 15000),
-    })
+    const systemPrompt = `Extract structured data from this resume text. Return ONLY valid JSON: { "full_name": "string", "email": "string", "phone": "string", "location": "string", "linkedin_url": "string", "portfolio_url": "string", "summary": "string", "total_experience_years": number, "work_experience": [{"company":"string","title":"string","start_date":"string","end_date":"string","description":"string","skills_used":["string"]}], "education": [{"institution":"string","degree":"string","field":"string","start_date":"string","end_date":"string"}], "skills": [{"name":"string","level":"string","years":number}], "languages": [{"name":"string","level":"string"}], "certifications": [{"name":"string","issuer":"string","date":"string"}] }`
 
-    const text = response.text ?? ''
+    const text = await callAi(systemPrompt, fileText.slice(0, 15000), { temperature: 0.1, maxTokens: 4096 })
     const jsonMatch = text.match(/\{[\s\S]*\}/)
     const parsed = jsonMatch ? JSON.parse(jsonMatch[0]) : null
 

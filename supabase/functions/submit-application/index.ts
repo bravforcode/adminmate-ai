@@ -1,6 +1,7 @@
 import { serve } from 'https://deno.land/std@0.168.0/http/server.ts'
-import { createClient } from 'https://esm.sh/@supabase/supabase-js@2'
-import { getCorsHeaders, getJsonHeaders, handleCorsPreflight } from '../_shared/utils.ts'
+import { getServiceClient } from '../_shared/supabaseClient.ts'
+import { getCorsHeaders, handleCorsPreflight } from '../_shared/utils.ts'
+import { errorResponse } from '../_shared/errorHandler.ts'
 
 const FN = 'submit-application'
 
@@ -28,39 +29,39 @@ serve(async (req) => {
   const preflight = handleCorsPreflight(req)
   if (preflight) return preflight
 
-  const h = getJsonHeaders(req)
+  const cors = getCorsHeaders(req)
   const start = Date.now()
 
   try {
     if (req.method !== 'POST') {
-      return new Response(JSON.stringify({ success: false, error: 'Method not allowed' }), { status: 405, headers: h })
+      return errorResponse('Method not allowed', 405, cors)
     }
 
     // Parse body
     let body: any
     try { body = await req.json() }
-    catch { return new Response(JSON.stringify({ success: false, error: 'Invalid JSON body' }), { status: 400, headers: h }) }
+    catch { return errorResponse('Invalid JSON body', 400, cors) }
 
     // Block sensitive fields
     for (const field of BLOCKED_FIELDS) {
       if (field in body) {
-        return new Response(JSON.stringify({ success: false, error: `Field not allowed: ${field}` }), { status: 400, headers: h })
+        return errorResponse(`Field not allowed: ${field}`, 400, cors)
       }
     }
 
     // Validate required fields
     const { job_token, full_name, email, consent_given } = body
     if (!job_token || typeof job_token !== 'string' || job_token.length > 32) {
-      return new Response(JSON.stringify({ success: false, error: 'Invalid job token' }), { status: 400, headers: h })
+      return errorResponse('Invalid job token', 400, cors)
     }
     if (!full_name || typeof full_name !== 'string' || full_name.length < 1 || full_name.length > MAX_NAME_LENGTH) {
-      return new Response(JSON.stringify({ success: false, error: `Full name required (1-${MAX_NAME_LENGTH} chars)` }), { status: 400, headers: h })
+      return errorResponse(`Full name required (1-${MAX_NAME_LENGTH} chars)`, 400, cors)
     }
     if (!email || typeof email !== 'string' || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email) || email.length > MAX_EMAIL_LENGTH) {
-      return new Response(JSON.stringify({ success: false, error: 'Valid email required' }), { status: 400, headers: h })
+      return errorResponse('Valid email required', 400, cors)
     }
     if (consent_given !== true) {
-      return new Response(JSON.stringify({ success: false, error: 'Consent is required to submit application' }), { status: 400, headers: h })
+      return errorResponse('Consent is required to submit application', 400, cors)
     }
 
     // Sanitize optional fields
@@ -87,7 +88,7 @@ serve(async (req) => {
     }
 
     // Resolve job + company (server-side only — never trust client for company_id)
-    const supabase = createClient(Deno.env.get('SUPABASE_URL')!, Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!)
+    const supabase = getServiceClient()
 
     const { data: job, error: jobErr } = await supabase
       .from('jobs')
@@ -96,10 +97,10 @@ serve(async (req) => {
       .single()
 
     if (jobErr || !job) {
-      return new Response(JSON.stringify({ success: false, error: 'Job not found' }), { status: 404, headers: h })
+      return errorResponse('Job not found', 404, cors)
     }
     if (job.status !== 'active' || !job.is_published) {
-      return new Response(JSON.stringify({ success: false, error: 'This job is no longer accepting applications' }), { status: 410, headers: h })
+      return errorResponse('This job is no longer accepting applications', 410, cors)
     }
 
     // Verify company is active
@@ -110,7 +111,7 @@ serve(async (req) => {
       .single()
 
     if (!company || company.status !== 'active') {
-      return new Response(JSON.stringify({ success: false, error: 'Company not available' }), { status: 410, headers: h })
+      return errorResponse('Company not available', 410, cors)
     }
 
     // Simple rate limit: max 5 applications per email per hour
@@ -122,7 +123,7 @@ serve(async (req) => {
       .gte('created_at', oneHourAgo)
 
     if (recentApps && recentApps >= 100) {
-      return new Response(JSON.stringify({ success: false, error: 'Too many applications. Please try again later.' }), { status: 429, headers: { ...h, 'Retry-After': '3600' } })
+      return errorResponse('Too many applications. Please try again later.', 429, { ...cors, 'Retry-After': '3600' })
     }
 
     // Check duplicate by email+job
@@ -177,7 +178,7 @@ serve(async (req) => {
 
       if (candErr || !newCandidate) {
         console.error(`[${FN}] Candidate create error:`, candErr?.message)
-        return new Response(JSON.stringify({ success: false, error: 'Failed to create candidate' }), { status: 500, headers: h })
+        return errorResponse('Failed to create candidate', 500, cors)
       }
       candidateId = newCandidate.id
     }
@@ -196,7 +197,7 @@ serve(async (req) => {
         tracking_token: alreadyApplied.tracking_token,
         message: 'You have already applied to this job',
         already_applied: true,
-      }), { status: 200, headers: h })
+      }), { status: 200, headers: { ...cors, 'Content-Type': 'application/json' } })
     }
 
     // Create application
@@ -214,7 +215,7 @@ serve(async (req) => {
 
     if (appErr || !application) {
       console.error(`[${FN}] Application create error:`, appErr?.message)
-      return new Response(JSON.stringify({ success: false, error: 'Failed to submit application' }), { status: 500, headers: h })
+      return errorResponse('Failed to submit application', 500, cors)
     }
 
     // Store consent log
@@ -252,9 +253,9 @@ serve(async (req) => {
       success: true,
       tracking_token: application.tracking_token,
       message: 'Application submitted successfully',
-    }), { status: 201, headers: h })
+    }), { status: 201, headers: { ...cors, 'Content-Type': 'application/json' } })
   } catch (err) {
     console.error(`[${FN}] Unhandled:`, err)
-    return new Response(JSON.stringify({ success: false, error: 'Internal error' }), { status: 500, headers: h })
+    return errorResponse(err, 500, cors)
   }
 })

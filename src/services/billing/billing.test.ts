@@ -7,7 +7,7 @@ function createChain(result: unknown, error: unknown = null) {
   methods.forEach((m) => {
     chain[m] = vi.fn(() => chain)
   })
-  chain.then = (resolve: Function, _reject?: Function) => {
+  chain.then = (resolve: (v: unknown) => unknown, _reject?: (e: unknown) => unknown) => {
     return resolve({ data: result, error })
   }
   return chain

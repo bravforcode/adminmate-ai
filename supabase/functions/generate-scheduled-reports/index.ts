@@ -10,6 +10,10 @@ import { errorResponse } from '../_shared/errorHandler.ts'
 
 const FN = 'generate-scheduled-reports'
 
+function escapeHtml(s: string): string {
+  return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;')
+}
+
 serve(async (req) => {
   const preflight = handleCorsPreflight(req)
   if (preflight) return preflight
@@ -218,7 +222,7 @@ async function generateSourceEffectiveness(sb: ReturnType<typeof createClient>, 
 
   const rows = Object.entries(sourceCounts).sort(([, a], [, b]) => b - a).map(([source, count]) => {
     const pct = Math.round((count / maxCount) * 100)
-    return `<tr><td>${source}</td><td><div class="bar"><div class="bar-fill" style="width:${pct}%"></div></div></td><td style="text-align:right">${count} (${Math.round((count / total) * 100)}%)</td></tr>`
+    return `<tr><td>${escapeHtml(source)}</td><td><div class="bar"><div class="bar-fill" style="width:${pct}%"></div></div></td><td style="text-align:right">${count} (${Math.round((count / total) * 100)}%)</td></tr>`
   }).join('')
 
   const sections = [{ title: 'Source Breakdown', content: `<table><thead><tr><th>Source</th><th style="width:50%">Volume</th><th style="text-align:right">Candidates</th></tr></thead><tbody>${rows}</tbody></table>` }]

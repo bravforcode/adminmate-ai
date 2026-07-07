@@ -14,15 +14,20 @@ const ALLOWED_ORIGINS = [
   'https://adminmate.ai',
   'https://www.adminmate.ai',
   'https://adminmate-ai.vercel.app',
-  'https://adminmate-ejlj6q10v-phirawits-projects.vercel.app',
-  'https://adminmate-b8wifowwq-phirawits-projects.vercel.app',
-  'https://adminmate-5pyslc95u-phirawits-projects.vercel.app',
-  'https://adminmate-jfsc1pr9v-phirawits-projects.vercel.app',
+  'https://adminmate-nccdarznd-phirawits-projects.vercel.app',
 ]
+
+// Allow only this project's Vercel preview URLs — never all of *.vercel.app
+// (anyone can deploy there; open suffix = credentialed CORS for attackers)
+function isAllowedOrigin(origin: string): boolean {
+  if (ALLOWED_ORIGINS.includes(origin)) return true
+  if (/^https:\/\/adminmate-[a-z0-9]+-phirawits-projects\.vercel\.app$/.test(origin)) return true
+  return false
+}
 
 function getAllowedOrigin(req: Request): string {
   const origin = req.headers.get('Origin')
-  if (origin && ALLOWED_ORIGINS.includes(origin)) return origin
+  if (origin && isAllowedOrigin(origin)) return origin
   return ALLOWED_ORIGINS[0]
 }
 

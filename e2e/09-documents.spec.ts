@@ -48,7 +48,7 @@ test.describe('DOCUMENTS: Search & Filter', () => {
     if (await search.isVisible({ timeout: 5000 }).catch(() => false)) {
       await search.fill('NonexistentDoc12345')
       await page.waitForTimeout(1000)
-      const emptyState = page.locator('[class*="empty"]').count()
+      const emptyState = await page.locator('[class*="empty"]').count()
       expect(emptyState).toBeGreaterThanOrEqual(0)
     }
   })

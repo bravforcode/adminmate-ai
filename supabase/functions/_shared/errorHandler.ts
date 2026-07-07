@@ -46,6 +46,9 @@ function getHttpStatus(code: string): number {
 }
 
 export function sanitizeError(error: unknown): string {
+  // Plain strings are author-written, client-safe messages — pass through.
+  // Only raw Error objects (DB/library errors) need sanitizing.
+  if (typeof error === 'string') return error
   if (error instanceof Error) {
     const msg = error.message.toLowerCase()
     if (msg.includes('duplicate key') || msg.includes('unique')) return 'A record with this information already exists'

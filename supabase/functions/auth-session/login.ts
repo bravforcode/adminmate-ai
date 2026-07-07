@@ -1,4 +1,4 @@
-import { createClient } from 'https://esm.sh/@supabase/supabase-js@2'
+import { getServiceClient } from '../_shared/supabaseClient.ts'
 import { getJsonHeaders, validateInput, logRequest } from '../_shared/utils.ts'
 import { errorResponse } from '../_shared/errorHandler.ts'
 import { createRefreshCookie } from './cookies.ts'
@@ -6,7 +6,7 @@ import { captureError } from '../_shared/sentry.ts'
 
 // Server-side rate limiting for login attempts
 // Key: SHA-256(email + ip) to avoid storing plaintext PII in rate_limits table
-async function checkLoginRateLimit(supabase: ReturnType<typeof createClient>, email: string, ip: string): Promise<boolean> {
+async function checkLoginRateLimit(supabase: ReturnType<typeof getServiceClient>, email: string, ip: string): Promise<boolean> {
   const encoder = new TextEncoder()
   const keyData = encoder.encode(`${email.toLowerCase().trim()}:${ip}`)
   const hashBuffer = await crypto.subtle.digest('SHA-256', keyData)
@@ -41,10 +41,7 @@ export async function handleLogin(req: Request): Promise<Response> {
       )
     }
 
-    const supabase = createClient(
-      Deno.env.get('SUPABASE_URL')!,
-      Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!
-    )
+    const supabase = getServiceClient()
 
     let body: { email?: string; password?: string }
     try {
