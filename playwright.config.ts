@@ -33,12 +33,12 @@ export default defineConfig({
       ],
       use: { browserName: 'chromium' },
     },
-    // HR specs: fresh UI login per spec (no storageState).
-    // storageState caused signInWithPassword to hang — the preloaded Supabase
-    // session conflicted with the new signIn call (client lock). Fresh login
-    // per spec is slower but reliable and matches chromium-auth (which passes).
+    // HR specs: use fresh storageState from setup project.
+    // Setup runs first and generates playwright/.auth/hr.json with a valid session.
+    // Each spec still clears stale localStorage via ensureHRAuthenticated as a safety net.
     {
       name: 'chromium-hr',
+      dependencies: ['setup'],
       testIgnore: [
         /01-auth\.spec\.ts$/,
         /17-mfa-2fa\.spec\.ts$/,
@@ -48,6 +48,7 @@ export default defineConfig({
       ],
       use: {
         browserName: 'chromium',
+        storageState: 'playwright/.auth/hr.json',
       },
     },
   ],

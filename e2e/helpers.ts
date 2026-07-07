@@ -13,13 +13,7 @@ export function freshEmail() {
 // ─── Navigate to login form (handles role-select step) ──────────
 async function goToLoginForm(page: Page) {
   await page.goto('/login')
-  // Neutralize storageState side effects before every UI login:
-  // 1. A stale Supabase session in localStorage makes autoRefreshToken fire with a
-  //    dead refresh_token → SIGNED_OUT → onAuthStateChange clears user → AuthGuard
-  //    bounces the freshly signed-in page back to /login (intermittent, killed 40+
-  //    chromium-hr tests). Clear unconditionally — every test does a UI login anyway.
-  // 2. Without the tour-completed flag, OnboardingTour auto-starts 2s after profile
-  //    load and its overlay intercepts pointer events on app pages.
+  // Clear stale Supabase session + mark tour as completed (one evaluate call)
   const hadSession = await page.evaluate(() => {
     const had = window.localStorage.getItem('adminmate-auth-token') !== null
     window.localStorage.removeItem('adminmate-auth-token')
@@ -27,15 +21,12 @@ async function goToLoginForm(page: Page) {
     window.localStorage.setItem('adminmate_tour_completed_onboarding', 'true')
     return had
   })
-  // Reboot so the in-memory Supabase client (already initialized with the stale
-  // session + running refresh timer) starts clean.
   if (hadSession) await page.reload()
-  // The login page has a role-select step first — click the HR card to proceed
+  // Click the HR role card → email/password form appears
   const hrCard = page.locator('#role-card-hr')
-  await hrCard.waitFor({ state: 'visible', timeout: 15_000 })
+  await hrCard.waitFor({ state: 'visible', timeout: 10_000 })
   await hrCard.click()
-  // Now the LoginForm should be visible
-  await page.locator('[data-testid="email-input"]').waitFor({ state: 'visible', timeout: 10_000 })
+  await page.locator('[data-testid="email-input"]').waitFor({ state: 'visible', timeout: 8_000 })
 }
 
 // ─── Complete Company Setup (if redirected to setup-company) ─────
@@ -66,11 +57,18 @@ async function completeCompanySetup(page: Page) {
 /**
  * Ensure the page is authenticated as HR.
  *
- * Stale-session clearing lives in goToLoginForm (the common path for every
- * UI login), so this is just the full login flow — signInAsHR also handles
- * completeCompanySetup.
+ * If storageState is preloaded (from setup project), the page may already
+ * be authenticated — check first and only do UI login if needed.
  */
 export async function ensureHRAuthenticated(page: Page) {
+  // If already on a protected route, session is valid — skip login
+  const url = page.url()
+  const isProtected = ['/dashboard', '/setup-company', '/recruitment', '/settings',
+    '/reports', '/documents', '/monitoring', '/health', '/onboarding',
+    '/employees', '/payroll', '/messages', '/compliance'].some(p => url.includes(p))
+  if (isProtected) return
+
+  // Not authenticated (on /login or about:blank) — do full UI login
   await signInAsHR(page)
 }
 
@@ -151,23 +149,17 @@ export async function signOut(page: Page) {
 
 // ─── Navigation Helpers ──────────────────────────────────────────
 export async function waitForPageReady(page: Page) {
-  // On full page.reload/goto, the Supabase client re-initializes from localStorage
-  // and the parent AppLayout's AuthGuard calls initSession which sets isLoading=true.
-  // Child routes (callInitSession={false}) inherit this loading state. The initSession
-  // call includes supabase.auth.getSession() which can take several seconds on a cold
-  // client init. Using networkidle is unreliable (realtime WebSocket), so we wait for
-  // actual page content to appear instead.
-  await page.waitForLoadState('domcontentloaded', { timeout: 20_000 }).catch(() => {})
-  // Wait for the AuthGuard loading spinner to disappear (up to 25s for slow Supabase init).
+  await page.waitForLoadState('domcontentloaded', { timeout: 15_000 }).catch(() => {})
+  // Wait for AuthGuard loading spinner to disappear
   await page
     .locator('[data-testid="auth-guard-loading"]')
-    .waitFor({ state: 'hidden', timeout: 25_000 })
+    .waitFor({ state: 'hidden', timeout: 15_000 })
     .catch(() => {})
-  // Also wait for any real content to render (covers CompanySetupGuard spinner too).
+  // Wait for real content to render
   await page
     .locator('h1, h2, h3, main, nav, aside, [class*="card"], [class*="skeleton"], form')
     .first()
-    .waitFor({ state: 'visible', timeout: 15_000 })
+    .waitFor({ state: 'visible', timeout: 10_000 })
     .catch(() => {})
 }
 
