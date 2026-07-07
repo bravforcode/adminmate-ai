@@ -64,13 +64,16 @@ test.describe('PIPELINE: Kanban Cards', () => {
 // PIPELINE: Job Filter
 // ═══════════════════════════════════════════════════════════════════
 test.describe('PIPELINE: Job Filter', () => {
-  test('filter has "All Jobs" option', async ({ page }) => {
+  test('filter has placeholder option (board is per-job by design)', async ({ page }) => {
     await ensureHRAuthenticated(page)
     await navigateTo(page, '/recruitment/pipeline')
     const filter = page.locator('[data-testid="job-filter"]')
     if (await filter.isVisible({ timeout: 5_000 }).catch(() => false)) {
-      const options = await filter.locator('option').allTextContents()
-      expect(options.some(o => /all/i.test(o))).toBe(true)
+      // KanbanBoard has no "All Jobs" mode — first option is an empty-value
+      // placeholder ("select job" / "no active jobs"), then one option per active job.
+      const placeholder = filter.locator('option[value=""]')
+      await expect(placeholder).toHaveCount(1)
+      expect(await filter.locator('option').count()).toBeGreaterThanOrEqual(1)
     }
   })
 

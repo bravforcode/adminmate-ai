@@ -116,7 +116,7 @@ test.describe('CANDIDATES: Search', () => {
     if (await search.isVisible({ timeout: 5_000 }).catch(() => false)) {
       await search.fill('NonexistentCandidate12345')
       await page.waitForTimeout(1000)
-      const emptyState = page.locator('[class*="empty"]').count()
+      const emptyState = await page.locator('[class*="empty"]').count()
       expect(emptyState).toBeGreaterThanOrEqual(0)
     }
   })
