@@ -1,12 +1,25 @@
+import { useEffect } from 'react'
 import { Outlet } from 'react-router-dom'
 import { Sidebar } from './Sidebar'
 import { Header } from './Header'
 import { MobileNav } from './MobileNav'
 import { ChatWidget } from '../chat/ChatWidget'
 import { OnboardingTour } from '../onboarding/OnboardingTour'
+import { useAuthStore } from '../../stores/authStore'
 import { Toaster } from 'react-hot-toast'
 
+const RTL_LANGUAGES = ['ar', 'he', 'fa', 'ur']
+
 export function AppLayout() {
+  const userLanguage = useAuthStore(s => s.userLanguage)
+  const lang = userLanguage()
+  const isRtl = RTL_LANGUAGES.includes(lang)
+
+  useEffect(() => {
+    document.documentElement.dir = isRtl ? 'rtl' : 'ltr'
+    document.documentElement.lang = lang
+  }, [isRtl, lang])
+
   return (
     <div className="min-h-screen bg-background dark:bg-surface-container-lowest flex">
       <a href="#main-content" className="sr-only focus:not-sr-only focus:fixed focus:top-2 focus:left-2 focus:z-[100] focus:bg-white focus:p-2 focus:rounded focus:ring-2 focus:ring-primary">

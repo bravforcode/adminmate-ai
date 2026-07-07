@@ -14,17 +14,54 @@ export function ChatWidget() {
   const [input, setInput] = useState('')
   const { t } = useTranslation('chat')
   const bottomRef = useRef<HTMLDivElement>(null)
+  const panelRef = useRef<HTMLDivElement>(null)
+  const closeButtonRef = useRef<HTMLButtonElement>(null)
   const profile = useAuthStore(s => s.profile)
   const isHR = ['admin', 'hr', 'manager'].includes(profile?.role ?? '')
   const userTitle = isHR ? `${t('title')} (HR)` : `${t('title')} (Applicant)`
 
+  // Focus close button when dialog opens
   useEffect(() => {
     if (isOpen) {
       setTimeout(() => {
+        closeButtonRef.current?.focus()
         bottomRef.current?.scrollIntoView({ behavior: 'smooth' })
       }, 100)
     }
   }, [messages, isOpen])
+
+  // Focus trap: keep Tab cycling within the chat panel
+  useEffect(() => {
+    if (!isOpen || !panelRef.current) return
+
+    const panel = panelRef.current
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key !== 'Tab') return
+
+      const focusable = panel.querySelectorAll<HTMLElement>(
+        'button:not([disabled]), input:not([disabled]), [tabindex]:not([tabindex="-1"])'
+      )
+      if (focusable.length === 0) return
+
+      const first = focusable[0]
+      const last = focusable[focusable.length - 1]
+
+      if (e.shiftKey) {
+        if (document.activeElement === first) {
+          e.preventDefault()
+          last.focus()
+        }
+      } else {
+        if (document.activeElement === last) {
+          e.preventDefault()
+          first.focus()
+        }
+      }
+    }
+
+    panel.addEventListener('keydown', handleKeyDown)
+    return () => panel.removeEventListener('keydown', handleKeyDown)
+  }, [isOpen])
 
   useEffect(() => {
     const handleOpenChat = (event: Event) => {
@@ -73,7 +110,11 @@ export function ChatWidget() {
       <AnimatePresence>
         {isOpen && (
           <motion.div
+            ref={panelRef}
             data-testid="chat-panel"
+            role="dialog"
+            aria-modal="true"
+            aria-label={t('title')}
             className="chat-panel fixed bottom-[92px] md:bottom-24 right-4 md:right-6 z-[60] w-[calc(100vw-32px)] sm:w-[400px] h-[min(550px,calc(100vh-180px))] bg-surface border border-border rounded-2xl shadow-2xl flex flex-col overflow-hidden origin-bottom-right pointer-events-auto"
             initial={{ opacity: 0, scale: 0.9, y: 16 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
@@ -101,6 +142,7 @@ export function ChatWidget() {
             </div>
           </div>
           <button
+            ref={closeButtonRef}
             onClick={() => setIsOpen(false)}
             className="text-white/60 hover:text-white p-2 hover:bg-white/10 rounded-full transition-colors cursor-pointer min-w-[44px] min-h-[44px] flex items-center justify-center"
             aria-label="Close chat"
@@ -192,6 +234,7 @@ export function ChatWidget() {
             onChange={(e) => setInput(e.target.value)}
             onKeyDown={(e) => e.key === 'Enter' && handleSend()}
             data-testid="chat-input"
+            aria-label={t('placeholder')}
             className="flex-1 px-4 py-2.5 rounded-full border border-border bg-bg focus:border-accent focus:ring-1 focus:ring-accent outline-none text-xs text-text-primary placeholder-text-muted transition-all"
             placeholder={t('placeholder')}
             disabled={isLoading}
@@ -200,6 +243,7 @@ export function ChatWidget() {
             onClick={handleSend}
             disabled={isLoading || !input.trim()}
             data-testid="chat-send"
+            aria-label={t('send', 'Send message')}
             className="w-11 h-11 rounded-full bg-accent text-white flex items-center justify-center hover:opacity-90 active:scale-95 disabled:opacity-40 disabled:scale-100 transition-all cursor-pointer shadow-[0_2px_8px_rgba(96,165,250,0.2)] flex-shrink-0"
           >
             <Send size={15} />

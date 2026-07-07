@@ -54,17 +54,25 @@ serve(async (req) => {
       })
     }
 
-    const effectiveCompanyId = companyId || profile?.company_id
+    // Get target user's profile to verify company boundary
+    const { data: targetProfile } = await supabase.from('user_profiles')
+      .select('email, company_id')
+      .eq('id', targetUserId)
+      .single()
+
+    // SECURITY: Verify target user belongs to the same company as the caller
+    if (!isSelf && targetProfile?.company_id !== profile?.company_id) {
+      return new Response(JSON.stringify({ success: false, error: 'Cannot delete data from another company' }), {
+        status: 403,
+        headers: { ...getCorsHeaders(req), 'Content-Type': 'application/json' },
+      })
+    }
+
+    const effectiveCompanyId = profile?.company_id
 
     // Non-deterministic anonymous identifier (PDPA §33 / GDPR Art.17 compliant)
     const anonId = crypto.randomUUID()
     const deletedEmail = `deleted_${anonId}@anonymized.local`
-
-    // Get target user's email for candidate matching
-    const { data: targetProfile } = await supabase.from('user_profiles')
-      .select('email')
-      .eq('id', targetUserId)
-      .single()
 
     const anonymizedTables: string[] = []
 
@@ -176,22 +184,22 @@ serve(async (req) => {
     }).eq('user_id', targetUserId)
     anonymizedTables.push('notifications')
 
-    // ── 5. onboarding_tasks (company-scoped) ─────────────────────────
+    // ── 5. onboarding_tasks (user-scoped, not company-wide) ───────────
     if (effectiveCompanyId) {
       const onboardingUpdate = await supabase.from('onboarding_tasks').update({
         assigned_to: null,
         notes: null,
         description: null,
-      }).eq('company_id', effectiveCompanyId)
+      }).eq('company_id', effectiveCompanyId).eq('assigned_to', targetUserId)
       if (!onboardingUpdate.error) anonymizedTables.push('onboarding_tasks')
     }
 
-    // ── 6. pdpa_consents ─────────────────────────────────────────────
+    // ── 6. pdpa_consents (user-scoped, not company-wide) ─────────────
     await supabase.from('pdpa_consents').update({
       data_subject_email: deletedEmail,
       consent_given: false,
       purposes: [],
-    }).eq('company_id', effectiveCompanyId)
+    }).eq('company_id', effectiveCompanyId).eq('data_subject_email', targetProfile?.email)
     anonymizedTables.push('pdpa_consents')
 
     // ── 7. audit_log (immutable record of the deletion) ──────────────

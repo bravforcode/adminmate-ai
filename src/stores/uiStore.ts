@@ -42,7 +42,7 @@ export const useUIStore = create<UIState>((set) => ({
   activeModal: null,
   notificationCount: 0,
   notifications: [],
-  language: 'th',
+  language: 'en',
   theme: getInitialTheme(),
   toggleSidebar: () => set((s) => ({ sidebarOpen: !s.sidebarOpen })),
   setSidebarOpen: (open) => set({ sidebarOpen: open }),

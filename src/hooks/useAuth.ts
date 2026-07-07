@@ -5,10 +5,7 @@ import { supabase } from '../lib/supabase'
 import { companyService } from '../services/companyService'
 import type { SignUpWithPasswordCredentials } from '@supabase/supabase-js'
 
-/** Returns the correct landing route based on user role from DB. */
-export function getDefaultRoute(_role?: string | null): string {
-  return '/dashboard'
-}
+export { getDefaultRoute } from '../lib/navigation'
 
 
 interface RegisterPayload {

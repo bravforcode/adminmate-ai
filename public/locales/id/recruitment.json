@@ -93,6 +93,8 @@
     "moved_to_interviewing": "Dipindahkan ke Wawancara",
     "failed_to_update": "Gagal memperbarui status",
     "select_job": "Pilih lowongan aktif untuk melihat pipeline",
+    "select_job_prompt": "Pilih lowongan untuk melihat pipeline",
+    "select_job_prompt_desc": "Pilih lowongan dari menu di atas untuk melihat kandidat di setiap tahapan pipeline",
     "no_active_jobs": "Tidak ada lowongan aktif",
     "loading_pipeline": "Memuat pipeline...",
     "no_candidates": "Tidak ada kandidat",

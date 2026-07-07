@@ -1,0 +1,114 @@
+# CODEOWNERS — AdminMate AI
+#
+# Format: <pattern> <@owner1> <@owner2> ...
+# See: https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-code-owners
+
+# ──────────────────────────────────────────────
+# Global fallback
+# ──────────────────────────────────────────────
+* @adminmate-team
+
+# ──────────────────────────────────────────────
+# Authentication & Security
+# ──────────────────────────────────────────────
+src/stores/authStore.ts          @adminmate-security
+src/services/authService.ts      @adminmate-security
+src/lib/authStorage.ts           @adminmate-security
+src/components/auth/             @adminmate-security
+src/pages/auth/                  @adminmate-security
+src/utils/authErrors.ts          @adminmate-security
+src/utils/passwordStrength.ts    @adminmate-security
+tests/unit/security/             @adminmate-security
+supabase/migrations/*rls*        @adminmate-security
+supabase/migrations/*security*   @adminmate-security
+supabase/storage_policies.sql    @adminmate-security
+
+# ──────────────────────────────────────────────
+# Multi-tenant isolation (company_id boundary)
+# ──────────────────────────────────────────────
+supabase/migrations/*tenant*     @adminmate-security @adminmate-backend
+supabase/migrations/*rbac*       @adminmate-security @adminmate-backend
+src/services/sensitiveFieldService.ts @adminmate-security
+
+# ──────────────────────────────────────────────
+# Database & Migrations
+# ──────────────────────────────────────────────
+supabase/migrations/             @adminmate-backend
+supabase/seed.sql                @adminmate-backend
+supabase/seed-test-user.sql      @adminmate-backend
+supabase/all_migrations.sql      @adminmate-backend
+supabase/tests/                  @adminmate-backend @adminmate-security
+src/services/permissionService.ts @adminmate-backend
+
+# ──────────────────────────────────────────────
+# AI / ML Services
+# ──────────────────────────────────────────────
+src/services/ai/                 @adminmate-ai
+src/services/aiRecruitingService.ts @adminmate-ai
+src/services/aiPromptVersionService.ts @adminmate-ai
+supabase/functions/candidate-match-score/ @adminmate-ai
+supabase/functions/candidate-summary/     @adminmate-ai
+supabase/functions/mate-ai-chat/          @adminmate-ai
+supabase/functions/generate-jd/           @adminmate-ai
+supabase/functions/generate-offer-content/ @adminmate-ai
+supabase/functions/screen-resume/         @adminmate-ai
+supabase/functions/parse-resume/          @adminmate-ai
+
+# ──────────────────────────────────────────────
+# Billing & Payments (Stripe)
+# ──────────────────────────────────────────────
+src/services/billing/            @adminmate-billing
+supabase/functions/stripe-checkout/  @adminmate-billing
+supabase/functions/stripe-webhook/   @adminmate-billing
+src/pages/settings/BillingPage.tsx   @adminmate-billing
+supabase/migrations/*stripe*     @adminmate-billing
+supabase/migrations/*billing*    @adminmate-billing
+supabase/migrations/*subscription* @adminmate-billing
+supabase/migrations/*pricing*    @adminmate-billing
+
+# ──────────────────────────────────────────────
+# Messaging & Notifications
+# ──────────────────────────────────────────────
+src/services/messaging/          @adminmate-messaging
+src/services/notificationService.ts @adminmate-messaging
+supabase/functions/messaging-hub/ @adminmate-messaging
+supabase/functions/line-webhook/  @adminmate-messaging
+supabase/functions/whatsapp-webhook/ @adminmate-messaging
+
+# ──────────────────────────────────────────────
+# CI/CD & DevOps
+# ──────────────────────────────────────────────
+.github/                         @adminmate-devops
+scripts/                         @adminmate-devops
+playwright.config.ts             @adminmate-devops @adminmate-qa
+
+# ──────────────────────────────────────────────
+# Testing infrastructure
+# ──────────────────────────────────────────────
+src/test-utils/                  @adminmate-qa
+tests/setup.ts                   @adminmate-qa
+vitest.config.ts                 @adminmate-qa
+e2e/                             @adminmate-qa
+
+# ──────────────────────────────────────────────
+# Compliance & Legal
+# ──────────────────────────────────────────────
+src/services/pdpaService.ts      @adminmate-compliance
+src/services/compliance/         @adminmate-compliance
+src/pages/settings/PDPAPage.tsx  @adminmate-compliance
+src/pages/settings/CompliancePage.tsx @adminmate-compliance
+supabase/migrations/*pdpa*       @adminmate-compliance
+supabase/migrations/*compliance* @adminmate-compliance
+
+# ──────────────────────────────────────────────
+# Shared UI components
+# ──────────────────────────────────────────────
+src/components/ui/               @adminmate-frontend
+src/components/layout/           @adminmate-frontend
+src/components/shared/           @adminmate-frontend
+
+# ──────────────────────────────────────────────
+# i18n / Localization
+# ──────────────────────────────────────────────
+src/lib/i18n.ts                  @adminmate-frontend
+public/locales/                  @adminmate-frontend

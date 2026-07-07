@@ -1,0 +1,102 @@
+# ============================================================
+# Security Grep Guard — Prevents dangerous RLS patterns
+# in migration files from being reintroduced.
+#
+# Checks for:
+#   - USING (true) — opens RLS to all authenticated users
+#   - WITH CHECK (true) — allows unrestricted inserts/updates
+#   - ENABLE ROW LEVEL SECURITY without policies
+# ============================================================
+
+name: Security Grep Guard
+
+on:
+  pull_request:
+    paths:
+      - 'supabase/migrations/**'
+  push:
+    branches:
+      - main
+    paths:
+      - 'supabase/migrations/**'
+
+jobs:
+  rls-pattern-check:
+    name: Detect dangerous RLS patterns
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Check for USING (true) in migrations
+        run: |
+          echo "Checking for dangerous RLS patterns in migration files..."
+          MATCHES=$(grep -rn 'USING (true)' supabase/migrations/ || true)
+          if [ -n "$MATCHES" ]; then
+            echo "::error::Found 'USING (true)' in migration files — this opens RLS to ALL authenticated users!"
+            echo "$MATCHES"
+            echo ""
+            echo "Each policy must scope access to the owning company:"
+            echo "  USING (company_id = safe_user_company_id())"
+            exit 1
+          fi
+          echo "✓ No USING (true) patterns found"
+
+      - name: Check for WITH CHECK (true) in migrations
+        run: |
+          MATCHES=$(grep -rn 'WITH CHECK (true)' supabase/migrations/ || true)
+          if [ -n "$MATCHES" ]; then
+            echo "::error::Found 'WITH CHECK (true)' in migration files — this allows unrestricted inserts/updates!"
+            echo "$MATCHES"
+            echo ""
+            echo "Each policy must scope writes to the owning company:"
+            echo "  WITH CHECK (company_id = safe_user_company_id())"
+            exit 1
+          fi
+          echo "✓ No WITH CHECK (true) patterns found"
+
+      - name: Check for bare USING/TRUE without company scoping
+        run: |
+          # Detect policies that use USING (true) OR USING (auth.uid() IS NOT NULL)
+          # without company_id scoping — these are overly permissive
+          MATCHES=$(grep -rn -E 'USING\s*\(\s*(true|auth\.uid\(\)\s+IS\s+NOT\s+NULL)\s*\)' supabase/migrations/ || true)
+          if [ -n "$MATCHES" ]; then
+            echo "::warning::Found overly permissive USING clause (may lack company scoping):"
+            echo "$MATCHES"
+            echo ""
+            echo "Consider adding company_id = safe_user_company_id() to restrict access."
+          fi
+
+      - name: Check for ENABLE RLS without corresponding policies
+        run: |
+          # Find tables that enable RLS but have no CREATE POLICY in the same file
+          python3 - <<'PYEOF'
+          import os, re, sys
+
+          migration_dir = "supabase/migrations"
+          issues = []
+
+          for fname in sorted(os.listdir(migration_dir)):
+              if not fname.endswith(".sql"):
+                  continue
+              fpath = os.path.join(migration_dir, fname)
+              with open(fpath) as f:
+                  content = f.read()
+
+              # Find tables that enable RLS
+              enables = re.findall(r'ALTER TABLE (\w+) ENABLE ROW LEVEL SECURITY', content)
+
+              for table in enables:
+                  # Check if any policy is created for this table in the same file
+                  if not re.search(rf'CREATE POLICY\s+\w+\s+ON\s+{table}\b', content):
+                      issues.append(f"  {fname}: {table} has ENABLE ROW LEVEL SECURITY but no policy in the same migration")
+
+          if issues:
+              print("::warning::Tables with RLS enabled but no policy in the same migration:")
+              for issue in issues:
+                  print(issue)
+              print()
+              print("This may be intentional (policies defined in a later migration),")
+              print("but verify that policies exist before deployment.")
+          else:
+              print("✓ All RLS-enabled tables have policies in the same migration")
+          PYEOF

@@ -37,11 +37,12 @@ export async function handleRefresh(req: Request): Promise<Response> {
 
     logRequest({ function: fn, userId: data.session.user.id, durationMs: Date.now() - start, status: 200 })
 
+    // access_token is NOT sent in the response body — session is managed
+    // exclusively via httpOnly refresh token cookie.
     return new Response(
       JSON.stringify({
         success: true,
         data: {
-          access_token: data.session.access_token,
           user: {
             id: data.session.user.id,
             email: data.session.user.email,

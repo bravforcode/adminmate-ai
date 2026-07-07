@@ -154,7 +154,18 @@ export const useAuthStore = create<AuthState>()(
           authSubscription = null
         }
       },
-      initDemo: () => set({ _langPref: 'th' }),
+      initDemo: () => {
+        const demoUser = { id: 'demo-user', email: 'demo@adminmate.ai', aud: 'authenticated', role: 'authenticated' } as any
+        const demoProfile = {
+          id: 'demo-user', email: 'demo@adminmate.ai', full_name: 'Demo Admin',
+          role: 'admin', company_id: 'demo-company', language_preference: 'th', is_active: true,
+        } as UserProfile
+        const demoCompany = {
+          id: 'demo-company', name: 'AdminMate AI Demo', country: 'TH',
+          currency: 'THB', locale: 'th-TH', subscription_tier: 'pro',
+        } as Company
+        set({ user: demoUser, profile: demoProfile, company: demoCompany, _langPref: 'th' })
+      },
       reset: () => {
         _sessionInitPromise = null
         set({ user: null, profile: null, company: null, _langPref: 'en', isLoading: false, error: null })

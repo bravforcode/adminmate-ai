@@ -170,25 +170,8 @@
     "info": "Info"
   },
   "errors": {
-    "generic": "Something went wrong. Please try again.",
-    "unauthorized": "You are not authorized to perform this action.",
-    "not_found": "The requested resource was not found.",
-    "validation": "Please check your input and try again.",
-    "network": "Network error. Please check your connection.",
-    "auth_invalid_credentials": "Invalid email or password.",
-    "auth_email_not_confirmed": "Please confirm your email before signing in.",
-    "auth_user_exists": "An account with this email already exists.",
-    "auth_signups_disabled": "New signups are currently disabled.",
-    "auth_provider_disabled": "Email authentication is not enabled. Please contact support.",
-    "auth_rate_limited": "Too many attempts. Please slow down and try again later.",
-    "auth_weak_password": "Please choose a stronger password.",
-    "auth_invalid_email_format": "Please enter a valid email address.",
-    "auth_token_expired": "Your session has expired. Please sign in again.",
-    "auth_session_expired": "Your session has expired. Please sign in again.",
-    "auth_session_missing": "You are not signed in.",
-    "auth_user_not_found": "No account found with that email.",
-    "load_failed": "Failed to load data",
-    "retry": "Retry"
+    "unexpected_issue_reported": "Something went wrong. The issue has been reported.",
+    "async_operation_failed": "An async operation failed. Our team has been notified."
   },
   "empty": {
     "no_data": "No data available. Try adjusting your filters or check back later.",
@@ -286,10 +269,6 @@
     "email_readonly": "Email cannot be changed here.",
     "updated": "Profile updated successfully",
     "name_required": "Name is required"
-  },
-  "errors": {
-    "unexpected_issue_reported": "Something went wrong. The issue has been reported.",
-    "async_operation_failed": "An async operation failed. Our team has been notified."
   },
   "ai": {
     "hr_assistant": "HR Knowledge Assistant",
@@ -714,6 +693,13 @@
     "feature_esign": "E-signature",
     "feature_pdpa": "PDPA tools",
     "feature_bulk": "Bulk import",
+    "feature_count_hr_users": "{{count}} HR users",
+    "feature_count_employees": "{{count}} employees",
+    "feature_unlimited_jobs": "Unlimited jobs",
+    "feature_count_jobs": "{{count}} jobs",
+    "feature_unlimited_candidates": "Unlimited candidates",
+    "feature_count_candidates": "{{count}} candidates",
+    "feature_count_ai_messages": "{{count}} AI messages/mo",
     "note_title": "Billing Information",
     "note_text": "Payments are processed securely through Stripe. You can cancel your subscription at any time from this page. Cancellation takes effect at the end of the current billing period.",
     "checkout_placeholder": "Stripe checkout will be available soon. Contact support@adminmate-ai.com for early access.",
@@ -795,5 +781,48 @@
     "feature_ai_chat_unlimited": "AI chat (unlimited)",
     "feature_1yr_audit": "1-year audit log",
     "feature_custom_reports": "Custom reports"
+  },
+  "notifications": {
+    "title": "Notifications",
+    "markAllRead": "Mark all as read",
+    "empty": "No notifications yet",
+    "justNow": "Just now",
+    "minutesAgo": "{{count}} minutes ago"
+  },
+  "thailand_payroll": {
+    "page_title": "Thailand Payroll",
+    "page_subtitle": "Configure Thai payroll rules, tax brackets, and social security",
+    "config_saved": "Payroll configuration saved",
+    "allowance_gap_warning": "{{count}} employee have spouse/child/parent allowances on file. These are not yet auto-calculated. Manual review recommended before approving this payroll run.",
+    "allowance_gap_warning_other": "{{count}} employees have spouse/child/parent allowances on file. These are not yet auto-calculated. Manual review recommended before approving this payroll run.",
+    "payroll_cycle": "Payroll Cycle",
+    "pay_period": "Pay Period",
+    "monthly": "Monthly",
+    "biweekly": "Bi-weekly",
+    "pay_day": "Pay Day",
+    "province": "Province",
+    "saving": "Saving...",
+    "save_config": "Save Configuration",
+    "tax_brackets_title": "Thai Progressive Tax Brackets (2024)",
+    "income_range": "Income Range (THB)",
+    "tax_rate": "Tax Rate",
+    "example_tax": "Example Tax",
+    "progressive": "Progressive",
+    "ssf_title": "Social Security Fund (SSF)",
+    "employee_rate": "Employee Rate",
+    "employer_rate": "Employer Rate",
+    "salary_cap": "Salary Cap",
+    "ss_info": "Minimum salary for SS: {{min}} THB. Maximum contribution: {{max}} THB/month (5% = {{contribution}} THB).",
+    "provincial_tax": "Provincial Tax",
+    "provincial_tax_desc": "Bangkok (BKK) has 0% provincial tax. Other provinces apply 0.1%.",
+    "payroll_preview": "Payroll Preview",
+    "monthly_salary": "Monthly Salary (THB)",
+    "gross_monthly_income": "Gross Monthly Income",
+    "ss_employee": "Social Security (Employee)",
+    "withholding_tax": "Withholding Tax (Monthly)",
+    "provincial_tax_monthly": "Provincial Tax (Monthly)",
+    "ss_employer": "Social Security (Employer)",
+    "net_pay": "Net Pay",
+    "effective_tax_rate": "Effective Tax Rate"
   }
 }

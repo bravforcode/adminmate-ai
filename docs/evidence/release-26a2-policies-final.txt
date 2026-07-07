@@ -1,0 +1,37 @@
+         tablename         |      policyname       |  cmd   |      roles      |                                                                                                   qual                                                                                                    
+---------------------------+-----------------------+--------+-----------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ chat_messages             | chat_delete           | DELETE | {authenticated} | ((company_id = safe_user_company_id()) AND ((user_id = auth.uid()) OR (safe_user_role() = ANY (ARRAY['admin'::text, 'hr_manager'::text]))))
+ chat_messages             | chat_insert           | INSERT | {authenticated} | 
+ chat_messages             | chat_select           | SELECT | {authenticated} | ((company_id = safe_user_company_id()) AND ((user_id = auth.uid()) OR (safe_user_role() = ANY (ARRAY['admin'::text, 'hr_manager'::text, 'hr_staff'::text]))))
+ chat_messages             | chat_update           | UPDATE | {authenticated} | ((company_id = safe_user_company_id()) AND (user_id = auth.uid()))
+ chat_platform_connections | connections_delete    | DELETE | {authenticated} | ((company_id = safe_user_company_id()) AND (safe_user_role() = 'admin'::text))
+ chat_platform_connections | connections_insert    | INSERT | {authenticated} | 
+ chat_platform_connections | connections_read      | SELECT | {authenticated} | (company_id = safe_user_company_id())
+ chat_platform_connections | connections_update    | UPDATE | {authenticated} | ((company_id = safe_user_company_id()) AND (safe_user_role() = 'admin'::text))
+ conversation_threads      | threads_insert        | INSERT | {authenticated} | 
+ conversation_threads      | threads_select        | SELECT | {authenticated} | ((company_id = safe_user_company_id()) AND (((platform_user_id)::text = (auth.uid())::text) OR (safe_user_role() = ANY (ARRAY['admin'::text, 'hr_manager'::text, 'hr_staff'::text, 'recruiter'::text]))))
+ conversation_threads      | threads_update        | UPDATE | {authenticated} | ((company_id = safe_user_company_id()) AND (((platform_user_id)::text = (auth.uid())::text) OR (safe_user_role() = ANY (ARRAY['admin'::text, 'hr_manager'::text]))))
+ document_type_configs     | dtc_delete            | DELETE | {service_role}  | true
+ document_type_configs     | dtc_insert            | INSERT | {service_role}  | 
+ document_type_configs     | dtc_read              | SELECT | {authenticated} | true
+ document_type_configs     | dtc_update            | UPDATE | {service_role}  | true
+ immigration_case_types    | ict_delete            | DELETE | {service_role}  | true
+ immigration_case_types    | ict_insert            | INSERT | {service_role}  | 
+ immigration_case_types    | ict_read              | SELECT | {authenticated} | true
+ immigration_case_types    | ict_update            | UPDATE | {service_role}  | true
+ message_queue             | queue_service_role    | ALL    | {service_role}  | true
+ messages                  | messages_insert       | INSERT | {authenticated} | 
+ messages                  | messages_select       | SELECT | {authenticated} | ((company_id = safe_user_company_id()) AND (((platform_user_id)::text = (auth.uid())::text) OR (safe_user_role() = ANY (ARRAY['admin'::text, 'hr_manager'::text, 'hr_staff'::text, 'recruiter'::text]))))
+ messages                  | messages_update       | UPDATE | {authenticated} | ((company_id = safe_user_company_id()) AND (((platform_user_id)::text = (auth.uid())::text) OR (safe_user_role() = ANY (ARRAY['admin'::text, 'hr_manager'::text]))))
+ platform_sync_log         | sync_log_service_role | ALL    | {service_role}  | true
+ system_health             | health_service_role   | ALL    | {service_role}  | true
+ th_social_security_rules  | tssr_delete           | DELETE | {service_role}  | true
+ th_social_security_rules  | tssr_insert           | INSERT | {service_role}  | 
+ th_social_security_rules  | tssr_read             | SELECT | {authenticated} | true
+ th_social_security_rules  | tssr_update           | UPDATE | {service_role}  | true
+ th_tax_brackets           | ttb_delete            | DELETE | {service_role}  | true
+ th_tax_brackets           | ttb_insert            | INSERT | {service_role}  | 
+ th_tax_brackets           | ttb_read              | SELECT | {authenticated} | true
+ th_tax_brackets           | ttb_update            | UPDATE | {service_role}  | true
+(33 rows)
+

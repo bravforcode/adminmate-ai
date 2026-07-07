@@ -1,0 +1,314 @@
+
+[1m[7m[36m RUN [39m[27m[22m [36mv2.1.9 [39m[90mC:/Users/menum/Downloads/adminmate-ai[39m
+      [2mCoverage enabled with [22m[33mv8[39m
+
+ [32mΓ£ô[39m tests/unit/payroll/payroll.test.ts [2m([22m[2m53 tests[22m[2m)[22m[90m 76[2mms[22m[39m
+ [32mΓ£ô[39m tests/unit/security/rlsProofAttackMatrix.test.ts [2m([22m[2m32 tests[22m[2m)[22m[90m 49[2mms[22m[39m
+ [32mΓ£ô[39m tests/unit/assets/assetExpense.test.ts [2m([22m[2m29 tests[22m[2m)[22m[90m 92[2mms[22m[39m
+stderr | tests/integration/release26a5.supabase-rls.integration.test.ts
+[26A.5] Supabase not reachable at http://127.0.0.1:54321 ΓÇö skipping integration setup
+
+stderr | tests/integration/release26a5.supabase-rls.integration.test.ts > 26A.5 ΓÇö REST API RLS: cross-tenant chat_messages > Company A can read own chat_messages
+[26A.5] SKIP ΓÇö Supabase setup incomplete
+
+stderr | tests/integration/release26a5.supabase-rls.integration.test.ts > 26A.5 ΓÇö REST API RLS: cross-tenant chat_messages > Company A cannot read Company B chat_messages
+[26A.5] SKIP ΓÇö Supabase setup incomplete
+
+stderr | tests/integration/release26a5.supabase-rls.integration.test.ts > 26A.5 ΓÇö REST API RLS: cross-tenant chat_messages > Company B cannot read Company A chat_messages
+[26A.5] SKIP ΓÇö Supabase setup incomplete
+
+stderr | tests/integration/release26a5.supabase-rls.integration.test.ts > 26A.5 ΓÇö REST API RLS: cross-tenant messages > Company A cannot read Company B messages
+[26A.5] SKIP ΓÇö Supabase setup incomplete
+
+stderr | tests/integration/release26a5.supabase-rls.integration.test.ts > 26A.5 ΓÇö REST API RLS: cross-tenant messages > Company B cannot read Company A messages
+[26A.5] SKIP ΓÇö Supabase setup incomplete
+
+stderr | tests/integration/release26a5.supabase-rls.integration.test.ts > 26A.5 ΓÇö REST API RLS: cross-tenant messages > Company A can read own messages
+[26A.5] SKIP ΓÇö Supabase setup incomplete
+
+stderr | tests/integration/release26a5.supabase-rls.integration.test.ts > 26A.5 ΓÇö REST API RLS: cross-tenant INSERT > Company A cannot INSERT chat_message with Company B company_id
+[26A.5] SKIP ΓÇö Supabase setup incomplete
+
+stderr | tests/integration/release26a5.supabase-rls.integration.test.ts > 26A.5 ΓÇö REST API RLS: cross-tenant INSERT > Company A cannot INSERT message with Company B company_id
+[26A.5] SKIP ΓÇö Supabase setup incomplete
+
+stderr | tests/integration/release26a5.supabase-rls.integration.test.ts > 26A.5 ΓÇö REST API RLS: global reference tables > Authenticated user can read document_type_configs
+[26A.5] SKIP ΓÇö Supabase setup incomplete
+
+stderr | tests/integration/release26a5.supabase-rls.integration.test.ts > 26A.5 ΓÇö REST API RLS: global reference tables > Authenticated user cannot INSERT document_type_configs
+[26A.5] SKIP ΓÇö Supabase setup incomplete
+
+stderr | tests/integration/release26a5.supabase-rls.integration.test.ts > 26A.5 ΓÇö REST API RLS: global reference tables > Authenticated user can read th_tax_brackets
+[26A.5] SKIP ΓÇö Supabase setup incomplete
+
+stderr | tests/integration/release26a5.supabase-rls.integration.test.ts > 26A.5 ΓÇö REST API RLS: global reference tables > Authenticated user cannot INSERT th_tax_brackets
+[26A.5] SKIP ΓÇö Supabase setup incomplete
+
+stderr | tests/integration/release26a5.supabase-rls.integration.test.ts > 26A.5 ΓÇö REST API RLS: global reference tables > Authenticated user can read immigration_case_types
+[26A.5] SKIP ΓÇö Supabase setup incomplete
+
+stderr | tests/integration/release26a5.supabase-rls.integration.test.ts > 26A.5 ΓÇö REST API RLS: global reference tables > Authenticated user cannot INSERT immigration_case_types
+[26A.5] SKIP ΓÇö Supabase setup incomplete
+
+stderr | tests/integration/release26a5.supabase-rls.integration.test.ts > 26A.5 ΓÇö REST API RLS: service-only tables > Authenticated user cannot read message_queue
+[26A.5] SKIP ΓÇö Supabase setup incomplete
+
+stderr | tests/integration/release26a5.supabase-rls.integration.test.ts > 26A.5 ΓÇö REST API RLS: service-only tables > Authenticated user cannot read platform_sync_log
+[26A.5] SKIP ΓÇö Supabase setup incomplete
+
+stderr | tests/integration/release26a5.supabase-rls.integration.test.ts > 26A.5 ΓÇö REST API RLS: service-only tables > Authenticated user cannot read system_health
+[26A.5] SKIP ΓÇö Supabase setup incomplete
+
+stderr | tests/integration/release26a5.supabase-rls.integration.test.ts > 26A.5 ΓÇö REST API: anti-footgun checks > Tokens are user-session tokens, not service-role
+[26A.5] SKIP ΓÇö Supabase setup incomplete
+
+stderr | tests/integration/release26a5.supabase-rls.integration.test.ts > 26A.5 ΓÇö REST API: anti-footgun checks > Different users have different tokens
+[26A.5] SKIP ΓÇö Supabase setup incomplete
+
+ [32mΓ£ô[39m tests/integration/release26a5.supabase-rls.integration.test.ts [2m([22m[2m19 tests[22m[2m)[22m[90m 91[2mms[22m[39m
+ [32mΓ£ô[39m tests/unit/attendance/attendanceLeave.test.ts [2m([22m[2m51 tests[22m[2m)[22m[90m 140[2mms[22m[39m
+ [32mΓ£ô[39m tests/unit/analytics/peopleAnalytics.test.ts [2m([22m[2m20 tests[22m[2m)[22m[90m 163[2mms[22m[39m
+ [32mΓ£ô[39m tests/unit/notification/notificationSearch.test.ts [2m([22m[2m29 tests[22m[2m)[22m[33m 333[2mms[22m[39m
+ [32mΓ£ô[39m tests/unit/security/enterpriseSecurity.test.ts [2m([22m[2m24 tests[22m[2m)[22m[90m 281[2mms[22m[39m
+ [32mΓ£ô[39m tests/unit/api/apiWebhook.test.ts [2m([22m[2m27 tests[22m[2m)[22m[33m 404[2mms[22m[39m
+ [31mΓ¥»[39m tests/unit/security/privilegedPathAudit.test.ts [2m([22m[2m80 tests[22m[2m | [22m[31m1 failed[39m[2m)[22m[33m 1835[2mms[22m[39m
+   [33m[2mΓ£ô[22m[39m Browser Client Security[2m > [22mshould not contain SERVICE_ROLE_KEY in src/ [33m630[2mms[22m[39m
+   [33m[2mΓ£ô[22m[39m Browser Client Security[2m > [22mshould not contain anon key override in src/ [33m453[2mms[22m[39m
+[31m   [31m├ù[31m SECURITY DEFINER search_path[2m > [22mall SECURITY DEFINER functions should have SET search_path = public[90m 270[2mms[22m[31m[39m
+[31m     ΓåÆ expected [ ΓÇª(2) ] to deeply equal [][39m
+ [32mΓ£ô[39m tests/unit/engagement/engagementService.test.ts [2m([22m[2m46 tests[22m[2m)[22m[90m 19[2mms[22m[39m
+ [32mΓ£ô[39m tests/unit/helpdesk/helpdeskService.test.ts [2m([22m[2m49 tests[22m[2m)[22m[90m 17[2mms[22m[39m
+ [32mΓ£ô[39m tests/unit/compliance/statutoryFiling.test.ts [2m([22m[2m37 tests[22m[2m)[22m[90m 14[2mms[22m[39m
+ [32mΓ£ô[39m tests/unit/benefits/benefitService.test.ts [2m([22m[2m39 tests[22m[2m)[22m[90m 17[2mms[22m[39m
+ [32mΓ£ô[39m tests/unit/platform/adminPlatform.test.ts [2m([22m[2m12 tests[22m[2m)[22m[90m 17[2mms[22m[39m
+stderr | tests/unit/security/productionHardening.test.ts > productionHardening ΓÇö security audit service > logSecurityAudit > returns null on insert failure
+Failed to log security audit event: permission denied
+
+ [32mΓ£ô[39m tests/unit/security/productionHardening.test.ts [2m([22m[2m14 tests[22m[2m)[22m[90m 172[2mms[22m[39m
+ [31mΓ¥»[39m tests/integration/release26a52.deterministic-rls.test.ts [2m([22m[2m22 tests[22m[2m | [22m[33m22 skipped[39m[2m)[22m[33m 570[2mms[22m[39m
+ [32mΓ£ô[39m tests/unit/integration/integrationService.test.ts [2m([22m[2m16 tests[22m[2m)[22m[90m 18[2mms[22m[39m
+ [32mΓ£ô[39m tests/unit/compliance/compliance.test.ts [2m([22m[2m48 tests[22m[2m)[22m[90m 93[2mms[22m[39m
+ [32mΓ£ô[39m tests/integration/release26a51.rest-crud-privacy.integration.test.ts [2m([22m[2m49 tests[22m[2m)[22m[33m 1950[2mms[22m[39m
+ [32mΓ£ô[39m tests/unit/compensation/compensationService.test.ts [2m([22m[2m49 tests[22m[2m)[22m[90m 16[2mms[22m[39m
+ [32mΓ£ô[39m tests/unit/performance/performance.test.ts [2m([22m[2m39 tests[22m[2m)[22m[90m 15[2mms[22m[39m
+ [32mΓ£ô[39m tests/unit/payroll/globalPayroll.test.ts [2m([22m[2m24 tests[22m[2m)[22m[90m 14[2mms[22m[39m
+ [32mΓ£ô[39m src/stores/authStore.test.ts [2m([22m[2m29 tests[22m[2m)[22m[90m 149[2mms[22m[39m
+ [32mΓ£ô[39m tests/unit/learning/learningService.test.ts [2m([22m[2m38 tests[22m[2m)[22m[90m 15[2mms[22m[39m
+ [32mΓ£ô[39m supabase/functions/_shared/messagingHub.test.ts [2m([22m[2m10 tests[22m[2m)[22m[90m 23[2mms[22m[39m
+ [32mΓ£ô[39m tests/unit/security/tenantIsolation.test.ts [2m([22m[2m28 tests[22m[2m)[22m[90m 9[2mms[22m[39m
+ [32mΓ£ô[39m src/utils/authErrors.test.ts [2m([22m[2m33 tests[22m[2m)[22m[90m 12[2mms[22m[39m
+[90mstdout[2m | supabase/functions/auth-session/index.test.ts[2m > [22m[2mauth-session Edge Function[2m > [22m[2mlogin handler[2m > [22m[2mshould return 401 when authentication fails
+[22m[39m{"timestamp":"2026-06-23T11:00:43.611Z","level":"info","function":"auth-session/login","duration_ms":19,"status":401}
+
+[90mstdout[2m | supabase/functions/auth-session/index.test.ts[2m > [22m[2mauth-session Edge Function[2m > [22m[2mlogin handler[2m > [22m[2mshould return 200 with access token on success
+[22m[39m{"timestamp":"2026-06-23T11:00:43.615Z","level":"info","function":"auth-session/login","user_id":"user-1","duration_ms":2,"status":200}
+
+[90mstdout[2m | supabase/functions/auth-session/index.test.ts[2m > [22m[2mauth-session Edge Function[2m > [22m[2mlogin handler[2m > [22m[2mshould not expose refresh token in response body
+[22m[39m{"timestamp":"2026-06-23T11:00:43.618Z","level":"info","function":"auth-session/login","user_id":"user-1","duration_ms":1,"status":200}
+
+ [32mΓ£ô[39m tests/unit/ai/aiAssistant.test.ts [2m([22m[2m25 tests[22m[2m)[22m[90m 14[2mms[22m[39m
+[90mstdout[2m | supabase/functions/auth-session/index.test.ts[2m > [22m[2mauth-session Edge Function[2m > [22m[2mrefresh handler[2m > [22m[2mshould return 401 when no cookie
+[22m[39m{"timestamp":"2026-06-23T11:00:43.684Z","level":"error","function":"auth-session/refresh","duration_ms":1,"status":401,"error":"No refresh token"}
+
+[90mstdout[2m | supabase/functions/auth-session/index.test.ts[2m > [22m[2mauth-session Edge Function[2m > [22m[2mrefresh handler[2m > [22m[2mshould return 401 when refresh token is expired
+[22m[39m{"timestamp":"2026-06-23T11:00:43.686Z","level":"error","function":"auth-session/refresh","duration_ms":0,"status":401,"error":"Token expired"}
+
+[90mstdout[2m | supabase/functions/auth-session/index.test.ts[2m > [22m[2mauth-session Edge Function[2m > [22m[2mrefresh handler[2m > [22m[2mshould return 200 with new tokens on success
+[22m[39m{"timestamp":"2026-06-23T11:00:43.688Z","level":"info","function":"auth-session/refresh","user_id":"user-1","duration_ms":0,"status":200}
+
+[90mstdout[2m | supabase/functions/auth-session/index.test.ts[2m > [22m[2mauth-session Edge Function[2m > [22m[2mrefresh handler[2m > [22m[2mshould clear cookie on session expiry
+[22m[39m{"timestamp":"2026-06-23T11:00:43.690Z","level":"error","function":"auth-session/refresh","duration_ms":0,"status":401,"error":"Session expired"}
+
+[90mstdout[2m | supabase/functions/auth-session/index.test.ts[2m > [22m[2mauth-session Edge Function[2m > [22m[2mlogout handler[2m > [22m[2mshould clear cookie on logout
+[22m[39m{"timestamp":"2026-06-23T11:00:43.725Z","level":"info","function":"auth-session/logout","duration_ms":0,"status":200}
+
+[90mstdout[2m | supabase/functions/auth-session/index.test.ts[2m > [22m[2mauth-session Edge Function[2m > [22m[2mlogout handler[2m > [22m[2mshould call admin signOut when session exists
+[22m[39m{"timestamp":"2026-06-23T11:00:43.727Z","level":"info","function":"auth-session/logout","duration_ms":0,"status":200}
+
+[90mstdout[2m | supabase/functions/auth-session/index.test.ts[2m > [22m[2mauth-session Edge Function[2m > [22m[2mstatus handler[2m > [22m[2mshould return valid false when no cookie
+[22m[39m{"timestamp":"2026-06-23T11:00:43.803Z","level":"info","function":"auth-session/status","duration_ms":0,"status":200}
+
+[90mstdout[2m | supabase/functions/auth-session/index.test.ts[2m > [22m[2mauth-session Edge Function[2m > [22m[2mstatus handler[2m > [22m[2mshould return valid false when refresh token is expired
+[22m[39m{"timestamp":"2026-06-23T11:00:43.805Z","level":"info","function":"auth-session/status","duration_ms":0,"status":200}
+
+[90mstdout[2m | supabase/functions/auth-session/index.test.ts[2m > [22m[2mauth-session Edge Function[2m > [22m[2mstatus handler[2m > [22m[2mshould return valid true with access token on success
+[22m[39m{"timestamp":"2026-06-23T11:00:43.807Z","level":"info","function":"auth-session/status","user_id":"user-1","duration_ms":0,"status":200}
+
+ [32mΓ£ô[39m supabase/functions/auth-session/index.test.ts [2m([22m[2m15 tests[22m[2m)[22m[33m 418[2mms[22m[39m
+ [32mΓ£ô[39m src/services/authService.test.ts [2m([22m[2m18 tests[22m[2m)[22m[90m 28[2mms[22m[39m
+ [32mΓ£ô[39m tests/unit/mobility/internalMobility.test.ts [2m([22m[2m17 tests[22m[2m)[22m[90m 20[2mms[22m[39m
+ [32mΓ£ô[39m tests/unit/scheduling/scheduling.test.ts [2m([22m[2m32 tests[22m[2m)[22m[90m 18[2mms[22m[39m
+ [32mΓ£ô[39m tests/unit/infrastructure/drService.test.ts [2m([22m[2m27 tests[22m[2m)[22m[90m 13[2mms[22m[39m
+ [32mΓ£ô[39m tests/unit/contractor/contractorService.test.ts [2m([22m[2m35 tests[22m[2m)[22m[90m 17[2mms[22m[39m
+ [32mΓ£ô[39m tests/unit/offboarding/offboardingFlow.test.ts [2m([22m[2m38 tests[22m[2m)[22m[90m 16[2mms[22m[39m
+[90mstdout[2m | supabase/functions/verify-mfa/index.test.ts[2m > [22m[2mverify-mfa endpoint[2m > [22m[2mshould store hashed backup codes on successful TOTP
+[22m[39m{"timestamp":"2026-06-23T11:00:46.157Z","level":"info","function":"verify-mfa","user_id":"user-123","duration_ms":2,"status":200}
+
+[90mstdout[2m | supabase/functions/verify-mfa/index.test.ts[2m > [22m[2mverify-mfa endpoint[2m > [22m[2mshould accept valid backup code when TOTP fails
+[22m[39m{"timestamp":"2026-06-23T11:00:46.163Z","level":"info","function":"verify-mfa","user_id":"user-123","duration_ms":1,"status":200}
+
+[90mstdout[2m | supabase/functions/verify-mfa/index.test.ts[2m > [22m[2mverify-mfa endpoint[2m > [22m[2mshould reject invalid backup code when TOTP fails
+[22m[39m{"timestamp":"2026-06-23T11:00:46.167Z","level":"error","function":"verify-mfa","user_id":"user-123","duration_ms":1,"status":401,"error":"Invalid code"}
+
+ [32mΓ£ô[39m supabase/functions/verify-mfa/index.test.ts [2m([22m[2m15 tests[22m[2m)[22m[90m 52[2mms[22m[39m
+ [32mΓ£ô[39m tests/unit/billing/billing.test.ts [2m([22m[2m17 tests[22m[2m)[22m[90m 25[2mms[22m[39m
+ [32mΓ£ô[39m tests/unit/onboarding/onboardingFlow.test.ts [2m([22m[2m27 tests[22m[2m)[22m[90m 13[2mms[22m[39m
+ [32mΓ£ô[39m tests/unit/hris/hrisCore.test.ts [2m([22m[2m28 tests[22m[2m)[22m[90m 13[2mms[22m[39m
+ [32mΓ£ô[39m tests/unit/ai/aiRecruitingSafety.test.ts [2m([22m[2m19 tests[22m[2m)[22m[90m 15[2mms[22m[39m
+ [32mΓ£ô[39m tests/unit/analytics/analytics.test.ts [2m([22m[2m20 tests[22m[2m)[22m[90m 20[2mms[22m[39m
+ [32mΓ£ô[39m src/services/quality/qualityMetricsService.test.ts [2m([22m[2m11 tests[22m[2m)[22m[90m 16[2mms[22m[39m
+stderr | src/hooks/useAuth.test.ts > useAuth > register > should set hasCompany to false if company creation fails
+[useAuth] Company link failed (may already exist): Error: Company exists
+    at C:\Users\menum\Downloads\adminmate-ai\src\hooks\useAuth.test.ts:157:43
+    at file:///C:/Users/menum/Downloads/adminmate-ai/node_modules/@vitest/runner/dist/index.js:146:14
+    at file:///C:/Users/menum/Downloads/adminmate-ai/node_modules/@vitest/runner/dist/index.js:533:11
+    at runWithTimeout (file:///C:/Users/menum/Downloads/adminmate-ai/node_modules/@vitest/runner/dist/index.js:39:7)
+    at runTest (file:///C:/Users/menum/Downloads/adminmate-ai/node_modules/@vitest/runner/dist/index.js:1056:17)
+    at runSuite (file:///C:/Users/menum/Downloads/adminmate-ai/node_modules/@vitest/runner/dist/index.js:1205:15)
+    at runSuite (file:///C:/Users/menum/Downloads/adminmate-ai/node_modules/@vitest/runner/dist/index.js:1205:15)
+    at runSuite (file:///C:/Users/menum/Downloads/adminmate-ai/node_modules/@vitest/runner/dist/index.js:1205:15)
+    at runFiles (file:///C:/Users/menum/Downloads/adminmate-ai/node_modules/@vitest/runner/dist/index.js:1262:5)
+    at startTests (file:///C:/Users/menum/Downloads/adminmate-ai/node_modules/@vitest/runner/dist/index.js:1271:3)
+
+ [32mΓ£ô[39m supabase/functions/generate-offer-content/index.test.ts [2m([22m[2m18 tests[22m[2m)[22m[90m 9[2mms[22m[39m
+ [32mΓ£ô[39m src/hooks/useAuth.test.ts [2m([22m[2m11 tests[22m[2m)[22m[90m 253[2mms[22m[39m
+ [32mΓ£ô[39m tests/unit/portal/submitValidation.test.ts [2m([22m[2m16 tests[22m[2m)[22m[90m 11[2mms[22m[39m
+stderr | tests/unit/capability/capabilityRegistry.test.ts > capabilityRegistryService > getCapabilities > returns empty array on error
+Failed to fetch capabilities: fail
+
+stderr | tests/unit/capability/capabilityRegistry.test.ts > capabilityRegistryService > getCapability > returns null on error
+Failed to fetch capability nonexistent: not found
+
+stderr | tests/unit/capability/capabilityRegistry.test.ts > capabilityRegistryService > updateCapabilityStatus > returns false on error
+Failed to update capability jobs: update failed
+
+ [32mΓ£ô[39m tests/unit/capability/capabilityRegistry.test.ts [2m([22m[2m15 tests[22m[2m)[22m[90m 16[2mms[22m[39m
+ [32mΓ£ô[39m supabase/functions/screen-resume/index.test.ts [2m([22m[2m20 tests[22m[2m)[22m[90m 12[2mms[22m[39m
+ [32mΓ£ô[39m tests/integration/services.test.ts [2m([22m[2m12 tests[22m[2m)[22m[90m 179[2mms[22m[39m
+ [32mΓ£ô[39m tests/unit/services/signatureService.test.ts [2m([22m[2m10 tests[22m[2m)[22m[90m 15[2mms[22m[39m
+stderr | tests/unit/services/rlsDriftService.test.ts > rlsDriftService > detectDrift > returns no drift on RPC error
+Failed to fetch current RLS policies: db down
+
+stderr | tests/unit/services/rlsDriftService.test.ts > rlsDriftService > alertOnDrift > returns false on insert error
+Failed to alert on RLS drift: insert failed
+
+ [32mΓ£ô[39m tests/unit/services/rlsDriftService.test.ts [2m([22m[2m13 tests[22m[2m)[22m[90m 19[2mms[22m[39m
+ [32mΓ£ô[39m tests/chaos/messaging.chaos.test.ts [2m([22m[2m16 tests[22m[2m)[22m[90m 114[2mms[22m[39m
+ [32mΓ£ô[39m tests/chaos/webhook.chaos.test.ts [2m([22m[2m17 tests[22m[2m)[22m[90m 17[2mms[22m[39m
+ [32mΓ£ô[39m tests/unit/messaging/approvalWorkflow.test.ts [2m([22m[2m23 tests[22m[2m)[22m[90m 12[2mms[22m[39m
+ [32mΓ£ô[39m supabase/functions/whatsapp-webhook/index.test.ts [2m([22m[2m8 tests[22m[2m)[22m[90m 29[2mms[22m[39m
+ [32mΓ£ô[39m tests/chaos/database.chaos.test.ts [2m([22m[2m14 tests[22m[2m)[22m[90m 37[2mms[22m[39m
+ [32mΓ£ô[39m tests/unit/services/authService.test.ts [2m([22m[2m14 tests[22m[2m)[22m[90m 20[2mms[22m[39m
+ [32mΓ£ô[39m src/services/companyService.test.ts [2m([22m[2m11 tests[22m[2m)[22m[90m 19[2mms[22m[39m
+ [32mΓ£ô[39m tests/unit/services/configurationReadinessService.test.ts [2m([22m[2m4 tests[22m[2m)[22m[90m 31[2mms[22m[39m
+ [32mΓ£ô[39m tests/chaos/integration.chaos.test.ts [2m([22m[2m9 tests[22m[2m)[22m[90m 10[2mms[22m[39m
+ [32mΓ£ô[39m tests/unit/services/storageService.test.ts [2m([22m[2m19 tests[22m[2m)[22m[90m 17[2mms[22m[39m
+ [32mΓ£ô[39m supabase/functions/parse-resume/index.test.ts [2m([22m[2m18 tests[22m[2m)[22m[90m 11[2mms[22m[39m
+ [32mΓ£ô[39m supabase/functions/export-user-data/index.test.ts [2m([22m[2m20 tests[22m[2m)[22m[90m 11[2mms[22m[39m
+ [32mΓ£ô[39m tests/unit/services/dlqService.test.ts [2m([22m[2m12 tests[22m[2m)[22m[90m 21[2mms[22m[39m
+ [32mΓ£ô[39m supabase/functions/mate-ai-chat/index.test.ts [2m([22m[2m20 tests[22m[2m)[22m[90m 9[2mms[22m[39m
+ [32mΓ£ô[39m supabase/functions/generate-jd/index.test.ts [2m([22m[2m20 tests[22m[2m)[22m[90m 8[2mms[22m[39m
+ [32mΓ£ô[39m src/lib/sessionApi.test.ts [2m([22m[2m10 tests[22m[2m)[22m[90m 47[2mms[22m[39m
+ [32mΓ£ô[39m tests/unit/services/searchService.test.ts [2m([22m[2m9 tests[22m[2m)[22m[90m 11[2mms[22m[39m
+ [32mΓ£ô[39m tests/unit/services/pdpaService.test.ts [2m([22m[2m12 tests[22m[2m)[22m[90m 16[2mms[22m[39m
+ [32mΓ£ô[39m tests/unit/services/metricsService.test.ts [2m([22m[2m11 tests[22m[2m)[22m[90m 15[2mms[22m[39m
+ [32mΓ£ô[39m tests/unit/mobility/mobilityFlow.test.ts [2m([22m[2m16 tests[22m[2m)[22m[90m 10[2mms[22m[39m
+ [32mΓ£ô[39m src/hooks/useSessionRestore.test.tsx [2m([22m[2m5 tests[22m[2m)[22m[90m 196[2mms[22m[39m
+ [32mΓ£ô[39m tests/unit/components/AuthGuard.test.tsx [2m([22m[2m6 tests[22m[2m)[22m[90m 102[2mms[22m[39m
+ [32mΓ£ô[39m src/services/quality/testQuarantineService.test.ts [2m([22m[2m9 tests[22m[2m)[22m[90m 25[2mms[22m[39m
+ [32mΓ£ô[39m supabase/functions/delete-user-data/index.test.ts [2m([22m[2m18 tests[22m[2m)[22m[90m 12[2mms[22m[39m
+ [32mΓ£ô[39m tests/unit/services/offerService.test.ts [2m([22m[2m7 tests[22m[2m)[22m[90m 12[2mms[22m[39m
+ [32mΓ£ô[39m supabase/functions/auth-hook-mfa/index.test.ts [2m([22m[2m5 tests[22m[2m)[22m[90m 86[2mms[22m[39m
+ [32mΓ£ô[39m tests/unit/lib/logger.test.ts [2m([22m[2m7 tests[22m[2m)[22m[90m 127[2mms[22m[39m
+stderr | tests/unit/services/permissionService.test.ts > permissionService > hasPermission > returns false on error
+Permission check failed: network error
+
+stderr | tests/unit/services/permissionService.test.ts > permissionService > getUserRoleNames > returns empty array on error
+Failed to fetch role names: fail
+
+ [32mΓ£ô[39m tests/unit/services/permissionService.test.ts [2m([22m[2m11 tests[22m[2m)[22m[90m 13[2mms[22m[39m
+ [32mΓ£ô[39m tests/unit/importExport/importExport.test.ts [2m([22m[2m7 tests[22m[2m)[22m[90m 11[2mms[22m[39m
+ [32mΓ£ô[39m tests/unit/services/interviewService.test.ts [2m([22m[2m6 tests[22m[2m)[22m[90m 12[2mms[22m[39m
+ [32mΓ£ô[39m tests/unit/services/referralService.test.ts [2m([22m[2m7 tests[22m[2m)[22m[90m 9[2mms[22m[39m
+ [32mΓ£ô[39m tests/unit/services/killSwitchService.test.ts [2m([22m[2m7 tests[22m[2m)[22m[90m 8[2mms[22m[39m
+stderr | tests/unit/services/featureFlagService.test.ts > featureFlagService > isFeatureEnabled > returns false on error
+Feature flag check failed: fail
+
+ [32mΓ£ô[39m tests/unit/services/documentService.test.ts [2m([22m[2m6 tests[22m[2m)[22m[90m 15[2mms[22m[39m
+ [32mΓ£ô[39m tests/unit/services/featureFlagService.test.ts [2m([22m[2m8 tests[22m[2m)[22m[90m 15[2mms[22m[39m
+ [32mΓ£ô[39m tests/unit/stores/authStore.test.ts [2m([22m[2m9 tests[22m[2m)[22m[90m 8[2mms[22m[39m
+ [32mΓ£ô[39m tests/unit/lib/sentry.test.ts [2m([22m[2m7 tests[22m[2m)[22m[90m 141[2mms[22m[39m
+ [32mΓ£ô[39m src/components/auth/LoginForm.test.tsx [2m([22m[2m4 tests[22m[2m)[22m[33m 690[2mms[22m[39m
+   [33m[2mΓ£ô[22m[39m LoginForm MFA check[2m > [22mshould render login form without MFA challenge when no MFA enrolled [33m471[2mms[22m[39m
+ [32mΓ£ô[39m tests/unit/services/applicationService.test.ts [2m([22m[2m4 tests[22m[2m)[22m[90m 8[2mms[22m[39m
+stderr | tests/unit/services/sensitiveFieldService.test.ts > sensitiveFieldService > getSensitiveFieldNames > returns empty array on error
+Failed to fetch sensitive fields: fail
+
+ [32mΓ£ô[39m tests/unit/services/sensitiveFieldService.test.ts [2m([22m[2m5 tests[22m[2m)[22m[90m 78[2mms[22m[39m
+ [32mΓ£ô[39m src/components/auth/MFAChallenge.test.tsx [2m([22m[2m6 tests[22m[2m)[22m[33m 786[2mms[22m[39m
+ [32mΓ£ô[39m tests/unit/services/orgStructureService.test.ts [2m([22m[2m5 tests[22m[2m)[22m[90m 173[2mms[22m[39m
+ [32mΓ£ô[39m tests/unit/services/candidateService.test.ts [2m([22m[2m4 tests[22m[2m)[22m[90m 7[2mms[22m[39m
+ [32mΓ£ô[39m tests/unit/services/legalEntityService.test.ts [2m([22m[2m3 tests[22m[2m)[22m[90m 7[2mms[22m[39m
+ [32mΓ£ô[39m tests/unit/services/jobService.test.ts [2m([22m[2m3 tests[22m[2m)[22m[90m 9[2mms[22m[39m
+ [32mΓ£ô[39m tests/unit/components/PermissionComponents.test.tsx [2m([22m[2m3 tests[22m[2m)[22m[90m 58[2mms[22m[39m
+ [32mΓ£ô[39m tests/unit/services/onboardingService.test.ts [2m([22m[2m2 tests[22m[2m)[22m[90m 5[2mms[22m[39m
+ [32mΓ£ô[39m src/lib/authStorage.test.ts [2m([22m[2m5 tests[22m[2m)[22m[90m 5[2mms[22m[39m
+ [32mΓ£ô[39m tests/unit/utils/validators.test.ts [2m([22m[2m5 tests[22m[2m)[22m[90m 7[2mms[22m[39m
+stderr | tests/unit/components/PDFThaiFont.test.tsx > PDFDownloadButton ΓÇö Thai text > generates PDF with Thai text without crash
+[PDFDownloadButton] PDF generation failed: TypeError: URL.createObjectURL is not a function
+    at download (C:\Users\menum\Downloads\adminmate-ai\src\components\pdf\PDFDownloadButton.tsx:39:23)
+    at processTicksAndRejections (node:internal/process/task_queues:104:5)
+
+ [32mΓ£ô[39m tests/unit/components/LanguageSwitcher.test.tsx [2m([22m[2m1 test[22m[2m)[22m[90m 53[2mms[22m[39m
+ [32mΓ£ô[39m tests/unit/utils/cn.test.ts [2m([22m[2m4 tests[22m[2m)[22m[90m 11[2mms[22m[39m
+ [32mΓ£ô[39m tests/unit/components/PDFThaiFont.test.tsx [2m([22m[2m1 test[22m[2m)[22m[33m 1156[2mms[22m[39m
+   [33m[2mΓ£ô[22m[39m PDFDownloadButton ΓÇö Thai text[2m > [22mgenerates PDF with Thai text without crash [33m1148[2mms[22m[39m
+ [32mΓ£ô[39m tests/unit/components/JobForm.test.tsx [2m([22m[2m1 test[22m[2m)[22m[90m 69[2mms[22m[39m
+ [32mΓ£ô[39m tests/unit/utils/currency.test.ts [2m([22m[2m3 tests[22m[2m)[22m[90m 17[2mms[22m[39m
+ [32mΓ£ô[39m tests/unit/components/ErrorBoundary.test.tsx [2m([22m[2m2 tests[22m[2m)[22m[90m 236[2mms[22m[39m
+ [32mΓ£ô[39m tests/unit/utils/date.test.ts [2m([22m[2m3 tests[22m[2m)[22m[90m 23[2mms[22m[39m
+ [32mΓ£ô[39m tests/unit/components/NotificationBell.test.tsx [2m([22m[2m2 tests[22m[2m)[22m[90m 150[2mms[22m[39m
+
+ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ» Failed Suites 1 ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»
+
+ FAIL  tests/integration/release26a52.deterministic-rls.test.ts [ tests/integration/release26a52.deterministic-rls.test.ts ]
+Error: Failed to update profile for det-b@test.com: HTTP 409
+ Γ¥» tests/integration/release26a52.deterministic-rls.test.ts:59:32
+     57|         body: JSON.stringify({ company_id: user.companyId, role: user.ΓÇª
+     58|       })
+     59|       if (status >= 400) throw new Error(`Failed to update profile forΓÇª
+       |                                ^
+     60| 
+     61|       // VERIFY: profile has correct company_id (database-truth-based)
+
+ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»[1/2]ΓÄ»
+
+ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ» Failed Tests 1 ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»
+
+ FAIL  tests/unit/security/privilegedPathAudit.test.ts > SECURITY DEFINER search_path > all SECURITY DEFINER functions should have SET search_path = public
+AssertionError: expected [ ΓÇª(2) ] to deeply equal []
+
+- Expected
++ Received
+
+- Array []
++ Array [
++   "supabase\\migrations\\20240620000064_pilot_readiness.sql: get_pilot_readiness_checklist()",
++   "supabase\\migrations\\20240620000064_pilot_readiness.sql: validate_pilot_prerequisites()",
++ ]
+
+ Γ¥» tests/unit/security/privilegedPathAudit.test.ts:274:24
+    272|     }
+    273| 
+    274|     expect(violations).toEqual([])
+       |                        ^
+    275|   })
+    276| })
+
+ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»[2/2]ΓÄ»
+
+[2m Test Files [22m [1m[31m2 failed[39m[22m[2m | [22m[1m[32m105 passed[39m[22m[90m (107)[39m
+[2m      Tests [22m [1m[31m1 failed[39m[22m[2m | [22m[1m[32m1856 passed[39m[22m[2m | [22m[33m22 skipped[39m[90m (1879)[39m
+[2m   Start at [22m 18:00:32
+[2m   Duration [22m 43.91s[2m (transform 13.83s, setup 40.15s, collect 28.84s, tests 12.62s, environment 189.35s, prepare 20.60s)[22m
+

@@ -1,10 +1,22 @@
 import { createBrowserRouter, Navigate } from 'react-router-dom'
-import { lazy } from 'react'
+import { lazy, Suspense } from 'react'
 import { AuthGuard, CompanySetupGuard, getDefaultRoute } from './AuthGuard'
+import { FeatureGate } from '../components/common/FeatureGate'
 import { AppLayout } from '../components/layout/AppLayout'
 import { ErrorBoundary } from '../components/common/ErrorBoundary'
 import { AnimatedPage } from '../components/shared/AnimatedPage'
 import { useAuthStore } from '../stores/authStore'
+
+// ── Per-route error boundary + suspense wrapper ────────────────
+function RouteWrapper({ children }: { children: React.ReactNode }) {
+  return (
+    <ErrorBoundary fallback={<div>Something went wrong. Please refresh.</div>}>
+      <Suspense fallback={<div>Loading...</div>}>
+        {children}
+      </Suspense>
+    </ErrorBoundary>
+  )
+}
 
 const LandingPage = lazy(() => import('../pages/public/LandingPage'))
 const PricingPage = lazy(() => import('../pages/public/PricingPage'))
@@ -36,12 +48,36 @@ const CompliancePage = lazy(() => import('../pages/settings/CompliancePage'))
 const AuditLogPage = lazy(() => import('../pages/settings/AuditLogPage'))
 const NotificationPreferencesPage = lazy(() => import('../pages/settings/NotificationPreferencesPage'))
 const BulkImportPage = lazy(() => import('../pages/settings/BulkImportPage'))
+const ImportPage = lazy(() => import('../pages/settings/ImportPage'))
+const ExportPage = lazy(() => import('../pages/settings/ExportPage'))
 const BillingPage = lazy(() => import('../pages/settings/BillingPage'))
 const PDPAPage = lazy(() => import('../pages/settings/PDPAPage'))
+const ThailandPayrollPage = lazy(() => import('../pages/settings/ThailandPayrollPage'))
 const HiringPage = lazy(() => import('../pages/hiring/HiringPage'))
+const PerformancePage = lazy(() => import('../pages/PerformancePage'))
+const OKRPage = lazy(() => import('../pages/OKRPage'))
 const HealthPage = lazy(() => import('../pages/HealthPage'))
 const GeminiMonitoringPage = lazy(() => import('../pages/GeminiMonitoringPage'))
+const BenefitsPage = lazy(() => import('../pages/BenefitsPage'))
+const LearningPage = lazy(() => import('../pages/LearningPage'))
+const EngagementPage = lazy(() => import('../pages/EngagementPage'))
+const AttendancePage = lazy(() => import('../pages/AttendancePage'))
+const LeavePage = lazy(() => import('../pages/LeavePage'))
+const PeopleAnalyticsPage = lazy(() => import('../pages/PeopleAnalyticsPage'))
 const NotFoundPage = lazy(() => import('../pages/NotFoundPage'))
+
+// Messaging pages
+const MessagesPage = lazy(() => import('../pages/messages/MessagesPage'))
+const NotificationCenterPage = lazy(() => import('../pages/messages/NotificationCenter'))
+const EmployeeListPage = lazy(() => import('../pages/employees/EmployeeListPage'))
+const EmployeeDetailPage = lazy(() => import('../pages/employees/EmployeeDetailPage'))
+const ApplyPage = lazy(() => import('../pages/portal/ApplyPage'))
+const TrackApplicationPage = lazy(() => import('../pages/portal/TrackApplicationPage'))
+
+// Payroll pages
+const PayrollDashboardPage = lazy(() => import('../pages/payroll/PayrollDashboardPage'))
+const PayrollRunPage = lazy(() => import('../pages/payroll/PayrollRunPage'))
+const PayslipPage = lazy(() => import('../pages/payroll/PayslipPage'))
 
 const HR_ROLES = ['admin', 'hr', 'manager']
 
@@ -51,7 +87,7 @@ function PublicRoot() {
     const target = getDefaultRoute(profile.role)
     return <Navigate to={target} replace />
   }
-  return <AnimatedPage><LandingPage /></AnimatedPage>
+  return <AnimatedPage><RouteWrapper><LandingPage /></RouteWrapper></AnimatedPage>
 }
 
 export const router = createBrowserRouter([
@@ -61,46 +97,54 @@ export const router = createBrowserRouter([
   },
   {
     path: '/login',
-    element: <AnimatedPage><LoginPage /></AnimatedPage>,
+    element: <AnimatedPage><RouteWrapper><LoginPage /></RouteWrapper></AnimatedPage>,
   },
   {
     path: '/register',
-    element: <AnimatedPage><RegisterPage /></AnimatedPage>,
+    element: <AnimatedPage><RouteWrapper><RegisterPage /></RouteWrapper></AnimatedPage>,
   },
   {
     path: '/forgot-password',
-    element: <AnimatedPage><ForgotPasswordPage /></AnimatedPage>,
+    element: <AnimatedPage><RouteWrapper><ForgotPasswordPage /></RouteWrapper></AnimatedPage>,
   },
   {
     path: '/reset-password',
-    element: <AnimatedPage><ResetPasswordPage /></AnimatedPage>,
+    element: <AnimatedPage><RouteWrapper><ResetPasswordPage /></RouteWrapper></AnimatedPage>,
   },
   {
     path: '/pricing',
-    element: <AnimatedPage><PricingPage /></AnimatedPage>,
+    element: <AnimatedPage><RouteWrapper><PricingPage /></RouteWrapper></AnimatedPage>,
   },
   {
     path: '/terms',
-    element: <AnimatedPage><TermsPage /></AnimatedPage>,
+    element: <AnimatedPage><RouteWrapper><TermsPage /></RouteWrapper></AnimatedPage>,
   },
   {
     path: '/privacy',
-    element: <AnimatedPage><PrivacyPage /></AnimatedPage>,
+    element: <AnimatedPage><RouteWrapper><PrivacyPage /></RouteWrapper></AnimatedPage>,
   },
   {
     path: '/cookies',
-    element: <AnimatedPage><CookiesPage /></AnimatedPage>,
+    element: <AnimatedPage><RouteWrapper><CookiesPage /></RouteWrapper></AnimatedPage>,
   },
   {
     path: '/auth/callback',
-    element: <OAuthCallbackPage />,
+    element: <RouteWrapper><OAuthCallbackPage /></RouteWrapper>,
+  },
+  {
+    path: '/apply/:jobToken',
+    element: <AnimatedPage><RouteWrapper><ApplyPage /></RouteWrapper></AnimatedPage>,
+  },
+  {
+    path: '/portal/track/:trackingToken',
+    element: <AnimatedPage><RouteWrapper><TrackApplicationPage /></RouteWrapper></AnimatedPage>,
   },
   {
     path: '/setup-company',
     element: (
       <AnimatedPage>
         <CompanySetupGuard>
-          <CompanySetupPage />
+          <RouteWrapper><CompanySetupPage /></RouteWrapper>
         </CompanySetupGuard>
       </AnimatedPage>
     ),
@@ -113,7 +157,23 @@ export const router = createBrowserRouter([
         path: '/dashboard',
         element: (
           <AuthGuard callInitSession={false} requiredRoles={HR_ROLES}>
-            <AnimatedPage><DashboardPage /></AnimatedPage>
+            <AnimatedPage><RouteWrapper><DashboardPage /></RouteWrapper></AnimatedPage>
+          </AuthGuard>
+        ),
+      },
+      {
+        path: '/employees',
+        element: (
+          <AuthGuard callInitSession={false} requiredRoles={HR_ROLES}>
+            <AnimatedPage><RouteWrapper><EmployeeListPage /></RouteWrapper></AnimatedPage>
+          </AuthGuard>
+        ),
+      },
+      {
+        path: '/employees/:id',
+        element: (
+          <AuthGuard callInitSession={false} requiredRoles={HR_ROLES}>
+            <AnimatedPage><RouteWrapper><EmployeeDetailPage /></RouteWrapper></AnimatedPage>
           </AuthGuard>
         ),
       },
@@ -121,7 +181,7 @@ export const router = createBrowserRouter([
         path: '/recruitment/candidates',
         element: (
           <AuthGuard callInitSession={false} requiredRoles={HR_ROLES}>
-            <AnimatedPage><CandidatesPage /></AnimatedPage>
+            <AnimatedPage><RouteWrapper><CandidatesPage /></RouteWrapper></AnimatedPage>
           </AuthGuard>
         ),
       },
@@ -129,7 +189,7 @@ export const router = createBrowserRouter([
         path: '/recruitment/candidates/:id',
         element: (
           <AuthGuard callInitSession={false} requiredRoles={HR_ROLES}>
-            <AnimatedPage><CandidateDetailPage /></AnimatedPage>
+            <AnimatedPage><RouteWrapper><CandidateDetailPage /></RouteWrapper></AnimatedPage>
           </AuthGuard>
         ),
       },
@@ -137,7 +197,7 @@ export const router = createBrowserRouter([
         path: '/recruitment/jobs',
         element: (
           <AuthGuard callInitSession={false} requiredRoles={HR_ROLES}>
-            <AnimatedPage><JobsPage /></AnimatedPage>
+            <AnimatedPage><RouteWrapper><JobsPage /></RouteWrapper></AnimatedPage>
           </AuthGuard>
         ),
       },
@@ -145,7 +205,7 @@ export const router = createBrowserRouter([
         path: '/recruitment/jobs/:id',
         element: (
           <AuthGuard callInitSession={false} requiredRoles={HR_ROLES}>
-            <AnimatedPage><JobDetailPage /></AnimatedPage>
+            <AnimatedPage><RouteWrapper><JobDetailPage /></RouteWrapper></AnimatedPage>
           </AuthGuard>
         ),
       },
@@ -153,7 +213,7 @@ export const router = createBrowserRouter([
         path: '/recruitment/pipeline',
         element: (
           <AuthGuard callInitSession={false} requiredRoles={HR_ROLES}>
-            <AnimatedPage><PipelinePage /></AnimatedPage>
+            <AnimatedPage><RouteWrapper><PipelinePage /></RouteWrapper></AnimatedPage>
           </AuthGuard>
         ),
       },
@@ -161,7 +221,7 @@ export const router = createBrowserRouter([
         path: '/recruitment/interviews',
         element: (
           <AuthGuard callInitSession={false} requiredRoles={HR_ROLES}>
-            <AnimatedPage><InterviewsPage /></AnimatedPage>
+            <AnimatedPage><RouteWrapper><InterviewsPage /></RouteWrapper></AnimatedPage>
           </AuthGuard>
         ),
       },
@@ -169,7 +229,7 @@ export const router = createBrowserRouter([
         path: '/documents',
         element: (
           <AuthGuard callInitSession={false} requiredRoles={HR_ROLES}>
-            <AnimatedPage><DocumentsPage /></AnimatedPage>
+            <AnimatedPage><RouteWrapper><DocumentsPage /></RouteWrapper></AnimatedPage>
           </AuthGuard>
         ),
       },
@@ -177,7 +237,7 @@ export const router = createBrowserRouter([
         path: '/documents/sign/:id',
         element: (
           <AuthGuard callInitSession={false} requireCompany={false} requiredRoles={HR_ROLES}>
-            <AnimatedPage><DocumentSigningPage /></AnimatedPage>
+            <AnimatedPage><RouteWrapper><DocumentSigningPage /></RouteWrapper></AnimatedPage>
           </AuthGuard>
         ),
       },
@@ -185,7 +245,7 @@ export const router = createBrowserRouter([
         path: '/hiring',
         element: (
           <AuthGuard callInitSession={false} requiredRoles={HR_ROLES}>
-            <AnimatedPage><HiringPage /></AnimatedPage>
+            <AnimatedPage><RouteWrapper><HiringPage /></RouteWrapper></AnimatedPage>
           </AuthGuard>
         ),
       },
@@ -193,7 +253,63 @@ export const router = createBrowserRouter([
         path: '/onboarding',
         element: (
           <AuthGuard callInitSession={false} requiredRoles={HR_ROLES}>
-            <AnimatedPage><OnboardingMgmtPage /></AnimatedPage>
+            <AnimatedPage><RouteWrapper><OnboardingMgmtPage /></RouteWrapper></AnimatedPage>
+          </AuthGuard>
+        ),
+      },
+      {
+        path: '/performance',
+        element: (
+          <AuthGuard callInitSession={false} requiredRoles={HR_ROLES}>
+            <AnimatedPage><RouteWrapper><PerformancePage /></RouteWrapper></AnimatedPage>
+          </AuthGuard>
+        ),
+      },
+      {
+        path: '/okrs',
+        element: (
+          <AuthGuard callInitSession={false} requiredRoles={HR_ROLES}>
+            <AnimatedPage><RouteWrapper><OKRPage /></RouteWrapper></AnimatedPage>
+          </AuthGuard>
+        ),
+      },
+      {
+        path: '/attendance',
+        element: (
+          <AuthGuard callInitSession={false} requiredRoles={HR_ROLES}>
+            <AnimatedPage><RouteWrapper><AttendancePage /></RouteWrapper></AnimatedPage>
+          </AuthGuard>
+        ),
+      },
+      {
+        path: '/leave',
+        element: (
+          <AuthGuard callInitSession={false} requiredRoles={HR_ROLES}>
+            <AnimatedPage><RouteWrapper><LeavePage /></RouteWrapper></AnimatedPage>
+          </AuthGuard>
+        ),
+      },
+      {
+        path: '/benefits',
+        element: (
+          <AuthGuard callInitSession={false} requiredRoles={HR_ROLES}>
+            <AnimatedPage><RouteWrapper><BenefitsPage /></RouteWrapper></AnimatedPage>
+          </AuthGuard>
+        ),
+      },
+      {
+        path: '/learning',
+        element: (
+          <AuthGuard callInitSession={false} requiredRoles={HR_ROLES}>
+            <AnimatedPage><RouteWrapper><LearningPage /></RouteWrapper></AnimatedPage>
+          </AuthGuard>
+        ),
+      },
+      {
+        path: '/engagement',
+        element: (
+          <AuthGuard callInitSession={false} requiredRoles={HR_ROLES}>
+            <AnimatedPage><RouteWrapper><EngagementPage /></RouteWrapper></AnimatedPage>
           </AuthGuard>
         ),
       },
@@ -201,7 +317,33 @@ export const router = createBrowserRouter([
         path: '/reports',
         element: (
           <AuthGuard callInitSession={false} requiredRoles={HR_ROLES}>
-            <AnimatedPage><ReportsPage /></AnimatedPage>
+            <FeatureGate featureKey="reports">
+              <AnimatedPage><RouteWrapper><ReportsPage /></RouteWrapper></AnimatedPage>
+            </FeatureGate>
+          </AuthGuard>
+        ),
+      },
+      {
+        path: '/people-analytics',
+        element: (
+          <AuthGuard callInitSession={false} requiredRoles={HR_ROLES}>
+            <AnimatedPage><RouteWrapper><PeopleAnalyticsPage /></RouteWrapper></AnimatedPage>
+          </AuthGuard>
+        ),
+      },
+      {
+        path: '/messages',
+        element: (
+          <AuthGuard callInitSession={false} requiredRoles={HR_ROLES}>
+            <AnimatedPage><RouteWrapper><MessagesPage /></RouteWrapper></AnimatedPage>
+          </AuthGuard>
+        ),
+      },
+      {
+        path: '/notifications',
+        element: (
+          <AuthGuard callInitSession={false} requiredRoles={HR_ROLES}>
+            <AnimatedPage><RouteWrapper><NotificationCenterPage /></RouteWrapper></AnimatedPage>
           </AuthGuard>
         ),
       },
@@ -209,7 +351,7 @@ export const router = createBrowserRouter([
         path: '/health',
         element: (
           <AuthGuard callInitSession={false} requiredRoles={HR_ROLES}>
-            <AnimatedPage><HealthPage /></AnimatedPage>
+            <AnimatedPage><RouteWrapper><HealthPage /></RouteWrapper></AnimatedPage>
           </AuthGuard>
         ),
       },
@@ -217,7 +359,7 @@ export const router = createBrowserRouter([
         path: '/monitoring',
         element: (
           <AuthGuard callInitSession={false} requiredRoles={HR_ROLES}>
-            <AnimatedPage><GeminiMonitoringPage /></AnimatedPage>
+            <AnimatedPage><RouteWrapper><GeminiMonitoringPage /></RouteWrapper></AnimatedPage>
           </AuthGuard>
         ),
       },
@@ -225,7 +367,7 @@ export const router = createBrowserRouter([
         path: '/settings',
         element: (
           <AuthGuard callInitSession={false} requiredRoles={HR_ROLES}>
-            <AnimatedPage><SettingsPage /></AnimatedPage>
+            <AnimatedPage><RouteWrapper><SettingsPage /></RouteWrapper></AnimatedPage>
           </AuthGuard>
         ),
       },
@@ -233,7 +375,7 @@ export const router = createBrowserRouter([
         path: '/settings/security',
         element: (
           <AuthGuard callInitSession={false} requiredRoles={HR_ROLES}>
-            <AnimatedPage><SecurityPage /></AnimatedPage>
+            <AnimatedPage><RouteWrapper><SecurityPage /></RouteWrapper></AnimatedPage>
           </AuthGuard>
         ),
       },
@@ -241,7 +383,7 @@ export const router = createBrowserRouter([
         path: '/settings/compliance',
         element: (
           <AuthGuard callInitSession={false} requiredRoles={['admin']}>
-            <AnimatedPage><CompliancePage /></AnimatedPage>
+            <AnimatedPage><RouteWrapper><CompliancePage /></RouteWrapper></AnimatedPage>
           </AuthGuard>
         ),
       },
@@ -249,7 +391,7 @@ export const router = createBrowserRouter([
         path: '/settings/notifications',
         element: (
           <AuthGuard callInitSession={false} requiredRoles={HR_ROLES}>
-            <AnimatedPage><NotificationPreferencesPage /></AnimatedPage>
+            <AnimatedPage><RouteWrapper><NotificationPreferencesPage /></RouteWrapper></AnimatedPage>
           </AuthGuard>
         ),
       },
@@ -257,7 +399,7 @@ export const router = createBrowserRouter([
         path: '/settings/audit-log',
         element: (
           <AuthGuard callInitSession={false} requiredRoles={['admin', 'hr']}>
-            <AnimatedPage><AuditLogPage /></AnimatedPage>
+            <AnimatedPage><RouteWrapper><AuditLogPage /></RouteWrapper></AnimatedPage>
           </AuthGuard>
         ),
       },
@@ -265,7 +407,23 @@ export const router = createBrowserRouter([
         path: '/settings/import',
         element: (
           <AuthGuard callInitSession={false} requiredRoles={HR_ROLES}>
-            <AnimatedPage><BulkImportPage /></AnimatedPage>
+            <AnimatedPage><RouteWrapper><BulkImportPage /></RouteWrapper></AnimatedPage>
+          </AuthGuard>
+        ),
+      },
+      {
+        path: '/settings/import-data',
+        element: (
+          <AuthGuard callInitSession={false} requiredRoles={HR_ROLES}>
+            <AnimatedPage><RouteWrapper><ImportPage /></RouteWrapper></AnimatedPage>
+          </AuthGuard>
+        ),
+      },
+      {
+        path: '/settings/export-data',
+        element: (
+          <AuthGuard callInitSession={false} requiredRoles={HR_ROLES}>
+            <AnimatedPage><RouteWrapper><ExportPage /></RouteWrapper></AnimatedPage>
           </AuthGuard>
         ),
       },
@@ -273,7 +431,7 @@ export const router = createBrowserRouter([
         path: '/settings/pdpa',
         element: (
           <AuthGuard callInitSession={false} requiredRoles={HR_ROLES}>
-            <AnimatedPage><PDPAPage /></AnimatedPage>
+            <AnimatedPage><RouteWrapper><PDPAPage /></RouteWrapper></AnimatedPage>
           </AuthGuard>
         ),
       },
@@ -281,7 +439,48 @@ export const router = createBrowserRouter([
         path: '/settings/billing',
         element: (
           <AuthGuard callInitSession={false} requiredRoles={HR_ROLES}>
-            <AnimatedPage><BillingPage /></AnimatedPage>
+            <AnimatedPage><RouteWrapper><BillingPage /></RouteWrapper></AnimatedPage>
+          </AuthGuard>
+        ),
+      },
+      {
+        path: '/settings/thailand-payroll',
+        element: (
+          <AuthGuard callInitSession={false} requiredRoles={HR_ROLES}>
+            <AnimatedPage><RouteWrapper><ThailandPayrollPage /></RouteWrapper></AnimatedPage>
+          </AuthGuard>
+        ),
+      },
+      // ── Payroll routes ──────────────────────────────────────────
+      {
+        path: '/payroll',
+        element: (
+          <AuthGuard callInitSession={false} requiredRoles={HR_ROLES}>
+            <AnimatedPage><RouteWrapper><PayrollDashboardPage /></RouteWrapper></AnimatedPage>
+          </AuthGuard>
+        ),
+      },
+      {
+        path: '/payroll/run',
+        element: (
+          <AuthGuard callInitSession={false} requiredRoles={HR_ROLES}>
+            <AnimatedPage><RouteWrapper><PayrollRunPage /></RouteWrapper></AnimatedPage>
+          </AuthGuard>
+        ),
+      },
+      {
+        path: '/payroll/run/:runId',
+        element: (
+          <AuthGuard callInitSession={false} requiredRoles={HR_ROLES}>
+            <AnimatedPage><RouteWrapper><PayrollRunPage /></RouteWrapper></AnimatedPage>
+          </AuthGuard>
+        ),
+      },
+      {
+        path: '/payroll/payslip/:employeeId',
+        element: (
+          <AuthGuard callInitSession={false} requiredRoles={HR_ROLES}>
+            <AnimatedPage><RouteWrapper><PayslipPage /></RouteWrapper></AnimatedPage>
           </AuthGuard>
         ),
       },
@@ -289,6 +488,6 @@ export const router = createBrowserRouter([
   },
   {
     path: '*',
-    element: <AnimatedPage><NotFoundPage /></AnimatedPage>,
+    element: <AnimatedPage><RouteWrapper><NotFoundPage /></RouteWrapper></AnimatedPage>,
   },
 ])

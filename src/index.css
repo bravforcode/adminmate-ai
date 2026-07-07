@@ -1,4 +1,3 @@
-@import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Inter:wght@300;400;500;600&family=Noto+Sans+Thai:wght@300;400;500;600&display=swap');
 @import "tailwindcss";
 
 @custom-variant dark (&:is(.dark *));
@@ -329,6 +328,19 @@ body {
   font-size: 12px;
   font-weight: 400;
   color: var(--color-text-muted);
+}
+
+/* ============================================================
+   UTILITY CLASSES — Replace arbitrary Tailwind values
+   to avoid CSP warnings with escaped CSS selectors
+   ============================================================ */
+
+.text-secondary {
+  color: var(--color-text-secondary);
+}
+
+.hover\:text-primary:hover {
+  color: var(--color-text-primary);
 }
 
 /* ============================================================
@@ -1349,12 +1361,27 @@ body {
    ============================================================ */
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
-    animation-delay: -1ms !important;
-    animation-duration: 1ms !important;
+    animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
-    background-attachment: initial !important;
+    transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
-    transition-duration: 0s !important;
-    transition-delay: 0s !important;
   }
+}
+
+/* ============================================================
+   RTL SUPPORT
+   ============================================================ */
+[dir="rtl"] {
+  direction: rtl;
+  text-align: right;
+}
+
+[dir="rtl"] .md\:ml-\[260px\] {
+  margin-left: 0;
+  margin-right: 260px;
+}
+
+[dir="rtl"] .sr-only:focus {
+  left: auto;
+  right: 0.5rem;
 }

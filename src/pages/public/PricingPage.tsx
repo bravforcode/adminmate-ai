@@ -102,7 +102,7 @@ export default function PricingPage() {
             <span className="text-lg font-semibold tracking-tight">AdminMate AI</span>
           </button>
           <div className="flex items-center gap-3">
-            <button onClick={() => navigate('/login')} className="px-4 py-2 text-sm font-medium text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)] transition-colors">
+            <button onClick={() => navigate('/login')} className="px-4 py-2 text-sm font-medium text-secondary hover:text-primary transition-colors">
               {t('landing.nav_sign_in', 'Sign In')}
             </button>
             <button onClick={() => navigate('/register')} className="px-5 py-2.5 text-sm font-medium bg-[var(--color-primary)] text-white rounded-xl hover:opacity-90 transition-opacity">
@@ -119,7 +119,7 @@ export default function PricingPage() {
             <h1 className="text-4xl sm:text-5xl font-bold tracking-tight">
               {t('pricing.title', 'Simple, transparent pricing')}
             </h1>
-            <p className="mt-4 text-lg text-[var(--color-text-secondary)]">
+            <p className="mt-4 text-lg text-secondary">
               {t('pricing.subtitle', 'Start free. Upgrade when you need more. No hidden fees.')}
             </p>
           </motion.div>
@@ -150,7 +150,7 @@ export default function PricingPage() {
 
                 <div className="mb-6">
                   <h3 className="text-xl font-semibold">{t(plan.nameKey, plan.name)}</h3>
-                  <p className="text-sm text-[var(--color-text-secondary)] mt-1">{t(plan.description, plan.desc)}</p>
+                  <p className="text-sm text-secondary mt-1">{t(plan.description, plan.desc)}</p>
                 </div>
 
                 <div className="mb-6">
@@ -206,7 +206,7 @@ export default function PricingPage() {
             ].map((item, i) => (
               <div key={i} className="p-5 rounded-xl border border-[var(--color-border)]">
                 <h3 className="font-medium mb-2">{item.q}</h3>
-                <p className="text-sm text-[var(--color-text-secondary)] leading-relaxed">{item.a}</p>
+                <p className="text-sm text-secondary leading-relaxed">{item.a}</p>
               </div>
             ))}
           </div>

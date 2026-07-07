@@ -1,11 +1,7 @@
 import { serve } from "https://deno.land/std@0.177.0/http/server.ts"
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2"
 import { captureError } from '../_shared/sentry.ts'
-
-const corsHeaders = {
-  "Access-Control-Allow-Origin": "*",
-  "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
-}
+import { getCorsHeaders } from '../_shared/utils.ts'
 
 // Stripe webhook signature verification using HMAC-SHA256
 async function verifyStripeSignature(
@@ -53,7 +49,7 @@ async function verifyStripeSignature(
 
 serve(async (req: Request) => {
   if (req.method === "OPTIONS") {
-    return new Response("ok", { headers: corsHeaders })
+    return new Response("ok", { headers: getCorsHeaders(req) })
   }
 
   try {
@@ -172,7 +168,7 @@ serve(async (req: Request) => {
     captureError(error, { function: 'stripe-webhook' })
     return new Response(JSON.stringify({ error: 'Internal server error' }), {
       status: 500,
-      headers: { ...corsHeaders, "Content-Type": "application/json" },
+      headers: { ...getCorsHeaders(req), "Content-Type": "application/json" },
     })
   }
 })

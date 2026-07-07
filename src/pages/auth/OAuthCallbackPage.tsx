@@ -117,6 +117,10 @@ export default function OAuthCallbackPage() {
   }
 
   if (ready && user && profile) {
+    // Redirect to setup-company if user has no company (provisioning incomplete)
+    if (!profile.company_id) {
+      return <Navigate to="/setup-company" replace />
+    }
     return <Navigate to={getDefaultRoute(profile.role)} replace />
   }
 

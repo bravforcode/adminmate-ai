@@ -27,5 +27,7 @@
   "needs_signature": "Butuh Tanda Tangan",
   "slow_onboarding": "Onboarding Lambat",
   "all_clear": "Tidak ada yang perlu ditindaklanjuti",
+  "empty_candidates_title": "Belum ada kandidat",
+  "empty_candidates_description": "Kandidat akan muncul di sini ketika mereka melamar lowongan Anda.",
   "no_candidates": "Kandidat tidak ditemukan"
 }

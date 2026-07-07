@@ -1,17 +1,15 @@
 import { useEffect, useState } from 'react'
 import { Navigate, useLocation } from 'react-router-dom'
 import { useAuthStore } from '../stores/authStore'
+import { getDefaultRoute } from '../lib/navigation'
+
+export { getDefaultRoute }
 
 interface AuthGuardProps {
   children: React.ReactNode
   requiredRoles?: string[]
   requireCompany?: boolean
   callInitSession?: boolean
-}
-
-/** Returns the default landing route for the given role. */
-export function getDefaultRoute(_role?: string | null): string {
-  return '/dashboard'
 }
 
 function useHydrationGuard(): boolean {
@@ -47,6 +45,12 @@ export function AuthGuard({ children, requiredRoles, requireCompany = true, call
   }
 
   if (!isAuthenticated()) {
+    // Demo mode: auto-init demo user when Supabase is unreachable
+    const isDemo = import.meta.env.VITE_DEMO_MODE === 'true' || !import.meta.env.VITE_SUPABASE_URL
+    if (isDemo) {
+      useAuthStore.getState().initDemo()
+      return <>{children}</>
+    }
     return <Navigate to="/login" state={{ from: location }} replace />
   }
 

@@ -1,0 +1,587 @@
+
+[1m[7m[36m RUN [39m[27m[22m [36mv2.1.9 [39m[90mC:/Users/menum/Downloads/adminmate-ai[39m
+
+stderr | tests/integration/release26a5.supabase-rls.integration.test.ts
+[26A.5] Supabase not reachable at http://127.0.0.1:54321 ΓÇö skipping integration setup
+
+stderr | tests/integration/release26a5.supabase-rls.integration.test.ts > 26A.5 ΓÇö REST API RLS: cross-tenant chat_messages > Company A can read own chat_messages
+[26A.5] SKIP ΓÇö Supabase setup incomplete
+
+stderr | tests/integration/release26a5.supabase-rls.integration.test.ts > 26A.5 ΓÇö REST API RLS: cross-tenant chat_messages > Company A cannot read Company B chat_messages
+[26A.5] SKIP ΓÇö Supabase setup incomplete
+
+stderr | tests/integration/release26a5.supabase-rls.integration.test.ts > 26A.5 ΓÇö REST API RLS: cross-tenant chat_messages > Company B cannot read Company A chat_messages
+[26A.5] SKIP ΓÇö Supabase setup incomplete
+
+stderr | tests/integration/release26a5.supabase-rls.integration.test.ts > 26A.5 ΓÇö REST API RLS: cross-tenant messages > Company A cannot read Company B messages
+[26A.5] SKIP ΓÇö Supabase setup incomplete
+
+ [32mΓ£ô[39m tests/unit/compliance/compliance.test.ts [2m([22m[2m48 tests[22m[2m)[22m[90m 19[2mms[22m[39m
+stderr | tests/integration/release26a5.supabase-rls.integration.test.ts > 26A.5 ΓÇö REST API RLS: cross-tenant messages > Company B cannot read Company A messages
+[26A.5] SKIP ΓÇö Supabase setup incomplete
+
+stderr | tests/integration/release26a5.supabase-rls.integration.test.ts > 26A.5 ΓÇö REST API RLS: cross-tenant messages > Company A can read own messages
+[26A.5] SKIP ΓÇö Supabase setup incomplete
+
+stderr | tests/integration/release26a5.supabase-rls.integration.test.ts > 26A.5 ΓÇö REST API RLS: cross-tenant INSERT > Company A cannot INSERT chat_message with Company B company_id
+[26A.5] SKIP ΓÇö Supabase setup incomplete
+
+stderr | tests/integration/release26a5.supabase-rls.integration.test.ts > 26A.5 ΓÇö REST API RLS: cross-tenant INSERT > Company A cannot INSERT message with Company B company_id
+[26A.5] SKIP ΓÇö Supabase setup incomplete
+
+stderr | tests/integration/release26a5.supabase-rls.integration.test.ts > 26A.5 ΓÇö REST API RLS: global reference tables > Authenticated user can read document_type_configs
+[26A.5] SKIP ΓÇö Supabase setup incomplete
+
+ [32mΓ£ô[39m tests/unit/attendance/attendanceLeave.test.ts [2m([22m[2m51 tests[22m[2m)[22m[90m 18[2mms[22m[39m
+stderr | tests/integration/release26a5.supabase-rls.integration.test.ts > 26A.5 ΓÇö REST API RLS: global reference tables > Authenticated user cannot INSERT document_type_configs
+[26A.5] SKIP ΓÇö Supabase setup incomplete
+
+stderr | tests/integration/release26a5.supabase-rls.integration.test.ts > 26A.5 ΓÇö REST API RLS: global reference tables > Authenticated user can read th_tax_brackets
+[26A.5] SKIP ΓÇö Supabase setup incomplete
+
+ [32mΓ£ô[39m tests/unit/assets/assetExpense.test.ts [2m([22m[2m29 tests[22m[2m)[22m[90m 15[2mms[22m[39m
+stderr | tests/integration/release26a5.supabase-rls.integration.test.ts > 26A.5 ΓÇö REST API RLS: global reference tables > Authenticated user cannot INSERT th_tax_brackets
+[26A.5] SKIP ΓÇö Supabase setup incomplete
+
+stderr | tests/integration/release26a5.supabase-rls.integration.test.ts > 26A.5 ΓÇö REST API RLS: global reference tables > Authenticated user can read immigration_case_types
+[26A.5] SKIP ΓÇö Supabase setup incomplete
+
+stderr | tests/integration/release26a5.supabase-rls.integration.test.ts > 26A.5 ΓÇö REST API RLS: global reference tables > Authenticated user cannot INSERT immigration_case_types
+[26A.5] SKIP ΓÇö Supabase setup incomplete
+
+stderr | tests/integration/release26a5.supabase-rls.integration.test.ts > 26A.5 ΓÇö REST API RLS: service-only tables > Authenticated user cannot read message_queue
+[26A.5] SKIP ΓÇö Supabase setup incomplete
+
+ [32mΓ£ô[39m tests/unit/payroll/payroll.test.ts [2m([22m[2m53 tests[22m[2m)[22m[90m 19[2mms[22m[39m
+stderr | tests/integration/release26a5.supabase-rls.integration.test.ts > 26A.5 ΓÇö REST API RLS: service-only tables > Authenticated user cannot read platform_sync_log
+[26A.5] SKIP ΓÇö Supabase setup incomplete
+
+stderr | tests/integration/release26a5.supabase-rls.integration.test.ts > 26A.5 ΓÇö REST API RLS: service-only tables > Authenticated user cannot read system_health
+[26A.5] SKIP ΓÇö Supabase setup incomplete
+
+stderr | tests/integration/release26a5.supabase-rls.integration.test.ts > 26A.5 ΓÇö REST API: anti-footgun checks > Tokens are user-session tokens, not service-role
+[26A.5] SKIP ΓÇö Supabase setup incomplete
+
+stderr | tests/integration/release26a5.supabase-rls.integration.test.ts > 26A.5 ΓÇö REST API: anti-footgun checks > Different users have different tokens
+[26A.5] SKIP ΓÇö Supabase setup incomplete
+
+ [32mΓ£ô[39m tests/integration/release26a5.supabase-rls.integration.test.ts [2m([22m[2m19 tests[22m[2m)[22m[90m 10[2mms[22m[39m
+ [32mΓ£ô[39m tests/unit/analytics/peopleAnalytics.test.ts [2m([22m[2m20 tests[22m[2m)[22m[90m 22[2mms[22m[39m
+ [32mΓ£ô[39m tests/unit/security/enterpriseSecurity.test.ts [2m([22m[2m24 tests[22m[2m)[22m[90m 37[2mms[22m[39m
+ [32mΓ£ô[39m tests/unit/notification/notificationSearch.test.ts [2m([22m[2m29 tests[22m[2m)[22m[90m 68[2mms[22m[39m
+ [32mΓ£ô[39m tests/unit/payroll/payrollPipeline.test.ts [2m([22m[2m42 tests[22m[2m | [22m[33m1 skipped[39m[2m)[22m[90m 14[2mms[22m[39m
+ [32mΓ£ô[39m tests/contract/apiContract.test.ts [2m([22m[2m55 tests[22m[2m)[22m[90m 41[2mms[22m[39m
+ [32mΓ£ô[39m tests/unit/security/privilegedPathAudit.test.ts [2m([22m[2m80 tests[22m[2m)[22m[33m 1511[2mms[22m[39m
+   [33m[2mΓ£ô[22m[39m Browser Client Security[2m > [22mshould not contain SERVICE_ROLE_KEY in src/ [33m459[2mms[22m[39m
+   [33m[2mΓ£ô[22m[39m Browser Client Security[2m > [22mshould not contain anon key override in src/ [33m400[2mms[22m[39m
+ [32mΓ£ô[39m tests/unit/engagement/engagementService.test.ts [2m([22m[2m46 tests[22m[2m)[22m[90m 17[2mms[22m[39m
+ [32mΓ£ô[39m tests/unit/payroll/thaiTaxGoldenFile.test.ts [2m([22m[2m20 tests[22m[2m | [22m[33m1 skipped[39m[2m)[22m[90m 14[2mms[22m[39m
+ [32mΓ£ô[39m tests/unit/api/apiWebhook.test.ts [2m([22m[2m27 tests[22m[2m)[22m[90m 48[2mms[22m[39m
+ [32mΓ£ô[39m tests/unit/security/rlsProofAttackMatrix.test.ts [2m([22m[2m32 tests[22m[2m)[22m[90m 11[2mms[22m[39m
+ [32mΓ£ô[39m tests/unit/compliance/statutoryFiling.test.ts [2m([22m[2m37 tests[22m[2m)[22m[90m 15[2mms[22m[39m
+ [32mΓ£ô[39m tests/unit/helpdesk/helpdeskService.test.ts [2m([22m[2m49 tests[22m[2m)[22m[90m 17[2mms[22m[39m
+ [31mΓ¥»[39m tests/integration/release26a52.deterministic-rls.test.ts [2m([22m[2m22 tests[22m[2m | [22m[33m22 skipped[39m[2m)[22m[33m 822[2mms[22m[39m
+ [32mΓ£ô[39m tests/unit/platform/adminPlatform.test.ts [2m([22m[2m12 tests[22m[2m)[22m[90m 17[2mms[22m[39m
+ [32mΓ£ô[39m tests/unit/benefits/benefitService.test.ts [2m([22m[2m39 tests[22m[2m)[22m[90m 13[2mms[22m[39m
+stderr | tests/unit/security/productionHardening.test.ts > productionHardening ΓÇö security audit service > logSecurityAudit > returns null on insert failure
+Failed to log security audit event: permission denied
+
+ [32mΓ£ô[39m tests/unit/security/productionHardening.test.ts [2m([22m[2m14 tests[22m[2m)[22m[33m 625[2mms[22m[39m
+   [33m[2mΓ£ô[22m[39m productionHardening ΓÇö no fake integration states[2m > [22mno hardcoded fake integration status values [33m386[2mms[22m[39m
+ [32mΓ£ô[39m tests/unit/performance/performance.test.ts [2m([22m[2m39 tests[22m[2m)[22m[90m 16[2mms[22m[39m
+ [31mΓ¥»[39m tests/integration/release26a51.rest-crud-privacy.integration.test.ts [2m([22m[2m49 tests[22m[2m | [22m[31m11 failed[39m[2m)[22m[33m 2917[2mms[22m[39m
+[31m   [31m├ù[31m 26A.5.1 ΓÇö chat_messages cross-tenant UPDATE/DELETE[2m > [22mA1: Company A PATCH blocked from Company B rows[90m 117[2mms[22m[31m[39m
+[31m     ΓåÆ expected false to be true // Object.is equality[39m
+[31m   [31m├ù[31m 26A.5.1 ΓÇö chat_messages cross-tenant UPDATE/DELETE[2m > [22mA2: Company B PATCH blocked from Company A rows[90m 143[2mms[22m[31m[39m
+[31m     ΓåÆ expected false to be true // Object.is equality[39m
+[31m   [31m├ù[31m 26A.5.1 ΓÇö chat_messages cross-tenant UPDATE/DELETE[2m > [22mA3: Company A DELETE blocked from Company B rows[90m 134[2mms[22m[31m[39m
+[31m     ΓåÆ expected false to be true // Object.is equality[39m
+[31m   [31m├ù[31m 26A.5.1 ΓÇö chat_messages cross-tenant UPDATE/DELETE[2m > [22mA4: Company B DELETE blocked from Company A rows[90m 112[2mms[22m[31m[39m
+[31m     ΓåÆ expected false to be true // Object.is equality[39m
+[31m   [31m├ù[31m 26A.5.1 ΓÇö messages cross-tenant UPDATE/DELETE[2m > [22mB1: Company A PATCH blocked from Company B[90m 107[2mms[22m[31m[39m
+[31m     ΓåÆ expected false to be true // Object.is equality[39m
+[31m   [31m├ù[31m 26A.5.1 ΓÇö messages cross-tenant UPDATE/DELETE[2m > [22mB2: Company B PATCH blocked from Company A[90m 129[2mms[22m[31m[39m
+[31m     ΓåÆ expected false to be true // Object.is equality[39m
+[31m   [31m├ù[31m 26A.5.1 ΓÇö conversation_threads cross-tenant UPDATE/DELETE[2m > [22mC1: Company A PATCH blocked from Company B[90m 102[2mms[22m[31m[39m
+[31m     ΓåÆ expected false to be true // Object.is equality[39m
+[31m   [31m├ù[31m 26A.5.1 ΓÇö conversation_threads cross-tenant UPDATE/DELETE[2m > [22mC2: Company B PATCH blocked from Company A[90m 119[2mms[22m[31m[39m
+[31m     ΓåÆ expected false to be true // Object.is equality[39m
+[31m   [31m├ù[31m 26A.5.1 ΓÇö chat_platform_connections cross-tenant + role restriction[2m > [22mD1: Company A admin SELECT own connections[90m 104[2mms[22m[31m[39m
+[31m     ΓåÆ expected 500 to be 200 // Object.is equality[39m
+[31m   [31m├ù[31m 26A.5.1 ΓÇö chat_platform_connections cross-tenant + role restriction[2m > [22mD3: Company A PATCH blocked from Company B[90m 89[2mms[22m[31m[39m
+[31m     ΓåÆ expected false to be true // Object.is equality[39m
+[31m   [31m├ù[31m 26A.5.1 ΓÇö header/credential anti-footgun[2m > [22mG5: forged company_id does not bypass RLS[90m 113[2mms[22m[31m[39m
+[31m     ΓåÆ expected undefined to be +0 // Object.is equality[39m
+ [32mΓ£ô[39m tests/unit/integration/integrationService.test.ts [2m([22m[2m16 tests[22m[2m)[22m[90m 22[2mms[22m[39m
+ [32mΓ£ô[39m tests/unit/compensation/compensationService.test.ts [2m([22m[2m49 tests[22m[2m)[22m[90m 17[2mms[22m[39m
+ [32mΓ£ô[39m tests/unit/payroll/globalPayroll.test.ts [2m([22m[2m24 tests[22m[2m)[22m[90m 13[2mms[22m[39m
+ [32mΓ£ô[39m tests/unit/learning/learningService.test.ts [2m([22m[2m38 tests[22m[2m)[22m[90m 12[2mms[22m[39m
+ [32mΓ£ô[39m src/stores/authStore.test.ts [2m([22m[2m29 tests[22m[2m)[22m[90m 42[2mms[22m[39m
+ [32mΓ£ô[39m supabase/functions/_shared/messagingHub.test.ts [2m([22m[2m10 tests[22m[2m)[22m[90m 24[2mms[22m[39m
+ [32mΓ£ô[39m src/utils/authErrors.test.ts [2m([22m[2m33 tests[22m[2m)[22m[90m 13[2mms[22m[39m
+[90mstdout[2m | supabase/functions/auth-session/index.test.ts[2m > [22m[2mauth-session Edge Function[2m > [22m[2mlogin handler[2m > [22m[2mshould return 401 when authentication fails
+[22m[39m{"timestamp":"2026-06-28T18:03:13.434Z","level":"info","function":"auth-session/login","duration_ms":8,"status":401}
+
+[90mstdout[2m | supabase/functions/auth-session/index.test.ts[2m > [22m[2mauth-session Edge Function[2m > [22m[2mlogin handler[2m > [22m[2mshould return 200 with user info on success (cookie-only transport)
+[22m[39m{"timestamp":"2026-06-28T18:03:13.440Z","level":"info","function":"auth-session/login","user_id":"user-1","duration_ms":1,"status":200}
+
+[90mstdout[2m | supabase/functions/auth-session/index.test.ts[2m > [22m[2mauth-session Edge Function[2m > [22m[2mlogin handler[2m > [22m[2mshould not expose refresh token in response body
+[22m[39m{"timestamp":"2026-06-28T18:03:13.443Z","level":"info","function":"auth-session/login","user_id":"user-1","duration_ms":1,"status":200}
+
+[90mstdout[2m | supabase/functions/auth-session/index.test.ts[2m > [22m[2mauth-session Edge Function[2m > [22m[2mrefresh handler[2m > [22m[2mshould return 401 when no cookie
+[22m[39m{"timestamp":"2026-06-28T18:03:13.460Z","level":"error","function":"auth-session/refresh","duration_ms":0,"status":401,"error":"No refresh token"}
+
+[90mstdout[2m | supabase/functions/auth-session/index.test.ts[2m > [22m[2mauth-session Edge Function[2m > [22m[2mrefresh handler[2m > [22m[2mshould return 401 when refresh token is expired
+[22m[39m{"timestamp":"2026-06-28T18:03:13.462Z","level":"error","function":"auth-session/refresh","duration_ms":0,"status":401,"error":"Token expired"}
+
+[90mstdout[2m | supabase/functions/auth-session/index.test.ts[2m > [22m[2mauth-session Edge Function[2m > [22m[2mrefresh handler[2m > [22m[2mshould return 200 with user info on success (cookie-only transport)
+[22m[39m{"timestamp":"2026-06-28T18:03:13.464Z","level":"info","function":"auth-session/refresh","user_id":"user-1","duration_ms":0,"status":200}
+
+[90mstdout[2m | supabase/functions/auth-session/index.test.ts[2m > [22m[2mauth-session Edge Function[2m > [22m[2mrefresh handler[2m > [22m[2mshould clear cookie on session expiry
+[22m[39m{"timestamp":"2026-06-28T18:03:13.466Z","level":"error","function":"auth-session/refresh","duration_ms":0,"status":401,"error":"Session expired"}
+
+[90mstdout[2m | supabase/functions/auth-session/index.test.ts[2m > [22m[2mauth-session Edge Function[2m > [22m[2mlogout handler[2m > [22m[2mshould clear cookie on logout
+[22m[39m{"timestamp":"2026-06-28T18:03:13.491Z","level":"info","function":"auth-session/logout","duration_ms":0,"status":200}
+
+[90mstdout[2m | supabase/functions/auth-session/index.test.ts[2m > [22m[2mauth-session Edge Function[2m > [22m[2mlogout handler[2m > [22m[2mshould call admin signOut when session exists
+[22m[39m{"timestamp":"2026-06-28T18:03:13.494Z","level":"info","function":"auth-session/logout","duration_ms":1,"status":200}
+
+[90mstdout[2m | supabase/functions/auth-session/index.test.ts[2m > [22m[2mauth-session Edge Function[2m > [22m[2mstatus handler[2m > [22m[2mshould return valid false when no cookie
+[22m[39m{"timestamp":"2026-06-28T18:03:13.510Z","level":"info","function":"auth-session/status","duration_ms":1,"status":200}
+
+[90mstdout[2m | supabase/functions/auth-session/index.test.ts[2m > [22m[2mauth-session Edge Function[2m > [22m[2mstatus handler[2m > [22m[2mshould return valid false when refresh token is expired
+[22m[39m{"timestamp":"2026-06-28T18:03:13.514Z","level":"info","function":"auth-session/status","duration_ms":0,"status":200}
+
+[90mstdout[2m | supabase/functions/auth-session/index.test.ts[2m > [22m[2mauth-session Edge Function[2m > [22m[2mstatus handler[2m > [22m[2mshould return valid true with user info on success (cookie-only transport)
+[22m[39m{"timestamp":"2026-06-28T18:03:13.516Z","level":"info","function":"auth-session/status","user_id":"user-1","duration_ms":0,"status":200}
+
+ [32mΓ£ô[39m supabase/functions/auth-session/index.test.ts [2m([22m[2m15 tests[22m[2m)[22m[90m 189[2mms[22m[39m
+ [32mΓ£ô[39m tests/unit/security/tenantIsolation.test.ts [2m([22m[2m28 tests[22m[2m)[22m[90m 9[2mms[22m[39m
+ [32mΓ£ô[39m tests/unit/ai/aiAssistant.test.ts [2m([22m[2m25 tests[22m[2m)[22m[90m 12[2mms[22m[39m
+ [32mΓ£ô[39m tests/unit/mobility/internalMobility.test.ts [2m([22m[2m17 tests[22m[2m)[22m[90m 18[2mms[22m[39m
+ [32mΓ£ô[39m tests/unit/scheduling/scheduling.test.ts [2m([22m[2m32 tests[22m[2m)[22m[90m 13[2mms[22m[39m
+ [32mΓ£ô[39m src/services/authService.test.ts [2m([22m[2m18 tests[22m[2m)[22m[90m 25[2mms[22m[39m
+ [32mΓ£ô[39m tests/unit/contractor/contractorService.test.ts [2m([22m[2m35 tests[22m[2m)[22m[90m 13[2mms[22m[39m
+ [32mΓ£ô[39m tests/unit/infrastructure/drService.test.ts [2m([22m[2m27 tests[22m[2m)[22m[90m 10[2mms[22m[39m
+ [32mΓ£ô[39m tests/unit/billing/billing.test.ts [2m([22m[2m17 tests[22m[2m)[22m[90m 22[2mms[22m[39m
+ [32mΓ£ô[39m tests/unit/offboarding/offboardingFlow.test.ts [2m([22m[2m38 tests[22m[2m)[22m[90m 13[2mms[22m[39m
+[90mstdout[2m | supabase/functions/verify-mfa/index.test.ts[2m > [22m[2mverify-mfa endpoint[2m > [22m[2mshould store hashed backup codes on successful TOTP
+[22m[39m{"timestamp":"2026-06-28T18:03:15.846Z","level":"info","function":"verify-mfa","user_id":"user-123","duration_ms":1,"status":200}
+
+[90mstdout[2m | supabase/functions/verify-mfa/index.test.ts[2m > [22m[2mverify-mfa endpoint[2m > [22m[2mshould accept valid backup code when TOTP fails
+[22m[39m{"timestamp":"2026-06-28T18:03:15.851Z","level":"info","function":"verify-mfa","user_id":"user-123","duration_ms":1,"status":200}
+
+[90mstdout[2m | supabase/functions/verify-mfa/index.test.ts[2m > [22m[2mverify-mfa endpoint[2m > [22m[2mshould reject invalid backup code when TOTP fails
+[22m[39m{"timestamp":"2026-06-28T18:03:15.857Z","level":"error","function":"verify-mfa","user_id":"user-123","duration_ms":1,"status":401,"error":"Invalid code"}
+
+ [32mΓ£ô[39m supabase/functions/verify-mfa/index.test.ts [2m([22m[2m15 tests[22m[2m)[22m[90m 51[2mms[22m[39m
+ [32mΓ£ô[39m tests/unit/onboarding/onboardingFlow.test.ts [2m([22m[2m27 tests[22m[2m)[22m[90m 12[2mms[22m[39m
+ [32mΓ£ô[39m tests/unit/hris/hrisCore.test.ts [2m([22m[2m28 tests[22m[2m)[22m[90m 14[2mms[22m[39m
+ [32mΓ£ô[39m tests/unit/analytics/analytics.test.ts [2m([22m[2m20 tests[22m[2m)[22m[90m 15[2mms[22m[39m
+ [32mΓ£ô[39m tests/unit/ai/aiRecruitingSafety.test.ts [2m([22m[2m19 tests[22m[2m)[22m[90m 12[2mms[22m[39m
+stderr | src/hooks/useAuth.test.ts > useAuth > register > should set hasCompany to false if company creation fails
+[useAuth] Company link failed (may already exist): Error: Company exists
+    at C:\Users\menum\Downloads\adminmate-ai\src\hooks\useAuth.test.ts:157:43
+    at file:///C:/Users/menum/Downloads/adminmate-ai/node_modules/@vitest/runner/dist/index.js:146:14
+    at file:///C:/Users/menum/Downloads/adminmate-ai/node_modules/@vitest/runner/dist/index.js:533:11
+    at runWithTimeout (file:///C:/Users/menum/Downloads/adminmate-ai/node_modules/@vitest/runner/dist/index.js:39:7)
+    at runTest (file:///C:/Users/menum/Downloads/adminmate-ai/node_modules/@vitest/runner/dist/index.js:1056:17)
+    at runSuite (file:///C:/Users/menum/Downloads/adminmate-ai/node_modules/@vitest/runner/dist/index.js:1205:15)
+    at runSuite (file:///C:/Users/menum/Downloads/adminmate-ai/node_modules/@vitest/runner/dist/index.js:1205:15)
+    at runSuite (file:///C:/Users/menum/Downloads/adminmate-ai/node_modules/@vitest/runner/dist/index.js:1205:15)
+    at runFiles (file:///C:/Users/menum/Downloads/adminmate-ai/node_modules/@vitest/runner/dist/index.js:1262:5)
+    at startTests (file:///C:/Users/menum/Downloads/adminmate-ai/node_modules/@vitest/runner/dist/index.js:1271:3)
+
+ [32mΓ£ô[39m src/hooks/useAuth.test.ts [2m([22m[2m11 tests[22m[2m)[22m[90m 71[2mms[22m[39m
+ [32mΓ£ô[39m src/services/quality/qualityMetricsService.test.ts [2m([22m[2m11 tests[22m[2m)[22m[90m 14[2mms[22m[39m
+ [32mΓ£ô[39m supabase/functions/generate-offer-content/index.test.ts [2m([22m[2m18 tests[22m[2m)[22m[90m 8[2mms[22m[39m
+ [32mΓ£ô[39m supabase/functions/screen-resume/index.test.ts [2m([22m[2m20 tests[22m[2m)[22m[90m 11[2mms[22m[39m
+stderr | tests/unit/capability/capabilityRegistry.test.ts > capabilityRegistryService > getCapabilities > returns empty array on error
+Failed to fetch capabilities: fail
+
+stderr | tests/unit/capability/capabilityRegistry.test.ts > capabilityRegistryService > getCapability > returns null on error
+Failed to fetch capability nonexistent: not found
+
+stderr | tests/unit/capability/capabilityRegistry.test.ts > capabilityRegistryService > updateCapabilityStatus > returns false on error
+Failed to update capability jobs: update failed
+
+ [32mΓ£ô[39m tests/unit/capability/capabilityRegistry.test.ts [2m([22m[2m15 tests[22m[2m)[22m[90m 16[2mms[22m[39m
+ [32mΓ£ô[39m tests/integration/services.test.ts [2m([22m[2m12 tests[22m[2m)[22m[90m 82[2mms[22m[39m
+ [32mΓ£ô[39m tests/unit/portal/submitValidation.test.ts [2m([22m[2m16 tests[22m[2m)[22m[90m 11[2mms[22m[39m
+ [32mΓ£ô[39m tests/unit/services/signatureService.test.ts [2m([22m[2m10 tests[22m[2m)[22m[90m 17[2mms[22m[39m
+stderr | tests/unit/services/rlsDriftService.test.ts > rlsDriftService > detectDrift > returns no drift on RPC error
+Failed to fetch current RLS policies: db down
+
+stderr | tests/unit/services/rlsDriftService.test.ts > rlsDriftService > alertOnDrift > returns false on insert error
+Failed to alert on RLS drift: insert failed
+
+ [32mΓ£ô[39m tests/unit/services/rlsDriftService.test.ts [2m([22m[2m13 tests[22m[2m)[22m[90m 17[2mms[22m[39m
+ [32mΓ£ô[39m tests/chaos/messaging.chaos.test.ts [2m([22m[2m16 tests[22m[2m)[22m[90m 116[2mms[22m[39m
+ [32mΓ£ô[39m tests/chaos/database.chaos.test.ts [2m([22m[2m14 tests[22m[2m)[22m[90m 10[2mms[22m[39m
+ [32mΓ£ô[39m tests/unit/messaging/approvalWorkflow.test.ts [2m([22m[2m23 tests[22m[2m)[22m[90m 11[2mms[22m[39m
+ [32mΓ£ô[39m tests/chaos/webhook.chaos.test.ts [2m([22m[2m17 tests[22m[2m)[22m[90m 17[2mms[22m[39m
+ [32mΓ£ô[39m tests/unit/services/authService.test.ts [2m([22m[2m14 tests[22m[2m)[22m[90m 18[2mms[22m[39m
+ [32mΓ£ô[39m tests/unit/services/configurationReadinessService.test.ts [2m([22m[2m4 tests[22m[2m)[22m[90m 33[2mms[22m[39m
+ [31mΓ¥»[39m supabase/functions/whatsapp-webhook/index.test.ts [2m([22m[2m8 tests[22m[2m | [22m[31m3 failed[39m[2m)[22m[90m 46[2mms[22m[39m
+[31m   [31m├ù[31m whatsapp-webhook security ΓÇö signature verification[2m > [22mValid Signature[2m > [22mshould accept request with valid signature[90m 14[2mms[22m[31m[39m
+[31m     ΓåÆ expected 500 to be 200 // Object.is equality[39m
+[31m   [31m├ù[31m whatsapp-webhook security ΓÇö signature verification[2m > [22mInvalid Signature[2m > [22mshould reject with 403 when signature does not match[90m 3[2mms[22m[31m[39m
+[31m     ΓåÆ expected 500 to be 403 // Object.is equality[39m
+[31m   [31m├ù[31m whatsapp-webhook security ΓÇö signature verification[2m > [22mInvalid Signature[2m > [22mshould reject with 403 when signature uses wrong secret[90m 3[2mms[22m[31m[39m
+[31m     ΓåÆ expected 500 to be 403 // Object.is equality[39m
+ [32mΓ£ô[39m src/services/companyService.test.ts [2m([22m[2m11 tests[22m[2m)[22m[90m 22[2mms[22m[39m
+ [32mΓ£ô[39m tests/unit/services/storageService.test.ts [2m([22m[2m19 tests[22m[2m)[22m[90m 15[2mms[22m[39m
+ [32mΓ£ô[39m tests/chaos/integration.chaos.test.ts [2m([22m[2m9 tests[22m[2m)[22m[90m 10[2mms[22m[39m
+ [32mΓ£ô[39m supabase/functions/parse-resume/index.test.ts [2m([22m[2m18 tests[22m[2m)[22m[90m 9[2mms[22m[39m
+ [32mΓ£ô[39m tests/unit/services/dlqService.test.ts [2m([22m[2m12 tests[22m[2m)[22m[90m 19[2mms[22m[39m
+ [32mΓ£ô[39m supabase/functions/export-user-data/index.test.ts [2m([22m[2m20 tests[22m[2m)[22m[90m 9[2mms[22m[39m
+ [32mΓ£ô[39m supabase/functions/mate-ai-chat/index.test.ts [2m([22m[2m20 tests[22m[2m)[22m[90m 7[2mms[22m[39m
+ [32mΓ£ô[39m tests/unit/services/searchService.test.ts [2m([22m[2m9 tests[22m[2m)[22m[90m 12[2mms[22m[39m
+ [32mΓ£ô[39m supabase/functions/generate-jd/index.test.ts [2m([22m[2m20 tests[22m[2m)[22m[90m 8[2mms[22m[39m
+ [32mΓ£ô[39m tests/unit/services/metricsService.test.ts [2m([22m[2m11 tests[22m[2m)[22m[90m 16[2mms[22m[39m
+ [32mΓ£ô[39m src/lib/sessionApi.test.ts [2m([22m[2m10 tests[22m[2m)[22m[90m 49[2mms[22m[39m
+ [32mΓ£ô[39m src/hooks/useSessionRestore.test.tsx [2m([22m[2m5 tests[22m[2m)[22m[90m 72[2mms[22m[39m
+ [32mΓ£ô[39m tests/unit/services/pdpaService.test.ts [2m([22m[2m12 tests[22m[2m)[22m[90m 16[2mms[22m[39m
+ [32mΓ£ô[39m tests/unit/mobility/mobilityFlow.test.ts [2m([22m[2m16 tests[22m[2m)[22m[90m 10[2mms[22m[39m
+ [32mΓ£ô[39m src/services/quality/testQuarantineService.test.ts [2m([22m[2m9 tests[22m[2m)[22m[90m 22[2mms[22m[39m
+ [32mΓ£ô[39m supabase/functions/delete-user-data/index.test.ts [2m([22m[2m18 tests[22m[2m)[22m[90m 10[2mms[22m[39m
+ [32mΓ£ô[39m tests/unit/lib/logger.test.ts [2m([22m[2m7 tests[22m[2m)[22m[90m 65[2mms[22m[39m
+ [32mΓ£ô[39m tests/unit/services/offerService.test.ts [2m([22m[2m7 tests[22m[2m)[22m[90m 12[2mms[22m[39m
+ [32mΓ£ô[39m tests/unit/components/AuthGuard.test.tsx [2m([22m[2m6 tests[22m[2m)[22m[90m 94[2mms[22m[39m
+stderr | tests/unit/services/permissionService.test.ts > permissionService > hasPermission > returns false on error
+Permission check failed: network error
+
+stderr | tests/unit/services/permissionService.test.ts > permissionService > getUserRoleNames > returns empty array on error
+Failed to fetch role names: fail
+
+ [32mΓ£ô[39m tests/unit/services/permissionService.test.ts [2m([22m[2m11 tests[22m[2m)[22m[90m 11[2mms[22m[39m
+ [32mΓ£ô[39m supabase/functions/auth-hook-mfa/index.test.ts [2m([22m[2m5 tests[22m[2m)[22m[90m 33[2mms[22m[39m
+ [32mΓ£ô[39m tests/unit/services/referralService.test.ts [2m([22m[2m7 tests[22m[2m)[22m[90m 10[2mms[22m[39m
+ [32mΓ£ô[39m tests/unit/importExport/importExport.test.ts [2m([22m[2m7 tests[22m[2m)[22m[90m 10[2mms[22m[39m
+ [32mΓ£ô[39m src/components/auth/LoginForm.test.tsx [2m([22m[2m4 tests[22m[2m)[22m[90m 117[2mms[22m[39m
+ [32mΓ£ô[39m tests/unit/services/interviewService.test.ts [2m([22m[2m6 tests[22m[2m)[22m[90m 12[2mms[22m[39m
+ [32mΓ£ô[39m tests/unit/services/documentService.test.ts [2m([22m[2m6 tests[22m[2m)[22m[90m 10[2mms[22m[39m
+ [32mΓ£ô[39m tests/unit/services/killSwitchService.test.ts [2m([22m[2m7 tests[22m[2m)[22m[90m 9[2mms[22m[39m
+ [32mΓ£ô[39m tests/unit/stores/authStore.test.ts [2m([22m[2m9 tests[22m[2m)[22m[90m 6[2mms[22m[39m
+stderr | tests/unit/services/featureFlagService.test.ts > featureFlagService > isFeatureEnabled > returns false on error
+Feature flag check failed: fail
+
+ [32mΓ£ô[39m tests/unit/services/featureFlagService.test.ts [2m([22m[2m8 tests[22m[2m)[22m[90m 11[2mms[22m[39m
+ [32mΓ£ô[39m tests/unit/lib/sentry.test.ts [2m([22m[2m7 tests[22m[2m)[22m[90m 178[2mms[22m[39m
+ [32mΓ£ô[39m tests/unit/services/applicationService.test.ts [2m([22m[2m4 tests[22m[2m)[22m[90m 9[2mms[22m[39m
+ [32mΓ£ô[39m src/components/auth/MFAChallenge.test.tsx [2m([22m[2m6 tests[22m[2m)[22m[90m 182[2mms[22m[39m
+stderr | tests/unit/services/sensitiveFieldService.test.ts > sensitiveFieldService > getSensitiveFieldNames > returns empty array on error
+Failed to fetch sensitive fields: fail
+
+ [32mΓ£ô[39m tests/unit/services/sensitiveFieldService.test.ts [2m([22m[2m5 tests[22m[2m)[22m[90m 47[2mms[22m[39m
+ [32mΓ£ô[39m tests/unit/services/orgStructureService.test.ts [2m([22m[2m5 tests[22m[2m)[22m[90m 31[2mms[22m[39m
+ [32mΓ£ô[39m tests/unit/security/ssoViewAdversarial.test.ts [2m([22m[2m4 tests[22m[2m)[22m[90m 4[2mms[22m[39m
+ [32mΓ£ô[39m tests/unit/services/candidateService.test.ts [2m([22m[2m4 tests[22m[2m)[22m[90m 7[2mms[22m[39m
+ [32mΓ£ô[39m tests/unit/services/legalEntityService.test.ts [2m([22m[2m3 tests[22m[2m)[22m[90m 7[2mms[22m[39m
+ [32mΓ£ô[39m tests/unit/services/jobService.test.ts [2m([22m[2m3 tests[22m[2m)[22m[90m 8[2mms[22m[39m
+ [32mΓ£ô[39m tests/unit/services/onboardingService.test.ts [2m([22m[2m2 tests[22m[2m)[22m[90m 5[2mms[22m[39m
+ [32mΓ£ô[39m src/lib/authStorage.test.ts [2m([22m[2m5 tests[22m[2m)[22m[90m 4[2mms[22m[39m
+ [32mΓ£ô[39m tests/unit/utils/validators.test.ts [2m([22m[2m5 tests[22m[2m)[22m[90m 6[2mms[22m[39m
+ [32mΓ£ô[39m tests/unit/components/LanguageSwitcher.test.tsx [2m([22m[2m1 test[22m[2m)[22m[90m 48[2mms[22m[39m
+ [32mΓ£ô[39m tests/unit/components/PermissionComponents.test.tsx [2m([22m[2m3 tests[22m[2m)[22m[90m 59[2mms[22m[39m
+ [32mΓ£ô[39m tests/unit/components/JobForm.test.tsx [2m([22m[2m1 test[22m[2m)[22m[90m 76[2mms[22m[39m
+stderr | tests/unit/components/PDFThaiFont.test.tsx > PDFDownloadButton ΓÇö Thai text > generates PDF with Thai text without crash
+[PDFDownloadButton] PDF generation failed: TypeError: URL.createObjectURL is not a function
+    at download (C:\Users\menum\Downloads\adminmate-ai\src\components\pdf\PDFDownloadButton.tsx:39:23)
+    at processTicksAndRejections (node:internal/process/task_queues:104:5)
+
+ [32mΓ£ô[39m tests/unit/components/PDFThaiFont.test.tsx [2m([22m[2m1 test[22m[2m)[22m[33m 1104[2mms[22m[39m
+   [33m[2mΓ£ô[22m[39m PDFDownloadButton ΓÇö Thai text[2m > [22mgenerates PDF with Thai text without crash [33m1102[2mms[22m[39m
+ [32mΓ£ô[39m tests/unit/components/NotificationBell.test.tsx [2m([22m[2m2 tests[22m[2m)[22m[90m 91[2mms[22m[39m
+ [32mΓ£ô[39m tests/unit/utils/cn.test.ts [2m([22m[2m4 tests[22m[2m)[22m[90m 9[2mms[22m[39m
+ [32mΓ£ô[39m tests/unit/components/ErrorBoundary.test.tsx [2m([22m[2m2 tests[22m[2m)[22m[90m 63[2mms[22m[39m
+ [32mΓ£ô[39m tests/unit/utils/currency.test.ts [2m([22m[2m3 tests[22m[2m)[22m[90m 19[2mms[22m[39m
+ [32mΓ£ô[39m tests/unit/utils/date.test.ts [2m([22m[2m3 tests[22m[2m)[22m[90m 4[2mms[22m[39m
+
+ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ» Failed Suites 1 ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»
+
+ FAIL  tests/integration/release26a52.deterministic-rls.test.ts [ tests/integration/release26a52.deterministic-rls.test.ts ]
+Error: Failed to update profile for det-a@test.com: HTTP 500
+ Γ¥» tests/integration/release26a52.deterministic-rls.test.ts:59:32
+     57|         body: JSON.stringify({ company_id: user.companyId, role: user.ΓÇª
+     58|       })
+     59|       if (status >= 400) throw new Error(`Failed to update profile forΓÇª
+       |                                ^
+     60| 
+     61|       // VERIFY: profile has correct company_id (database-truth-based)
+
+ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»[1/15]ΓÄ»
+
+ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ» Failed Tests 14 ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»
+
+ FAIL  tests/integration/release26a51.rest-crud-privacy.integration.test.ts > 26A.5.1 ΓÇö chat_messages cross-tenant UPDATE/DELETE > A1: Company A PATCH blocked from Company B rows
+AssertionError: expected false to be true // Object.is equality
+
+- Expected
++ Received
+
+- true
++ false
+
+ Γ¥» tests/integration/release26a51.rest-crud-privacy.integration.test.ts:67:64
+     65|   it('A1: Company A PATCH blocked from Company B rows', async () => {
+     66|     const { status } = await api('PATCH', 'chat_messages', T0.token!, ΓÇª
+     67|     expect(status === 200 || status === 204 || status === 403).toBe(trΓÇª
+       |                                                                ^
+     68|   })
+     69| 
+
+ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»[2/15]ΓÄ»
+
+ FAIL  tests/integration/release26a51.rest-crud-privacy.integration.test.ts > 26A.5.1 ΓÇö chat_messages cross-tenant UPDATE/DELETE > A2: Company B PATCH blocked from Company A rows
+AssertionError: expected false to be true // Object.is equality
+
+- Expected
++ Received
+
+- true
++ false
+
+ Γ¥» tests/integration/release26a51.rest-crud-privacy.integration.test.ts:72:64
+     70|   it('A2: Company B PATCH blocked from Company A rows', async () => {
+     71|     const { status } = await api('PATCH', 'chat_messages', T1.token!, ΓÇª
+     72|     expect(status === 200 || status === 204 || status === 403).toBe(trΓÇª
+       |                                                                ^
+     73|   })
+     74| 
+
+ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»[3/15]ΓÄ»
+
+ FAIL  tests/integration/release26a51.rest-crud-privacy.integration.test.ts > 26A.5.1 ΓÇö chat_messages cross-tenant UPDATE/DELETE > A3: Company A DELETE blocked from Company B rows
+AssertionError: expected false to be true // Object.is equality
+
+- Expected
++ Received
+
+- true
++ false
+
+ Γ¥» tests/integration/release26a51.rest-crud-privacy.integration.test.ts:77:64
+     75|   it('A3: Company A DELETE blocked from Company B rows', async () => {
+     76|     const { status } = await api('DELETE', 'chat_messages', T0.token!,ΓÇª
+     77|     expect(status === 200 || status === 204 || status === 403).toBe(trΓÇª
+       |                                                                ^
+     78|   })
+     79| 
+
+ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»[4/15]ΓÄ»
+
+ FAIL  tests/integration/release26a51.rest-crud-privacy.integration.test.ts > 26A.5.1 ΓÇö chat_messages cross-tenant UPDATE/DELETE > A4: Company B DELETE blocked from Company A rows
+AssertionError: expected false to be true // Object.is equality
+
+- Expected
++ Received
+
+- true
++ false
+
+ Γ¥» tests/integration/release26a51.rest-crud-privacy.integration.test.ts:82:64
+     80|   it('A4: Company B DELETE blocked from Company A rows', async () => {
+     81|     const { status } = await api('DELETE', 'chat_messages', T1.token!,ΓÇª
+     82|     expect(status === 200 || status === 204 || status === 403).toBe(trΓÇª
+       |                                                                ^
+     83|   })
+     84| })
+
+ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»[5/15]ΓÄ»
+
+ FAIL  tests/integration/release26a51.rest-crud-privacy.integration.test.ts > 26A.5.1 ΓÇö messages cross-tenant UPDATE/DELETE > B1: Company A PATCH blocked from Company B
+AssertionError: expected false to be true // Object.is equality
+
+- Expected
++ Received
+
+- true
++ false
+
+ Γ¥» tests/integration/release26a51.rest-crud-privacy.integration.test.ts:92:64
+     90|   it('B1: Company A PATCH blocked from Company B', async () => {
+     91|     const { status } = await api('PATCH', 'messages', T0.token!, { conΓÇª
+     92|     expect(status === 200 || status === 204 || status === 403).toBe(trΓÇª
+       |                                                                ^
+     93|   })
+     94| 
+
+ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»[6/15]ΓÄ»
+
+ FAIL  tests/integration/release26a51.rest-crud-privacy.integration.test.ts > 26A.5.1 ΓÇö messages cross-tenant UPDATE/DELETE > B2: Company B PATCH blocked from Company A
+AssertionError: expected false to be true // Object.is equality
+
+- Expected
++ Received
+
+- true
++ false
+
+ Γ¥» tests/integration/release26a51.rest-crud-privacy.integration.test.ts:97:64
+     95|   it('B2: Company B PATCH blocked from Company A', async () => {
+     96|     const { status } = await api('PATCH', 'messages', T1.token!, { conΓÇª
+     97|     expect(status === 200 || status === 204 || status === 403).toBe(trΓÇª
+       |                                                                ^
+     98|   })
+     99| 
+
+ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»[7/15]ΓÄ»
+
+ FAIL  tests/integration/release26a51.rest-crud-privacy.integration.test.ts > 26A.5.1 ΓÇö conversation_threads cross-tenant UPDATE/DELETE > C1: Company A PATCH blocked from Company B
+AssertionError: expected false to be true // Object.is equality
+
+- Expected
++ Received
+
+- true
++ false
+
+ Γ¥» tests/integration/release26a51.rest-crud-privacy.integration.test.ts:117:64
+    115|   it('C1: Company A PATCH blocked from Company B', async () => {
+    116|     const { status } = await api('PATCH', 'conversation_threads', T0.tΓÇª
+    117|     expect(status === 200 || status === 204 || status === 403).toBe(trΓÇª
+       |                                                                ^
+    118|   })
+    119| 
+
+ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»[8/15]ΓÄ»
+
+ FAIL  tests/integration/release26a51.rest-crud-privacy.integration.test.ts > 26A.5.1 ΓÇö conversation_threads cross-tenant UPDATE/DELETE > C2: Company B PATCH blocked from Company A
+AssertionError: expected false to be true // Object.is equality
+
+- Expected
++ Received
+
+- true
++ false
+
+ Γ¥» tests/integration/release26a51.rest-crud-privacy.integration.test.ts:122:64
+    120|   it('C2: Company B PATCH blocked from Company A', async () => {
+    121|     const { status } = await api('PATCH', 'conversation_threads', T1.tΓÇª
+    122|     expect(status === 200 || status === 204 || status === 403).toBe(trΓÇª
+       |                                                                ^
+    123|   })
+    124| 
+
+ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»[9/15]ΓÄ»
+
+ FAIL  tests/integration/release26a51.rest-crud-privacy.integration.test.ts > 26A.5.1 ΓÇö chat_platform_connections cross-tenant + role restriction > D1: Company A admin SELECT own connections
+AssertionError: expected 500 to be 200 // Object.is equality
+
+- Expected
++ Received
+
+- 200
++ 500
+
+ Γ¥» tests/integration/release26a51.rest-crud-privacy.integration.test.ts:143:20
+    141|   it('D1: Company A admin SELECT own connections', async () => {
+    142|     const { status, body } = await api('GET', 'chat_platform_connectioΓÇª
+    143|     expect(status).toBe(200)
+       |                    ^
+    144|     expect(body.length).toBeGreaterThanOrEqual(0)
+    145|   })
+
+ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»[10/15]ΓÄ»
+
+ FAIL  tests/integration/release26a51.rest-crud-privacy.integration.test.ts > 26A.5.1 ΓÇö chat_platform_connections cross-tenant + role restriction > D3: Company A PATCH blocked from Company B
+AssertionError: expected false to be true // Object.is equality
+
+- Expected
++ Received
+
+- true
++ false
+
+ Γ¥» tests/integration/release26a51.rest-crud-privacy.integration.test.ts:156:64
+    154|   it('D3: Company A PATCH blocked from Company B', async () => {
+    155|     const { status } = await api('PATCH', 'chat_platform_connections',ΓÇª
+    156|     expect(status === 200 || status === 204 || status === 403).toBe(trΓÇª
+       |                                                                ^
+    157|   })
+    158| })
+
+ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»[11/15]ΓÄ»
+
+ FAIL  tests/integration/release26a51.rest-crud-privacy.integration.test.ts > 26A.5.1 ΓÇö header/credential anti-footgun > G5: forged company_id does not bypass RLS
+AssertionError: expected undefined to be +0 // Object.is equality
+
+- Expected: 
+0
+
++ Received: 
+undefined
+
+ Γ¥» tests/integration/release26a51.rest-crud-privacy.integration.test.ts:266:25
+    264|     const { body } = await api('GET', 'chat_messages', T1.token!, undeΓÇª
+    265|     // RLS should block cross-tenant access entirely ΓÇö 0 rows
+    266|     expect(body.length).toBe(0)
+       |                         ^
+    267|   })
+    268| 
+
+ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»[12/15]ΓÄ»
+
+ FAIL  supabase/functions/whatsapp-webhook/index.test.ts > whatsapp-webhook security ΓÇö signature verification > Valid Signature > should accept request with valid signature
+AssertionError: expected 500 to be 200 // Object.is equality
+
+- Expected
++ Received
+
+- 200
++ 500
+
+ Γ¥» supabase/functions/whatsapp-webhook/index.test.ts:127:26
+    125|       const sig = computeSignature('test-app-secret', body)
+    126|       const res = await post(body, sig)
+    127|       expect(res.status).toBe(200)
+       |                          ^
+    128|     })
+    129|   })
+
+ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»[13/15]ΓÄ»
+
+ FAIL  supabase/functions/whatsapp-webhook/index.test.ts > whatsapp-webhook security ΓÇö signature verification > Invalid Signature > should reject with 403 when signature does not match
+AssertionError: expected 500 to be 403 // Object.is equality
+
+- Expected
++ Received
+
+- 403
++ 500
+
+ Γ¥» supabase/functions/whatsapp-webhook/index.test.ts:134:26
+    132|     it('should reject with 403 when signature does not match', async (ΓÇª
+    133|       const res = await post(JSON.stringify({ entry: [] }), 'sha256=inΓÇª
+    134|       expect(res.status).toBe(403)
+       |                          ^
+    135|       expect(mockLogRequest).toHaveBeenCalledWith(
+    136|         expect.objectContaining({ status: 403, error: 'invalid signatuΓÇª
+
+ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»[14/15]ΓÄ»
+
+ FAIL  supabase/functions/whatsapp-webhook/index.test.ts > whatsapp-webhook security ΓÇö signature verification > Invalid Signature > should reject with 403 when signature uses wrong secret
+AssertionError: expected 500 to be 403 // Object.is equality
+
+- Expected
++ Received
+
+- 403
++ 500
+
+ Γ¥» supabase/functions/whatsapp-webhook/index.test.ts:143:26
+    141|       const body = JSON.stringify({ entry: [] })
+    142|       const res = await post(body, computeSignature('wrong-secret', boΓÇª
+    143|       expect(res.status).toBe(403)
+       |                          ^
+    144|     })
+    145|   })
+
+ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»[15/15]ΓÄ»
+
+[2m Test Files [22m [1m[31m3 failed[39m[22m[2m | [22m[1m[32m108 passed[39m[22m[90m (111)[39m
+[2m      Tests [22m [1m[31m14 failed[39m[22m[2m | [22m[1m[32m1962 passed[39m[22m[2m | [22m[33m22 skipped[39m[2m | [22m[90m2 todo[39m[90m (2000)[39m
+[2m   Start at [22m 01:03:03
+[2m   Duration [22m 31.15s[2m (transform 5.12s, setup 36.73s, collect 13.62s, tests 10.04s, environment 197.09s, prepare 20.39s)[22m
+

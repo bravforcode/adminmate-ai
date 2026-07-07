@@ -1,6 +1,29 @@
 import tseslint from 'typescript-eslint'
 import js from '@eslint/js'
 
+/**
+ * Custom ESLint rule: disallow .select('*') on Supabase queries.
+ * Forces explicit column selection for query performance.
+ */
+function noSelectStar(context) {
+  return {
+    CallExpression(node) {
+      if (
+        node.callee.type === 'MemberExpression' &&
+        node.callee.property.name === 'select' &&
+        node.arguments.length >= 1 &&
+        node.arguments[0].type === 'Literal' &&
+        node.arguments[0].value === '*'
+      ) {
+        context.report({
+          node: node.arguments[0],
+          message: 'Avoid .select("*") — specify exact columns for query performance.',
+        })
+      }
+    },
+  }
+}
+
 export default [
   js.configs.recommended,
   ...tseslint.configs.recommended,
@@ -12,6 +35,21 @@ export default [
   },
   {
     ignores: ['dist/', 'node_modules/', 'audit_artifacts/'],
+  },
+  {
+    files: ['src/**/*.ts', 'src/**/*.tsx'],
+    plugins: {
+      'custom': {
+        rules: {
+          'no-select-star': {
+            create: noSelectStar,
+          },
+        },
+      },
+    },
+    rules: {
+      'custom/no-select-star': 'warn',
+    },
   },
   {
     files: ['supabase/functions/**/*.ts'],

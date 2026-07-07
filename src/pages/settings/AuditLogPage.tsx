@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next'
 import { useAuthStore } from '../../stores/authStore'
 import { auditLogService, type AuditLogEntry, type AuditLogFilters } from '../../services/auditLogService'
 import { supabase } from '../../lib/supabase'
+import { logger } from '../../lib/logger'
 import {
   ScrollText,
   Download,
@@ -50,29 +51,30 @@ export function AuditLogPage() {
   const { t } = useTranslation('common')
   const company = useAuthStore(s => s.company)
   const [logs, setLogs] = useState<AuditLogEntry[]>([])
-  const [total, setTotal] = useState(0)
-  const [page, setPage] = useState(1)
-  const [totalPages, setTotalPages] = useState(1)
+  const [cursor, setCursor] = useState<string | null>(null)
+  const [hasMore, setHasMore] = useState(false)
+  const [cursorStack, setCursorStack] = useState<(string | null)[]>([])
   const [loading, setLoading] = useState(true)
   const [showFilters, setShowFilters] = useState(false)
   const [filters, setFilters] = useState<AuditLogFilters>({})
   const [stats, setStats] = useState({ total_logs: 0, today_count: 0, unique_users: 0, top_actions: [] as { action: string; count: number }[] })
   const channelRef = useRef<ReturnType<typeof supabase.channel> | null>(null)
 
-  const fetchLogs = useCallback(async () => {
+  const fetchLogs = useCallback(async (cursorOverride?: string | null, resetStack = false) => {
     if (!company?.id) return
     setLoading(true)
     try {
-      const result = await auditLogService.getAuditLogs(company.id, { ...filters, page })
-      setLogs(result.logs)
-      setTotal(result.total)
-      setTotalPages(result.totalPages)
+      const result = await auditLogService.getAuditLogs(company.id, { ...filters, cursor: cursorOverride ?? undefined, limit: 25 })
+      setLogs(result.data)
+      setCursor(result.cursor)
+      setHasMore(result.hasMore)
+      if (resetStack) setCursorStack([])
     } catch (err) {
-      console.error('Failed to fetch audit logs:', err)
+      logger.error('Failed to fetch audit logs:', { error: err instanceof Error ? err.message : String(err) })
     } finally {
       setLoading(false)
     }
-  }, [company?.id, filters, page])
+  }, [company?.id, filters])
 
   const fetchStats = useCallback(async () => {
     if (!company?.id) return
@@ -80,7 +82,7 @@ export function AuditLogPage() {
       const s = await auditLogService.getAuditLogStats(company.id)
       setStats(s)
     } catch (err) {
-      console.error('Failed to fetch audit log stats:', err)
+      logger.error('Failed to fetch audit log stats:', { error: err instanceof Error ? err.message : String(err) })
     }
   }, [company?.id])
 
@@ -112,12 +114,26 @@ export function AuditLogPage() {
 
   const applyFilter = (key: keyof AuditLogFilters, value: string) => {
     setFilters(prev => ({ ...prev, [key]: value || undefined }))
-    setPage(1)
+    setCursorStack([])
   }
 
   const clearFilters = () => {
     setFilters({})
-    setPage(1)
+    setCursorStack([])
+  }
+
+  const handleNextPage = () => {
+    if (cursor) {
+      setCursorStack(prev => [...prev, cursor])
+      fetchLogs(cursor)
+    }
+  }
+
+  const handlePrevPage = () => {
+    if (cursorStack.length > 0) {
+      setCursorStack(prev => prev.slice(0, -1))
+      fetchLogs(cursorStack.length > 1 ? cursorStack[cursorStack.length - 2] : null)
+    }
   }
 
   const hasActiveFilters = Object.keys(filters).length > 0
@@ -258,8 +274,8 @@ export function AuditLogPage() {
             description={t('empty.audit_log_description')}
           />
         ) : (
-          <div className="overflow-x-auto">
-            <table className="w-full text-sm">
+          <div className="table-responsive overflow-x-auto -mx-6 px-6">
+            <table className="w-full text-sm min-w-[700px]">
               <thead>
                 <tr className="bg-surface-container dark:bg-surface-container/50 border-b border-outline-variant/50 dark:border-outline/50">
                   <th className="py-3 px-4 text-xs font-semibold uppercase tracking-wider text-on-surface-variant dark:text-on-surface-variant">{t('audit_log.timestamp') || 'Timestamp'}</th>
@@ -301,39 +317,19 @@ export function AuditLogPage() {
         )}
 
         {/* Pagination */}
-        {totalPages > 1 && (
-          <div className="flex items-center justify-between px-4 py-3 border-t border-outline-variant">
-            <p className="text-xs text-on-surface-variant">
-              {t('audit_log.showing', { from: (page - 1) * 25 + 1, to: Math.min(page * 25, total), total }) || `Showing ${(page - 1) * 25 + 1}–${Math.min(page * 25, total)} of ${total}`}
-            </p>
+        {(hasMore || cursorStack.length > 0) && (
+          <div className="flex items-center justify-end px-4 py-3 border-t border-outline-variant">
             <div className="flex items-center gap-1">
               <button
-                onClick={() => setPage(p => Math.max(1, p - 1))}
-                disabled={page === 1}
+                onClick={handlePrevPage}
+                disabled={cursorStack.length === 0}
                 className="p-1.5 rounded-lg hover:bg-surface-container-high disabled:opacity-30 transition-colors"
               >
                 <ChevronLeft size={16} />
               </button>
-              {Array.from({ length: Math.min(5, totalPages) }, (_, i) => {
-                const start = Math.max(1, Math.min(page - 2, totalPages - 4))
-                const p = start + i
-                if (p > totalPages) return null
-                return (
-                  <button
-                    key={p}
-                    onClick={() => setPage(p)}
-                    className={cn(
-                      'w-8 h-8 rounded-lg text-sm font-medium transition-colors',
-                      p === page ? 'bg-primary text-on-primary' : 'hover:bg-surface-container-high text-on-surface'
-                    )}
-                  >
-                    {p}
-                  </button>
-                )
-              })}
               <button
-                onClick={() => setPage(p => Math.min(totalPages, p + 1))}
-                disabled={page === totalPages}
+                onClick={handleNextPage}
+                disabled={!hasMore}
                 className="p-1.5 rounded-lg hover:bg-surface-container-high disabled:opacity-30 transition-colors"
               >
                 <ChevronRight size={16} />

@@ -93,6 +93,8 @@
     "moved_to_interviewing": "Đã chuyển sang phỏng vấn",
     "failed_to_update": "Cập nhật trạng thái thất bại",
     "select_job": "Chọn một công việc đang đăng để xem quy trình",
+    "select_job_prompt": "Chọn công việc để xem quy trình",
+    "select_job_prompt_desc": "Chọn công việc từ danh sách trên để xem ứng viên tại mỗi giai đoạn quy trình",
     "no_active_jobs": "Không có công việc đang đăng",
     "loading_pipeline": "Đang tải quy trình...",
     "no_candidates": "Không có ứng viên",

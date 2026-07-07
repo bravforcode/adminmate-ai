@@ -122,6 +122,10 @@ test.describe('JOBS: 3-Step Create Wizard', () => {
     if (await createBtn.isVisible({ timeout: 10_000 }).catch(() => false)) {
       await createBtn.click()
       await page.locator('[data-testid="job-title"]').fill(title)
+      // department + location are required by the zod schema — without them
+      // handleSubmit rejects at publish and no job is created
+      await page.locator('#job-department').fill('Engineering')
+      await page.locator('#job-location').fill('Bangkok')
       await page.locator('[data-testid="step-next"]').click()
       await page.locator('[data-testid="jd-description"]').fill('E2E generated job description.')
       await page.locator('[data-testid="step-next"]').click()
@@ -142,7 +146,7 @@ test.describe('JOBS: Search & Filter', () => {
     if (await search.isVisible({ timeout: 5000 }).catch(() => false)) {
       await search.fill('NonexistentJob12345')
       await page.waitForTimeout(1000)
-      const emptyState = page.locator('[class*="empty"]').count()
+      const emptyState = await page.locator('[class*="empty"]').count()
       expect(emptyState).toBeGreaterThanOrEqual(0)
     }
   })

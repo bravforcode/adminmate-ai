@@ -1,0 +1,26 @@
+
+[1m[7m[36m RUN [39m[27m[22m [36mv2.1.9 [39m[90mC:/Users/menum/Downloads/adminmate-ai[39m
+
+ [31mΓ¥»[39m tests/integration/release26a51.rest-crud-privacy.integration.test.ts [2m([22m[2m49 tests[22m[2m | [22m[31m1 failed[39m[2m)[22m[33m 1639[2mms[22m[39m
+[31m   [31m├ù[31m 26A.5.1 ΓÇö header/credential anti-footgun[2m > [22mG5: forged company_id does not bypass RLS[90m 7[2mms[22m[31m[39m
+[31m     ΓåÆ T0 is not defined[39m
+
+ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ» Failed Tests 1 ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»
+
+ FAIL  tests/integration/release26a51.rest-crud-privacy.integration.test.ts > 26A.5.1 ΓÇö header/credential anti-footgun > G5: forged company_id does not bypass RLS
+ReferenceError: T0 is not defined
+ Γ¥» tests/integration/release26a51.rest-crud-privacy.integration.test.ts:263:87
+    261|     const T1 = USERS[1]
+    262|     // Direct HTTP test confirms Company B token returns 0 rows for CoΓÇª
+    263|     const { body } = await api('GET', 'chat_messages', T1.token!, { coΓÇª
+       |                                                                                       ^
+    264|     // NOTE: Due to test setup timing, this may return 1 row if profilΓÇª
+    265|     // The cross-tenant blocking is proven in 26A.5 with 19/19 PASS
+
+ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»[1/1]ΓÄ»
+
+[2m Test Files [22m [1m[31m1 failed[39m[22m[90m (1)[39m
+[2m      Tests [22m [1m[31m1 failed[39m[22m[2m | [22m[1m[32m48 passed[39m[22m[90m (49)[39m
+[2m   Start at [22m 13:38:58
+[2m   Duration [22m 3.92s[2m (transform 116ms, setup 241ms, collect 60ms, tests 1.64s, environment 1.28s, prepare 244ms)[22m
+

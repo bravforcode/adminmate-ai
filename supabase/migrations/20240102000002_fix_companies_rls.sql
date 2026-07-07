@@ -1,9 +1,12 @@
 -- Fix RLS so new users can create their first company and read it
 -- Without these, the company setup flow is blocked by 403/RLS errors.
 
--- Allow any authenticated user to INSERT a new company
+-- Allow only users WITHOUT a company to INSERT (new registrations only)
 DROP POLICY IF EXISTS "companies_insert" ON companies;
-CREATE POLICY "companies_insert" ON companies FOR INSERT WITH CHECK (auth.uid() IS NOT NULL);
+CREATE POLICY "companies_insert" ON companies FOR INSERT WITH CHECK (
+  auth.uid() IS NOT NULL
+  AND NOT EXISTS (SELECT 1 FROM user_profiles WHERE id = auth.uid() AND company_id IS NOT NULL)
+);
 
 -- Loosen the SELECT policy: user can read their own company.
 -- A newly registered user (no company_id in profile yet) will land on the

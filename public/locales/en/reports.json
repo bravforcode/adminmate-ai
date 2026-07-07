@@ -66,5 +66,12 @@
     "toggle_enable": "Enable",
     "toggle_disable": "Disable",
     "delete": "Delete"
+  },
+  "pa": {
+    "total_applications": "Total Applications",
+    "hired": "Hired",
+    "rejected": "Rejected",
+    "high": "High",
+    "normal": "Normal"
   }
 }

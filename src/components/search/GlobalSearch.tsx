@@ -126,6 +126,7 @@ export function GlobalSearch() {
       >
         <motion.div
           role="dialog"
+          aria-modal="true"
           aria-label={t('search.title')}
           className="w-full max-w-[560px] mx-4 bg-surface rounded-2xl shadow-[0_25px_60px_rgba(0,0,0,0.25)] overflow-hidden max-h-[70vh] flex flex-col"
           initial={{ opacity: 0, scale: 0.95, y: -8 }}

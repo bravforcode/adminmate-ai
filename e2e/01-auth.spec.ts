@@ -4,10 +4,10 @@ import { test, expect, HR_USER, signInAsHR, signOut, freshEmail, waitForPageRead
 // AUTH: Role Selection Page (new!)
 // ═══════════════════════════════════════════════════════════════════
 test.describe('AUTH: Role Selection', () => {
-  test('shows two role cards (HR and Applicant)', async ({ page }) => {
+  test('shows HR role card only (applicant login removed by design)', async ({ page }) => {
     await page.goto('/login')
     await expect(page.locator('#role-card-hr')).toBeVisible({ timeout: 15_000 })
-    await expect(page.locator('#role-card-applicant')).toBeVisible()
+    await expect(page.locator('#role-card-applicant')).toHaveCount(0)
   })
 
   test('clicking HR card shows login form', async ({ page }) => {
@@ -16,12 +16,6 @@ test.describe('AUTH: Role Selection', () => {
     await expect(page.locator('[data-testid="email-input"]')).toBeVisible({ timeout: 10_000 })
     await expect(page.locator('[data-testid="password-input"]')).toBeVisible()
     await expect(page.locator('[data-testid="login-button"]')).toBeVisible()
-  })
-
-  test('clicking Applicant card shows login form', async ({ page }) => {
-    await page.goto('/login')
-    await page.locator('#role-card-applicant').click()
-    await expect(page.locator('[data-testid="email-input"]')).toBeVisible({ timeout: 10_000 })
   })
 
   test('back button returns to role selection', async ({ page }) => {

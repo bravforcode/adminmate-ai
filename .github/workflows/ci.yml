@@ -1,48 +1,141 @@
 name: CI
+
 on:
   push:
     branches: [main, develop]
   pull_request:
-    branches: [main]
+    branches: [main, develop]
 
 jobs:
-  quality:
+  # ------------------------------------------------------------------
+  # 1. Lint & TypeCheck
+  # ------------------------------------------------------------------
+  lint-and-typecheck:
+    name: "Lint & TypeCheck"
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     steps:
       - uses: actions/checkout@v4
+
       - uses: actions/setup-node@v4
         with:
-          node-version: '20'
-          cache: 'npm'
+          node-version: 20
+          cache: npm
+
       - run: npm ci
-      - run: npm run type-check
-      - run: npm run lint
-      - run: npm run test -- --run
 
-  deploy-preview:
-    needs: quality
-    if: github.ref != 'refs/heads/main'
+      - name: Lint
+        run: npm run lint
+
+      - name: TypeCheck
+        run: npm run type-check
+
+  # ------------------------------------------------------------------
+  # 2. Unit Tests with Coverage
+  # ------------------------------------------------------------------
+  unit-tests:
+    name: "Unit Tests"
     runs-on: ubuntu-latest
-    environment: preview
+    needs: lint-and-typecheck
+    timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4
-      - uses: amondnet/vercel-action@v25
-        with:
-          vercel-token: ${{ secrets.VERCEL_TOKEN }}
-          vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
-          vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
-          vercel-args: '--yes'
 
-  deploy-production:
-    needs: quality
-    if: github.ref == 'refs/heads/main'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - run: npm ci
+
+      - name: Run tests with coverage
+        run: npm run test:coverage
+
+  # ------------------------------------------------------------------
+  # 3. Build
+  # ------------------------------------------------------------------
+  build:
+    name: "Build"
     runs-on: ubuntu-latest
-    environment: production
+    needs: unit-tests
+    timeout-minutes: 10
     steps:
       - uses: actions/checkout@v4
-      - uses: amondnet/vercel-action@v25
+
+      - uses: actions/setup-node@v4
         with:
-          vercel-token: ${{ secrets.VERCEL_TOKEN }}
-          vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
-          vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
-          vercel-args: '--prod --yes'
+          node-version: 20
+          cache: npm
+
+      - run: npm ci
+
+      - name: Build
+        run: npm run build
+        env:
+          VITE_SUPABASE_URL: "https://placeholder.supabase.co"
+          VITE_SUPABASE_ANON_KEY: "placeholder-anon-key"
+
+  # ------------------------------------------------------------------
+  # 4. Security Grep (no deps — runs in parallel)
+  # ------------------------------------------------------------------
+  security-grep:
+    name: "Security Pattern Scan"
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Check for dangerous RLS patterns
+        run: |
+          if grep -r "USING (true)" supabase/migrations/ --include="*.sql"; then
+            echo "ERROR: Found USING (true) in migration files — potential RLS bypass"
+            exit 1
+          fi
+          echo "✅ No dangerous RLS patterns found"
+
+      - name: Check for wildcard CORS
+        run: |
+          if grep -r 'Access-Control-Allow-Origin: \*' supabase/functions/ --include="*.ts"; then
+            echo "ERROR: Found wildcard CORS — potential security issue"
+            exit 1
+          fi
+          echo "✅ No wildcard CORS found"
+
+      - name: Check for @latest imports
+        run: |
+          if grep -r '@latest' supabase/functions/ --include="*.ts"; then
+            echo "WARNING: Found @latest imports in edge functions"
+            exit 1
+          fi
+          echo "✅ No @latest imports found"
+
+      - name: Check for hardcoded secrets
+        run: |
+          if grep -r "password.*=.*['\"]" e2e/helpers.ts src/ --include="*.ts" --include="*.tsx" 2>/dev/null; then
+            echo "WARNING: Possible hardcoded credentials found"
+          fi
+          echo "✅ Secret scan complete"
+
+  # ------------------------------------------------------------------
+  # 5. Dependency Audit (no deps — runs in parallel)
+  # ------------------------------------------------------------------
+  dependency-audit:
+    name: "Dependency Audit"
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - run: npm ci
+
+      - name: Audit dependencies
+        run: npm audit --audit-level=high
+
+      - name: Check for GPL/AGPL licenses
+        run: |
+          npx license-checker --production --failOn GPL-2.0,GPL-3.0,AGPL-3.0 || echo "WARNING: Copyleft licenses found"

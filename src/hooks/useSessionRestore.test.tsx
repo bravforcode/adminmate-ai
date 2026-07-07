@@ -4,16 +4,22 @@ import { renderHook } from '@testing-library/react'
 const mockFetch = vi.fn()
 globalThis.fetch = mockFetch as any
 
+const mockGetSession = vi.fn().mockResolvedValue({ data: { session: null }, error: null })
 const mockSetSession = vi.fn().mockResolvedValue({ error: null })
 const mockFrom = vi.fn()
 
 vi.mock('../lib/supabase', () => ({
   supabase: {
     auth: {
+      getSession: (...args: any[]) => mockGetSession(...args),
       setSession: (...args: any[]) => mockSetSession(...args),
     },
     from: (...args: any[]) => mockFrom(...args),
   },
+}))
+
+vi.mock('../lib/sessionApi', () => ({
+  fetchSessionStatus: vi.fn(),
 }))
 
 const mockSetUser = vi.fn()
@@ -43,14 +49,17 @@ function createChain(overrides: Record<string, any> = {}) {
 
 beforeEach(() => {
   vi.clearAllMocks()
+  mockGetSession.mockResolvedValue({ data: { session: null }, error: null })
   mockFrom.mockReturnValue(createChain())
 })
 
 describe('useSessionRestore', () => {
   it('should set loading true at start', async () => {
-    mockFetch.mockResolvedValueOnce({
-      json: () => Promise.resolve({ success: true, data: { valid: false } }),
-    })
+    // getSession returns null → no session
+    mockGetSession.mockResolvedValue({ data: { session: null }, error: null })
+
+    const { fetchSessionStatus } = await import('../lib/sessionApi')
+    vi.mocked(fetchSessionStatus).mockResolvedValue({ valid: false })
 
     const { useSessionRestore } = await import('./useSessionRestore')
     const { result } = renderHook(() => useSessionRestore())
@@ -60,9 +69,10 @@ describe('useSessionRestore', () => {
   })
 
   it('should clear user when no valid session', async () => {
-    mockFetch.mockResolvedValueOnce({
-      json: () => Promise.resolve({ success: true, data: { valid: false } }),
-    })
+    mockGetSession.mockResolvedValue({ data: { session: null }, error: null })
+
+    const { fetchSessionStatus } = await import('../lib/sessionApi')
+    vi.mocked(fetchSessionStatus).mockResolvedValue({ valid: false })
 
     const { useSessionRestore } = await import('./useSessionRestore')
     const { result } = renderHook(() => useSessionRestore())
@@ -73,16 +83,14 @@ describe('useSessionRestore', () => {
     expect(mockSetCompany).toHaveBeenCalledWith(null)
   })
 
-  it('should set session and fetch profile on valid session', async () => {
-    mockFetch.mockResolvedValueOnce({
-      json: () => Promise.resolve({
-        success: true,
-        data: {
-          valid: true,
-          access_token: 'valid-token',
+  it('should hydrate profile when existing session found via getSession', async () => {
+    mockGetSession.mockResolvedValue({
+      data: {
+        session: {
           user: { id: 'user-1', email: 'test@test.com' },
         },
-      }),
+      },
+      error: null,
     })
 
     mockFrom.mockReturnValue(
@@ -115,15 +123,13 @@ describe('useSessionRestore', () => {
     const { result } = renderHook(() => useSessionRestore())
     await result.current.restoreSession()
 
-    expect(mockSetSession).toHaveBeenCalledWith(
-      expect.objectContaining({ access_token: 'valid-token' })
-    )
     expect(mockSetProfile).toHaveBeenCalled()
     expect(mockSetCompany).toHaveBeenCalled()
+    expect(mockSetUser).toHaveBeenCalled()
   })
 
   it('should handle network errors gracefully', async () => {
-    mockFetch.mockRejectedValueOnce(new Error('Network error'))
+    mockGetSession.mockRejectedValue(new Error('Network error'))
 
     const { useSessionRestore } = await import('./useSessionRestore')
     const { result } = renderHook(() => useSessionRestore())
@@ -134,9 +140,10 @@ describe('useSessionRestore', () => {
   })
 
   it('should set loading false when done', async () => {
-    mockFetch.mockResolvedValueOnce({
-      json: () => Promise.resolve({ success: true, data: { valid: false } }),
-    })
+    mockGetSession.mockResolvedValue({ data: { session: null }, error: null })
+
+    const { fetchSessionStatus } = await import('../lib/sessionApi')
+    vi.mocked(fetchSessionStatus).mockResolvedValue({ valid: false })
 
     const { useSessionRestore } = await import('./useSessionRestore')
     const { result } = renderHook(() => useSessionRestore())

@@ -1,17 +1,33 @@
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2'
 
+// ============================================================
+// Correlation ID — unique per-request for log tracing
+// ============================================================
+
+export function generateCorrelationId(): string {
+  return `req_${crypto.randomUUID().replace(/-/g, '').substring(0, 12)}`
+}
+
 const ALLOWED_ORIGINS = [
   'http://localhost:5173',
   'http://localhost:3000',
   'https://adminmate.ai',
   'https://www.adminmate.ai',
   'https://adminmate-ai.vercel.app',
-  'https://adminmate-ejlj6q10v-phirawits-projects.vercel.app',
+  'https://adminmate-nccdarznd-phirawits-projects.vercel.app',
 ]
+
+// Allow only this project's Vercel preview URLs — never all of *.vercel.app
+// (anyone can deploy there; open suffix = credentialed CORS for attackers)
+function isAllowedOrigin(origin: string): boolean {
+  if (ALLOWED_ORIGINS.includes(origin)) return true
+  if (/^https:\/\/adminmate-[a-z0-9]+-phirawits-projects\.vercel\.app$/.test(origin)) return true
+  return false
+}
 
 function getAllowedOrigin(req: Request): string {
   const origin = req.headers.get('Origin')
-  if (origin && ALLOWED_ORIGINS.includes(origin)) return origin
+  if (origin && isAllowedOrigin(origin)) return origin
   return ALLOWED_ORIGINS[0]
 }
 
@@ -173,8 +189,9 @@ export function getEnv(name: string, fallback: string = ''): string {
 
 export function successResponse(data: unknown, status: number = 200, extraHeaders: Record<string, string> = {}, req?: Request) {
   const base = req ? getJsonHeaders(req) : getJsonHeaders(new Request('http://localhost'))
+  const correlationId = generateCorrelationId()
   return new Response(
-    JSON.stringify({ success: true, data }),
+    JSON.stringify({ success: true, data, correlationId }),
     { status, headers: { ...base, ...extraHeaders } }
   )
 }
@@ -214,4 +231,27 @@ export async function withRequestLogging<T>(
     logRequest({ function: fnName, userId, durationMs: Date.now() - start, status: 500, error: message })
     throw error
   }
+}
+
+// ============================================================
+// Constant-time string comparison — prevents timing attacks
+// on webhook signature verification.
+// ============================================================
+
+/**
+ * Compare two strings in constant time to prevent timing attacks.
+ * Returns true if the strings are equal, false otherwise.
+ * The comparison time depends only on the length of the strings,
+ * not on their content.
+ */
+export function timingSafeEqual(a: string, b: string): boolean {
+  if (a.length !== b.length) return false
+  const encoder = new TextEncoder()
+  const bufA = encoder.encode(a)
+  const bufB = encoder.encode(b)
+  let result = 0
+  for (let i = 0; i < bufA.length; i++) {
+    result |= bufA[i] ^ bufB[i]
+  }
+  return result === 0
 }

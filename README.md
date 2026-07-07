@@ -1,22 +1,31 @@
 # AdminMate AI — HR Management Platform for SEA SMEs
 
-AI-powered HR platform covering recruitment, hiring, onboarding, and compliance for Thailand, Vietnam, and Indonesia.
+AI-powered HR platform covering recruitment, hiring, onboarding, compliance, payroll, and workforce management for Thailand, Vietnam, and Indonesia.
+
+**Version:** 1.0.0  
+**Status:** Production hardened — All gates A–L closed (1,777/1,777 pgTAP tests PASS)  
+**Last updated:** 2026-06-23
+
+---
 
 ## Tech Stack
 
-- **Frontend:** React 19, Vite 6, Tailwind CSS v4, TypeScript
-- **State:** Zustand (auth/UI), TanStack React Query (server state)
-- **Router:** React Router v7 (lazy-loaded routes)
-- **Icons:** Lucide React
-- **Charts:** Recharts
-- **PDF:** @react-pdf/renderer
-- **Backend:** Supabase (PostgreSQL, Auth, Storage, Edge Functions, Realtime)
-- **AI:** Google Gemini 2.5 Flash
-- **Email:** Resend
-- **Chat:** LINE Messaging API, WhatsApp Cloud API
-- **Monitoring:** Sentry
-- **i18n:** i18next (EN, TH, ID, VI)
-- **Deployment:** Vercel (frontend), Supabase (backend)
+| Layer | Technology | Version |
+|-------|-----------|---------|
+| Frontend | React 19 + TypeScript 5.8 | 19.0.1 |
+| Build | Vite | 6.4.3 |
+| Styling | Tailwind CSS v4 | 4.1.14 |
+| State | Zustand (auth/UI) + TanStack React Query (server state) | 5.0 / 5.60 |
+| Router | React Router v7 (lazy-loaded routes) | 7.1.0 |
+| UI | Radix UI + shadcn-style components | — |
+| Backend | Supabase (PostgreSQL, Auth, Storage, Edge Functions, Realtime) | 2.46 |
+| AI | Google Gemini 2.5 Flash | — |
+| Email | Resend | — |
+| Chat | LINE Messaging API, WhatsApp Cloud API | — |
+| Monitoring | Sentry | 10.56 |
+| i18n | i18next (EN, TH, ID, VI, ZH) | 24 |
+| Testing | Vitest (unit) + Playwright (E2E) + pgTAP (DB) | 2.1 / 1.49 |
+| Deployment | Vercel (frontend) + Supabase (backend) | — |
 
 ## Quick Start
 
@@ -74,7 +83,7 @@ npm run dev
 # Link to Supabase project
 supabase link --project-ref <your-project-ref>
 
-# Push all 28 migrations
+# Push all 65+ migrations
 supabase db push
 
 # Generate TypeScript types
@@ -87,12 +96,8 @@ supabase gen types typescript --project-id <your-project-ref> > src/types/databa
 # Set secrets
 supabase secrets set GEMINI_API_KEY=<your-key>
 supabase secrets set RESEND_API_KEY=<your-key>
-supabase secrets set LINE_CHANNEL_ACCESS_TOKEN=<your-token>
-supabase secrets set LINE_CHANNEL_SECRET=<your-secret>
-supabase secrets set WHATSAPP_API_TOKEN=<your-token>
-supabase secrets set WHATSAPP_PHONE_NUMBER_ID=<your-id>
-supabase secrets set WHATSAPP_VERIFY_TOKEN=<your-token>
 supabase secrets set CRON_SECRET_KEY=<random-secret>
+# ... set other secrets as needed
 
 # Deploy all functions
 supabase functions deploy
@@ -114,6 +119,8 @@ supabase functions deploy
 | `npm run test:e2e:ui` | Playwright with debug UI |
 | `npm run clean` | Remove dist directory |
 
+---
+
 ## Architecture
 
 ```
@@ -122,11 +129,9 @@ src/
 ├── main.tsx                   # Entry point (Vite + Sentry + QueryClient + i18n)
 ├── index.css                  # Tailwind v4 + global styles
 ├── types.ts                   # Shared TypeScript types
-├── translations.ts            # Legacy inline translations (EN/TH)
-├── vite-env.d.ts              # Vite type declarations
-├── components/
+├── components/                # UI components (19 subdirectories)
 │   ├── layout/                # AppLayout, Sidebar, Header, MobileNav, UserMenu
-│   ├── auth/                  # Login, Register, ForgotPassword forms
+│   ├── auth/                  # Login, Register, ForgotPassword, MFA
 │   ├── dashboard/             # KPI cards, recent activity widgets
 │   ├── jobs/                  # Job creation, listing, detail cards
 │   ├── candidates/            # Candidate list, detail, CV upload
@@ -136,20 +141,22 @@ src/
 │   ├── documents/             # Document tracking, status badges
 │   ├── onboarding/            # Checklist, task verifier, AI assistant
 │   ├── reports/               # Recharts analytics
-│   ├── settings/              # Company profile, account settings
-│   ├── compliance/            # PDPA consent, data retention
-│   ├── chat/                  # Mate AI chat interface
+│   ├── settings/              # Company profile, account, compliance, security
+│   ├── chat/                  # Mate AI chat widget (floating)
 │   ├── pdf/                   # @react-pdf/renderer templates
 │   └── shared/                # DataTable, EmptyState, ErrorBoundary, ConfirmDialog
-├── pages/                     # Route-level page components
-├── hooks/                     # TanStack Query hooks (useJobs, useCandidates, etc.)
-├── services/                  # Supabase API service layer
+├── pages/                     # Route-level page components (lazy-loaded)
+├── hooks/                     # Custom React hooks (17 files)
+├── services/                  # Supabase API service layer (23 services)
 ├── stores/                    # Zustand stores (authStore, uiStore)
-├── lib/                       # Config (supabase client, i18n, query-client, sentry)
-└── router/                    # React Router v7 config, AuthGuard
+├── lib/                       # Core utilities (supabase client, i18n, sentry, session API)
+├── router/                    # React Router v7 config + AuthGuard
+├── types/                     # TypeScript models & database types
+├── utils/                     # Pure utility functions
+└── test-utils/                # Test factories and mocks
 ```
 
-See [docs/architecture.md](docs/architecture.md) for full architecture overview.
+See [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) for full architecture reference.
 
 ### Route Map
 
@@ -175,18 +182,94 @@ See [docs/architecture.md](docs/architecture.md) for full architecture overview.
 | `/settings/compliance` | CompliancePage | Authenticated |
 | `*` | NotFoundPage | — |
 
-### Testing
+---
+
+## Modules
+
+| Module | Description |
+|--------|-------------|
+| **Recruitment** | Jobs, candidates, pipeline (Kanban), interviews, offers |
+| **Onboarding** | Checklists, task verification, AI assistant |
+| **HRIS** | Employee directory, org chart, departments |
+| **Documents** | Document tracking, e-signature, contract templates |
+| **Messaging** | Chat widget, approval workflows, multi-platform (LINE/WhatsApp) |
+| **Payroll** | Payroll cycles, calculations, statutory filing |
+| **Attendance** | Shift scheduling, leave management |
+| **Performance** | OKR tracking, reviews |
+| **Benefits** | Benefits management, compensation |
+| **Assets** | Asset tracking, expense management |
+| **Compliance** | PDPA, data retention, audit logging |
+| **Reports** | Analytics dashboards, Recharts visualizations |
+| **Settings** | Company profile, security (MFA), compliance |
+| **AI Assistant** | Mate AI chat, resume screening, JD generation |
+
+---
+
+## Security
+
+- **Auth proxy:** httpOnly cookie + in-memory token (JWT never in localStorage)
+- **MFA:** TOTP via Supabase Auth with backup codes
+- **RLS:** Row-level security on all tenant tables (1,777 pgTAP tests)
+- **RBAC:** 10 roles, 40+ permissions, dual-mode with legacy fallback
+- **CSP:** Content Security Policy headers via Vercel
+- **Sensitive fields:** Registry of 15 PII fields with AI masking
+- **Audit logging:** All permission-sensitive actions logged
+
+See [docs/security.md](docs/security.md) for detailed security documentation.
+
+---
+
+## Testing
+
+| Type | Tool | Coverage |
+|------|------|----------|
+| Unit | Vitest | 429+ tests |
+| Integration | Vitest | Service layer |
+| E2E | Playwright | 24 spec files, 172/172 pass |
+| Database | pgTAP | 1,777/1,777 PASS |
+| Accessibility | axe-core | Automated scanning |
+| Chaos | Custom | Resilience testing |
 
 See [docs/testing.md](docs/testing.md) for testing strategy.
 
-### Deployment
+---
 
-See [docs/runbook.md](docs/runbook.md) for deployment guide.
+## Deployment
 
-### Launch Checklist
+See [docs/DEPLOYMENT.md](docs/DEPLOYMENT.md) for deployment guide.  
+See [docs/runbook.md](docs/runbook.md) for operational runbook.  
+See [docs/launch-checklist.md](docs/launch-checklist.md) for pre-launch checklist.
 
-See [docs/launch-checklist.md](docs/launch-checklist.md).
+---
 
-### License
+## Release History
+
+**Total:** 33 feature series + 11 corrective releases (33B)  
+**Latest:** 33B.10 — Release readiness review (14/14 pgTAP PASS)  
+**All gates A–L closed** — Production hardened
+
+See [CHANGELOG.md](CHANGELOG.md) for full release history.
+
+---
+
+## Documentation
+
+| Document | Description |
+|----------|-------------|
+| [CHANGELOG.md](CHANGELOG.md) | Full release history |
+| [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) | System architecture reference |
+| [docs/DEPLOYMENT.md](docs/DEPLOYMENT.md) | Deployment procedures |
+| [docs/security.md](docs/security.md) | Security documentation |
+| [docs/testing.md](docs/testing.md) | Testing strategy |
+| [docs/runbook.md](docs/runbook.md) | Operational runbook |
+| [docs/launch-checklist.md](docs/launch-checklist.md) | Pre-launch checklist |
+| [docs/PRODUCTION_ARCHITECTURE.md](docs/PRODUCTION_ARCHITECTURE.md) | Visual architecture diagram |
+| [docs/adminmate-roadmap.md](docs/adminmate-roadmap.md) | Product roadmap |
+| [docs/phase-ledger.md](docs/phase-ledger.md) | Release execution ledger |
+| [docs/RELEASE_33B_SERIES_COMPLETE.md](docs/RELEASE_33B_SERIES_COMPLETE.md) | Latest series summary |
+
+---
+
+## License
 
 Proprietary. All rights reserved.

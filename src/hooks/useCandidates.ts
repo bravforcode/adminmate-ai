@@ -1,15 +1,27 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
-import { candidateService } from '../services/candidateService'
+import { candidateService, type CandidateWithApplications } from '../services/candidateService'
 import { useAuthStore } from '../stores/authStore'
 import toast from 'react-hot-toast'
 import i18n from '../lib/i18n'
 
 const KEYS = { all: ['candidates'] as const, list: (id: string) => ['candidates', 'list', id] as const, detail: (id: string) => ['candidates', 'detail', id] as const }
 
+export type CandidateRow = CandidateWithApplications & {
+  cv_documents?: unknown[]
+  applications?: { status?: string }[]
+}
+
 export function useCandidates() {
   const company = useAuthStore(s => s.company)
   const isHR = useAuthStore(s => s.isAdminOrHR())
-  return useQuery({ queryKey: KEYS.list(company?.id ?? ''), queryFn: () => candidateService.getAll(company!.id), enabled: !!company?.id && isHR })
+  return useQuery({
+    queryKey: KEYS.list(company?.id ?? ''),
+    queryFn: async () => {
+      const result = await candidateService.getAll(company!.id)
+      return result.data as unknown as CandidateRow[]
+    },
+    enabled: !!company?.id && isHR,
+  })
 }
 
 export function useCandidate(id: string) {

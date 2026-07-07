@@ -1,0 +1,30 @@
+         tablename         |     policyname     |  cmd   |                                                                                                   qual                                                                                                    
+---------------------------+--------------------+--------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ chat_messages             | chat_delete        | DELETE | ((company_id = safe_user_company_id()) AND ((user_id = auth.uid()) OR (safe_user_role() = ANY (ARRAY['admin'::text, 'hr_manager'::text]))))
+ chat_messages             | chat_insert        | INSERT | 
+ chat_messages             | chat_select        | SELECT | ((company_id = safe_user_company_id()) AND ((user_id = auth.uid()) OR (safe_user_role() = ANY (ARRAY['admin'::text, 'hr_manager'::text, 'hr_staff'::text]))))
+ chat_messages             | chat_update        | UPDATE | ((company_id = safe_user_company_id()) AND (user_id = auth.uid()))
+ chat_platform_connections | connections_delete | DELETE | ((company_id = safe_user_company_id()) AND (safe_user_role() = 'admin'::text))
+ chat_platform_connections | connections_insert | INSERT | 
+ chat_platform_connections | connections_read   | SELECT | (company_id = safe_user_company_id())
+ chat_platform_connections | connections_update | UPDATE | ((company_id = safe_user_company_id()) AND (safe_user_role() = 'admin'::text))
+ conversation_threads      | threads_insert     | INSERT | 
+ conversation_threads      | threads_select     | SELECT | ((company_id = safe_user_company_id()) AND (((platform_user_id)::text = (auth.uid())::text) OR (safe_user_role() = ANY (ARRAY['admin'::text, 'hr_manager'::text, 'hr_staff'::text, 'recruiter'::text]))))
+ conversation_threads      | threads_update     | UPDATE | ((company_id = safe_user_company_id()) AND (((platform_user_id)::text = (auth.uid())::text) OR (safe_user_role() = ANY (ARRAY['admin'::text, 'hr_manager'::text]))))
+ document_type_configs     | dtc_delete         | DELETE | true
+ document_type_configs     | dtc_insert         | INSERT | 
+ document_type_configs     | dtc_read           | SELECT | true
+ document_type_configs     | dtc_update         | UPDATE | true
+ messages                  | messages_insert    | INSERT | 
+ messages                  | messages_select    | SELECT | ((company_id = safe_user_company_id()) AND (((platform_user_id)::text = (auth.uid())::text) OR (safe_user_role() = ANY (ARRAY['admin'::text, 'hr_manager'::text, 'hr_staff'::text, 'recruiter'::text]))))
+ messages                  | messages_update    | UPDATE | ((company_id = safe_user_company_id()) AND (((platform_user_id)::text = (auth.uid())::text) OR (safe_user_role() = ANY (ARRAY['admin'::text, 'hr_manager'::text]))))
+ th_social_security_rules  | tssr_delete        | DELETE | true
+ th_social_security_rules  | tssr_insert        | INSERT | 
+ th_social_security_rules  | tssr_read          | SELECT | true
+ th_social_security_rules  | tssr_update        | UPDATE | true
+ th_tax_brackets           | ttb_delete         | DELETE | true
+ th_tax_brackets           | ttb_insert         | INSERT | 
+ th_tax_brackets           | ttb_read           | SELECT | true
+ th_tax_brackets           | ttb_update         | UPDATE | true
+(26 rows)
+

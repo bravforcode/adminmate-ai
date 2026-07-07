@@ -1,4 +1,4 @@
-import { Component, ReactNode } from 'react'
+import { Component, ReactNode, createRef } from 'react'
 import * as Sentry from '@sentry/react'
 
 interface Props {
@@ -13,9 +13,16 @@ interface State {
 
 export class ErrorBoundary extends Component<Props, State> {
   state: State = { hasError: false, error: null }
+  private reloadButtonRef = createRef<HTMLButtonElement>()
 
   static getDerivedStateFromError(error: Error): State {
     return { hasError: true, error }
+  }
+
+  componentDidUpdate(_prevProps: Props, prevState: State) {
+    if (this.state.hasError && !prevState.hasError && this.reloadButtonRef.current) {
+      this.reloadButtonRef.current.focus()
+    }
   }
 
   componentDidCatch(error: Error, info: { componentStack?: string | null }) {
@@ -100,6 +107,7 @@ export class ErrorBoundary extends Component<Props, State> {
             <div className="flex flex-col sm:flex-row gap-3 justify-center">
               <button
                 type="button"
+                ref={this.reloadButtonRef}
                 onClick={this.handleReload}
                 className="px-6 py-2.5 bg-primary text-on-primary rounded-lg font-medium hover:opacity-90 transition-colors focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
               >

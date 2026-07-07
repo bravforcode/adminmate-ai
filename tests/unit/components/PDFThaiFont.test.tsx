@@ -33,10 +33,10 @@ const THAI_DATA = {
 describe('PDFDownloadButton — Thai text', () => {
   it('generates PDF with Thai text without crash', async () => {
     render(<PDFDownloadButton data={THAI_DATA} />)
-    const btn = screen.getByText('Download PDF')
+    const btn = screen.getByText('pdf.download')
     fireEvent.click(btn)
     await waitFor(() => {
-      expect(screen.getByText('Download PDF')).toBeTruthy()
+      expect(screen.getByText('pdf.download')).toBeTruthy()
     })
   })
 })

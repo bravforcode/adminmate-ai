@@ -1,0 +1,45 @@
+{
+  "apply": {
+    "title": "Isi Formulir Lamaran",
+    "full_name": "Nama Lengkap *",
+    "email": "Email *",
+    "phone": "Nomor Telepon",
+    "location": "Lokasi",
+    "current_position": "Posisi Saat Ini",
+    "experience_years": "Pengalaman (tahun)",
+    "linkedin": "LinkedIn",
+    "cover_letter": "Surat Lamaran",
+    "consent": "Saya setuju untuk mengumpulkan dan menggunakan data pribadi saya untuk tujuan rekrutmen, sesuai dengan kebijakan PDPA *",
+    "submit": "Kirim Lamaran",
+    "submitting": "Mengirim...",
+    "success_title": "Lamaran Terkirim!",
+    "success_msg": "Terima kasih atas minat Anda. Kami akan meninjau lamaran Anda.",
+    "already_applied_title": "Sudah Melamar",
+    "already_applied_msg": "Anda sudah melamar untuk posisi ini.",
+    "tracking_code": "Kode Pelacakan",
+    "track_status": "Lacak Status →",
+    "not_found": "Lowongan Tidak Ditemukan",
+    "not_found_msg": "Lowongan ini mungkin sudah dihapus atau tidak lagi menerima lamaran.",
+    "back_home": "Kembali ke beranda",
+    "deadline": "Batas Waktu"
+  },
+  "track": {
+    "title": "Status Lamaran",
+    "company": "Perusahaan",
+    "applied": "Tanggal Melamar",
+    "status": "Status",
+    "your_code": "Kode Pelacakan Anda",
+    "save_code": "Simpan kode ini untuk memeriksa status lamaran Anda nanti.",
+    "not_found": "Lamaran Tidak Ditemukan",
+    "not_found_msg": "Kode pelacakan tidak valid.",
+    "statuses": {
+      "applied": "Melamar",
+      "screened": "Dalam Tinjauan",
+      "shortlisted": "Shortlist",
+      "interviewed": "Sudah Wawancara",
+      "offered": "Penawaran Diberikan",
+      "hired": "Diterima",
+      "rejected": "Tidak Diterima"
+    }
+  }
+}

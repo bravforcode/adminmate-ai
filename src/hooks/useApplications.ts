@@ -4,7 +4,7 @@ import toast from 'react-hot-toast'
 import i18n from '../lib/i18n'
 
 export function useApplications(jobId: string) {
-  return useQuery({ queryKey: ['applications', jobId], queryFn: () => applicationService.getByJob(jobId), enabled: !!jobId })
+  return useQuery({ queryKey: ['applications', jobId], queryFn: async () => { const result = await applicationService.getByJob(jobId); return result.data; }, enabled: !!jobId })
 }
 
 export function useUpdateApplicationStatus() {

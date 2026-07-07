@@ -1,4 +1,4 @@
-import { createClient } from 'https://esm.sh/@supabase/supabase-js@2'
+import { getServiceClient } from '../_shared/supabaseClient.ts'
 import { getJsonHeaders, validateInput, logRequest } from '../_shared/utils.ts'
 import { errorResponse } from '../_shared/errorHandler.ts'
 import { createRefreshCookie } from './cookies.ts'
@@ -6,7 +6,7 @@ import { captureError } from '../_shared/sentry.ts'
 
 // Server-side rate limiting for login attempts
 // Key: SHA-256(email + ip) to avoid storing plaintext PII in rate_limits table
-async function checkLoginRateLimit(supabase: ReturnType<typeof createClient>, email: string, ip: string): Promise<boolean> {
+async function checkLoginRateLimit(supabase: ReturnType<typeof getServiceClient>, email: string, ip: string): Promise<boolean> {
   const encoder = new TextEncoder()
   const keyData = encoder.encode(`${email.toLowerCase().trim()}:${ip}`)
   const hashBuffer = await crypto.subtle.digest('SHA-256', keyData)
@@ -19,9 +19,9 @@ async function checkLoginRateLimit(supabase: ReturnType<typeof createClient>, em
     p_window_seconds: 900, // 15 minutes
   })
   if (error) {
-    // If rate limit check fails, allow the request (fail-open for availability)
+    // If rate limit check fails, deny the request (fail-closed for security)
     console.error('Rate limit check failed:', error)
-    return true
+    return false
   }
   const row = Array.isArray(data) ? data[0] : data
   return row?.allowed !== false
@@ -32,10 +32,16 @@ export async function handleLogin(req: Request): Promise<Response> {
   const start = Date.now()
 
   try {
-    const supabase = createClient(
-      Deno.env.get('SUPABASE_URL')!,
-      Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!
-    )
+    // Reject oversized request bodies (max 64 KB for login)
+    const contentLength = Number(req.headers.get('content-length') || 0)
+    if (contentLength > 65536) {
+      return new Response(
+        JSON.stringify({ success: false, error: 'Request body too large' }),
+        { status: 413, headers: getJsonHeaders(req) }
+      )
+    }
+
+    const supabase = getServiceClient()
 
     let body: { email?: string; password?: string }
     try {
@@ -88,11 +94,13 @@ export async function handleLogin(req: Request): Promise<Response> {
 
     logRequest({ function: fn, userId: data.session.user.id, durationMs: Date.now() - start, status: 200 })
 
+    // access_token is NOT sent in the response body — it is injected into the
+    // Authorization header by the serverless edge runtime so the client never
+    // sees or stores the raw token.
     return new Response(
       JSON.stringify({
         success: true,
         data: {
-          access_token: data.session.access_token,
           user: {
             id: data.session.user.id,
             email: data.session.user.email,

@@ -1978,7 +1978,7 @@ $$ LANGUAGE plpgsql;
 
 -- Migration: 20240103000003_analytics_views.sql
 -- View: Message stats per company per day
-CREATE OR REPLACE VIEW v_message_stats_daily AS
+CREATE OR REPLACE VIEW v_message_stats_daily WITH (security_invoker = true) AS
 SELECT
     company_id,
     platform,
@@ -1991,7 +1991,7 @@ FROM messages
 GROUP BY company_id, platform, DATE(created_at), direction, status;
 
 -- View: Active conversations per platform
-CREATE OR REPLACE VIEW v_active_conversations AS
+CREATE OR REPLACE VIEW v_active_conversations WITH (security_invoker = true) AS
 SELECT
     company_id,
     platform,
@@ -2004,7 +2004,7 @@ WHERE status = 'active'
 GROUP BY company_id, platform;
 
 -- View: Queue health
-CREATE OR REPLACE VIEW v_queue_health AS
+CREATE OR REPLACE VIEW v_queue_health WITH (security_invoker = true) AS
 SELECT
     company_id,
     platform,
@@ -2018,7 +2018,7 @@ WHERE created_at > NOW() - INTERVAL '1 hour'
 GROUP BY company_id, platform;
 
 -- View: Platform health summary
-CREATE OR REPLACE VIEW v_platform_health AS
+CREATE OR REPLACE VIEW v_platform_health WITH (security_invoker = true) AS
 SELECT
     service,
     status,

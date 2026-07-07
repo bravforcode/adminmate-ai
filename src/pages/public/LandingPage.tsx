@@ -36,7 +36,7 @@ function FAQAccordion() {
             {openIndex === i ? <ChevronUp size={18} className="text-[var(--color-text-muted)]" /> : <ChevronDown size={18} className="text-[var(--color-text-muted)]" />}
           </button>
           {openIndex === i && (
-            <div className="px-5 pb-5 text-[var(--color-text-secondary)] leading-relaxed">
+            <div className="px-5 pb-5 text-secondary leading-relaxed">
               {item.a}
             </div>
           )}
@@ -64,7 +64,7 @@ export default function LandingPage() {
           <div className="flex items-center gap-3">
             <button
               onClick={() => handleCTA('/login')}
-              className="px-4 py-2 text-sm font-medium text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)] transition-colors"
+              className="px-4 py-2 text-sm font-medium text-secondary hover:text-primary transition-colors"
             >
               {t('landing.nav_sign_in', 'Sign In')}
             </button>
@@ -94,7 +94,7 @@ export default function LandingPage() {
             <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight leading-tight max-w-4xl mx-auto">
               {t('landing.hero_title', 'HR work that used to take all day now takes minutes')}
             </h1>
-            <p className="mt-6 text-lg sm:text-xl text-[var(--color-text-secondary)] max-w-2xl mx-auto leading-relaxed">
+            <p className="mt-6 text-lg sm:text-xl text-secondary max-w-2xl mx-auto leading-relaxed">
               {t('landing.hero_subtitle', 'AdminMate AI helps SEA SMEs hire faster, onboard smarter, and stay compliant — with an AI assistant built for HR teams.')}
             </p>
             <div className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4">
@@ -123,7 +123,7 @@ export default function LandingPage() {
             <h2 className="text-3xl sm:text-4xl font-bold tracking-tight">
               {t('landing.pain_title', 'HR in SEA shouldn\'t feel this hard')}
             </h2>
-            <p className="mt-4 text-lg text-[var(--color-text-secondary)]">
+            <p className="mt-4 text-lg text-secondary">
               {t('landing.pain_subtitle', 'Small HR teams juggle spreadsheets, chat apps, paper forms, and guesswork. AdminMate AI replaces the chaos with one focused platform.')}
             </p>
           </div>
@@ -145,7 +145,7 @@ export default function LandingPage() {
                   <item.icon size={22} className="text-[var(--color-error)]" />
                 </div>
                 <h3 className="text-lg font-semibold mb-2">{t(item.titleKey, item.title)}</h3>
-                <p className="text-[var(--color-text-secondary)] leading-relaxed">{t(item.descKey, item.desc)}</p>
+                <p className="text-secondary leading-relaxed">{t(item.descKey, item.desc)}</p>
               </motion.div>
             ))}
           </div>
@@ -159,7 +159,7 @@ export default function LandingPage() {
             <h2 className="text-3xl sm:text-4xl font-bold tracking-tight">
               {t('landing.value_title', 'One platform for the full HR lifecycle')}
             </h2>
-            <p className="mt-4 text-lg text-[var(--color-text-secondary)]">
+            <p className="mt-4 text-lg text-secondary">
               {t('landing.value_subtitle', 'From the first job post to the last compliance check — AdminMate AI covers every step.')}
             </p>
           </div>
@@ -182,7 +182,7 @@ export default function LandingPage() {
                   <item.icon size={22} style={{ color: item.color }} />
                 </div>
                 <h3 className="text-lg font-semibold mb-2">{t(item.titleKey, item.title)}</h3>
-                <p className="text-sm text-[var(--color-text-secondary)] leading-relaxed">{t(item.descKey, item.desc)}</p>
+                <p className="text-sm text-secondary leading-relaxed">{t(item.descKey, item.desc)}</p>
               </motion.div>
             ))}
           </div>
@@ -218,7 +218,7 @@ export default function LandingPage() {
                   </div>
                   <div>
                     <h3 className="text-lg font-semibold mb-1">{t(item.titleKey, item.title)}</h3>
-                    <p className="text-[var(--color-text-secondary)] leading-relaxed">{t(item.descKey, item.desc)}</p>
+                    <p className="text-secondary leading-relaxed">{t(item.descKey, item.desc)}</p>
                   </div>
                 </motion.div>
               ))}
@@ -240,7 +240,7 @@ export default function LandingPage() {
                         <p className="font-semibold text-sm text-[var(--color-text-primary)]">{item.title}</p>
                         <span className="inline-flex items-center rounded-full bg-[var(--color-primary)]/10 px-2 py-1 text-[11px] font-medium text-[var(--color-primary)]">Live</span>
                       </div>
-                      <p className="mt-2 text-xs leading-relaxed text-[var(--color-text-secondary)]">{item.desc}</p>
+                      <p className="mt-2 text-xs leading-relaxed text-secondary">{item.desc}</p>
                     </div>
                   ))}
                 </div>
@@ -257,7 +257,7 @@ export default function LandingPage() {
             <h2 className="text-3xl sm:text-4xl font-bold tracking-tight">
               {t('landing.security_title', 'Your data stays yours')}
             </h2>
-            <p className="mt-4 text-lg text-[var(--color-text-secondary)]">
+            <p className="mt-4 text-lg text-secondary">
               {t('landing.security_subtitle', 'AdminMate AI is built with privacy and compliance at its core.')}
             </p>
           </div>
@@ -279,7 +279,7 @@ export default function LandingPage() {
                   <item.icon size={22} className="text-[var(--color-success)]" />
                 </div>
                 <h3 className="text-lg font-semibold mb-2">{t(item.titleKey, item.title)}</h3>
-                <p className="text-[var(--color-text-secondary)] leading-relaxed">{t(item.descKey, item.desc)}</p>
+                <p className="text-secondary leading-relaxed">{t(item.descKey, item.desc)}</p>
               </motion.div>
             ))}
           </div>
@@ -312,7 +312,7 @@ export default function LandingPage() {
                   <item.icon size={22} className="text-[var(--color-primary)]" />
                 </div>
                 <h3 className="text-lg font-semibold mb-2">{t(item.titleKey, item.title)}</h3>
-                <p className="text-[var(--color-text-secondary)] leading-relaxed">{t(item.descKey, item.desc)}</p>
+                <p className="text-secondary leading-relaxed">{t(item.descKey, item.desc)}</p>
               </motion.div>
             ))}
           </div>
@@ -360,19 +360,19 @@ export default function LandingPage() {
               <Logo size={24} showText={false} />
               <span className="font-semibold">AdminMate AI</span>
             </div>
-            <div className="flex items-center gap-6 text-sm text-[var(--color-text-muted)]">
-              <button onClick={() => handleCTA('/pricing')} className="hover:text-[var(--color-text-primary)] transition-colors">{t('landing.footer_pricing', 'Pricing')}</button>
-              <button onClick={() => handleCTA('/login')} className="hover:text-[var(--color-text-primary)] transition-colors">{t('landing.footer_sign_in', 'Sign In')}</button>
-              <button onClick={() => handleCTA('/login')} className="hover:text-[var(--color-text-primary)] transition-colors">{t('landing.footer_get_started', 'Get Started')}</button>
-              <button onClick={() => handleCTA('/terms')} className="hover:text-[var(--color-text-primary)] transition-colors">{t('landing.footer_terms', 'Terms')}</button>
-              <button onClick={() => handleCTA('/privacy')} className="hover:text-[var(--color-text-primary)] transition-colors">{t('landing.footer_privacy', 'Privacy')}</button>
+            <div className="flex flex-wrap items-center gap-4 sm:gap-6 text-sm text-[var(--color-text-muted)]">
+              <button onClick={() => handleCTA('/pricing')} className="hover:text-primary transition-colors">{t('landing.footer_pricing', 'Pricing')}</button>
+              <button onClick={() => handleCTA('/login')} className="hover:text-primary transition-colors">{t('landing.footer_sign_in', 'Sign In')}</button>
+              <button onClick={() => handleCTA('/login')} className="hover:text-primary transition-colors">{t('landing.footer_get_started', 'Get Started')}</button>
+              <button onClick={() => handleCTA('/terms')} className="hover:text-primary transition-colors">{t('landing.footer_terms', 'Terms')}</button>
+              <button onClick={() => handleCTA('/privacy')} className="hover:text-primary transition-colors">{t('landing.footer_privacy', 'Privacy')}</button>
             </div>
           </div>
           <p className="mt-6 text-xs text-center text-[var(--color-text-muted)]">
             {t('landing.footer_disclaimer', 'AdminMate AI is a product for HR workflow management. It does not provide legal, tax, or compliance advice. Consult qualified professionals for regulatory guidance.')}
           </p>
           <p className="mt-2 text-xs text-center text-[var(--color-text-muted)]">
-            {t('landing.footer_contact', 'Questions?')} <a href="mailto:support@adminmate-ai.com" className="underline hover:text-[var(--color-text-primary)]">support@adminmate-ai.com</a>
+            {t('landing.footer_contact', 'Questions?')} <a href="mailto:support@adminmate-ai.com" className="underline hover:text-primary">support@adminmate-ai.com</a>
           </p>
         </div>
       </footer>

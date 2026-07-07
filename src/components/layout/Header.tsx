@@ -3,10 +3,11 @@ import { useUIStore } from '../../stores/uiStore'
 import { LanguageSwitcher } from './LanguageSwitcher'
 import { NotificationBell } from './NotificationBell'
 import { UserMenu } from './UserMenu'
-import { Menu } from 'lucide-react'
+import { Menu, HelpCircle } from 'lucide-react'
 import { ThemeToggle } from './ThemeToggle'
 import { GlobalSearch } from '../search/GlobalSearch'
 import { cn } from '../../lib/utils'
+import { resetAllTours } from '../onboarding/OnboardingTour'
 
 export function Header() {
   const { toggleSidebar, sidebarOpen } = useUIStore()
@@ -34,27 +35,35 @@ export function Header() {
           <Menu size={22} />
         </button>
 
-        {/* Global search - desktop */}
-        {isHR && (
-          <div className="hidden sm:flex flex-1 max-w-[380px]">
-            <GlobalSearch />
-          </div>
-        )}
+          {/* Global search - desktop */}
+          {isHR && (
+            <div data-tour="search" className="hidden sm:flex flex-1 max-w-[380px]">
+              <GlobalSearch />
+            </div>
+          )}
 
-        {/* Global search - mobile */}
-        {isHR && (
-          <div className="sm:hidden flex-1">
-            <GlobalSearch />
-          </div>
-        )}
+          {/* Global search - mobile */}
+          {isHR && (
+            <div className="sm:hidden flex-1">
+              <GlobalSearch />
+            </div>
+          )}
       </div>
 
       {/* Right: controls */}
       <div className="flex items-center gap-2">
         <ThemeToggle />
-        <LanguageSwitcher />
+        <div data-tour="language"><LanguageSwitcher /></div>
         <div className="hidden sm:block w-px h-5 bg-border-subtle" />
-        <NotificationBell />
+        <div data-tour="notifications"><NotificationBell /></div>
+        <button
+          onClick={resetAllTours}
+          className="min-w-[36px] min-h-[36px] flex items-center justify-center rounded-lg hover:bg-gray-100 transition-colors"
+          title="Show onboarding tour again"
+          aria-label="Show help tour"
+        >
+          <HelpCircle size={20} className="text-gray-500" />
+        </button>
         <UserMenu />
       </div>
     </header>

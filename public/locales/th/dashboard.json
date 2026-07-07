@@ -27,5 +27,7 @@
   "needs_signature": "ต้องการลายเซ็น",
   "slow_onboarding": "การปฐมนิเทศช้า",
   "all_clear": "ไม่มีงานค้าง",
+  "empty_candidates_title": "ยังไม่มีผู้สมัคร",
+  "empty_candidates_description": "ผู้สมัครจะปรากฏที่นี่เมื่อพวกเขาสมัครงานของคุณ",
   "no_candidates": "ไม่พบผู้สมัคร"
 }

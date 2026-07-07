@@ -105,12 +105,14 @@ describe('offerService', () => {
     mockSupabase.from.mockReturnValue({
       select: vi.fn().mockReturnValue({
         eq: vi.fn().mockReturnValue({
-          order: vi.fn().mockResolvedValue({ data: [mockOffer], error: null }),
+          order: vi.fn().mockReturnValue({
+            limit: vi.fn().mockResolvedValue({ data: [mockOffer], error: null }),
+          }),
         }),
       }),
     })
 
     const result = await offerService.getAll('c1')
-    expect(result).toHaveLength(1)
+    expect(result.data).toHaveLength(1)
   })
 })

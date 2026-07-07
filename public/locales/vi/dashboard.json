@@ -27,5 +27,7 @@
   "needs_signature": "Cần chữ ký",
   "slow_onboarding": "Tiến độ hội nhập chậm",
   "all_clear": "Không có việc tồn đọng",
+  "empty_candidates_title": "Chưa có ứng viên nào",
+  "empty_candidates_description": "Các ứng viên sẽ xuất hiện tại đây khi họ nộp đơn vào tin tuyển dụng của bạn.",
   "no_candidates": "Không tìm thấy ứng viên"
 }

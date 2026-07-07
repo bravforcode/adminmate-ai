@@ -17,6 +17,11 @@ import {
   type LucideIcon,
 } from 'lucide-react'
 
+/** Returns the correct landing route based on user role from DB. */
+export function getDefaultRoute(_role?: string | null): string {
+  return '/dashboard'
+}
+
 export interface NavItem {
   path?: string
   labelKey: string

@@ -66,12 +66,12 @@ export default function BillingPage() {
         <div className="mb-8">
           <button
             onClick={() => navigate('/settings')}
-            className="flex items-center gap-1 text-sm text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)] mb-4"
+            className="flex items-center gap-1 text-sm text-secondary hover:text-primary mb-4"
           >
             <ArrowLeft size={14} /> {t('billing.back_to_settings', 'Back to Settings')}
           </button>
           <h1 className="text-2xl font-bold text-[var(--color-text-primary)]">{t('billing.title', 'Billing & Plans')}</h1>
-          <p className="text-sm text-[var(--color-text-secondary)] mt-1">{t('billing.subtitle', 'Manage your subscription and billing')}</p>
+          <p className="text-sm text-secondary mt-1">{t('billing.subtitle', 'Manage your subscription and billing')}</p>
         </div>
 
         {/* Current Plan */}
@@ -79,7 +79,7 @@ export default function BillingPage() {
           <div className="flex items-center justify-between">
             <div>
               <h2 className="text-lg font-semibold">{t('billing.current_plan', 'Current Plan')}</h2>
-              <p className="text-sm text-[var(--color-text-secondary)] mt-1">
+              <p className="text-sm text-secondary mt-1">
                 {t('billing.current_plan_desc', 'You are on the')} <span className="font-medium text-[var(--color-primary)]">{PLAN_NAMES[currentTier]}</span> {t('billing.current_plan_desc2', 'plan')}
               </p>
             </div>
@@ -110,7 +110,7 @@ export default function BillingPage() {
             <div className="inline-flex items-center gap-1 p-1 rounded-xl bg-[var(--color-surface-alt)]">
               <button
                 onClick={() => setBillingCycle('monthly')}
-                className={`px-4 py-2 text-sm font-medium rounded-lg transition-colors ${
+                className={`px-4 py-2 text-sm font-medium rounded-lg transition-colors min-h-[44px] ${
                   billingCycle === 'monthly' ? 'bg-[var(--color-surface)] shadow-sm text-[var(--color-text-primary)]' : 'text-[var(--color-text-muted)]'
                 }`}
               >
@@ -118,7 +118,7 @@ export default function BillingPage() {
               </button>
               <button
                 onClick={() => setBillingCycle('annual')}
-                className={`px-4 py-2 text-sm font-medium rounded-lg transition-colors ${
+                className={`px-4 py-2 text-sm font-medium rounded-lg transition-colors min-h-[44px] ${
                   billingCycle === 'annual' ? 'bg-[var(--color-surface)] shadow-sm text-[var(--color-text-primary)]' : 'text-[var(--color-text-muted)]'
                 }`}
               >
@@ -178,11 +178,11 @@ export default function BillingPage() {
 
                 <ul className="mt-6 space-y-2">
                   {[
-                    { text: `${limits.hrUsers} HR users`, check: true },
-                    { text: `${limits.employees} employees`, check: true },
-                    { text: limits.jobs === Infinity ? 'Unlimited jobs' : `${limits.jobs} jobs`, check: true },
-                    { text: limits.candidates === Infinity ? 'Unlimited candidates' : `${limits.candidates} candidates`, check: true },
-                    { text: `${limits.aiMessagesPerMonth} AI messages/mo`, check: true },
+                    { text: t('billing.feature_count_hr_users', { count: limits.hrUsers }), check: true },
+                    { text: t('billing.feature_count_employees', { count: limits.employees }), check: true },
+                    { text: limits.jobs === Infinity ? t('billing.feature_unlimited_jobs') : t('billing.feature_count_jobs', { count: limits.jobs }), check: true },
+                    { text: limits.candidates === Infinity ? t('billing.feature_unlimited_candidates') : t('billing.feature_count_candidates', { count: limits.candidates }), check: true },
+                    { text: t('billing.feature_count_ai_messages', { count: limits.aiMessagesPerMonth }), check: true },
                     { text: t('billing.feature_esign', 'E-signature'), check: limits.documentSigning },
                     { text: t('billing.feature_pdpa', 'PDPA tools'), check: limits.pdpaTools },
                     { text: t('billing.feature_bulk', 'Bulk import'), check: limits.bulkImport },
@@ -199,7 +199,7 @@ export default function BillingPage() {
         </div>
 
         {/* Notes */}
-        <div className="mt-8 p-4 rounded-xl bg-[var(--color-surface-alt)] text-sm text-[var(--color-text-secondary)]">
+        <div className="mt-8 p-4 rounded-xl bg-[var(--color-surface-alt)] text-sm text-secondary">
           <div className="flex items-start gap-2">
             <AlertTriangle size={16} className="text-[var(--color-warning)] mt-0.5 flex-shrink-0" />
             <div>

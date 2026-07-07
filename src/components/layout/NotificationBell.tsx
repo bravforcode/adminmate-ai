@@ -162,6 +162,7 @@ export function NotificationBell() {
         {open && (
           <motion.div
             role="dialog"
+            aria-modal="true"
             aria-label={t('notification_center.title')}
             initial={{ opacity: 0, y: 8, scale: 0.98 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}

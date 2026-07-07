@@ -1,9 +1,12 @@
-import { useState } from 'react'
+import { useState, useCallback } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
+import { useQueryClient } from '@tanstack/react-query'
 import { KanbanBoard } from '../../components/pipeline/KanbanBoard'
 import { useUpdateApplicationStatus } from '../../hooks/useApplications'
 import { useJobs } from '../../hooks/useJobs'
+import { useAuthStore } from '../../stores/authStore'
+import { useRealtimeSubscription } from '../../hooks/useRealtimeSubscription'
 import { Application } from '../../types/models'
 import { Button } from '../../components/ui/Button'
 import { Sparkles, ArrowRight, Brain, Check, CheckCircle2 } from 'lucide-react'
@@ -12,9 +15,22 @@ import toast from 'react-hot-toast'
 export function PipelinePage() {
   const { t } = useTranslation('recruitment')
   const navigate = useNavigate()
+  const queryClient = useQueryClient()
   const updateStatus = useUpdateApplicationStatus()
+  const company = useAuthStore(s => s.company)
   const { data: jobs } = useJobs()
   const [selectedApplication, setSelectedApplication] = useState<Application | null>(null)
+
+  // Realtime: refresh pipeline when candidates or applications change
+  const companyId = company?.id
+  useRealtimeSubscription({
+    table: 'candidates',
+    filter: companyId ? `company_id=eq.${companyId}` : undefined,
+    onChange: useCallback(() => {
+      queryClient.invalidateQueries({ queryKey: ['applications'] })
+      queryClient.invalidateQueries({ queryKey: ['jobs'] })
+    }, [queryClient]),
+  })
 
   const currentJob = jobs?.[0]
 

@@ -18,10 +18,11 @@ export function parseCookies(cookieHeader: string): Record<string, string> {
 
 export function createRefreshCookie(value: string): string {
   // __Host- prefix requires: Secure, Path=/, no Domain attribute
-  // SameSite=Strict prevents CSRF via top-level navigation
-  return `__Host-${COOKIE_NAME}=${value}; HttpOnly; Secure; SameSite=Strict; Path=/; Max-Age=${COOKIE_MAX_AGE}`
+  // SameSite=Lax allows cross-site top-level navigation (email verification, OAuth callbacks)
+  // while still blocking cross-site POST CSRF attacks
+  return `__Host-${COOKIE_NAME}=${value}; HttpOnly; Secure; SameSite=Lax; Path=/; Max-Age=${COOKIE_MAX_AGE}`
 }
 
 export function clearRefreshCookie(): string {
-  return `__Host-${COOKIE_NAME}=; HttpOnly; Secure; SameSite=Strict; Path=/; Max-Age=0`
+  return `__Host-${COOKIE_NAME}=; HttpOnly; Secure; SameSite=Lax; Path=/; Max-Age=0`
 }

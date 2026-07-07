@@ -1,0 +1,26 @@
+
+[1m[7m[36m RUN [39m[27m[22m [36mv2.1.9 [39m[90mC:/Users/menum/Downloads/adminmate-ai[39m
+
+ [31mΓ¥»[39m tests/integration/release26a52.deterministic-rls.test.ts [2m([22m[2m22 tests[22m[2m | [22m[31m1 failed[39m[2m)[22m[33m 964[2mms[22m[39m
+[31m   [31m├ù[31m 26A.5.2 ΓÇö G5: Deterministic forged company_id proof[2m > [22mG5: Company A token CANNOT read Company B data (deterministic)[90m 29[2mms[22m[31m[39m
+[31m     ΓåÆ expected 2 to be less than or equal to 1[39m
+
+ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ» Failed Tests 1 ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»
+
+ FAIL  tests/integration/release26a52.deterministic-rls.test.ts > 26A.5.2 ΓÇö G5: Deterministic forged company_id proof > G5: Company A token CANNOT read Company B data (deterministic)
+AssertionError: expected 2 to be less than or equal to 1
+ Γ¥» tests/integration/release26a52.deterministic-rls.test.ts:110:35
+    108|     // Attack: Company A token with Company B company_id
+    109|     const attackRes = await api('GET', 'chat_messages', Ta.token!, { cΓÇª
+    110|     expect(attackRes.body.length).toBeLessThanOrEqual(1)
+       |                                   ^
+    111|   })
+    112| 
+
+ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»[1/1]ΓÄ»
+
+[2m Test Files [22m [1m[31m1 failed[39m[22m[90m (1)[39m
+[2m      Tests [22m [1m[31m1 failed[39m[22m[2m | [22m[1m[32m21 passed[39m[22m[90m (22)[39m
+[2m   Start at [22m 16:17:05
+[2m   Duration [22m 4.14s[2m (transform 87ms, setup 394ms, collect 34ms, tests 964ms, environment 1.95s, prepare 234ms)[22m
+

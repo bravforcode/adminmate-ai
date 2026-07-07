@@ -1,4 +1,5 @@
 import { supabase } from '../lib/supabase'
+import type { Offer } from '../types/models'
 
 export interface CreateOfferInput {
   company_id: string
@@ -25,14 +26,38 @@ export interface UpdateOfferInput {
   special_conditions?: string
 }
 
+export interface PaginatedResult<T> {
+  data: T[]
+  cursor: string | null
+  hasMore: boolean
+}
+
 export const offerService = {
-  getAll: async (companyId: string) => {
-    const { data, error } = await supabase.from('offers').select('*, candidates(full_name, email), jobs(title)').eq('company_id', companyId).order('created_at', { ascending: false })
+  getAll: async (companyId: string, options?: { cursor?: string; limit?: number }): Promise<PaginatedResult<Offer & { created_at?: string; company_id?: string; id: string }>> => {
+    const limit = options?.limit ?? 50
+    let query = supabase
+      .from('offers')
+      .select('*, candidates(full_name, email), jobs(title)')
+      .eq('company_id', companyId)
+      .order('created_at', { ascending: false })
+      .limit(limit + 1)
+
+    if (options?.cursor) {
+      query = query.lt('created_at', options.cursor)
+    }
+
+    const { data, error } = await query
     if (error) throw error
-    return data
+
+    const rows = (data ?? []) as (Offer & { created_at?: string; company_id?: string })[]
+    const hasMore = rows.length > limit
+    const items = hasMore ? rows.slice(0, limit) : rows
+    const nextCursor = hasMore ? items[items.length - 1].created_at ?? null : null
+
+    return { data: items as (Offer & { created_at?: string; company_id?: string; id: string })[], cursor: nextCursor, hasMore }
   },
   getById: async (id: string, companyId: string) => {
-    const { data, error } = await supabase.from('offers').select('*, candidates(*), jobs(*)').eq('id', id).eq('company_id', companyId).single()
+    const { data, error } = await supabase.from('offers').select('id, company_id, application_id, candidate_id, job_id, position_title, salary_offered, salary_currency, employment_type, start_date, work_hours, benefits, special_conditions, status, sent_at, viewed_at, responded_at, expires_at, candidate_response, created_at, updated_at, candidates(id, full_name, email, phone), jobs(id, title, department, location)').eq('id', id).eq('company_id', companyId).single()
     if (error) throw error
     return data
   },

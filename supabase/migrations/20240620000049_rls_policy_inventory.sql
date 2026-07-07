@@ -1,0 +1,12 @@
+-- ============================================================
+-- Release 26A.1: RLS Proof — Policy Inventory Query
+-- Run this AFTER migration to get exact state
+-- NOTE: This file contains SELECT queries only, not DDL
+-- ============================================================
+
+-- Policy inventory for all affected tables
+-- (Run manually after supabase db reset)
+-- SELECT schemaname, tablename, policyname, permissive, roles, cmd, qual, with_check
+-- FROM pg_policies WHERE schemaname = 'public'
+-- AND tablename IN ('chat_messages','chat_platform_connections','messages','conversation_threads','message_queue','platform_sync_log','system_health','document_type_configs','immigration_case_types','th_tax_brackets','th_social_security_rules')
+-- ORDER BY tablename, cmd, policyname;

@@ -1,0 +1,45 @@
+{
+  "apply": {
+    "title": "Điền thông tin ứng tuyển",
+    "full_name": "Họ và tên *",
+    "email": "Email *",
+    "phone": "Số điện thoại",
+    "location": "Địa điểm",
+    "current_position": "Vị trí hiện tại",
+    "experience_years": "Kinh nghiệm (năm)",
+    "linkedin": "LinkedIn",
+    "cover_letter": "Thư xin việc",
+    "consent": "Tôi đồng ý cho công ty thu thập và sử dụng dữ liệu cá nhân của tôi cho mục đích tuyển dụng, theo chính sách PDPA *",
+    "submit": "Gửi đơn ứng tuyển",
+    "submitting": "Đang gửi...",
+    "success_title": "Ứng tuyển thành công!",
+    "success_msg": "Cảm ơn bạn đã quan tâm đến vị trí này. Chúng tôi sẽ xem xét đơn của bạn trong thời gian sớm nhất.",
+    "already_applied_title": "Bạn đã ứng tuyển",
+    "already_applied_msg": "Bạn đã gửi đơn ứng tuyển cho vị trí này rồi.",
+    "tracking_code": "Mã theo dõi",
+    "track_status": "Theo dõi trạng thái →",
+    "not_found": "Không tìm thấy tin tuyển dụng",
+    "not_found_msg": "Tin tuyển dụng này có thể đã bị xóa hoặc không còn nhận đơn ứng tuyển.",
+    "back_home": "Về trang chủ",
+    "deadline": "Hạn nộp đơn"
+  },
+  "track": {
+    "title": "Theo dõi đơn ứng tuyển",
+    "company": "Công ty",
+    "applied": "Ngày ứng tuyển",
+    "status": "Trạng thái",
+    "your_code": "Mã theo dõi của bạn",
+    "save_code": "Lưu mã này để kiểm tra trạng thái đơn ứng tuyển sau.",
+    "not_found": "Không tìm thấy đơn ứng tuyển",
+    "not_found_msg": "Mã theo dõi không hợp lệ.",
+    "statuses": {
+      "applied": "Đã nộp",
+      "screened": "Đang xem xét",
+      "shortlisted": "Đã shortlist",
+      "interviewed": "Đã phỏng vấn",
+      "offered": "Đã gửi đề nghị",
+      "hired": "Đã tuyển dụng",
+      "rejected": "Không trúng tuyển"
+    }
+  }
+}

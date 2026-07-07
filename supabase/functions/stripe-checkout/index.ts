@@ -1,42 +1,32 @@
 import { serve } from "https://deno.land/std@0.177.0/http/server.ts"
-import { createClient } from "https://esm.sh/@supabase/supabase-js@2"
+import { getServiceClient } from '../_shared/supabaseClient.ts'
 import { captureError } from '../_shared/sentry.ts'
-
-const corsHeaders = {
-  "Access-Control-Allow-Origin": "*",
-  "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
-}
+import { getCorsHeaders } from '../_shared/utils.ts'
+import { errorResponse } from '../_shared/errorHandler.ts'
 
 serve(async (req: Request) => {
+  const cors = getCorsHeaders(req)
   if (req.method === "OPTIONS") {
-    return new Response("ok", { headers: corsHeaders })
+    return new Response("ok", { headers: cors })
   }
 
   try {
-    const supabaseUrl = Deno.env.get("SUPABASE_URL")!
-    const supabaseServiceKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!
     const stripeSecretKey = Deno.env.get("STRIPE_SECRET_KEY")!
     const appUrl = Deno.env.get("APP_URL") || "https://adminmate-ai.vercel.app"
 
     // Get auth user
     const authHeader = req.headers.get("Authorization")
     if (!authHeader) {
-      return new Response(JSON.stringify({ error: "Missing authorization" }), {
-        status: 401,
-        headers: { ...corsHeaders, "Content-Type": "application/json" },
-      })
+      return errorResponse("Missing authorization", 401, cors)
     }
 
-    const supabase = createClient(supabaseUrl, supabaseServiceKey, {
-      global: { headers: { Authorization: authHeader } },
-    })
-
-    const { data: { user }, error: authError } = await supabase.auth.getUser()
+    const supabase = getServiceClient()
+    // Override the global Authorization header for user-context queries
+    const { data: { user }, error: authError } = await supabase.auth.getUser(
+      authHeader.replace("Bearer ", "").trim()
+    )
     if (authError || !user) {
-      return new Response(JSON.stringify({ error: "Unauthorized" }), {
-        status: 401,
-        headers: { ...corsHeaders, "Content-Type": "application/json" },
-      })
+      return errorResponse("Unauthorized", 401, cors)
     }
 
     // Get company
@@ -47,10 +37,7 @@ serve(async (req: Request) => {
       .single()
 
     if (!profile?.company_id) {
-      return new Response(JSON.stringify({ error: "No company found" }), {
-        status: 400,
-        headers: { ...corsHeaders, "Content-Type": "application/json" },
-      })
+      return errorResponse("No company found", 400, cors)
     }
 
     const { data: company } = await supabase
@@ -63,26 +50,17 @@ serve(async (req: Request) => {
     const { priceId, trialPeriodDays = 14 } = await req.json()
 
     if (!priceId) {
-      return new Response(JSON.stringify({ error: "Missing priceId" }), {
-        status: 400,
-        headers: { ...corsHeaders, "Content-Type": "application/json" },
-      })
+      return errorResponse("Missing priceId", 400, cors)
     }
 
     // Validate priceId format (Stripe price IDs start with "price_")
     if (!priceId.startsWith("price_")) {
-      return new Response(JSON.stringify({ error: "Invalid priceId format" }), {
-        status: 400,
-        headers: { ...corsHeaders, "Content-Type": "application/json" },
-      })
+      return errorResponse("Invalid priceId format", 400, cors)
     }
 
     // Validate trial period (max 30 days)
     if (trialPeriodDays < 0 || trialPeriodDays > 30) {
-      return new Response(JSON.stringify({ error: "Invalid trialPeriodDays (0-30)" }), {
-        status: 400,
-        headers: { ...corsHeaders, "Content-Type": "application/json" },
-      })
+      return errorResponse("Invalid trialPeriodDays (0-30)", 400, cors)
     }
 
     // Create or retrieve Stripe customer
@@ -106,10 +84,7 @@ serve(async (req: Request) => {
       const customer = await customerRes.json()
       if (customer.error) {
         console.error('Stripe customer creation failed:', customer.error.message)
-        return new Response(JSON.stringify({ error: 'Failed to create customer. Please try again.' }), {
-          status: 500,
-          headers: { ...corsHeaders, "Content-Type": "application/json" },
-        })
+        return errorResponse('Failed to create customer. Please try again.', 500, cors)
       }
 
       customerId = customer.id
@@ -146,21 +121,15 @@ serve(async (req: Request) => {
     const session = await sessionRes.json()
     if (session.error) {
       console.error('Stripe checkout session failed:', session.error.message)
-      return new Response(JSON.stringify({ error: 'Failed to create checkout session. Please try again.' }), {
-        status: 500,
-        headers: { ...corsHeaders, "Content-Type": "application/json" },
-      })
+      return errorResponse('Failed to create checkout session. Please try again.', 500, cors)
     }
 
     return new Response(JSON.stringify({ url: session.url }), {
       status: 200,
-      headers: { ...corsHeaders, "Content-Type": "application/json" },
+      headers: { ...cors, "Content-Type": "application/json" },
     })
   } catch (error) {
     captureError(error, { function: 'stripe-checkout' })
-    return new Response(JSON.stringify({ error: 'Internal server error' }), {
-      status: 500,
-      headers: { ...corsHeaders, "Content-Type": "application/json" },
-    })
+    return errorResponse(error, 500, cors)
   }
 })

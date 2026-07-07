@@ -12,5 +12,8 @@ port = 54321
 [auth]
 enable_signup = true
 
+[auth.email]
+enable_confirmations = false
+
 [edge_runtime]
 enabled = true

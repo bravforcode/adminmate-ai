@@ -3,6 +3,7 @@ import { useQuery } from '@tanstack/react-query'
 import { useNavigate } from 'react-router-dom'
 import { supabase } from '../lib/supabase'
 import { useAuthStore } from '../stores/authStore'
+import { useRealtimeSubscription } from '../hooks/useRealtimeSubscription'
 import { useTranslation } from 'react-i18next'
 import { Briefcase, Users, FileText, UserCheck, ArrowRight, Search, CheckCircle, AlertCircle, UserX } from 'lucide-react'
 import { Button } from '../components/ui/Button'
@@ -69,6 +70,19 @@ export function DashboardPage() {
       return (data ?? []) as unknown as Array<{ id: string; progress_percentage: number; user_profiles: { full_name: string } }>
     },
     enabled: !!company?.id,
+  })
+
+  // Realtime: refetch dashboard data when jobs or candidates change
+  const companyId = company?.id
+  useRealtimeSubscription({
+    table: 'jobs',
+    filter: companyId ? `company_id=eq.${companyId}` : undefined,
+    onChange: useCallback(() => { refetchStats(); refetchCandidates() }, [refetchStats, refetchCandidates]),
+  })
+  useRealtimeSubscription({
+    table: 'candidates',
+    filter: companyId ? `company_id=eq.${companyId}` : undefined,
+    onChange: useCallback(() => { refetchStats(); refetchCandidates() }, [refetchStats, refetchCandidates]),
   })
 
   const filtered = useMemo(() => candidates?.filter(c => !search
@@ -208,6 +222,7 @@ export function DashboardPage() {
                       <input
                         value={search}
                         onChange={handleSearchChange}
+                        aria-label={t('dashboard:search_candidates')}
                         className="pl-10 pr-4 py-3 rounded-xl border border-outline-variant dark:border-outline bg-surface-container-lowest dark:bg-surface-container-lowest text-on-surface dark:text-on-surface focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all duration-200 outline-none text-sm w-full max-w-[200px]"
                         placeholder={t('dashboard:search_candidates')}
                       />

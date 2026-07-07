@@ -65,6 +65,14 @@ export const pdpaService = {
     const hash = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(userId))
     const hashedEmail = Array.from(new Uint8Array(hash)).map(b => b.toString(16).padStart(2, '0')).join('').slice(0, 16)
 
+    // Get the user's original email BEFORE any updates
+    const { data: userProfile } = await supabase
+      .from('user_profiles')
+      .select('email')
+      .eq('id', userId)
+      .single()
+    const originalEmail = userProfile?.email
+
     const profileRes = await supabase.from('user_profiles').update({
       full_name: 'Deleted User',
       email: `${hashedEmail}@deleted.local`,
@@ -81,7 +89,7 @@ export const pdpaService = {
       location: null,
       linkedin_url: null,
       portfolio_url: null,
-    }).eq('email', deletedEmail)
+    }).eq('email', originalEmail)
     if (!candidateRes.error) anonymizedTables.push('candidates')
 
     await supabase.from('chat_messages').update({ content: '[Message deleted]' }).eq('user_id', userId)

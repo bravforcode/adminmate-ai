@@ -47,12 +47,18 @@ serve(async (req) => {
       return new Response(JSON.stringify({ success: false, error: 'Forbidden: admin only' }), { status: 403, headers: getJsonHeaders(req) })
     }
 
+    const companyId = profile.company_id
+    if (!companyId) {
+      return new Response(JSON.stringify({ success: false, error: 'No company associated with this user' }), { status: 403, headers: getJsonHeaders(req) })
+    }
+
     const [usersRes, companiesRes, jobsRes, candidatesRes, recentSignupsRes] = await Promise.all([
-      supabase.from('user_profiles').select('id', { count: 'exact', head: true }),
-      supabase.from('companies').select('id', { count: 'exact', head: true }),
-      supabase.from('jobs').select('id', { count: 'exact', head: true }),
-      supabase.from('candidates').select('id', { count: 'exact', head: true }),
+      supabase.from('user_profiles').select('id', { count: 'exact', head: true }).eq('company_id', companyId),
+      supabase.from('companies').select('id', { count: 'exact', head: true }).eq('id', companyId),
+      supabase.from('jobs').select('id', { count: 'exact', head: true }).eq('company_id', companyId),
+      supabase.from('candidates').select('id', { count: 'exact', head: true }).eq('company_id', companyId),
       supabase.from('user_profiles').select('id', { count: 'exact', head: true })
+        .eq('company_id', companyId)
         .gte('created_at', new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString()),
     ])
 

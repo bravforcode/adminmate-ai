@@ -11,13 +11,24 @@ import { useTranslation } from 'react-i18next'
 import { Button } from '../../components/ui/Button'
 import { calendarService } from '../../services/calendarService'
 import { toCSV, downloadCSV } from '../../utils/csvParser'
+import { useRealtimeSubscription } from '../../hooks/useRealtimeSubscription'
+import { useAuthStore } from '../../stores/authStore'
 
 export function InterviewsPage() {
   const { t } = useTranslation(['recruitment', 'common', 'calendar'])
+  const company = useAuthStore(s => s.company)
   const { data: upcoming, isLoading: upLoading, isError: upError, error: upErr, refetch: upRefetch } = useUpcomingInterviews()
   const { data: past, isLoading: pastLoading, isError: pastError, error: pastErr, refetch: pastRefetch } = usePastInterviews()
   const [tab, setTab] = useState<'upcoming' | 'past'>('upcoming')
   const [selectedAppId, setSelectedAppId] = useState<string>('')
+
+  // Realtime: refetch interviews when the interviews table changes
+  const companyId = company?.id
+  useRealtimeSubscription({
+    table: 'interviews',
+    filter: companyId ? `company_id=eq.${companyId}` : undefined,
+    onChange: useCallback(() => { upRefetch(); pastRefetch() }, [upRefetch, pastRefetch]),
+  })
 
   const handleTabChange = useCallback((newTab: 'upcoming' | 'past') => setTab(newTab), [])
 

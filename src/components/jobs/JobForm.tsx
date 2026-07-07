@@ -89,6 +89,12 @@ export function JobForm({ onClose }: JobFormProps) {
     finally { setGenerating(false) }
   }
 
+  // Required fields live on step 0 — if publish (step 2) fails validation,
+  // jump back so the user actually sees the error messages.
+  const onInvalid = (errs: typeof errors) => {
+    if (errs.title || errs.department || errs.location) setStep(0)
+  }
+
   const onSubmit = async (data: JobFormData) => {
     await createJob.mutateAsync({
       ...data,
@@ -189,14 +195,17 @@ export function JobForm({ onClose }: JobFormProps) {
   ]
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+    <form onSubmit={handleSubmit(onSubmit, onInvalid)} className="space-y-6">
       {steps[step]}
       <div className="form-actions flex justify-between pt-4 border-t border-outline-variant dark:border-outline gap-2">
         <Button variant="outline" onClick={() => step > 0 && setStep(step - 1)} disabled={step === 0} icon={<ArrowLeft size={16} />}>
           {t('common.back', { ns: 'common' })}
         </Button>
+        {/* preventDefault on next: setStep re-renders this same DOM node as the
+            type="submit" publish button before the click's default action runs,
+            which would submit the form (create job early / bounce to step 0). */}
         {step < 2 ? (
-          <Button variant="default" type="button" onClick={() => setStep(step + 1)} data-testid="step-next" icon={<ArrowRight size={16} />} iconPosition="right">
+          <Button variant="default" type="button" onClick={(e) => { e.preventDefault(); setStep(step + 1) }} data-testid="step-next" icon={<ArrowRight size={16} />} iconPosition="right">
             {t('common.next', { ns: 'common' })}
           </Button>
         ) : (

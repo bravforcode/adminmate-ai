@@ -2,7 +2,7 @@ import { serve } from 'https://deno.land/std@0.168.0/http/server.ts'
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2'
 import { createHmac } from 'node:crypto'
 import { handleIncomingMessage } from '../_shared/messageHandler.ts'
-import { getCorsHeaders, getJsonHeaders, logRequest } from '../_shared/utils.ts'
+import { getCorsHeaders, getJsonHeaders, logRequest, timingSafeEqual } from '../_shared/utils.ts'
 import { errorResponse } from '../_shared/errorHandler.ts'
 
 const FN = 'whatsapp-webhook'
@@ -60,7 +60,8 @@ serve(async (req) => {
     const hmac = createHmac('sha256', secret)
     hmac.update(bodyText)
     const expectedSignature = `sha256=${hmac.digest('hex')}`
-    if (signature !== expectedSignature) {
+    // SECURITY: Constant-time comparison to prevent timing attacks on HMAC verification
+    if (!timingSafeEqual(signature, expectedSignature)) {
       logRequest({ function: FN, durationMs: Date.now() - start, status: 403, error: 'invalid signature' })
       return new Response('Forbidden', { status: 403 })
     }

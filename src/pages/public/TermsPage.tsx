@@ -21,7 +21,7 @@ export default function TermsPage() {
             </div>
             <span className="text-lg font-semibold tracking-tight">AdminMate AI</span>
           </button>
-          <button onClick={() => navigate(-1)} className="flex items-center gap-1 text-sm text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)]">
+          <button onClick={() => navigate(-1)} className="flex items-center gap-1 text-sm text-secondary hover:text-primary">
             <ArrowLeft size={14} /> {t('legal.back', 'Back')}
           </button>
         </div>
@@ -36,7 +36,7 @@ export default function TermsPage() {
           <p className="mt-2 text-sm text-[var(--color-text-muted)]">{t('legal.last_updated', 'Last updated:')} June 2026</p>
         </div>
 
-        <div className="prose prose-sm max-w-none space-y-8 text-[var(--color-text-secondary)] leading-relaxed">
+        <div className="prose prose-sm max-w-none space-y-8 text-secondary leading-relaxed">
           <section>
             <h2 className="text-xl font-semibold text-[var(--color-text-primary)] mb-3">{t('legal.terms_s1_title', '1. Agreement')}</h2>
             <p>{t('legal.terms_s1', 'By accessing or using AdminMate AI ("the Service"), you agree to these Terms of Service ("Terms"). If you do not agree, do not use the Service.')}</p>
