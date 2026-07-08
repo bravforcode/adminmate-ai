@@ -29,7 +29,7 @@ serve(async (req) => {
     const cronSecret = req.headers.get('x-cron-secret')
 
     let authorized = false
-    if (cronSecret && cronSecret === Deno.env.get('CRON_SECRET_KEY')) {
+    if (cronSecret && cronSecret === Deno.env.get('CRON_SECRET')) {
       authorized = true
     } else if (authHeader?.startsWith('Bearer ')) {
       const user = await verifyAuth(req, supabase)

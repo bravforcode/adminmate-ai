@@ -221,22 +221,23 @@ SELECT r.id, p.id FROM roles r, permissions p
 WHERE r.name = 'employee' AND p.resource = 'payroll_country_pack' AND p.action = 'read'
 ON CONFLICT (role_id, permission_id) DO NOTHING;
 
--- 7. Seed country pack stubs
+-- 7. Seed country packs per company
 DO $$
+DECLARE
+  comp RECORD;
 BEGIN
-  IF EXISTS (SELECT 1 FROM companies LIMIT 1) THEN
-    -- TH is active (full implementation), others are inactive stubs
+  FOR comp IN SELECT id FROM companies
+  LOOP
     INSERT INTO payroll_country_packs (id, company_id, country_code, pack_name, version, is_active) VALUES
-      (gen_random_uuid(), '00000000-0000-0000-0000-000000000000', 'TH', 'Thailand Payroll Pack', '1.0.0', true),
-      (gen_random_uuid(), '00000000-0000-0000-0000-000000000000', 'SG', 'Singapore Payroll Pack', '1.0.0', false),
-      (gen_random_uuid(), '00000000-0000-0000-0000-000000000000', 'VN', 'Vietnam Payroll Pack', '1.0.0', false),
-      (gen_random_uuid(), '00000000-0000-0000-0000-000000000000', 'ID', 'Indonesia Payroll Pack', '1.0.0', false),
-      (gen_random_uuid(), '00000000-0000-0000-0000-000000000000', 'MY', 'Malaysia Payroll Pack', '1.0.0', false),
-      (gen_random_uuid(), '00000000-0000-0000-0000-000000000000', 'PH', 'Philippines Payroll Pack', '1.0.0', false),
-      (gen_random_uuid(), '00000000-0000-0000-0000-000000000000', 'JP', 'Japan Payroll Pack', '1.0.0', false)
+      (gen_random_uuid(), comp.id, 'TH', 'Thailand Payroll Pack', '1.0.0', true),
+      (gen_random_uuid(), comp.id, 'SG', 'Singapore Payroll Pack', '1.0.0', false),
+      (gen_random_uuid(), comp.id, 'VN', 'Vietnam Payroll Pack', '1.0.0', false),
+      (gen_random_uuid(), comp.id, 'ID', 'Indonesia Payroll Pack', '1.0.0', false),
+      (gen_random_uuid(), comp.id, 'MY', 'Malaysia Payroll Pack', '1.0.0', false),
+      (gen_random_uuid(), comp.id, 'PH', 'Philippines Payroll Pack', '1.0.0', false),
+      (gen_random_uuid(), comp.id, 'JP', 'Japan Payroll Pack', '1.0.0', false)
     ON CONFLICT (company_id, country_code) DO NOTHING;
 
-    -- Seed TH rule sets
     INSERT INTO payroll_rule_sets (id, country_pack_id, rule_key, rule_name, description)
     SELECT gen_random_uuid(), pcp.id, rs.rule_key, rs.rule_name, rs.description
     FROM payroll_country_packs pcp
@@ -246,21 +247,20 @@ BEGIN
       ('personal_income_tax', 'Personal Income Tax (PIT)', 'Thai progressive income tax brackets'),
       ('welfare_benefits', 'Welfare Benefits', 'Taxable and exempt welfare benefits')
     ) AS rs(rule_key, rule_name, description)
-    WHERE pcp.country_code = 'TH' AND pcp.company_id = '00000000-0000-0000-0000-000000000000'
+    WHERE pcp.country_code = 'TH' AND pcp.company_id = comp.id
     ON CONFLICT (country_pack_id, rule_key) DO NOTHING;
 
-    -- Seed TH rule versions with effective configs
     INSERT INTO payroll_rule_versions (id, rule_set_id, version_number, effective_from, effective_to, rule_config, is_active)
     SELECT gen_random_uuid(), prs.id, rv.version_number, rv.effective_from, rv.effective_to, rv.rule_config, rv.is_active
     FROM payroll_rule_sets prs
     JOIN payroll_country_packs pcp ON pcp.id = prs.country_pack_id
     CROSS JOIN (VALUES
-      ('social_security', '1.0.0', '2024-01-01', NULL, '{"employee_rate": 0.05, "employer_rate": 0.05, "max_monthly_salary": 75000, "min_monthly_salary": 1650, "contribution_type": "percentage"}', true),
-      ('provident_fund', '1.0.0', '2024-01-01', NULL, '{"employee_rate": 0.03, "employer_rate": 0.03, "min_months_for_vesting": 60, "vesting_rate": "graduated"}', true),
-      ('personal_income_tax', '1.0.0', '2024-01-01', NULL, '{"brackets": [{"min": 0, "max": 150000, "rate": 0}, {"min": 150001, "max": 180000, "rate": 0.05}, {"min": 180001, "max": 700000, "rate": 0.10}, {"min": 700001, "max": 2000000, "rate": 0.15}, {"min": 2000001, "max": 5000000, "rate": 0.20}, {"min": 5000001, "max": 10000000, "rate": 0.25}, {"min": 10000001, "max": 999999999999, "rate": 0.35}], "personal_allowance": 60000, "spouse_allowance": 60000, "child_allowance": 30000}', true),
-      ('welfare_benefits', '1.0.0', '2024-01-01', NULL, '{"exempt_items": ["life_insurance", "medical_expense", "meal_allowance_up_to", "fuel_allowance"], "taxable_items": ["bonus", "overtime", "commissions"], "meal_allowance_exempt_cap": 1600}', true)
+      ('social_security', '1.0.0', '2024-01-01'::date, NULL::date, '{"employee_rate": 0.05, "employer_rate": 0.05, "max_monthly_salary": 75000, "min_monthly_salary": 1650, "contribution_type": "percentage"}'::jsonb, true),
+      ('provident_fund', '1.0.0', '2024-01-01'::date, NULL::date, '{"employee_rate": 0.03, "employer_rate": 0.03, "min_months_for_vesting": 60, "vesting_rate": "graduated"}'::jsonb, true),
+      ('personal_income_tax', '1.0.0', '2024-01-01'::date, NULL::date, '{"brackets": [{"min": 0, "max": 150000, "rate": 0}, {"min": 150001, "max": 180000, "rate": 0.05}, {"min": 180001, "max": 700000, "rate": 0.10}, {"min": 700001, "max": 2000000, "rate": 0.15}, {"min": 2000001, "max": 5000000, "rate": 0.20}, {"min": 5000001, "max": 10000000, "rate": 0.25}, {"min": 10000001, "max": 999999999999, "rate": 0.35}], "personal_allowance": 60000, "spouse_allowance": 60000, "child_allowance": 30000}'::jsonb, true),
+      ('welfare_benefits', '1.0.0', '2024-01-01'::date, NULL::date, '{"exempt_items": ["life_insurance", "medical_expense", "meal_allowance_up_to", "fuel_allowance"], "taxable_items": ["bonus", "overtime", "commissions"], "meal_allowance_exempt_cap": 1600}'::jsonb, true)
     ) AS rv(rule_key, version_number, effective_from, effective_to, rule_config, is_active)
-    WHERE prs.rule_key = rv.rule_key AND pcp.country_code = 'TH' AND pcp.company_id = '00000000-0000-0000-0000-000000000000'
+    WHERE prs.rule_key = rv.rule_key AND pcp.country_code = 'TH' AND pcp.company_id = comp.id
     ON CONFLICT (rule_set_id, version_number) DO NOTHING;
-  END IF;
+  END LOOP;
 END $$;

@@ -1,6 +1,6 @@
 import { serve } from "https://deno.land/std@0.177.0/http/server.ts"
 import { getServiceClient } from '../_shared/supabaseClient.ts'
-import { getCorsHeaders, handleCorsPreflight } from '../_shared/utils.ts'
+import { getCorsHeaders, handleCorsPreflight, timingSafeEqual } from '../_shared/utils.ts'
 
 serve(async (req: Request) => {
   const preflight = handleCorsPreflight(req)
@@ -8,7 +8,9 @@ serve(async (req: Request) => {
 
   const cors = getCorsHeaders(req)
   const url = new URL(req.url)
-  const isInternal = req.headers.get("X-Health-Check-Key") === Deno.env.get("HEALTH_CHECK_KEY")
+  const providedKey = req.headers.get("X-Health-Check-Key") || ""
+  const expectedKey = Deno.env.get("HEALTH_CHECK_KEY") || ""
+  const isInternal = timingSafeEqual(providedKey, expectedKey)
 
   const checks: Record<string, { status: string; latencyMs?: number; error?: string }> = {}
   const startTime = Date.now()

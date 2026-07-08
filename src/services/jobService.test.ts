@@ -26,6 +26,10 @@ vi.mock('./permissionService', () => ({
   hasPermission: vi.fn().mockResolvedValue(true),
 }))
 
+vi.mock('../lib/subscriptions', () => ({
+  checkLimit: vi.fn().mockReturnValue({ allowed: true, remaining: 9, limit: 10 }),
+}))
+
 import { jobService } from './jobService'
 
 describe('jobService', () => {
@@ -89,21 +93,52 @@ describe('jobService', () => {
 
   // ─── create ────────────────────────────────────────────
   describe('create', () => {
-    it('should create job with permission check', async () => {
+    it('should create job with permission and limit checks', async () => {
       const job = { title: 'New Job', company_id: 'c1' }
       const created = { id: 'j1', ...job }
-      const chain = createChain(created)
-      mockFrom.mockReturnValue(chain)
+      // Return different results per .from() call: company lookup → count → insert
+      mockFrom
+        .mockReturnValueOnce(createChain({ subscription_tier: 'pro' }))
+        .mockReturnValueOnce(createChain(null).then = undefined as any)
+        .mockReturnValueOnce(createChain(created))
+
+      const countChain = createChain(null)
+      const selectSpy = vi.fn(() => countChain)
+      countChain.select = selectSpy
+
+      const companyChain = createChain({ subscription_tier: 'pro' })
+      const insertChain = createChain(created)
+
+      mockFrom
+        .mockReset()
+        .mockReturnValueOnce(companyChain)
+        .mockReturnValueOnce(countChain)
+        .mockReturnValueOnce(insertChain)
 
       const result = await jobService.create(job)
-      expect(chain.insert).toHaveBeenCalledWith(job)
+      expect(insertChain.insert).toHaveBeenCalledWith(job)
       expect(result).toEqual(created)
     })
 
-    it('should throw on error', async () => {
-      mockFrom.mockReturnValue(createChain(null, new Error('Insert failed')))
+    it('should throw when job limit exceeded', async () => {
+      const { checkLimit } = await import('../lib/subscriptions')
+      vi.mocked(checkLimit).mockReturnValueOnce({ allowed: false, remaining: 0, limit: 1 })
 
-      await expect(jobService.create({ title: 'X' })).rejects.toThrow('Insert failed')
+      const job = { title: 'New Job', company_id: 'c1' }
+      mockFrom
+        .mockReturnValueOnce(createChain({ subscription_tier: 'free' }))
+        .mockReturnValueOnce(createChain(null))
+
+      await expect(jobService.create(job)).rejects.toThrow('Job limit reached for free plan')
+    })
+
+    it('should throw on insert error', async () => {
+      mockFrom
+        .mockReturnValueOnce(createChain({ subscription_tier: 'pro' }))
+        .mockReturnValueOnce(createChain(null))
+        .mockReturnValueOnce(createChain(null, new Error('Insert failed')))
+
+      await expect(jobService.create({ title: 'X', company_id: 'c1' })).rejects.toThrow('Insert failed')
     })
   })
 
@@ -174,7 +209,7 @@ describe('jobService', () => {
       mockFrom.mockReturnValue(chain)
 
       const link = await jobService.generateShareLink('j1', 'c1')
-      expect(chain.update).toHaveBeenCalledWith(expect.objectContaining({ share_token: expect.any(String) }))
+      expect(chain.update).toHaveBeenCalledWith(expect.objectContaining({ public_token: expect.any(String) }))
       expect(chain.eq).toHaveBeenCalledWith('id', 'j1')
       expect(chain.eq).toHaveBeenCalledWith('company_id', 'c1')
       expect(link).toContain('/careers/apply/')

@@ -174,12 +174,15 @@ WHERE r.name = 'auditor' AND p.resource = 'statutory_filing' AND p.action = 'rea
 -- ============================================================
 
 DO $$
+DECLARE
+  comp RECORD;
 BEGIN
-  IF EXISTS (SELECT 1 FROM companies LIMIT 1) THEN
+  FOR comp IN SELECT id FROM companies
+  LOOP
     INSERT INTO statutory_report_definitions (id, company_id, report_key, name, country_code, description, frequency, is_active) VALUES
-      (gen_random_uuid(), '00000000-0000-0000-0000-000000000000', 'social_security_monthly', 'Social Security Monthly Filing (สปส.)', 'TH', 'Monthly social security contribution report for the Social Security Office. Employee and employer 5% contributions.', 'monthly', true),
-      (gen_random_uuid(), '00000000-0000-0000-0000-000000000000', 'withholding_tax_monthly', 'Withholding Tax Monthly Filing (ภ.ง.ด.1)', 'TH', 'Monthly withholding tax remittance form for the Revenue Department. Covers employee income tax deductions.', 'monthly', true),
-      (gen_random_uuid(), '00000000-0000-0000-0000-000000000000', 'pink_card_annual', 'Pink Card Annual Filing (ประกันสังคม)', 'TH', 'Annual social security registration and employee census report.', 'annually', true)
+      (gen_random_uuid(), comp.id, 'social_security_monthly', 'Social Security Monthly Filing (สปส.)', 'TH', 'Monthly social security contribution report for the Social Security Office. Employee and employer 5% contributions.', 'monthly', true),
+      (gen_random_uuid(), comp.id, 'withholding_tax_monthly', 'Withholding Tax Monthly Filing (ภ.ง.ด.1)', 'TH', 'Monthly withholding tax remittance form for the Revenue Department. Covers employee income tax deductions.', 'monthly', true),
+      (gen_random_uuid(), comp.id, 'pink_card_annual', 'Pink Card Annual Filing (ประกันสังคม)', 'TH', 'Annual social security registration and employee census report.', 'annually', true)
     ON CONFLICT (company_id, report_key) DO NOTHING;
-  END IF;
+  END LOOP;
 END $$;

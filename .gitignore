@@ -4,6 +4,7 @@ dist/
 .env.local
 .env.*.local
 .env.production
+.env.production-check
 .env.vercel
 
 # Database backups — production data, never commit

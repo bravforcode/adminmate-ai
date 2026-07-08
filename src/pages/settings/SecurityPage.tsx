@@ -1,5 +1,8 @@
 import { useState, useEffect, useCallback } from 'react'
 import { useTranslation } from 'react-i18next'
+import { useForm } from 'react-hook-form'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { z } from 'zod'
 import { useAuthStore } from '../../stores/authStore'
 import { supabase } from '../../lib/supabase'
 import { logger } from '../../lib/logger'
@@ -13,10 +16,14 @@ import {
   AlertTriangle,
   Loader2,
   KeyRound,
+  Eye,
+  EyeOff,
 } from 'lucide-react'
 import { cn } from '../../lib/utils'
 import { LoadingState } from '../../components/shared/LoadingState'
 import QRCode from 'qrcode'
+import { evaluatePassword } from '../../utils/passwordStrength'
+import { translateAuthError } from '../../utils/authErrors'
 
 interface MFAStatus {
   enrolled: boolean
@@ -29,6 +36,164 @@ interface MFAStatus {
 interface SetupState {
   factorId: string
   totpUri: string
+}
+
+const passwordChangeSchema = z
+  .object({
+    password: z
+      .string()
+      .min(8, 'Password must be at least 8 characters')
+      .regex(/[A-Z]/, 'Add an uppercase letter')
+      .regex(/[0-9]/, 'Add a number'),
+    confirmPassword: z.string(),
+  })
+  .refine((d) => d.password === d.confirmPassword, {
+    message: 'Passwords do not match',
+    path: ['confirmPassword'],
+  })
+
+type PasswordChangeFormData = z.infer<typeof passwordChangeSchema>
+
+function ChangePasswordCard({ t }: { t: ReturnType<typeof useTranslation>['t'] }) {
+  const [showPassword, setShowPassword] = useState(false)
+  const [passwordValue, setPasswordValue] = useState('')
+  const [submitError, setSubmitError] = useState<string | null>(null)
+  const [success, setSuccess] = useState(false)
+  const strength = evaluatePassword(passwordValue)
+
+  const { register, handleSubmit, formState: { errors, isSubmitting }, reset } = useForm<PasswordChangeFormData>({
+    resolver: zodResolver(passwordChangeSchema),
+    defaultValues: { password: '', confirmPassword: '' },
+  })
+
+  const onSubmit = async (data: PasswordChangeFormData) => {
+    setSubmitError(null)
+    setSuccess(false)
+    try {
+      const { error } = await supabase.auth.updateUser({ password: data.password })
+      if (error) throw error
+      setSuccess(true)
+      setPasswordValue('')
+      reset()
+      toast.success(t('auth.password_updated'))
+    } catch (err) {
+      const message = translateAuthError(err, t)
+      setSubmitError(message)
+      toast.error(message)
+    }
+  }
+
+  return (
+    <div className="bg-surface rounded-xl border border-outline-variant shadow-sm p-6">
+      <div className="flex items-center gap-2 mb-6 border-b border-surface-container pb-3">
+        <KeyRound size={20} className="text-primary" />
+        <h3 className="text-title-lg font-semibold text-on-surface">
+          {t('auth.change_password') || 'Change Password'}
+        </h3>
+      </div>
+
+      <form onSubmit={handleSubmit(onSubmit)} className="space-y-4" noValidate>
+        <div>
+          <label htmlFor="new-password" className="block text-label-md text-on-surface-variant mb-1">
+            {t('auth.new_password')}
+          </label>
+          <div className="relative">
+            <input
+              id="new-password"
+              {...register('password', {
+                onChange: (e) => setPasswordValue(e.target.value),
+              })}
+              type={showPassword ? 'text' : 'password'}
+              autoComplete="new-password"
+              data-testid="change-password-input"
+              className="w-full px-3 py-2 rounded-lg border border-outline-variant bg-surface-container-lowest focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all pr-10"
+              placeholder="••••••••"
+            />
+            <button
+              type="button"
+              onClick={() => setShowPassword(!showPassword)}
+              className="absolute right-2 top-1/2 -translate-y-1/2 text-on-surface-variant hover:text-primary"
+              tabIndex={-1}
+              aria-label={showPassword ? t('auth.hide_password') : t('auth.show_password')}
+            >
+              {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+            </button>
+          </div>
+          {passwordValue && (
+            <div className="mt-2">
+              <div className="h-1.5 w-full rounded-full bg-outline-variant overflow-hidden">
+                <div
+                  className={`h-full ${strength.color} transition-all`}
+                  style={{ width: `${strength.percent}%` }}
+                />
+              </div>
+              <div className="flex items-center justify-between mt-1">
+                <span className="text-xs text-on-surface-variant">
+                  {t(`auth.password_${strength.label}`)}
+                </span>
+                {strength.hints.length > 0 && (
+                  <span className="text-xs text-on-surface-variant">{strength.hints[0]}</span>
+                )}
+              </div>
+            </div>
+          )}
+          {errors.password && (
+            <p className="text-error text-sm mt-1">{errors.password.message}</p>
+          )}
+        </div>
+
+        <div>
+          <label htmlFor="confirm-password" className="block text-label-md text-on-surface-variant mb-1">
+            {t('auth.confirm_password')}
+          </label>
+          <input
+            id="confirm-password"
+            {...register('confirmPassword')}
+            type={showPassword ? 'text' : 'password'}
+            autoComplete="new-password"
+            data-testid="change-confirm-input"
+            className="w-full px-3 py-2 rounded-lg border border-outline-variant bg-surface-container-lowest focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all"
+            placeholder="••••••••"
+          />
+          {errors.confirmPassword && (
+            <p className="text-error text-sm mt-1">{errors.confirmPassword.message}</p>
+          )}
+        </div>
+
+        {submitError && (
+          <div
+            role="alert"
+            className="rounded-lg border border-error/40 bg-error-container/40 text-error px-3 py-2 text-sm"
+          >
+            {submitError}
+          </div>
+        )}
+
+        {success && (
+          <div
+            role="status"
+            className="rounded-lg border border-green-200 bg-green-50 text-green-700 px-3 py-2 text-sm"
+          >
+            {t('auth.password_updated')}
+          </div>
+        )}
+
+        <button
+          type="submit"
+          disabled={isSubmitting}
+          data-testid="change-password-button"
+          className="flex items-center gap-2 px-4 py-2 bg-primary text-on-primary rounded-lg font-medium hover:opacity-90 disabled:opacity-50 transition-opacity"
+        >
+          {isSubmitting ? (
+            <Loader2 size={16} className="animate-spin" />
+          ) : (
+            <KeyRound size={16} />
+          )}
+          {isSubmitting ? t('auth.saving') : t('auth.update_password')}
+        </button>
+      </form>
+    </div>
+  )
 }
 
 export function SecurityPage() {
@@ -235,6 +400,9 @@ export function SecurityPage() {
           {t('mfa.subtitle') || 'Manage two-factor authentication and account security'}
         </p>
       </div>
+
+      {/* Change Password Card */}
+      <ChangePasswordCard t={t} />
 
       {/* MFA Status Card */}
       <div className="bg-surface rounded-xl border border-outline-variant shadow-sm p-6">

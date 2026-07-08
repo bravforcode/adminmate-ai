@@ -31,12 +31,28 @@ describe('jobService', () => {
   })
 
   it('create: throws on database error', async () => {
-    mockSupabase.from.mockReturnValue({
-      insert: vi.fn().mockReturnValue({
-        select: vi.fn().mockReturnValue({
-          single: vi.fn().mockResolvedValue({ data: null, error: new Error('DB write error') }),
-        }),
-      }),
+    mockSupabase.from.mockImplementation((table: string) => {
+      if (table === 'companies') {
+        return {
+          select: vi.fn().mockReturnValue({
+            eq: vi.fn().mockReturnValue({
+              single: vi.fn().mockResolvedValue({ data: { subscription_tier: 'pro' }, error: null }),
+            }),
+          }),
+        }
+      }
+      if (table === 'jobs') {
+        return {
+          select: vi.fn().mockReturnValue({
+            eq: vi.fn().mockResolvedValue({ count: 0, error: null }),
+          }),
+          insert: vi.fn().mockReturnValue({
+            select: vi.fn().mockReturnValue({
+              single: vi.fn().mockResolvedValue({ data: null, error: new Error('DB write error') }),
+            }),
+          }),
+        }
+      }
     })
 
     await expect(jobService.create({ title: 'Test Job', company_id: 'x' } as any)).rejects.toThrow('DB write error')

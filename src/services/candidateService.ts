@@ -1,4 +1,6 @@
 import { supabase } from '../lib/supabase'
+import { checkLimit } from '../lib/subscriptions'
+import type { SubscriptionTier } from '../lib/subscriptions'
 
 export interface CandidateWithApplications {
   id: string
@@ -146,6 +148,25 @@ export const candidateService = {
   },
 
   create: async (input: CreateCandidateInput) => {
+    if (input.company_id) {
+      const { data: company } = await supabase
+        .from('companies')
+        .select('subscription_tier')
+        .eq('id', input.company_id)
+        .single()
+      const tier: SubscriptionTier = (company?.subscription_tier as SubscriptionTier) || 'free'
+
+      const { count } = await supabase
+        .from('candidates')
+        .select('id', { count: 'exact', head: true })
+        .eq('company_id', input.company_id)
+
+      const result = checkLimit(tier, 'candidates', count || 0)
+      if (!result.allowed) {
+        throw new Error(`Candidate limit reached for ${tier} plan (${result.limit} max). Upgrade to add more candidates.`)
+      }
+    }
+
     const { data, error } = await supabase.from('candidates').insert(input).select().single()
     if (error) throw error
     return data

@@ -24,6 +24,10 @@ vi.mock('../lib/supabase', () => ({
   },
 }))
 
+vi.mock('../lib/subscriptions', () => ({
+  checkLimit: vi.fn().mockReturnValue({ allowed: true, remaining: 95, limit: 100 }),
+}))
+
 import { candidateService } from './candidateService'
 
 describe('candidateService', () => {
@@ -123,19 +127,40 @@ describe('candidateService', () => {
 
   // ─── create ────────────────────────────────────────────
   describe('create', () => {
-    it('should create candidate with input', async () => {
+    it('should create candidate with limit check', async () => {
       const input = { full_name: 'New Candidate', company_id: 'company-1', email: 'new@example.com' }
       const created = { id: 'new1', ...input }
-      const chain = createChain(created)
-      mockFrom.mockReturnValue(chain)
+      const companyChain = createChain({ subscription_tier: 'pro' })
+      const countChain = createChain(null)
+      const insertChain = createChain(created)
+
+      mockFrom
+        .mockReturnValueOnce(companyChain)
+        .mockReturnValueOnce(countChain)
+        .mockReturnValueOnce(insertChain)
 
       const result = await candidateService.create(input)
-      expect(chain.insert).toHaveBeenCalledWith(input)
+      expect(insertChain.insert).toHaveBeenCalledWith(input)
       expect(result).toEqual(created)
     })
 
+    it('should throw when candidate limit exceeded', async () => {
+      const { checkLimit } = await import('../lib/subscriptions')
+      vi.mocked(checkLimit).mockReturnValueOnce({ allowed: false, remaining: 0, limit: 5 })
+
+      const input = { full_name: 'New Candidate', company_id: 'company-1' }
+      mockFrom
+        .mockReturnValueOnce(createChain({ subscription_tier: 'free' }))
+        .mockReturnValueOnce(createChain(null))
+
+      await expect(candidateService.create(input)).rejects.toThrow('Candidate limit reached for free plan')
+    })
+
     it('should throw on create error', async () => {
-      mockFrom.mockReturnValue(createChain(null, new Error('Insert failed')))
+      mockFrom
+        .mockReturnValueOnce(createChain({ subscription_tier: 'pro' }))
+        .mockReturnValueOnce(createChain(null))
+        .mockReturnValueOnce(createChain(null, new Error('Insert failed')))
 
       await expect(candidateService.create({ full_name: 'X', company_id: 'c1' })).rejects.toThrow('Insert failed')
     })

@@ -76,20 +76,21 @@ function recordLoginAttempt(email: string): void {
 
 export const authService = {
   signIn: async (email: string, password: string): Promise<AuthResponse> => {
-    checkLoginRateLimit(email)
-    const result = await supabase.auth.signInWithPassword({ email, password })
+    const normalizedEmail = email.trim()
+    checkLoginRateLimit(normalizedEmail)
+    const result = await supabase.auth.signInWithPassword({ email: normalizedEmail, password })
     if (result.error) {
-      recordLoginAttempt(email)
+      recordLoginAttempt(normalizedEmail)
       throw result.error
     }
-    clearRateLimit(email)
+    clearRateLimit(normalizedEmail)
     return result
   },
 
   signUp: async (credentials: SignUpWithPasswordCredentials): Promise<AuthResponse> => {
     const creds = credentials as { email: string; password: string; options?: { data?: Record<string, unknown> } }
     const result = await supabase.auth.signUp({
-      email: creds.email,
+      email: creds.email.trim(),
       password: creds.password,
       options: {
         data: creds.options?.data,
@@ -114,7 +115,7 @@ export const authService = {
   },
 
   resetPassword: async (email: string): Promise<void> => {
-    const { error } = await supabase.auth.resetPasswordForEmail(email, {
+    const { error } = await supabase.auth.resetPasswordForEmail(email.trim(), {
       redirectTo: `${getSiteUrl()}/reset-password`,
     })
     if (error) throw error

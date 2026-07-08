@@ -96,18 +96,23 @@ export function JobForm({ onClose }: JobFormProps) {
   }
 
   const onSubmit = async (data: JobFormData) => {
-    await createJob.mutateAsync({
-      ...data,
-      company_id: company?.id,
-      created_by: profile?.id,
-      responsibilities: data.responsibilities?.split('\n').filter(Boolean),
-      requirements: data.requirements?.split('\n').filter(Boolean),
-      nice_to_have: data.nice_to_have?.split('\n').filter(Boolean),
-      skills_required: data.skills_required?.split(',').map(s => s.trim()).filter(Boolean),
-      status: 'active',
-      ai_generated: generating,
-    })
-    onClose()
+    try {
+      await createJob.mutateAsync({
+        ...data,
+        company_id: company?.id,
+        created_by: profile?.id,
+        responsibilities: data.responsibilities?.split('\n').filter(Boolean),
+        requirements: data.requirements?.split('\n').filter(Boolean),
+        nice_to_have: data.nice_to_have?.split('\n').filter(Boolean),
+        skills_required: data.skills_required?.split(',').map(s => s.trim()).filter(Boolean),
+        application_deadline: data.application_deadline || null,
+        status: 'active',
+        ai_generated: generating,
+      })
+      onClose()
+    } catch {
+      // error already surfaced via useCreateJob's onError toast
+    }
   }
 
   const steps = [

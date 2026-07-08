@@ -54,10 +54,26 @@ describe('jobService', () => {
 describe('candidateService', () => {
   it('create accepts typed CreateCandidateInput', async () => {
     const { candidateService } = await import('../../src/services/candidateService')
-    mockSupabase.from.mockReturnValue({
-      insert: vi.fn().mockReturnValue({
-        select: vi.fn().mockReturnValue({ single: vi.fn().mockResolvedValue({ data: { id: 'c1', full_name: 'Somchai' }, error: null }) }),
-      }),
+    const mockSelect = vi.fn()
+      .mockReturnValueOnce({ eq: vi.fn().mockResolvedValue({ count: 0, error: null }) })
+      .mockReturnValueOnce({ single: vi.fn().mockResolvedValue({ data: { id: 'c1', full_name: 'Somchai' }, error: null }) })
+    mockSupabase.from.mockImplementation((table: string) => {
+      if (table === 'companies') {
+        return {
+          select: vi.fn().mockReturnValue({
+            eq: vi.fn().mockReturnValue({
+              single: vi.fn().mockResolvedValue({ data: { subscription_tier: 'pro' }, error: null }),
+            }),
+          }),
+        }
+      }
+      if (table === 'candidates') {
+        return {
+          select: mockSelect,
+          insert: vi.fn().mockReturnValue({ select: mockSelect }),
+        }
+      }
+      return {}
     })
     const result = await candidateService.create({ full_name: 'Somchai', company_id: 'c1' })
     expect(result.full_name).toBe('Somchai')

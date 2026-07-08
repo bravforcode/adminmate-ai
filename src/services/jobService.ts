@@ -1,5 +1,7 @@
 import { supabase } from '../lib/supabase'
 import { hasPermission } from './permissionService'
+import { checkLimit } from '../lib/subscriptions'
+import type { SubscriptionTier } from '../lib/subscriptions'
 
 export interface JobSearchOptions {
   search?: string
@@ -32,7 +34,7 @@ export const jobService = {
   },
 
   getById: async (id: string) => {
-    const { data, error } = await supabase.from('jobs').select('id, company_id, created_by, title, title_th, department, location, employment_type, experience_level, salary_min, salary_max, salary_currency, description, description_th, responsibilities, requirements, nice_to_have, skills_required, status, application_deadline, headcount, filled_count, ai_generated, share_token, created_at, updated_at').eq('id', id).single()
+    const { data, error } = await supabase.from('jobs')      .select('id, company_id, created_by, title, title_th, department, location, employment_type, experience_level, salary_min, salary_max, salary_currency, description, description_th, responsibilities, requirements, nice_to_have, skills_required, status, application_deadline, headcount, filled_count, ai_generated, public_token, created_at, updated_at').eq('id', id).single()
     if (error) throw error
     return data
   },
@@ -41,6 +43,27 @@ export const jobService = {
     if (!(await hasPermission('job', 'write'))) {
       throw new Error('Permission denied: job.write')
     }
+
+    const companyId = job.company_id as string
+    if (companyId) {
+      const { data: company } = await supabase
+        .from('companies')
+        .select('subscription_tier')
+        .eq('id', companyId)
+        .single()
+      const tier: SubscriptionTier = (company?.subscription_tier as SubscriptionTier) || 'free'
+
+      const { count } = await supabase
+        .from('jobs')
+        .select('id', { count: 'exact', head: true })
+        .eq('company_id', companyId)
+
+      const result = checkLimit(tier, 'jobs', count || 0)
+      if (!result.allowed) {
+        throw new Error(`Job limit reached for ${tier} plan (${result.limit} max). Upgrade to create more jobs.`)
+      }
+    }
+
     const { data, error } = await supabase.from('jobs').insert(job).select().single()
     if (error) throw error
     return data
@@ -79,7 +102,7 @@ export const jobService = {
     const token = crypto.randomUUID().replace(/-/g, '').slice(0, 12)
     const { error } = await supabase
       .from('jobs')
-      .update({ share_token: token })
+      .update({ public_token: token })
       .eq('id', id)
       .eq('company_id', companyId)
     if (error) throw error
@@ -90,7 +113,7 @@ export const jobService = {
     const { data, error } = await supabase
       .from('jobs')
       .select('id, title, title_th, department, location, employment_type, experience_level, salary_min, salary_max, salary_currency, description, description_th, responsibilities, requirements, skills_required, application_deadline')
-      .eq('share_token', token)
+      .eq('public_token', token)
       .eq('status', 'published')
       .single()
     if (error) throw error

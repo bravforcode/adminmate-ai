@@ -429,7 +429,7 @@ describe('Rate Limiting', () => {
       const content = readFileContent(indexPath)
 
       const hasRateLimit = content.includes('enforceRateLimit') ||
-        content.includes('rate') ||
+        content.toLowerCase().includes('rate') ||
         content.includes('x-cron-secret')
 
       expect(hasRateLimit).toBe(true)

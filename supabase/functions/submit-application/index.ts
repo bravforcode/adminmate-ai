@@ -114,7 +114,7 @@ serve(async (req) => {
       return errorResponse('Company not available', 410, cors)
     }
 
-    // Simple rate limit: max 5 applications per email per hour
+    // Rate limit: max 100 applications per company per hour
     const oneHourAgo = new Date(Date.now() - 3600000).toISOString()
     const { count: recentApps } = await supabase
       .from('applications')

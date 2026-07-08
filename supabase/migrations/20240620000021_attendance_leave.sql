@@ -224,12 +224,15 @@ WHERE p.resource = 'leave' AND p.action = 'approve'
   AND r.name IN ('owner', 'admin', 'hr_manager', 'manager')
 ON CONFLICT DO NOTHING;
 
--- 9. Seed Thailand public holidays 2024 for default calendar
+-- 9. Seed default leave types for each existing company
 DO $$
+DECLARE
+  comp RECORD;
 BEGIN
-  IF EXISTS (SELECT 1 FROM companies LIMIT 1) THEN
+  FOR comp IN SELECT id FROM companies
+  LOOP
     INSERT INTO leave_types (company_id, name, name_th, code, description, is_paid, max_days_per_year, carry_over_enabled, requires_approval)
-    SELECT '00000000-0000-0000-0000-000000000000', v.name, v.name_th, v.code, v.description, v.is_paid, v.max_days, v.carry_over, v.requires_approval
+    SELECT comp.id, v.name, v.name_th, v.code, v.description, v.is_paid, v.max_days, v.carry_over, v.requires_approval
     FROM (VALUES
       ('Annual Leave',         'ลากิจ',          'annual_leave',   'Paid annual leave',            true,  15, false, true),
       ('Sick Leave',           'ลาป่วย',         'sick_leave',     'Medical leave',                true,  30, false, false),
@@ -239,7 +242,7 @@ BEGIN
       ('Ordination Leave',     'ลาบวช',          'ordination_leave','Buddhist ordination leave',   true,  15, false, false)
     ) AS v(name, name_th, code, description, is_paid, max_days, carry_over, requires_approval)
     WHERE NOT EXISTS (
-      SELECT 1 FROM leave_types WHERE company_id = '00000000-0000-0000-0000-000000000000'
+      SELECT 1 FROM leave_types WHERE company_id = comp.id AND code = v.code
     );
-  END IF;
+  END LOOP;
 END $$;

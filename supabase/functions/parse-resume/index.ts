@@ -102,6 +102,16 @@ serve(async (req) => {
     if (fileBuffer.byteLength > 5 * 1024 * 1024) {
       return new Response(JSON.stringify({ success: false, error: 'File size exceeds 5MB limit' }), { status: 413, headers: h })
     }
+
+    // Only decode text/plain as UTF-8. PDF and DOCX are binary formats that
+    // TextDecoder cannot meaningfully parse — return an error for them.
+    if (!contentType.startsWith('text/plain')) {
+      return new Response(JSON.stringify({
+        success: false,
+        error: 'PDF and DOCX parsing is not yet supported. Please upload a plain text (.txt) resume.',
+      }), { status: 415, headers: h })
+    }
+
     const fileText = new TextDecoder('utf-8', { fatal: false }).decode(fileBuffer)
 
     if (!fileText || fileText.length < 20) {

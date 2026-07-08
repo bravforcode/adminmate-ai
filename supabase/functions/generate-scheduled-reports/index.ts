@@ -5,6 +5,7 @@ import {
   handleCorsPreflight,
   enforceRateLimit,
   logRequest,
+  timingSafeEqual,
 } from '../_shared/utils.ts'
 import { errorResponse } from '../_shared/errorHandler.ts'
 
@@ -24,9 +25,9 @@ serve(async (req) => {
       return new Response(JSON.stringify({ success: false, error: 'Method not allowed' }), { status: 405, headers: getCorsHeaders(req) })
     }
 
-    const cronSecret = req.headers.get('x-cron-secret')
-    const expectedSecret = Deno.env.get('CRON_SECRET')
-    if (!cronSecret || cronSecret !== expectedSecret) {
+    const cronSecret = req.headers.get('x-cron-secret') || ""
+    const expectedSecret = Deno.env.get('CRON_SECRET') || ""
+    if (!timingSafeEqual(cronSecret, expectedSecret)) {
       return new Response(JSON.stringify({ success: false, error: 'Invalid cron secret' }), { status: 401, headers: getCorsHeaders(req) })
     }
 
