@@ -80,14 +80,14 @@ export function PipelinePage() {
             <div className="p-6 overflow-y-auto flex-1 flex flex-col gap-6">
               <div className="flex flex-col items-center text-center">
                 <div className="relative mb-3">
-                  <div className="w-24 h-24 rounded-full bg-primary-container text-on-primary-container flex items-center justify-center font-bold text-3xl shadow-md ring-4 ring-surface-container-lowest">
+                  <div className="w-24 h-24 rounded-full bg-primary-container text-white-container flex items-center justify-center font-bold text-3xl shadow-md ring-4 ring-surface-container-lowest">
                     {selectedApplication.candidates?.full_name?.split(' ').map((n: string) => n[0]).join('').slice(0, 2).toUpperCase() || '?'}
                   </div>
                   <span className="absolute bottom-0 right-0 bg-primary w-6 h-6 rounded-full border-2 border-surface-container-lowest flex items-center justify-center text-white"><Check size={14} strokeWidth={3} /></span>
                 </div>
                 <h4 className="text-xl font-bold text-ink break-words">{selectedApplication.candidates?.full_name}</h4>
                 <p className="text-sm text-ink-variant mt-1">{selectedApplication.candidates?.current_position || t('pipeline.candidate')}</p>
-                <div className="mt-4 bg-primary text-on-primary text-xs font-semibold px-4 py-1.5 rounded-full flex items-center gap-1.5 shadow-md">
+                <div className="mt-4 bg-primary text-white text-xs font-semibold px-4 py-1.5 rounded-full flex items-center gap-1.5 shadow-md">
                   <Sparkles size={14} /> {selectedApplication.ai_match_score || 0}% {t('pipeline.overall_match')}
                 </div>
               </div>

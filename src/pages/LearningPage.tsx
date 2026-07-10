@@ -140,9 +140,9 @@ export function LearningPage() {
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
         {[
           { label: t('stats.total_courses', 'Total Courses'), value: courses.length, icon: BookOpen, bg: 'bg-primary-container' },
-          { label: t('stats.enrolled', 'Enrolled'), value: enrollments.length, icon: GraduationCap, bg: 'bg-tertiary-container' },
-          { label: t('stats.completed', 'Completed'), value: completedCount, icon: CheckCircle, bg: 'bg-success-container' },
-          { label: t('stats.avg_progress', 'Avg Progress'), value: `${avgProgress}%`, icon: Clock, bg: 'bg-warning-container' },
+          { label: t('stats.enrolled', 'Enrolled'), value: enrollments.length, icon: GraduationCap, bg: 'bg-surface-sunken' },
+          { label: t('stats.completed', 'Completed'), value: completedCount, icon: CheckCircle, bg: 'bg-success-subtle' },
+          { label: t('stats.avg_progress', 'Avg Progress'), value: `${avgProgress}%`, icon: Clock, bg: 'bg-warning-subtle' },
         ].map(stat => (
           <div key={stat.label} className="bg-surface rounded-xl border border-border p-4">
             <div className="flex items-center gap-3 mb-2">
@@ -336,7 +336,7 @@ export function LearningPage() {
                       <Card key={enr.id}>
                         <CardContent className="p-5">
                           <div className="flex items-center gap-4">
-                            <div className="w-12 h-12 rounded-full bg-warning-container flex items-center justify-center">
+                            <div className="w-12 h-12 rounded-full bg-warning-subtle flex items-center justify-center">
                               <Award size={24} className="text-ink" />
                             </div>
                             <div className="flex-1 min-w-0">

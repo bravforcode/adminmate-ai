@@ -145,7 +145,7 @@ export function ResetPasswordPage() {
               </div>
             )}
             {errors.password && (
-              <p className="text-error text-sm mt-1">{errors.password.message}</p>
+              <p className="text-destructive text-sm mt-1">{errors.password.message}</p>
             )}
           </div>
 
@@ -166,14 +166,14 @@ export function ResetPasswordPage() {
               placeholder="••••••••"
             />
             {errors.confirmPassword && (
-              <p className="text-error text-sm mt-1">{errors.confirmPassword.message}</p>
+              <p className="text-destructive text-sm mt-1">{errors.confirmPassword.message}</p>
             )}
           </div>
 
           {submitError && (
             <div
               role="alert"
-              className="rounded-lg border border-error/40 bg-error-container/40 text-error px-3 py-2 text-sm"
+              className="rounded-lg border border-error/40 bg-destructive-subtle/40 text-destructive px-3 py-2 text-sm"
             >
               {submitError}
             </div>
@@ -183,7 +183,7 @@ export function ResetPasswordPage() {
             type="submit"
             disabled={isSubmitting}
             data-testid="reset-submit"
-            className="w-full bg-primary text-on-primary py-2.5 rounded-lg font-label-md hover:opacity-90 transition-opacity disabled:opacity-50"
+            className="w-full bg-primary text-white py-2.5 rounded-lg font-label-md hover:opacity-90 transition-opacity disabled:opacity-50"
           >
             {isSubmitting ? t('auth.saving') : t('auth.update_password')}
           </button>

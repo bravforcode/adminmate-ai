@@ -45,16 +45,16 @@ export function LeaveBalance({ balances, leaveTypes, loading }: LeaveBalanceProp
               <div className="w-9 h-9 rounded-full bg-primary-fixed dark:bg-primary-container flex items-center justify-center">
                 <Calendar size={18} className="text-primary dark:text-primary-muted" />
               </div>
-              <span className="text-sm font-medium text-ink-variant dark:text-ink-variant">{lt?.name || t('balance.leave')}</span>
+              <span className="text-sm font-medium text-ink-variant text-ink-variant">{lt?.name || t('balance.leave')}</span>
             </div>
             <div className="flex items-baseline gap-1 mb-2">
-              <span className="text-2xl font-bold text-on-background dark:text-ink">{remaining}</span>
-              <span className="text-sm text-ink-variant dark:text-ink-variant">/ {b.total_days} {t('balance.days')}</span>
+              <span className="text-2xl font-bold text-on-background text-ink">{remaining}</span>
+              <span className="text-sm text-ink-variant text-ink-variant">/ {b.total_days} {t('balance.days')}</span>
             </div>
             <div className="w-full bg-surface-sunken rounded-full h-1.5">
               <div className="bg-primary h-1.5 rounded-full transition-all" style={{ width: `${Math.min(pct, 100)}%` }} />
             </div>
-            <div className="flex justify-between text-xs text-ink-variant dark:text-ink-variant mt-1.5">
+            <div className="flex justify-between text-xs text-ink-variant text-ink-variant mt-1.5">
               <span>{t('balance.used', { n: b.used_days })}</span>
               {b.pending_days > 0 && <span>{t('balance.pending', { n: b.pending_days })}</span>}
               {b.carried_over_days > 0 && <span>{t('balance.carried', { n: b.carried_over_days })}</span>}

@@ -132,7 +132,7 @@ export function LoginForm() {
           className="w-full px-3 py-2 rounded-lg border border-border bg-surface focus:border-primary focus:ring-2 focus:ring-primary/15 outline-none transition-all duration-150 text-ink placeholder:text-ink-faint"
           placeholder={t('auth.placeholder_email')}
         />
-        {errors.email && <p id="email-error" role="alert" className="text-error text-sm mt-1">{t('auth.error_invalid_email')}</p>}
+        {errors.email && <p id="email-error" role="alert" className="text-destructive text-sm mt-1">{t('auth.error_invalid_email')}</p>}
       </div>
 
       <div>
@@ -170,7 +170,7 @@ export function LoginForm() {
             {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
           </button>
         </div>
-        {errors.password && <p id="password-error" role="alert" className="text-error text-sm mt-1">{errors.password.message}</p>}
+        {errors.password && <p id="password-error" role="alert" className="text-destructive text-sm mt-1">{errors.password.message}</p>}
       </div>
 
       <label className="flex items-center gap-2 text-sm text-ink-secondary select-none cursor-pointer group">

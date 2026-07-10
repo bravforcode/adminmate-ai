@@ -65,7 +65,7 @@ export const ApplicationCard = memo(function ApplicationCard({ application, isAc
             <div className={cn(
               'w-12 h-12 rounded-full flex items-center justify-center font-bold text-lg shadow-sm',
               isActive ? 'ring-2 ring-primary-fixed' : '',
-              'bg-secondary-container text-on-secondary-container'
+              'bg-secondary-container text-ink-secondary-container'
             )}>
               {initials}
             </div>
@@ -86,7 +86,7 @@ export const ApplicationCard = memo(function ApplicationCard({ application, isAc
           {matchScore > 0 && (
             <span className={cn(
               'text-xs px-2 py-1 rounded-md font-medium flex items-center gap-1',
-              matchScore >= 80 ? 'bg-primary text-on-primary shadow-sm' : 'bg-surface-sunken text-ink-variant border border-border/50'
+              matchScore >= 80 ? 'bg-primary text-white shadow-sm' : 'bg-surface-sunken text-ink-variant border border-border/50'
             )}>
               {matchScore >= 80 && <Sparkles size={12} />}
               {t('pipeline.match_percent', { score: matchScore })}

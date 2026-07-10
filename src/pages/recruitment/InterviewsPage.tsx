@@ -52,8 +52,8 @@ export function InterviewsPage() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-headline-md font-bold text-ink dark:text-ink">{t('interviews.title')}</h1>
-        <p className="text-body-md text-ink-variant dark:text-ink-variant mt-1">{t('interviews.subtitle')}</p>
+        <h1 className="text-headline-md font-bold text-ink text-ink">{t('interviews.title')}</h1>
+        <p className="text-body-md text-ink-variant text-ink-variant mt-1">{t('interviews.subtitle')}</p>
       </div>
 
       {((tab === 'upcoming' && upcoming && upcoming.length > 0) || (tab === 'past' && past && past.length > 0)) && (
@@ -87,7 +87,7 @@ export function InterviewsPage() {
           onClick={() => handleTabChange('upcoming')}
           className={cn(
             'px-4 py-2 rounded-md text-sm font-medium transition-colors',
-            tab === 'upcoming' ? 'bg-surface shadow-sm text-ink dark:text-ink' : 'text-ink-variant dark:text-ink-variant hover:text-ink dark:hover:text-ink'
+            tab === 'upcoming' ? 'bg-surface shadow-sm text-ink text-ink' : 'text-ink-variant text-ink-variant hover:text-ink dark:hover:text-ink'
           )}
         >
           {t('interviews.tab_upcoming')}
@@ -96,7 +96,7 @@ export function InterviewsPage() {
           onClick={() => handleTabChange('past')}
           className={cn(
             'px-4 py-2 rounded-md text-sm font-medium transition-colors',
-            tab === 'past' ? 'bg-surface shadow-sm text-ink dark:text-ink' : 'text-ink-variant dark:text-ink-variant hover:text-ink dark:hover:text-ink'
+            tab === 'past' ? 'bg-surface shadow-sm text-ink text-ink' : 'text-ink-variant text-ink-variant hover:text-ink dark:hover:text-ink'
           )}
         >
           {t('interviews.tab_past')}

@@ -34,7 +34,7 @@ export function UserMenu() {
         aria-haspopup="true"
         aria-label={profile?.full_name ?? 'User menu'}
         data-testid="user-menu-button"
-        className="w-8 h-8 rounded-full bg-primary-container dark:bg-primary-container text-on-primary-container dark:text-primary-muted flex items-center justify-center text-sm font-semibold hover:opacity-80"
+        className="w-8 h-8 rounded-full bg-primary-container dark:bg-primary-container text-white-container dark:text-primary-muted flex items-center justify-center text-sm font-semibold hover:opacity-80"
       >
         {profile?.full_name?.charAt(0).toUpperCase() || 'U'}
       </button>
@@ -48,42 +48,42 @@ export function UserMenu() {
             exit={{ opacity: 0, scale: 0.9 }}
             transition={{ type: 'spring', damping: 20, stiffness: 400 }}
           >
-            <div className="px-4 py-2 border-b border-border dark:border-border">
-              <p className="text-sm font-semibold text-ink dark:text-ink">{profile?.full_name}</p>
-              <p className="text-xs text-ink-variant dark:text-ink-variant">{profile?.email}</p>
-              <span className="mt-1 inline-block text-xs font-medium capitalize bg-secondary-container text-on-secondary-container dark:text-primary-muted px-2 py-0.5 rounded-full">
+            <div className="px-4 py-2 border-b border-border border-border">
+              <p className="text-sm font-semibold text-ink text-ink">{profile?.full_name}</p>
+              <p className="text-xs text-ink-variant text-ink-variant">{profile?.email}</p>
+              <span className="mt-1 inline-block text-xs font-medium capitalize bg-secondary-container text-ink-secondary-container dark:text-primary-muted px-2 py-0.5 rounded-full">
                 {profile?.role || 'user'}
               </span>
             </div>
 
             <button
               onClick={() => { navigate('/settings'); setOpen(false) }}
-              className="w-full flex items-center gap-3 px-4 py-2 text-sm text-ink-variant dark:text-ink-variant hover:bg-surface-sunken dark:hover:bg-surface-sunken transition-colors"
+              className="w-full flex items-center gap-3 px-4 py-2 text-sm text-ink-variant text-ink-variant hover:bg-surface-sunken dark:hover:bg-surface-sunken transition-colors"
             >
               <User size={16} /> {t('nav.profile')}
             </button>
             <button
               onClick={() => { navigate('/settings'); setOpen(false) }}
-              className="w-full flex items-center gap-3 px-4 py-2 text-sm text-ink-variant dark:text-ink-variant hover:bg-surface-sunken dark:hover:bg-surface-sunken transition-colors"
+              className="w-full flex items-center gap-3 px-4 py-2 text-sm text-ink-variant text-ink-variant hover:bg-surface-sunken dark:hover:bg-surface-sunken transition-colors"
             >
               <Settings size={16} /> {t('nav.settings')}
             </button>
 
-            <hr className="my-1 border-border dark:border-border" />
+            <hr className="my-1 border-border border-border" />
             <button
               onClick={() => {
                 localStorage.removeItem('adminmate_onboarding_tour_completed')
                 window.location.reload()
                 setOpen(false)
               }}
-              className="w-full flex items-center gap-3 px-4 py-2 text-sm text-ink-variant dark:text-ink-variant hover:bg-surface-sunken dark:hover:bg-surface-sunken transition-colors"
+              className="w-full flex items-center gap-3 px-4 py-2 text-sm text-ink-variant text-ink-variant hover:bg-surface-sunken dark:hover:bg-surface-sunken transition-colors"
             >
               <RotateCcw size={16} /> {t('tour.restart')}
             </button>
-            <hr className="my-1 border-border dark:border-border" />
+            <hr className="my-1 border-border border-border" />
             <button
               onClick={handleLogout}
-              className="w-full flex items-center gap-3 px-4 py-2 text-sm text-error dark:text-error hover:bg-error-container/10 dark:hover:bg-error-container/30 transition-colors"
+              className="w-full flex items-center gap-3 px-4 py-2 text-sm text-destructive dark:text-destructive hover:bg-destructive-subtle/10 dark:hover:bg-destructive-subtle/30 transition-colors"
             >
               <LogOut size={16} /> {t('auth.sign_out')}
             </button>

@@ -7,9 +7,9 @@ import { cn } from '../../lib/utils'
 type OkrStatus = 'on_track' | 'at_risk' | 'behind' | 'completed'
 
 const STATUS_CONFIG: Record<OkrStatus, { color: string; icon: typeof Target; label: string }> = {
-  on_track: { color: 'bg-green-50 dark:bg-success-container/30 text-green-700 dark:text-success', icon: CheckCircle2, label: 'On Track' },
-  at_risk: { color: 'bg-yellow-50 dark:bg-warning-container/30 text-yellow-700 dark:text-warning', icon: AlertTriangle, label: 'At Risk' },
-  behind: { color: 'bg-red-50 dark:bg-error-container/30 text-red-700 dark:text-error', icon: AlertTriangle, label: 'Behind' },
+  on_track: { color: 'bg-green-50 dark:bg-success-subtle/30 text-green-700 dark:text-success', icon: CheckCircle2, label: 'On Track' },
+  at_risk: { color: 'bg-yellow-50 dark:bg-warning-subtle/30 text-yellow-700 dark:text-warning', icon: AlertTriangle, label: 'At Risk' },
+  behind: { color: 'bg-red-50 dark:bg-destructive-subtle/30 text-red-700 dark:text-destructive', icon: AlertTriangle, label: 'Behind' },
   completed: { color: 'bg-blue-50 dark:bg-primary-container/30 text-blue-700 dark:text-primary-muted', icon: CheckCircle2, label: 'Completed' },
 }
 
@@ -50,7 +50,7 @@ export function OKRTree({ objectives, keyResults, onObjectiveClick, onKeyResultC
 
   if (objectives.length === 0) {
     return (
-      <div className="text-center py-8 text-ink-variant dark:text-ink-variant">
+      <div className="text-center py-8 text-ink-variant text-ink-variant">
         <Target size={32} className="mx-auto mb-2 opacity-50" />
         <p className="text-sm">{t('no_okrs', 'No OKRs Found')}</p>
       </div>
@@ -79,7 +79,7 @@ export function OKRTree({ objectives, keyResults, onObjectiveClick, onKeyResultC
               <div className="flex-1 min-w-0">
                 <p className="text-sm font-semibold text-ink truncate">{obj.title}</p>
                 {obj.user_profiles?.full_name && (
-                  <p className="text-xs text-ink-variant dark:text-ink-variant mt-0.5">{obj.user_profiles.full_name}</p>
+                  <p className="text-xs text-ink-variant text-ink-variant mt-0.5">{obj.user_profiles.full_name}</p>
                 )}
               </div>
               <span className={cn('px-2 py-0.5 rounded text-xs font-medium', statusCfg.color)}>
@@ -90,7 +90,7 @@ export function OKRTree({ objectives, keyResults, onObjectiveClick, onKeyResultC
             </button>
 
             {isExpanded && (
-              <div className="border-t border-border/50 dark:border-border/50 px-4 pb-4">
+              <div className="border-t border-border/50 border-border/50 px-4 pb-4">
                 {objKeyResults.length === 0 ? (
                   <p className="text-sm text-ink-variant/60 dark:text-outline-variant py-3 italic">{t('no_key_results', 'No key results defined')}</p>
                 ) : (
@@ -106,8 +106,8 @@ export function OKRTree({ objectives, keyResults, onObjectiveClick, onKeyResultC
                           <div className="flex-1 min-w-0">
                             <p className="text-xs font-medium text-ink truncate mb-1">{kr.title}</p>
                             <div className="flex items-center justify-between mb-1">
-                              <span className="text-[10px] text-ink-variant dark:text-ink-variant">{t('target', 'Target')}: {kr.target_value}{kr.unit ? ` ${kr.unit}` : ''}</span>
-                              <span className="text-[10px] font-medium text-ink dark:text-ink">{kr.current_value} / {kr.target_value}</span>
+                              <span className="text-[10px] text-ink-variant text-ink-variant">{t('target', 'Target')}: {kr.target_value}{kr.unit ? ` ${kr.unit}` : ''}</span>
+                              <span className="text-[10px] font-medium text-ink text-ink">{kr.current_value} / {kr.target_value}</span>
                             </div>
                             <div className="w-full bg-surface-sunken rounded-full h-2">
                               <div
@@ -120,7 +120,7 @@ export function OKRTree({ objectives, keyResults, onObjectiveClick, onKeyResultC
                               />
                             </div>
                           </div>
-                          <span className="text-xs font-semibold text-ink-variant dark:text-ink-variant w-10 text-right">{pct}%</span>
+                          <span className="text-xs font-semibold text-ink-variant text-ink-variant w-10 text-right">{pct}%</span>
                         </button>
                       )
                     })}

@@ -49,45 +49,45 @@ export function ScheduleInterviewForm({ applicationId, onClose }: Props) {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-      <div className="flex items-center gap-2 mb-4"><Calendar size={20} className="text-primary dark:text-primary-muted" /><h3 className="font-semibold dark:text-ink">{t('interviews.form.title')}</h3></div>
+      <div className="flex items-center gap-2 mb-4"><Calendar size={20} className="text-primary dark:text-primary-muted" /><h3 className="font-semibold text-ink">{t('interviews.form.title')}</h3></div>
       <div className="form-grid-2 grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div>
-          <label className="block text-sm font-medium mb-1 dark:text-ink" htmlFor="interviewer-name">{t('interviews.form.interviewer_name')} *</label>
-          <input {...register('interviewer_name')} id="interviewer-name" aria-required="true" aria-invalid={!!errors.interviewer_name} aria-describedby={errors.interviewer_name ? 'interviewer-name-error' : undefined} className="w-full px-4 py-3 rounded-xl border border-border bg-surface-sunken-lowest dark:bg-surface-sunken-lowest text-ink focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all duration-200 outline-none" />
-          {errors.interviewer_name && <p id="interviewer-name-error" role="alert" className="text-error dark:text-error text-xs mt-1">{errors.interviewer_name.message}</p>}
+          <label className="block text-sm font-medium mb-1 text-ink" htmlFor="interviewer-name">{t('interviews.form.interviewer_name')} *</label>
+          <input {...register('interviewer_name')} id="interviewer-name" aria-required="true" aria-invalid={!!errors.interviewer_name} aria-describedby={errors.interviewer_name ? 'interviewer-name-error' : undefined} className="w-full px-4 py-3 rounded-xl border border-border bg-surface-sunken-lowest bg-surface-sunken-lowest text-ink focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all duration-200 outline-none" />
+          {errors.interviewer_name && <p id="interviewer-name-error" role="alert" className="text-destructive dark:text-destructive text-xs mt-1">{errors.interviewer_name.message}</p>}
         </div>
         <div>
-          <label className="block text-sm font-medium mb-1 dark:text-ink" htmlFor="interviewer-email">{t('interviews.form.interviewer_email')} *</label>
-          <input {...register('interviewer_email')} id="interviewer-email" type="email" aria-required="true" aria-invalid={!!errors.interviewer_email} aria-describedby={errors.interviewer_email ? 'interviewer-email-error' : undefined} className="w-full px-4 py-3 rounded-xl border border-border bg-surface-sunken-lowest dark:bg-surface-sunken-lowest text-ink focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all duration-200 outline-none" />
-          {errors.interviewer_email && <p id="interviewer-email-error" role="alert" className="text-error dark:text-error text-xs mt-1">{errors.interviewer_email.message}</p>}
+          <label className="block text-sm font-medium mb-1 text-ink" htmlFor="interviewer-email">{t('interviews.form.interviewer_email')} *</label>
+          <input {...register('interviewer_email')} id="interviewer-email" type="email" aria-required="true" aria-invalid={!!errors.interviewer_email} aria-describedby={errors.interviewer_email ? 'interviewer-email-error' : undefined} className="w-full px-4 py-3 rounded-xl border border-border bg-surface-sunken-lowest bg-surface-sunken-lowest text-ink focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all duration-200 outline-none" />
+          {errors.interviewer_email && <p id="interviewer-email-error" role="alert" className="text-destructive dark:text-destructive text-xs mt-1">{errors.interviewer_email.message}</p>}
         </div>
       </div>
       <div className="form-grid-2 grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div>
-          <label className="block text-sm font-medium mb-1 dark:text-ink">{t('interviews.form.type')}</label>
-          <select {...register('interview_type')} className="w-full px-4 py-3 rounded-xl border border-border bg-surface-sunken-lowest dark:bg-surface-sunken-lowest text-ink focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all duration-200 outline-none">
+          <label className="block text-sm font-medium mb-1 text-ink">{t('interviews.form.type')}</label>
+          <select {...register('interview_type')} className="w-full px-4 py-3 rounded-xl border border-border bg-surface-sunken-lowest bg-surface-sunken-lowest text-ink focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all duration-200 outline-none">
             {TYPES.map(type => <option key={type} value={type}>{t(`interviews.form.types.${type}`)}</option>)}
           </select>
         </div>
         <div>
-          <label className="block text-sm font-medium mb-1 dark:text-ink">{t('interviews.form.duration')}</label>
-          <input {...register('duration_minutes')} type="number" min="15" className="w-full px-4 py-3 rounded-xl border border-border bg-surface-sunken-lowest dark:bg-surface-sunken-lowest text-ink focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all duration-200 outline-none" />
+          <label className="block text-sm font-medium mb-1 text-ink">{t('interviews.form.duration')}</label>
+          <input {...register('duration_minutes')} type="number" min="15" className="w-full px-4 py-3 rounded-xl border border-border bg-surface-sunken-lowest bg-surface-sunken-lowest text-ink focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all duration-200 outline-none" />
         </div>
       </div>
       <div>
-          <label className="block text-sm font-medium mb-1 dark:text-ink" htmlFor="scheduled-at">{t('interviews.form.datetime')} *</label>
-          <input {...register('scheduled_at')} id="scheduled-at" type="datetime-local" aria-required="true" aria-invalid={!!errors.scheduled_at} aria-describedby={errors.scheduled_at ? 'scheduled-at-error' : undefined} className="w-full px-4 py-3 rounded-xl border border-border bg-surface-sunken-lowest dark:bg-surface-sunken-lowest text-ink focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all duration-200 outline-none" />
-          {errors.scheduled_at && <p id="scheduled-at-error" role="alert" className="text-error dark:text-error text-xs mt-1">{errors.scheduled_at.message}</p>}
+          <label className="block text-sm font-medium mb-1 text-ink" htmlFor="scheduled-at">{t('interviews.form.datetime')} *</label>
+          <input {...register('scheduled_at')} id="scheduled-at" type="datetime-local" aria-required="true" aria-invalid={!!errors.scheduled_at} aria-describedby={errors.scheduled_at ? 'scheduled-at-error' : undefined} className="w-full px-4 py-3 rounded-xl border border-border bg-surface-sunken-lowest bg-surface-sunken-lowest text-ink focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all duration-200 outline-none" />
+          {errors.scheduled_at && <p id="scheduled-at-error" role="alert" className="text-destructive dark:text-destructive text-xs mt-1">{errors.scheduled_at.message}</p>}
       </div>
       <div className="form-grid-2 grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div>
-          <label className="block text-sm font-medium mb-1 dark:text-ink">{t('interviews.form.location')}</label>
-          <input {...register('location')} className="w-full px-4 py-3 rounded-xl border border-border bg-surface-sunken-lowest dark:bg-surface-sunken-lowest text-ink focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all duration-200 outline-none" placeholder={t('interviews.form.location_placeholder')} />
+          <label className="block text-sm font-medium mb-1 text-ink">{t('interviews.form.location')}</label>
+          <input {...register('location')} className="w-full px-4 py-3 rounded-xl border border-border bg-surface-sunken-lowest bg-surface-sunken-lowest text-ink focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all duration-200 outline-none" placeholder={t('interviews.form.location_placeholder')} />
         </div>
         <div>
-          <label className="block text-sm font-medium mb-1 dark:text-ink" htmlFor="meeting-link">{t('interviews.form.meeting_link')}</label>
-          <input {...register('meeting_link')} id="meeting-link" aria-invalid={!!errors.meeting_link} aria-describedby={errors.meeting_link ? 'meeting-link-error' : undefined} className="w-full px-4 py-3 rounded-xl border border-border bg-surface-sunken-lowest dark:bg-surface-sunken-lowest text-ink focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all duration-200 outline-none" placeholder={t('interviews.form.meeting_link_placeholder')} />
-          {errors.meeting_link && <p id="meeting-link-error" role="alert" className="text-error dark:text-error text-xs mt-1">{errors.meeting_link.message}</p>}
+          <label className="block text-sm font-medium mb-1 text-ink" htmlFor="meeting-link">{t('interviews.form.meeting_link')}</label>
+          <input {...register('meeting_link')} id="meeting-link" aria-invalid={!!errors.meeting_link} aria-describedby={errors.meeting_link ? 'meeting-link-error' : undefined} className="w-full px-4 py-3 rounded-xl border border-border bg-surface-sunken-lowest bg-surface-sunken-lowest text-ink focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all duration-200 outline-none" placeholder={t('interviews.form.meeting_link_placeholder')} />
+          {errors.meeting_link && <p id="meeting-link-error" role="alert" className="text-destructive dark:text-destructive text-xs mt-1">{errors.meeting_link.message}</p>}
         </div>
       </div>
       <div className="form-actions flex justify-end gap-3 pt-4">

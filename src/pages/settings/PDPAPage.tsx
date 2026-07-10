@@ -118,7 +118,7 @@ export function PDPAPage() {
         <button
           onClick={() => exportMutation.mutate()}
           disabled={exportMutation.isPending}
-          className="flex items-center gap-2 px-4 py-2 bg-primary text-on-primary rounded-lg font-medium hover:opacity-90 disabled:opacity-50 text-sm"
+          className="flex items-center gap-2 px-4 py-2 bg-primary text-white rounded-lg font-medium hover:opacity-90 disabled:opacity-50 text-sm"
         >
           <FileJson size={16} />
           {exportMutation.isPending ? (t('pdpa.exporting') || 'Exporting...') : (t('pdpa.export_button') || 'Export My Data')}
@@ -128,15 +128,15 @@ export function PDPAPage() {
       {/* Data Deletion */}
       <div className="bg-surface rounded-xl border border-error/30 shadow-sm p-6">
         <div className="flex items-center gap-2 mb-4">
-          <Trash2 size={20} className="text-error" />
+          <Trash2 size={20} className="text-destructive" />
           <h3 className="text-title-lg font-semibold text-ink">{t('pdpa.delete_title') || 'Delete My Account'}</h3>
         </div>
         <p className="text-sm text-ink-variant mb-4">
           {t('pdpa.delete_desc') || 'Anonymize your personal data. PII fields will be replaced with anonymized values. Non-PII business records (application history, audit logs) will be retained for operational continuity.'}
         </p>
-        <div className="bg-error-container/30 rounded-lg p-3 mb-4">
+        <div className="bg-destructive-subtle/30 rounded-lg p-3 mb-4">
           <div className="flex items-start gap-2">
-            <AlertTriangle size={16} className="text-error mt-0.5 flex-shrink-0" />
+            <AlertTriangle size={16} className="text-destructive mt-0.5 flex-shrink-0" />
             <p className="text-xs text-ink-variant">{t('pdpa.delete_warning') || 'This action is irreversible. Your name, email, phone, and other personal identifiers will be permanently anonymized.'}</p>
           </div>
         </div>
@@ -226,7 +226,7 @@ export function PDPAPage() {
                     <button
                       onClick={() => withdrawMutation.mutate(consent.id)}
                       disabled={withdrawMutation.isPending}
-                      className="flex items-center gap-1 text-xs text-error hover:underline px-2 py-1 disabled:opacity-50"
+                      className="flex items-center gap-1 text-xs text-destructive hover:underline px-2 py-1 disabled:opacity-50"
                     >
                       {withdrawMutation.isPending ? <Loader2 size={12} className="animate-spin" /> : <XCircle size={12} />}
                       {t('pdpa.revoke_button') || 'Revoke'}

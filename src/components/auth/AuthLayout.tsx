@@ -12,7 +12,7 @@ interface AuthLayoutProps {
  */
 export function AuthLayout({ children, title, subtitle }: AuthLayoutProps) {
   return (
-    <div className="min-h-screen flex items-center justify-center bg-background dark:bg-surface-sunken-lowest p-6 font-sans">
+    <div className="min-h-screen flex items-center justify-center bg-background bg-surface-sunken-lowest p-6 font-sans">
       <div className="w-full max-w-[420px]">
         {/* Logo */}
         <div className="text-center mb-10">
@@ -33,7 +33,7 @@ export function AuthLayout({ children, title, subtitle }: AuthLayoutProps) {
             {title}
           </h2>
           {subtitle && (
-            <p className="text-sm font-light text-ink-secondary dark:text-ink-variant m-0 mb-6 leading-relaxed">
+            <p className="text-sm font-light text-ink-secondary text-ink-variant m-0 mb-6 leading-relaxed">
               {subtitle}
             </p>
           )}

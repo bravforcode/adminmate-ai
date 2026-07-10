@@ -62,7 +62,7 @@ export function LeaveRequestForm({ leaveTypes, onSuccess, onCancel }: LeaveReque
 
   return (
     <Card className="border-primary dark:border-primary">
-      <CardHeader className="border-b border-surface-container-high bg-surface-raised dark:bg-surface-sunken">
+      <CardHeader className="border-b border-surface-container-high bg-surface-raised bg-surface-sunken">
         <CardTitle className="text-lg flex items-center gap-2">
           <Calendar size={18} className="text-primary dark:text-primary-muted" />
           {t('form.title')}
@@ -75,7 +75,7 @@ export function LeaveRequestForm({ leaveTypes, onSuccess, onCancel }: LeaveReque
             <select
               value={form.leave_type_id}
               onChange={(e) => setForm({ ...form, leave_type_id: e.target.value })}
-              className="w-full px-4 py-2.5 rounded-xl border border-border bg-surface-sunken-lowest dark:bg-surface-sunken-lowest text-ink focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all text-sm"
+              className="w-full px-4 py-2.5 rounded-xl border border-border bg-surface-sunken-lowest bg-surface-sunken-lowest text-ink focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all text-sm"
             >
               <option value="">{t('form.select_type')}</option>
               {leaveTypes.map(lt => (
@@ -91,7 +91,7 @@ export function LeaveRequestForm({ leaveTypes, onSuccess, onCancel }: LeaveReque
               step={0.5}
               value={form.total_days}
               onChange={(e) => setForm({ ...form, total_days: parseFloat(e.target.value) || 1 })}
-              className="w-full px-4 py-2.5 rounded-xl border border-border bg-surface-sunken-lowest dark:bg-surface-sunken-lowest text-ink focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all text-sm"
+              className="w-full px-4 py-2.5 rounded-xl border border-border bg-surface-sunken-lowest bg-surface-sunken-lowest text-ink focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all text-sm"
             />
           </div>
           <div>
@@ -100,7 +100,7 @@ export function LeaveRequestForm({ leaveTypes, onSuccess, onCancel }: LeaveReque
               type="date"
               value={form.start_date}
               onChange={(e) => handleDateChange('start_date', e.target.value)}
-              className="w-full px-4 py-2.5 rounded-xl border border-border bg-surface-sunken-lowest dark:bg-surface-sunken-lowest text-ink focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all text-sm"
+              className="w-full px-4 py-2.5 rounded-xl border border-border bg-surface-sunken-lowest bg-surface-sunken-lowest text-ink focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all text-sm"
             />
           </div>
           <div>
@@ -109,7 +109,7 @@ export function LeaveRequestForm({ leaveTypes, onSuccess, onCancel }: LeaveReque
               type="date"
               value={form.end_date}
               onChange={(e) => handleDateChange('end_date', e.target.value)}
-              className="w-full px-4 py-2.5 rounded-xl border border-border bg-surface-sunken-lowest dark:bg-surface-sunken-lowest text-ink focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all text-sm"
+              className="w-full px-4 py-2.5 rounded-xl border border-border bg-surface-sunken-lowest bg-surface-sunken-lowest text-ink focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all text-sm"
             />
           </div>
         </div>
@@ -119,7 +119,7 @@ export function LeaveRequestForm({ leaveTypes, onSuccess, onCancel }: LeaveReque
             value={form.reason}
             onChange={(e) => setForm({ ...form, reason: e.target.value })}
             rows={3}
-            className="w-full px-4 py-2.5 rounded-xl border border-border bg-surface-sunken-lowest dark:bg-surface-sunken-lowest text-ink focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all text-sm resize-none"
+            className="w-full px-4 py-2.5 rounded-xl border border-border bg-surface-sunken-lowest bg-surface-sunken-lowest text-ink focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all text-sm resize-none"
             placeholder={t('form.reason_placeholder')}
           />
         </div>

@@ -15,11 +15,11 @@ import { Offer } from '../../types/models'
 import { LoadingState } from '../../components/shared/LoadingState'
 
 const STATUS_COLORS: Record<string, string> = {
-  draft: 'bg-surface-sunken text-ink-variant dark:text-ink-variant',
-  sent: 'bg-secondary-container text-on-secondary-container dark:text-primary-muted',
-  viewed: 'bg-purple-50 dark:bg-warning-container/30 text-purple-700 dark:text-warning',
-  accepted: 'bg-green-50 dark:bg-success-container/30 text-green-700 dark:text-success',
-  rejected: 'bg-red-50 dark:bg-error-container/30 text-red-700 dark:text-error',
+  draft: 'bg-surface-sunken text-ink-variant text-ink-variant',
+  sent: 'bg-secondary-container text-ink-secondary-container dark:text-primary-muted',
+  viewed: 'bg-purple-50 dark:bg-warning-subtle/30 text-purple-700 dark:text-warning',
+  accepted: 'bg-green-50 dark:bg-success-subtle/30 text-green-700 dark:text-success',
+  rejected: 'bg-red-50 dark:bg-destructive-subtle/30 text-red-700 dark:text-destructive',
   expired: 'bg-gray-50 text-gray-500 dark:text-outline-variant',
 }
 
@@ -48,8 +48,8 @@ export function HiringPage() {
       {/* Header */}
       <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-4">
         <div>
-          <h1 className="text-headline-md md:text-headline-lg font-bold text-ink dark:text-ink">{t('title')}</h1>
-          <p className="text-body-md text-ink-variant dark:text-ink-variant mt-1">{t('subtitle')}</p>
+          <h1 className="text-headline-md md:text-headline-lg font-bold text-ink text-ink">{t('title')}</h1>
+          <p className="text-body-md text-ink-variant text-ink-variant mt-1">{t('subtitle')}</p>
         </div>
         <div className="flex gap-2">
           <Button
@@ -117,9 +117,9 @@ export function HiringPage() {
                   onClick={() => setShowForm(true)}
                   className="flex flex-col items-start p-4 border border-border rounded-lg hover:border-primary dark:hover:border-primary hover:bg-surface-sunken dark:hover:bg-surface-sunken transition-all text-left group"
                 >
-                  <doc.icon size={24} className="text-tertiary mb-3 group-hover:text-primary dark:group-hover:text-primary-muted transition-colors" />
-                  <span className="text-base font-semibold text-ink dark:text-ink">{t(`doc_generation.${doc.key}`)}</span>
-                  <span className="text-xs text-ink-variant dark:text-ink-variant mt-1">{t(`doc_generation.${doc.key}_sub`)}</span>
+                  <doc.icon size={24} className="text-ink-faint mb-3 group-hover:text-primary dark:group-hover:text-primary-muted transition-colors" />
+                  <span className="text-base font-semibold text-ink text-ink">{t(`doc_generation.${doc.key}`)}</span>
+                  <span className="text-xs text-ink-variant text-ink-variant mt-1">{t(`doc_generation.${doc.key}_sub`)}</span>
                 </button>
               ))}
             </div>
@@ -127,9 +127,9 @@ export function HiringPage() {
 
           {/* Document Tracking Table */}
           <section className="bg-surface border border-border rounded-xl overflow-hidden shadow-sm">
-            <div className="p-4 border-b border-border flex justify-between items-center bg-surface-sunken-lowest dark:bg-surface-sunken-lowest">
-              <h3 className="text-lg font-semibold text-ink dark:text-ink">{t('tracking.title')}</h3>
-              <span className="text-xs font-semibold text-ink-variant dark:text-ink-variant bg-surface-sunken px-2 py-1 rounded">
+            <div className="p-4 border-b border-border flex justify-between items-center bg-surface-sunken-lowest bg-surface-sunken-lowest">
+              <h3 className="text-lg font-semibold text-ink text-ink">{t('tracking.title')}</h3>
+              <span className="text-xs font-semibold text-ink-variant text-ink-variant bg-surface-sunken px-2 py-1 rounded">
                 {offers?.filter((o: Offer) => o.status !== 'accepted').length || 0} {t('tracking.pending')}
               </span>
             </div>
@@ -139,37 +139,37 @@ export function HiringPage() {
               <div className="table-scroll">
                 <table role="table" className="table-card-mobile w-full text-left border-collapse min-w-[500px]">
                   <thead>
-                    <tr className="bg-surface-sunken dark:bg-surface-sunken/50 border-b border-border/50 dark:border-border/50">
-                      <th className="py-3 px-4 text-xs font-semibold uppercase tracking-wider text-ink-variant dark:text-ink-variant">
+                    <tr className="bg-surface-sunken bg-surface-sunken/50 border-b border-border/50 border-border/50">
+                      <th className="py-3 px-4 text-xs font-semibold uppercase tracking-wider text-ink-variant text-ink-variant">
                         {t('tracking.candidate')}
                       </th>
-                      <th className="py-3 px-4 text-xs font-semibold uppercase tracking-wider text-ink-variant dark:text-ink-variant">
+                      <th className="py-3 px-4 text-xs font-semibold uppercase tracking-wider text-ink-variant text-ink-variant">
                         {t('tracking.doc_type')}
                       </th>
-                      <th className="py-3 px-4 text-xs font-semibold uppercase tracking-wider text-ink-variant dark:text-ink-variant">
+                      <th className="py-3 px-4 text-xs font-semibold uppercase tracking-wider text-ink-variant text-ink-variant">
                         {t('tracking.status')}
                       </th>
-                      <th className="py-3 px-4 text-xs font-semibold uppercase tracking-wider text-ink-variant dark:text-ink-variant text-center">
+                      <th className="py-3 px-4 text-xs font-semibold uppercase tracking-wider text-ink-variant text-ink-variant text-center">
                         {t('tracking.auto_remind')}
                       </th>
                     </tr>
                   </thead>
-                  <tbody className="text-sm text-ink dark:text-ink">
+                  <tbody className="text-sm text-ink text-ink">
                     {offers?.map((offer: Offer) => (
                       <tr
                         key={offer.id}
                         onClick={() => setSelectedOffer(offer)}
                         className={cn(
-                          'border-b border-border/50 dark:border-border/50 hover:bg-surface-sunken/50 dark:hover:bg-surface-sunken/30 transition-colors duration-150 cursor-pointer',
-                          selectedOffer?.id === offer.id && 'bg-surface-sunken dark:bg-surface-sunken'
+                          'border-b border-border/50 border-border/50 hover:bg-surface-sunken/50 dark:hover:bg-surface-sunken/30 transition-colors duration-150 cursor-pointer',
+                          selectedOffer?.id === offer.id && 'bg-surface-sunken bg-surface-sunken'
                         )}
                       >
-                        <td className="py-3 px-4 text-sm text-ink dark:text-ink" data-label={t('tracking.candidate')}>
-                          <div className="text-sm font-semibold text-ink dark:text-ink">{offer.candidates?.full_name}</div>
-                          <div className="text-xs text-ink-variant dark:text-ink-variant">{offer.position_title}</div>
+                        <td className="py-3 px-4 text-sm text-ink text-ink" data-label={t('tracking.candidate')}>
+                          <div className="text-sm font-semibold text-ink text-ink">{offer.candidates?.full_name}</div>
+                          <div className="text-xs text-ink-variant text-ink-variant">{offer.position_title}</div>
                         </td>
-                        <td className="py-3 px-4 text-sm text-ink dark:text-ink" data-label={t('tracking.doc_type')}>{t('tracking.offer_letter')}</td>
-                        <td className="py-3 px-4 text-sm text-ink dark:text-ink" data-label={t('tracking.status')}>
+                        <td className="py-3 px-4 text-sm text-ink text-ink" data-label={t('tracking.doc_type')}>{t('tracking.offer_letter')}</td>
+                        <td className="py-3 px-4 text-sm text-ink text-ink" data-label={t('tracking.status')}>
                           <span
                             className={cn(
                               'inline-flex items-center px-2 py-1 rounded text-xs font-medium',
@@ -223,22 +223,22 @@ export function HiringPage() {
             {/* Preview Header */}
             <div className="p-4 border-b border-border bg-surface-sunken rounded-t-xl flex justify-between items-center">
               <div>
-                <h4 className="text-base font-semibold text-ink dark:text-ink">
+                <h4 className="text-base font-semibold text-ink text-ink">
                   {selectedOffer ? t('preview.offer_preview') : t('preview.empty_title')}
                 </h4>
-                <p className="text-xs text-ink-variant dark:text-ink-variant">
+                <p className="text-xs text-ink-variant text-ink-variant">
                   {selectedOffer
                     ? `${selectedOffer.candidates?.full_name} · ${selectedOffer.jobs?.title || ''}`
                     : t('preview.empty_subtitle')}
                 </p>
               </div>
-              <button className="text-ink-variant dark:text-ink-variant hover:text-primary dark:hover:text-primary-muted transition-colors">
+              <button className="text-ink-variant text-ink-variant hover:text-primary dark:hover:text-primary-muted transition-colors">
                 <ExternalLink size={18} />
               </button>
             </div>
 
             {/* Document Canvas */}
-            <div className="flex-1 p-6 overflow-y-auto bg-surface-sunken-lowest dark:bg-surface-sunken-lowest relative">
+            <div className="flex-1 p-6 overflow-y-auto bg-surface-sunken-lowest bg-surface-sunken-lowest relative">
               <div className="absolute inset-0 flex justify-center items-center pointer-events-none opacity-5">
                 <FileText size={120} />
               </div>
@@ -252,19 +252,19 @@ export function HiringPage() {
                   </div>
                   <div>
                     <span className="font-bold">{t('preview.employee')}:</span>{' '}
-                    <span className="bg-primary-container text-on-primary-container px-1 rounded animate-pulse">
+                    <span className="bg-primary-container text-white-container px-1 rounded animate-pulse">
                       {selectedOffer.candidates?.full_name}
                     </span>
                   </div>
                   <div>
                     <span className="font-bold">{t('preview.position')}:</span>{' '}
-                    <span className="bg-primary-container text-on-primary-container px-1 rounded">
+                    <span className="bg-primary-container text-white-container px-1 rounded">
                       {selectedOffer.position_title}
                     </span>
                   </div>
                   <div>
                     <span className="font-bold">{t('preview.salary')}:</span>{' '}
-                    <span className="bg-primary-container text-on-primary-container px-1 rounded">
+                    <span className="bg-primary-container text-white-container px-1 rounded">
                       {new Intl.NumberFormat('en-US', { style: 'currency', currency: selectedOffer.salary_currency ?? 'THB' }).format(
                         selectedOffer.salary_offered ?? 0
                       )}
@@ -272,11 +272,11 @@ export function HiringPage() {
                   </div>
                   <div>
                     <span className="font-bold">{t('preview.start_date')}:</span>{' '}
-                    <span className="bg-primary-container text-on-primary-container px-1 rounded">
+                    <span className="bg-primary-container text-white-container px-1 rounded">
                       {selectedOffer.start_date}
                     </span>
                   </div>
-                  <p className="text-ink-variant dark:text-ink-variant mt-2 leading-relaxed text-xs">
+                  <p className="text-ink-variant text-ink-variant mt-2 leading-relaxed text-xs">
                     {t('preview.disclaimer')}
                   </p>
                   <div className="mt-6 border-t border-dashed border-border pt-4 flex justify-between">
@@ -291,7 +291,7 @@ export function HiringPage() {
                   </div>
                 </div>
               ) : (
-                <div className="flex flex-col items-center justify-center h-full text-ink-variant dark:text-ink-variant relative z-10">
+                <div className="flex flex-col items-center justify-center h-full text-ink-variant text-ink-variant relative z-10">
                   <FileText size={48} className="mb-3 opacity-30" />
                   <p className="text-sm">{t('preview.select_offer')}</p>
                 </div>

@@ -73,8 +73,8 @@ export function OnboardingMgmtPage() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-headline-md font-bold text-ink dark:text-ink">{t('hub')}</h1>
-        <p className="text-body-md text-ink-variant dark:text-ink-variant mt-1">{t('subtitle')}</p>
+        <h1 className="text-headline-md font-bold text-ink text-ink">{t('hub')}</h1>
+        <p className="text-body-md text-ink-variant text-ink-variant mt-1">{t('subtitle')}</p>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
@@ -84,7 +84,7 @@ export function OnboardingMgmtPage() {
             {myChecklist ? (
               <>
                 <div className="mb-4">
-                  <div className="flex justify-between text-sm text-ink-variant dark:text-ink-variant mb-1">
+                  <div className="flex justify-between text-sm text-ink-variant text-ink-variant mb-1">
                     <span>{t('progress')}</span>
                     <span>{myChecklist.progress_percentage || 0}%</span>
                   </div>
@@ -105,28 +105,28 @@ export function OnboardingMgmtPage() {
                         disabled={isUpcoming}
                         className={cn(
                           'w-full flex items-center gap-3 p-3 rounded-lg border text-left transition-colors',
-                          isCompleted && 'bg-surface-sunken border-border dark:border-border',
+                          isCompleted && 'bg-surface-sunken border-border border-border',
                           isCurrent && 'bg-surface border-primary dark:border-primary ring-1 ring-primary dark:ring-primary',
                           isUpcoming && 'bg-surface border-border opacity-60 cursor-not-allowed'
                         )}
                       >
                         <div className={cn(
                           'w-6 h-6 rounded-full flex items-center justify-center shrink-0',
-                          isCompleted && 'bg-primary text-on-primary',
+                          isCompleted && 'bg-primary text-white',
                           isCurrent && 'border-2 border-primary text-primary',
                           isUpcoming && 'border-2 border-border'
                         )}>
                           {isCompleted ? <Check size={14} /> : isCurrent ? <div className="w-2 h-2 bg-primary rounded-full" /> : null}
                         </div>
                         <div className="flex-1">
-                          <p className={cn('text-sm font-semibold dark:text-ink', isCompleted && 'line-through text-ink-variant dark:text-ink-variant')}>{task.task_name}</p>
-                          {isCurrent && <p className="text-xs text-error mt-0.5">{t('due_today')}</p>}
+                          <p className={cn('text-sm font-semibold text-ink', isCompleted && 'line-through text-ink-variant text-ink-variant')}>{task.task_name}</p>
+                          {isCurrent && <p className="text-xs text-destructive mt-0.5">{t('due_today')}</p>}
                           {isUpcoming && task.assigned_to && (
                             <p className="text-xs text-ink-variant mt-0.5">{t('requires')} {task.assigned_to}</p>
                           )}
                         </div>
                         {isCurrent && (
-                          <span className="px-3 py-1 bg-primary text-on-primary text-xs font-medium rounded">
+                          <span className="px-3 py-1 bg-primary text-white text-xs font-medium rounded">
                             {t('start')}
                           </span>
                         )}
@@ -136,13 +136,13 @@ export function OnboardingMgmtPage() {
                 </div>
               </>
             ) : (
-              <p className="text-sm text-ink-variant dark:text-ink-variant py-4">{t('no_checklist')}</p>
+              <p className="text-sm text-ink-variant text-ink-variant py-4">{t('no_checklist')}</p>
             )}
           </div>
 
           <div className="bg-surface rounded-xl border border-border p-6 shadow-sm">
             <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2 mb-4">
-              <h3 className="text-title-lg font-semibold text-ink dark:text-ink">{t('team_status')}</h3>
+              <h3 className="text-title-lg font-semibold text-ink text-ink">{t('team_status')}</h3>
               <Button variant="link" size="sm" onClick={() => navigate('/recruitment/candidates')}>{t('view_all')}</Button>
             </div>
             {isError ? (
@@ -158,30 +158,30 @@ export function OnboardingMgmtPage() {
                 {checklists && checklists.length > 0 ? (
                   <table role="table" className="table-card-mobile w-full text-left border-collapse min-w-[500px]">
                     <thead>
-                      <tr className="bg-surface-sunken dark:bg-surface-sunken/50 border-b border-border/50 dark:border-border/50">
-                        <th className="py-3 px-4 text-xs font-semibold uppercase tracking-wider text-ink-variant dark:text-ink-variant">{t('employee')}</th>
-                        <th className="py-3 px-4 text-xs font-semibold uppercase tracking-wider text-ink-variant dark:text-ink-variant">{t('role')}</th>
-                        <th className="py-3 px-4 text-xs font-semibold uppercase tracking-wider text-ink-variant dark:text-ink-variant">{t('progress')}</th>
-                        <th className="py-3 px-4 text-xs font-semibold uppercase tracking-wider text-ink-variant dark:text-ink-variant">{t('status')}</th>
+                      <tr className="bg-surface-sunken bg-surface-sunken/50 border-b border-border/50 border-border/50">
+                        <th className="py-3 px-4 text-xs font-semibold uppercase tracking-wider text-ink-variant text-ink-variant">{t('employee')}</th>
+                        <th className="py-3 px-4 text-xs font-semibold uppercase tracking-wider text-ink-variant text-ink-variant">{t('role')}</th>
+                        <th className="py-3 px-4 text-xs font-semibold uppercase tracking-wider text-ink-variant text-ink-variant">{t('progress')}</th>
+                        <th className="py-3 px-4 text-xs font-semibold uppercase tracking-wider text-ink-variant text-ink-variant">{t('status')}</th>
                       </tr>
                     </thead>
                     <tbody>
                       {checklists?.map((cl: { id: string; template_name?: string; progress_percentage?: number; status?: string; user_profiles?: { full_name?: string } }) => (
-                        <tr key={cl.id} className="border-b border-border/50 dark:border-border/50 hover:bg-surface-sunken/50 dark:hover:bg-surface-sunken/30 transition-colors duration-150 last:border-0">
-                          <td className="py-3 px-4 text-sm text-ink dark:text-ink" data-label={t('employee')}>{cl.user_profiles?.full_name}</td>
+                        <tr key={cl.id} className="border-b border-border/50 border-border/50 hover:bg-surface-sunken/50 dark:hover:bg-surface-sunken/30 transition-colors duration-150 last:border-0">
+                          <td className="py-3 px-4 text-sm text-ink text-ink" data-label={t('employee')}>{cl.user_profiles?.full_name}</td>
                           <td className="py-3 px-4 text-sm text-ink text-ink-variant" data-label={t('role')}>{cl.template_name}</td>
-                          <td className="py-3 px-4 text-sm text-ink dark:text-ink" data-label={t('progress')}>
+                          <td className="py-3 px-4 text-sm text-ink text-ink" data-label={t('progress')}>
                             <div className="flex items-center gap-2 w-24 sm:w-32">
                               <div className="flex-1 bg-surface-sunken h-1.5 rounded-full overflow-hidden">
                                 <div className={cn('h-full rounded-full', (cl.progress_percentage ?? 0) >= 80 ? 'bg-green-500' : (cl.progress_percentage ?? 0) >= 40 ? 'bg-primary' : 'bg-yellow-500')} style={{ width: `${cl.progress_percentage || 0}%` }} />
                               </div>
-                              <span className="text-xs text-ink-variant dark:text-ink-variant">{cl.progress_percentage || 0}%</span>
+                              <span className="text-xs text-ink-variant text-ink-variant">{cl.progress_percentage || 0}%</span>
                             </div>
                           </td>
-                          <td className="py-3 px-4 text-sm text-ink dark:text-ink" data-label={t('status')}>
+                          <td className="py-3 px-4 text-sm text-ink text-ink" data-label={t('status')}>
                             <span className={cn(
                               'inline-block px-2 py-0.5 rounded text-xs font-medium',
-                              cl.status === 'completed' ? 'bg-green-100 dark:bg-success-container/30 text-green-700 dark:text-success' : (cl.progress_percentage ?? 0) < 20 ? 'bg-error-container dark:bg-error-container/30 text-on-error-container dark:text-error' : 'bg-surface-sunken text-ink dark:text-ink'
+                              cl.status === 'completed' ? 'bg-green-100 dark:bg-success-subtle/30 text-green-700 dark:text-success' : (cl.progress_percentage ?? 0) < 20 ? 'bg-destructive-subtle dark:bg-destructive-subtle/30 text-destructive dark:text-destructive' : 'bg-surface-sunken text-ink text-ink'
                             )}>
                               {cl.status === 'completed' ? t('completed') : (cl.progress_percentage ?? 0) < 20 ? t('at_risk') : t('on_track')}
                             </span>
@@ -209,21 +209,21 @@ export function OnboardingMgmtPage() {
                 <Bot size={20} />
               </div>
               <div>
-                <h3 className="text-sm font-bold text-on-primary-container dark:text-ink">Mate AI</h3>
-                <p className="text-xs text-inverse-primary dark:text-ink-variant">{t('ai.hr_assistant')}</p>
+                <h3 className="text-sm font-bold text-white-container text-ink">Mate AI</h3>
+                <p className="text-xs text-inverse-primary text-ink-variant">{t('ai.hr_assistant')}</p>
               </div>
             </div>
             <div className="flex-1 p-4 overflow-y-auto bg-surface flex flex-col gap-3">
               {messages.map((msg, i) => (
                 <div key={i} className={cn('flex gap-2', msg.role === 'user' && 'justify-end')}>
                   {msg.role === 'bot' && (
-                    <div className="w-6 h-6 rounded bg-primary-container dark:bg-primary-container text-on-primary dark:text-primary-muted flex items-center justify-center shrink-0 mt-1">
+                    <div className="w-6 h-6 rounded bg-primary-container dark:bg-primary-container text-white dark:text-primary-muted flex items-center justify-center shrink-0 mt-1">
                       <Bot size={14} />
                     </div>
                   )}
                   <div className={cn(
                     'p-2 rounded-lg text-sm max-w-[85%]',
-                    msg.role === 'bot' ? 'bg-surface-sunken rounded-tl-none text-ink dark:text-ink' : 'bg-primary dark:bg-primary text-on-primary dark:text-on-primary rounded-tr-none'
+                    msg.role === 'bot' ? 'bg-surface-sunken rounded-tl-none text-ink text-ink' : 'bg-primary dark:bg-primary text-white dark:text-white rounded-tr-none'
                   )}>
                     {msg.text}
                   </div>
@@ -236,7 +236,7 @@ export function OnboardingMgmtPage() {
                 onChange={e => setInput(e.target.value)}
                 onKeyDown={e => e.key === 'Enter' && handleSendMessage()}
                 placeholder={t('ai.ask_question')}
-                className="flex-1 bg-surface-sunken dark:bg-surface-sunken-lowest border-none rounded-full px-4 py-2 text-sm text-ink focus:ring-1 focus:ring-primary outline-none"
+                className="flex-1 bg-surface-sunken bg-surface-sunken-lowest border-none rounded-full px-4 py-2 text-sm text-ink focus:ring-1 focus:ring-primary outline-none"
               />
               <Button
                 variant="default"
@@ -287,8 +287,8 @@ export function OnboardingMgmtPage() {
               acceptedOffers.map((offer: Offer) => (
                 <div key={offer.id} className="flex items-center justify-between py-2 border-b border-border last:border-0">
                   <div>
-                    <p className="text-sm font-medium dark:text-ink">{offer.candidates?.full_name}</p>
-                    <p className="text-xs text-ink-variant dark:text-ink-variant">{offer.position_title}</p>
+                    <p className="text-sm font-medium text-ink">{offer.candidates?.full_name}</p>
+                    <p className="text-xs text-ink-variant text-ink-variant">{offer.position_title}</p>
                   </div>
                   <Button
                     variant="default"

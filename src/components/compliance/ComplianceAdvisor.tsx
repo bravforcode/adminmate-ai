@@ -56,13 +56,13 @@ function CheckCard({ check }: { check: ComplianceCheck }) {
   const [expanded, setExpanded] = useState(false);
 
   return (
-    <div className="border border-border dark:border-gray-700 rounded-lg p-4 hover:bg-surface-sunken dark:hover:bg-gray-800/50 transition-colors">
+    <div className="border border-border border-border rounded-lg p-4 hover:bg-surface-sunken dark:hover:bg-gray-800/50 transition-colors">
       <div className="flex items-start justify-between gap-3">
         <div className="flex items-center gap-3 min-w-0">
           <SeverityDot severity={check.severity} />
           <div className="min-w-0">
-            <p className="font-medium text-ink dark:text-white text-sm">{check.title}</p>
-            <p className="text-xs text-ink-muted dark:text-ink-faint truncate">{check.description}</p>
+            <p className="font-medium text-ink text-white text-sm">{check.title}</p>
+            <p className="text-xs text-ink-muted text-ink-faint truncate">{check.description}</p>
           </div>
         </div>
         <div className="flex items-center gap-2 flex-shrink-0">
@@ -85,7 +85,7 @@ function CheckCard({ check }: { check: ComplianceCheck }) {
             className="overflow-hidden"
           >
             <div className="mt-3 pt-3 border-t border-gray-100 dark:border-gray-800 space-y-2">
-              <p className="text-sm text-ink-secondary dark:text-gray-300">
+              <p className="text-sm text-ink-secondary text-ink-muted">
                 <strong>Recommendation:</strong> {check.recommendation}
               </p>
               <div className="flex items-center gap-4 text-xs text-ink-muted">
@@ -116,8 +116,8 @@ function AlertItem({ alert }: { alert: ComplianceAlert }) {
     <div className={`border-l-4 p-3 rounded-r-lg ${severityColors[alert.severity]}`}>
       <div className="flex items-start justify-between gap-2">
         <div>
-          <p className="font-medium text-sm text-ink dark:text-white">{alert.title}</p>
-          <p className="text-xs text-ink-muted dark:text-ink-faint mt-0.5">{alert.message}</p>
+          <p className="font-medium text-sm text-ink text-white">{alert.title}</p>
+          <p className="text-xs text-ink-muted text-ink-faint mt-0.5">{alert.message}</p>
         </div>
         <span className="text-xs text-ink-muted whitespace-nowrap">
           {new Date(alert.created_at).toLocaleDateString()}
@@ -193,11 +193,11 @@ export function ComplianceAdvisor() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h2 className="text-2xl font-bold text-ink dark:text-white flex items-center gap-2">
+          <h2 className="text-2xl font-bold text-ink text-white flex items-center gap-2">
             <Shield className="w-6 h-6 text-primary" />
             AI Compliance Advisor
           </h2>
-          <p className="text-ink-muted dark:text-ink-faint mt-1">
+          <p className="text-ink-muted text-ink-faint mt-1">
             Real-time compliance monitoring across all regions
           </p>
         </div>
@@ -233,7 +233,7 @@ export function ComplianceAdvisor() {
           </Card>
           <Card>
             <CardContent className="p-6 text-center">
-              <div className="text-4xl font-bold text-ink dark:text-white">
+              <div className="text-4xl font-bold text-ink text-white">
                 {report.checks.filter(c => c.status === 'compliant').length}/{report.checks.length}
               </div>
               <p className="text-sm text-ink-muted mt-1">Checks Passed</p>
@@ -249,14 +249,14 @@ export function ComplianceAdvisor() {
       )}
 
       {/* Tabs */}
-      <div className="flex gap-1 bg-surface-sunken dark:bg-gray-800 p-1 rounded-lg">
+      <div className="flex gap-1 bg-surface-sunken bg-surface-raised p-1 rounded-lg">
         {(['overview', 'checks', 'alerts'] as const).map(tab => (
           <button
             key={tab}
             onClick={() => setActiveTab(tab)}
             className={`flex-1 py-2 px-4 rounded-md text-sm font-medium transition-colors ${
               activeTab === tab
-                ? 'bg-surface dark:bg-gray-700 text-ink dark:text-white shadow-sm'
+                ? 'bg-surface dark:bg-gray-700 text-ink text-white shadow-sm'
                 : 'text-ink-muted hover:text-ink-secondary dark:hover:text-gray-300'
             }`}
           >
@@ -280,7 +280,7 @@ export function ComplianceAdvisor() {
             {report?.summary && (
               <Card>
                 <CardContent className="p-4">
-                  <p className="text-sm text-ink-secondary dark:text-gray-300">{report.summary}</p>
+                  <p className="text-sm text-ink-secondary text-ink-muted">{report.summary}</p>
                 </CardContent>
               </Card>
             )}
@@ -308,7 +308,7 @@ export function ComplianceAdvisor() {
                         <p className="text-xs font-medium text-ink-muted uppercase tracking-wide mb-2">Key Requirements</p>
                         <ul className="space-y-1">
                           {countryInfo.keyRequirements.map((req, i) => (
-                            <li key={i} className="text-sm text-ink-muted dark:text-ink-faint flex items-start gap-2">
+                            <li key={i} className="text-sm text-ink-muted text-ink-faint flex items-start gap-2">
                               <span className="text-primary mt-1">•</span>
                               {req}
                             </li>

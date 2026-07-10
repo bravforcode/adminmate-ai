@@ -84,7 +84,7 @@ export class ErrorBoundary extends Component<Props, State> {
           className="min-h-screen flex flex-col items-center justify-center px-4 py-12 bg-surface font-sans"
         >
           <div className="max-w-md w-full bg-surface rounded-xl shadow-md border border-border p-8 text-center">
-            <div className="w-14 h-14 mx-auto mb-5 rounded-xl bg-error-subtle text-error flex items-center justify-center text-2xl font-bold">
+            <div className="w-14 h-14 mx-auto mb-5 rounded-xl bg-error-subtle text-destructive flex items-center justify-center text-2xl font-bold">
               !
             </div>
             <h1 className="text-xl font-semibold text-ink mb-2">

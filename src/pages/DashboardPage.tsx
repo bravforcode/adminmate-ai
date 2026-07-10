@@ -170,7 +170,7 @@ export function DashboardPage() {
               <Card className="flex flex-col h-full">
                 <CardHeader className="border-b border-border flex-row items-center justify-between">
                   <CardTitle>{t('dashboard:action_required')}</CardTitle>
-                  <span className="bg-error-subtle text-error text-xs font-medium px-2 py-0.5 rounded-full">{t('dashboard:high_priority')}</span>
+                  <span className="bg-error-subtle text-destructive text-xs font-medium px-2 py-0.5 rounded-full">{t('dashboard:high_priority')}</span>
                 </CardHeader>
                 <CardContent className="flex-1 flex flex-col gap-3 pt-4">
                   {pendingDocs?.map((doc) => (
@@ -186,11 +186,11 @@ export function DashboardPage() {
                   ))}
                   {overdueChecklists?.map((cl) => (
                     <div key={cl.id} role="button" tabIndex={0} onClick={() => navigate('/onboarding')} onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); navigate('/onboarding') } }} className="flex items-start gap-3 p-3 rounded-lg border border-border hover:border-error transition-colors cursor-pointer group">
-                      <div className="p-1.5 bg-error-subtle rounded-lg text-error mt-0.5">
+                      <div className="p-1.5 bg-error-subtle rounded-lg text-destructive mt-0.5">
                         <AlertCircle size={16} />
                       </div>
                       <div className="flex-1 min-w-0">
-                        <h4 className="text-sm font-medium text-ink group-hover:text-error transition-colors">{t('dashboard:slow_onboarding')}</h4>
+                        <h4 className="text-sm font-medium text-ink group-hover:text-destructive transition-colors">{t('dashboard:slow_onboarding')}</h4>
                         <p className="text-xs text-ink-muted mt-0.5">{cl.user_profiles?.full_name || 'Employee'} — {cl.progress_percentage || 0}%</p>
                       </div>
                     </div>

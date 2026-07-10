@@ -115,7 +115,7 @@ export function CandidateDetailPage() {
       {/* Header Card */}
       <div className="bg-surface rounded-xl border border-border p-6">
         <div className="flex items-start gap-4 mb-4">
-          <div className="w-16 h-16 rounded-full bg-primary-container text-on-primary-container flex items-center justify-center font-bold text-2xl flex-shrink-0">
+          <div className="w-16 h-16 rounded-full bg-primary-container text-white-container flex items-center justify-center font-bold text-2xl flex-shrink-0">
             {candidate.full_name?.split(' ').map((n: string) => n[0]).join('').slice(0, 2).toUpperCase()}
           </div>
           <div className="flex-1 min-w-0">
@@ -266,7 +266,7 @@ export function CandidateDetailPage() {
                         <Button variant="outline" size="sm" onClick={() => updateAppStatus.mutate({ appId: app.id as string, status: 'hired' })} icon={<Star size={14} />} disabled={updateAppStatus.isPending}>
                           {t('recruitment.candidates.hire', 'Hire')}
                         </Button>
-                        <Button variant="ghost" size="sm" onClick={() => updateAppStatus.mutate({ appId: app.id as string, status: 'rejected' })} icon={<UserX size={14} />} disabled={updateAppStatus.isPending} className="text-error hover:text-error">
+                        <Button variant="ghost" size="sm" onClick={() => updateAppStatus.mutate({ appId: app.id as string, status: 'rejected' })} icon={<UserX size={14} />} disabled={updateAppStatus.isPending} className="text-destructive hover:text-destructive">
                           {t('recruitment.candidates.reject', 'Reject')}
                         </Button>
                       </div>

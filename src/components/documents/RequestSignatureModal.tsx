@@ -58,7 +58,7 @@ export function RequestSignatureModal({ documentId, onClose, open = true }: Requ
             transition={{ duration: 0.15, ease: 'easeOut' }}
           >
             <div className="flex items-center justify-between mb-4">
-              <h2 className="text-lg font-semibold text-ink dark:text-ink">{t('request_signature_modal_title')}</h2>
+              <h2 className="text-lg font-semibold text-ink text-ink">{t('request_signature_modal_title')}</h2>
               <button onClick={onClose} className="p-2 hover:bg-surface-sunken dark:hover:bg-surface-sunken rounded min-w-[44px] min-h-[44px] flex items-center justify-center">
                 <X size={18} />
               </button>
@@ -71,7 +71,7 @@ export function RequestSignatureModal({ documentId, onClose, open = true }: Requ
                   value={name}
                   onChange={(e) => setName(e.target.value)}
                   required
-                  className="w-full px-3 py-2 rounded-lg border border-border bg-surface-sunken-lowest dark:bg-surface-sunken-lowest text-sm focus:border-primary dark:focus:border-error outline-none"
+                  className="w-full px-3 py-2 rounded-lg border border-border bg-surface-sunken-lowest bg-surface-sunken-lowest text-sm focus:border-primary dark:focus:border-error outline-none"
                 />
               </div>
               <div>
@@ -81,21 +81,21 @@ export function RequestSignatureModal({ documentId, onClose, open = true }: Requ
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   required
-                  className="w-full px-3 py-2 rounded-lg border border-border bg-surface-sunken-lowest dark:bg-surface-sunken-lowest text-sm focus:border-primary dark:focus:border-error outline-none"
+                  className="w-full px-3 py-2 rounded-lg border border-border bg-surface-sunken-lowest bg-surface-sunken-lowest text-sm focus:border-primary dark:focus:border-error outline-none"
                 />
               </div>
               <div className="flex gap-3 pt-2">
                 <button
                   type="button"
                   onClick={onClose}
-                  className="flex-1 px-4 py-2 border border-border rounded-lg text-sm font-medium hover:bg-surface-sunken dark:hover:bg-surface-sunken transition-colors dark:text-ink"
+                  className="flex-1 px-4 py-2 border border-border rounded-lg text-sm font-medium hover:bg-surface-sunken dark:hover:bg-surface-sunken transition-colors text-ink"
                 >
                   {t('common:cancel')}
                 </button>
                 <button
                   type="submit"
                   disabled={mutation.isPending || !name.trim() || !email.trim()}
-                  className="flex-1 px-4 py-2 bg-primary text-on-primary rounded-lg text-sm font-medium hover:opacity-90 disabled:opacity-50 transition-opacity"
+                  className="flex-1 px-4 py-2 bg-primary text-white rounded-lg text-sm font-medium hover:opacity-90 disabled:opacity-50 transition-opacity"
                 >
                   {t('send_request')}
                 </button>

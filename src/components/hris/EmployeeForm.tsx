@@ -32,8 +32,8 @@ export interface EmployeeFormData {
 const EMPLOYMENT_TYPES: EmploymentType[] = ['full_time', 'part_time', 'contractor', 'intern', 'remote', 'seasonal', 'gig']
 const EMPLOYMENT_STATUSES: EmploymentStatus[] = ['draft', 'active']
 
-const INPUT_CLASS = 'w-full px-4 py-3 rounded-xl border border-border bg-surface-sunken-lowest dark:bg-surface-sunken-lowest text-ink focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all duration-200 outline-none text-sm'
-const LABEL_CLASS = 'block text-sm font-medium mb-1 dark:text-ink'
+const INPUT_CLASS = 'w-full px-4 py-3 rounded-xl border border-border bg-surface-sunken-lowest bg-surface-sunken-lowest text-ink focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all duration-200 outline-none text-sm'
+const LABEL_CLASS = 'block text-sm font-medium mb-1 text-ink'
 
 export function EmployeeForm({ onClose, onSubmit, initialData, departments = [], teams = [], isLoading }: EmployeeFormProps) {
   const [form, setForm] = useState<EmployeeFormData>({
@@ -82,19 +82,19 @@ export function EmployeeForm({ onClose, onSubmit, initialData, departments = [],
     <form onSubmit={handleSubmit} className="space-y-4">
       <div className="flex items-center gap-2 mb-4">
         <UserPlus size={20} className="text-primary dark:text-primary-muted" />
-        <h3 className="font-semibold dark:text-ink">{initialData ? 'Edit Employee' : 'New Employee'}</h3>
+        <h3 className="font-semibold text-ink">{initialData ? 'Edit Employee' : 'New Employee'}</h3>
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div>
           <label className={LABEL_CLASS}>Employee Number *</label>
           <input value={form.employee_number} onChange={e => updateField('employee_number', e.target.value)} className={INPUT_CLASS} placeholder="EMP00001" data-testid="employee-number" />
-          {errors.employee_number && <p className="text-error text-xs mt-1">{errors.employee_number}</p>}
+          {errors.employee_number && <p className="text-destructive text-xs mt-1">{errors.employee_number}</p>}
         </div>
         <div>
           <label className={LABEL_CLASS}>Job Title *</label>
           <input value={form.job_title} onChange={e => updateField('job_title', e.target.value)} className={INPUT_CLASS} placeholder="Software Engineer" data-testid="job-title" />
-          {errors.job_title && <p className="text-error text-xs mt-1">{errors.job_title}</p>}
+          {errors.job_title && <p className="text-destructive text-xs mt-1">{errors.job_title}</p>}
         </div>
       </div>
 
@@ -117,12 +117,12 @@ export function EmployeeForm({ onClose, onSubmit, initialData, departments = [],
         <div>
           <label className={LABEL_CLASS}>Hire Date *</label>
           <input type="date" value={form.hire_date} onChange={e => updateField('hire_date', e.target.value)} className={INPUT_CLASS} data-testid="hire-date" />
-          {errors.hire_date && <p className="text-error text-xs mt-1">{errors.hire_date}</p>}
+          {errors.hire_date && <p className="text-destructive text-xs mt-1">{errors.hire_date}</p>}
         </div>
         <div>
           <label className={LABEL_CLASS}>Start Date *</label>
           <input type="date" value={form.start_date} onChange={e => updateField('start_date', e.target.value)} className={INPUT_CLASS} data-testid="start-date" />
-          {errors.start_date && <p className="text-error text-xs mt-1">{errors.start_date}</p>}
+          {errors.start_date && <p className="text-destructive text-xs mt-1">{errors.start_date}</p>}
         </div>
       </div>
 
@@ -151,12 +151,12 @@ export function EmployeeForm({ onClose, onSubmit, initialData, departments = [],
         <div>
           <label className={LABEL_CLASS}>Work Email</label>
           <input type="email" value={form.work_email || ''} onChange={e => updateField('work_email', e.target.value)} className={INPUT_CLASS} placeholder="name@company.com" />
-          {errors.work_email && <p className="text-error text-xs mt-1">{errors.work_email}</p>}
+          {errors.work_email && <p className="text-destructive text-xs mt-1">{errors.work_email}</p>}
         </div>
         <div>
           <label className={LABEL_CLASS}>Personal Email</label>
           <input type="email" value={form.personal_email || ''} onChange={e => updateField('personal_email', e.target.value)} className={INPUT_CLASS} />
-          {errors.personal_email && <p className="text-error text-xs mt-1">{errors.personal_email}</p>}
+          {errors.personal_email && <p className="text-destructive text-xs mt-1">{errors.personal_email}</p>}
         </div>
       </div>
 

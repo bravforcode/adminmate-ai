@@ -104,7 +104,7 @@ export function SettingsPage() {
                       <label className="block text-sm font-medium mb-1 text-ink-variant">{t('settings.legal_name') || 'Legal Name (English)'} *</label>
                       <input {...register('name')}
                         className="w-full px-3 py-2 rounded-lg border border-border bg-surface-sunken-lowest focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all" />
-                      {errors.name && <p className="text-error text-xs mt-1">{errors.name.message}</p>}
+                      {errors.name && <p className="text-destructive text-xs mt-1">{errors.name.message}</p>}
                     </div>
                     <div>
                       <label className="block text-sm font-medium mb-1 text-ink-variant">{t('settings.tax_id') || 'Tax ID'}</label>
@@ -171,7 +171,7 @@ export function SettingsPage() {
             <div className="absolute -right-12 -top-12 w-48 h-48 bg-primary-fixed-dim rounded-full blur-3xl opacity-20 pointer-events-none" />
             <CardHeader className="flex-row items-start justify-between">
               <CardTitle>{t('settings.current_plan') || 'Current Plan'}</CardTitle>
-              <span className="bg-primary-fixed text-on-primary-fixed-variant px-2 py-0.5 rounded text-xs font-semibold capitalize">{company?.subscription_tier || 'Free'}</span>
+              <span className="bg-primary-fixed text-white-fixed-variant px-2 py-0.5 rounded text-xs font-semibold capitalize">{company?.subscription_tier || 'Free'}</span>
             </CardHeader>
             <CardContent>
               <div className="mb-4">
@@ -200,7 +200,7 @@ export function SettingsPage() {
             </CardDescription>
             <Link
               to="/settings/notifications"
-              className="inline-flex items-center gap-2 px-4 py-2 bg-primary text-on-primary rounded-lg font-medium hover:opacity-90 transition-opacity text-sm"
+              className="inline-flex items-center gap-2 px-4 py-2 bg-primary text-white rounded-lg font-medium hover:opacity-90 transition-opacity text-sm"
             >
               <Bell size={15} />
               {t('notifications_prefs.manage') || 'Manage Preferences'}
@@ -219,7 +219,7 @@ export function SettingsPage() {
             </p>
             <Link
               to="/settings/audit-log"
-              className="inline-flex items-center gap-2 px-4 py-2 bg-primary text-on-primary rounded-lg font-medium hover:opacity-90 transition-opacity text-sm"
+              className="inline-flex items-center gap-2 px-4 py-2 bg-primary text-white rounded-lg font-medium hover:opacity-90 transition-opacity text-sm"
             >
               <ScrollText size={15} />
               {t('settings.view_audit_log') || 'View Audit Log'}
@@ -238,7 +238,7 @@ export function SettingsPage() {
           </p>
           <Link
             to="/settings/pdpa"
-            className="inline-flex items-center gap-2 px-4 py-2 bg-primary text-on-primary rounded-lg font-medium hover:opacity-90 transition-opacity text-sm"
+            className="inline-flex items-center gap-2 px-4 py-2 bg-primary text-white rounded-lg font-medium hover:opacity-90 transition-opacity text-sm"
           >
             <Lock size={15} />
             {t('pdpa.manage') || 'Manage Privacy'}
@@ -256,7 +256,7 @@ export function SettingsPage() {
           </p>
           <Link
             to="/settings/billing"
-            className="inline-flex items-center gap-2 px-4 py-2 bg-primary text-on-primary rounded-lg font-medium hover:opacity-90 transition-opacity text-sm"
+            className="inline-flex items-center gap-2 px-4 py-2 bg-primary text-white rounded-lg font-medium hover:opacity-90 transition-opacity text-sm"
           >
             <CreditCard size={15} />
             {t('billing.current_plan_btn') || 'Manage Billing'}
@@ -267,7 +267,7 @@ export function SettingsPage() {
         <div className="bg-surface rounded-xl border border-border shadow-sm p-6">
           <div className="flex items-center justify-between mb-6 border-b border-surface-container pb-3">
             <div className="flex items-center gap-2">
-              <Gavel size={20} className="text-tertiary" />
+              <Gavel size={20} className="text-ink-faint" />
               <h3 className="text-title-lg font-semibold text-ink">{t('settings.regional_compliance') || 'Regional Compliance'}</h3>
             </div>
             <span className="text-xs font-semibold text-ink-variant bg-surface-sunken px-2 py-1 rounded">DATA GOVERNANCE</span>

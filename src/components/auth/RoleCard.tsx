@@ -44,7 +44,7 @@ export function RoleCard({
         'hover:scale-[1.02] hover:shadow-[0_24px_56px_rgba(37,99,235,0.14)]',
         'hover:border-primary focus-visible:outline-2 focus-visible:outline-primary focus-visible:outline-offset-4',
         'active:scale-[0.99]',
-        'dark:bg-surface dark:hover:border-primary dark:hover:shadow-[0_24px_56px_rgba(37,99,235,0.2)]',
+        'bg-surface dark:hover:border-primary dark:hover:shadow-[0_24px_56px_rgba(37,99,235,0.2)]',
         staggerClass,
         'animate-fade-in-up',
       )}
@@ -67,14 +67,14 @@ export function RoleCard({
       </h2>
 
       {/* Subtitle */}
-      <p className="text-[13px] text-ink-secondary dark:text-ink-variant leading-relaxed mb-6">
+      <p className="text-[13px] text-ink-secondary text-ink-variant leading-relaxed mb-6">
         {subtitle}
       </p>
 
       {/* Features */}
       <ul className="list-none p-0 m-0 flex flex-col gap-2.5 mb-7">
         {features.map((f, i) => (
-          <li key={i} className="flex items-center gap-2.5 text-[13px] text-ink dark:text-ink">
+          <li key={i} className="flex items-center gap-2.5 text-[13px] text-ink text-ink">
             <span
               className={cn(
                 'w-[5px] h-[5px] rounded-full shrink-0',

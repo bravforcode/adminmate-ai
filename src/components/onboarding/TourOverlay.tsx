@@ -183,7 +183,7 @@ export function TourOverlay({
               </div>
               <button
                 onClick={onSkip}
-                className="p-2 rounded-lg hover:bg-surface-sunken dark:hover:bg-surface-sunken transition-colors text-ink-variant dark:text-ink-variant hover:text-ink dark:hover:text-ink min-w-[44px] min-h-[44px] flex items-center justify-center"
+                className="p-2 rounded-lg hover:bg-surface-sunken dark:hover:bg-surface-sunken transition-colors text-ink-variant text-ink-variant hover:text-ink dark:hover:text-ink min-w-[44px] min-h-[44px] flex items-center justify-center"
                 aria-label={t('tour.skip')}
               >
                 <X size={16} />
@@ -208,7 +208,7 @@ export function TourOverlay({
                 {!isFirstStep && (
                   <button
                     onClick={onPrev}
-                    className="flex items-center gap-1 text-xs text-ink-variant dark:text-ink-variant hover:text-ink dark:hover:text-ink transition-colors px-3 py-1.5 rounded-lg hover:bg-surface-sunken dark:hover:bg-surface-sunken"
+                    className="flex items-center gap-1 text-xs text-ink-variant text-ink-variant hover:text-ink dark:hover:text-ink transition-colors px-3 py-1.5 rounded-lg hover:bg-surface-sunken dark:hover:bg-surface-sunken"
                   >
                     <ChevronLeft size={14} />
                     {t('tour.prev')}
@@ -216,7 +216,7 @@ export function TourOverlay({
                 )}
                 <button
                   onClick={isLastStep ? onFinish : onNext}
-                  className="flex items-center gap-1 text-xs font-medium text-on-primary bg-primary hover:bg-primary/90 transition-colors px-4 py-1.5 rounded-lg"
+                  className="flex items-center gap-1 text-xs font-medium text-white bg-primary hover:bg-primary/90 transition-colors px-4 py-1.5 rounded-lg"
                 >
                   {isLastStep ? t('tour.finish') : t('tour.next')}
                   {!isLastStep && <ChevronRight size={14} />}

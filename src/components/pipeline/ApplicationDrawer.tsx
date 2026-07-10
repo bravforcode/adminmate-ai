@@ -95,7 +95,7 @@ export function ApplicationDrawer({ application, onClose, open = true }: Applica
             <Button variant="ghost" size="icon_md" onClick={onClose} aria-label={t('pipeline.close_details')} className="absolute top-4 right-4" icon={<X size={20} />} />
 
             <div className="mb-6">
-              <div className="w-16 h-16 rounded-full bg-primary-container text-on-primary-container flex items-center justify-center font-bold text-2xl mb-3">
+              <div className="w-16 h-16 rounded-full bg-primary-container text-white-container flex items-center justify-center font-bold text-2xl mb-3">
                 {candidate?.full_name?.split(' ').map((n: string) => n[0]).join('').slice(0, 2).toUpperCase()}
               </div>
               <h2 id="drawer-title" className="text-headline-md font-bold text-ink">{candidate?.full_name}</h2>
@@ -116,7 +116,7 @@ export function ApplicationDrawer({ application, onClose, open = true }: Applica
                 {application.ai_summary && <p className="text-sm text-ink-variant mb-3">{application.ai_summary}</p>}
                 {application.ai_missing_skills && application.ai_missing_skills.length > 0 && (
                   <div className="mb-3"><h4 className="text-xs font-semibold text-ink-variant mb-1">{t('pipeline.missing_skills')}</h4>
-                    <div className="flex flex-wrap gap-1">{application.ai_missing_skills.map((s: string) => <span key={s} className="px-2 py-0.5 bg-error-container/30 text-error text-xs rounded">{s}</span>)}</div>
+                    <div className="flex flex-wrap gap-1">{application.ai_missing_skills.map((s: string) => <span key={s} className="px-2 py-0.5 bg-destructive-subtle/30 text-destructive text-xs rounded">{s}</span>)}</div>
                   </div>
                 )}
                 {application.ai_suggested_questions && application.ai_suggested_questions.length > 0 && (

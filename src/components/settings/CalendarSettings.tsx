@@ -49,13 +49,13 @@ export function CalendarSettings() {
     <div className="bg-surface rounded-xl border border-border p-6">
       <div className="flex items-center gap-2 mb-4">
         <Calendar size={20} className="text-primary dark:text-primary-muted" />
-        <h3 className="text-title-lg font-semibold text-ink dark:text-ink">{t('settings_title')}</h3>
+        <h3 className="text-title-lg font-semibold text-ink text-ink">{t('settings_title')}</h3>
       </div>
 
       <div className="space-y-6">
         <div>
           <label className="block text-sm font-medium text-ink mb-2">{t('reminder_time')}</label>
-          <p className="text-xs text-ink-variant dark:text-ink-variant mb-3">{t('reminder_time_desc')}</p>
+          <p className="text-xs text-ink-variant text-ink-variant mb-3">{t('reminder_time_desc')}</p>
           <div className="flex flex-wrap gap-2">
             {REMINDER_OPTIONS.map(opt => (
               <button
@@ -63,7 +63,7 @@ export function CalendarSettings() {
                 onClick={() => handleReminderToggle(opt.value)}
                 className={`px-3 py-1.5 rounded-lg text-xs font-medium border transition-colors ${
                   settings.reminderMinutes.includes(opt.value)
-                    ? 'bg-primary text-on-primary border-primary'
+                    ? 'bg-primary text-white border-primary'
                     : 'bg-surface-sunken text-ink border-border hover:border-primary dark:hover:border-primary'
                 }`}
               >
@@ -75,7 +75,7 @@ export function CalendarSettings() {
 
         <div>
           <label className="block text-sm font-medium text-ink mb-2">{t('default_format')}</label>
-          <p className="text-xs text-ink-variant dark:text-ink-variant mb-3">{t('default_format_desc')}</p>
+          <p className="text-xs text-ink-variant text-ink-variant mb-3">{t('default_format_desc')}</p>
           <div className="flex flex-wrap gap-2">
             {FORMAT_OPTIONS.map(opt => (
               <button
@@ -83,7 +83,7 @@ export function CalendarSettings() {
                 onClick={() => handleFormatChange(opt.value as CalSettings['defaultFormat'])}
                 className={`px-3 py-1.5 rounded-lg text-xs font-medium border transition-colors ${
                   settings.defaultFormat === opt.value
-                    ? 'bg-primary text-on-primary border-primary'
+                    ? 'bg-primary text-white border-primary'
                     : 'bg-surface-sunken text-ink border-border hover:border-primary dark:hover:border-primary'
                 }`}
               >
@@ -95,7 +95,7 @@ export function CalendarSettings() {
 
         <button
           onClick={handleSave}
-          className="px-4 py-2 bg-primary text-on-primary rounded-lg text-sm font-medium hover:opacity-90 transition-opacity"
+          className="px-4 py-2 bg-primary text-white rounded-lg text-sm font-medium hover:opacity-90 transition-opacity"
         >
           {t('save_settings')}
         </button>

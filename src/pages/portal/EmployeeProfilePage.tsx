@@ -90,7 +90,7 @@ export default function EmployeeProfilePage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-surface-sunken dark:bg-gray-900 flex items-center justify-center">
+      <div className="min-h-screen bg-surface-sunken bg-surface flex items-center justify-center">
         <div className="text-center">
           <div className="w-8 h-8 border-4 border-blue-500 border-t-transparent rounded-full animate-spin mx-auto" />
           <p className="text-ink-muted mt-3">Loading profile...</p>
@@ -100,12 +100,12 @@ export default function EmployeeProfilePage() {
   }
 
   return (
-    <div className="min-h-screen bg-surface-sunken dark:bg-gray-900">
+    <div className="min-h-screen bg-surface-sunken bg-surface">
       {/* Header */}
-      <div className="bg-surface dark:bg-gray-800 border-b border-border dark:border-gray-700">
+      <div className="bg-surface bg-surface-raised border-b border-border border-border">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-          <h1 className="text-2xl font-bold text-ink dark:text-white">My Profile</h1>
-          <p className="text-ink-muted dark:text-ink-faint mt-1">
+          <h1 className="text-2xl font-bold text-ink text-white">My Profile</h1>
+          <p className="text-ink-muted text-ink-faint mt-1">
             Manage your personal information
           </p>
         </div>
@@ -133,7 +133,7 @@ export default function EmployeeProfilePage() {
                 </button>
               </div>
               <div>
-                <h2 className="text-xl font-bold text-ink dark:text-white">
+                <h2 className="text-xl font-bold text-ink text-white">
                   {employeeProfile?.first_name} {employeeProfile?.last_name}
                 </h2>
                 <p className="text-ink-muted">{employeeProfile?.position}</p>
@@ -151,29 +151,29 @@ export default function EmployeeProfilePage() {
           <CardContent className="space-y-4">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm font-medium text-ink-secondary dark:text-gray-300 mb-1">
+                <label className="block text-sm font-medium text-ink-secondary text-ink-muted mb-1">
                   First Name
                 </label>
                 <input
                   type="text"
                   value={employeeProfile?.first_name || ''}
                   disabled
-                  className="w-full px-3 py-2 border border-border dark:border-gray-600 rounded-lg bg-surface-sunken dark:bg-gray-800 text-ink dark:text-white"
+                  className="w-full px-3 py-2 border border-border border-border rounded-lg bg-surface-sunken bg-surface-raised text-ink text-white"
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-ink-secondary dark:text-gray-300 mb-1">
+                <label className="block text-sm font-medium text-ink-secondary text-ink-muted mb-1">
                   Last Name
                 </label>
                 <input
                   type="text"
                   value={employeeProfile?.last_name || ''}
                   disabled
-                  className="w-full px-3 py-2 border border-border dark:border-gray-600 rounded-lg bg-surface-sunken dark:bg-gray-800 text-ink dark:text-white"
+                  className="w-full px-3 py-2 border border-border border-border rounded-lg bg-surface-sunken bg-surface-raised text-ink text-white"
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-ink-secondary dark:text-gray-300 mb-1">
+                <label className="block text-sm font-medium text-ink-secondary text-ink-muted mb-1">
                   <Mail className="w-4 h-4 inline mr-1" />
                   Email
                 </label>
@@ -181,11 +181,11 @@ export default function EmployeeProfilePage() {
                   type="email"
                   value={employeeProfile?.email || ''}
                   disabled
-                  className="w-full px-3 py-2 border border-border dark:border-gray-600 rounded-lg bg-surface-sunken dark:bg-gray-800 text-ink dark:text-white"
+                  className="w-full px-3 py-2 border border-border border-border rounded-lg bg-surface-sunken bg-surface-raised text-ink text-white"
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-ink-secondary dark:text-gray-300 mb-1">
+                <label className="block text-sm font-medium text-ink-secondary text-ink-muted mb-1">
                   <Phone className="w-4 h-4 inline mr-1" />
                   Phone
                 </label>
@@ -193,11 +193,11 @@ export default function EmployeeProfilePage() {
                   type="tel"
                   value={employeeProfile?.phone || ''}
                   onChange={(e) => setEmployeeProfile(prev => prev ? { ...prev, phone: e.target.value } : null)}
-                  className="w-full px-3 py-2 border border-border dark:border-gray-600 rounded-lg bg-surface dark:bg-gray-800 text-ink dark:text-white"
+                  className="w-full px-3 py-2 border border-border border-border rounded-lg bg-surface bg-surface-raised text-ink text-white"
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-ink-secondary dark:text-gray-300 mb-1">
+                <label className="block text-sm font-medium text-ink-secondary text-ink-muted mb-1">
                   <MapPin className="w-4 h-4 inline mr-1" />
                   Location
                 </label>
@@ -205,11 +205,11 @@ export default function EmployeeProfilePage() {
                   type="text"
                   value={employeeProfile?.location || ''}
                   onChange={(e) => setEmployeeProfile(prev => prev ? { ...prev, location: e.target.value } : null)}
-                  className="w-full px-3 py-2 border border-border dark:border-gray-600 rounded-lg bg-surface dark:bg-gray-800 text-ink dark:text-white"
+                  className="w-full px-3 py-2 border border-border border-border rounded-lg bg-surface bg-surface-raised text-ink text-white"
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-ink-secondary dark:text-gray-300 mb-1">
+                <label className="block text-sm font-medium text-ink-secondary text-ink-muted mb-1">
                   <Briefcase className="w-4 h-4 inline mr-1" />
                   Position
                 </label>
@@ -217,11 +217,11 @@ export default function EmployeeProfilePage() {
                   type="text"
                   value={employeeProfile?.position || ''}
                   disabled
-                  className="w-full px-3 py-2 border border-border dark:border-gray-600 rounded-lg bg-surface-sunken dark:bg-gray-800 text-ink dark:text-white"
+                  className="w-full px-3 py-2 border border-border border-border rounded-lg bg-surface-sunken bg-surface-raised text-ink text-white"
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-ink-secondary dark:text-gray-300 mb-1">
+                <label className="block text-sm font-medium text-ink-secondary text-ink-muted mb-1">
                   <Calendar className="w-4 h-4 inline mr-1" />
                   Hire Date
                 </label>
@@ -229,18 +229,18 @@ export default function EmployeeProfilePage() {
                   type="text"
                   value={employeeProfile?.hire_date ? new Date(employeeProfile.hire_date).toLocaleDateString() : ''}
                   disabled
-                  className="w-full px-3 py-2 border border-border dark:border-gray-600 rounded-lg bg-surface-sunken dark:bg-gray-800 text-ink dark:text-white"
+                  className="w-full px-3 py-2 border border-border border-border rounded-lg bg-surface-sunken bg-surface-raised text-ink text-white"
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-ink-secondary dark:text-gray-300 mb-1">
+                <label className="block text-sm font-medium text-ink-secondary text-ink-muted mb-1">
                   Nationality
                 </label>
                 <input
                   type="text"
                   value={employeeProfile?.nationality || ''}
                   disabled
-                  className="w-full px-3 py-2 border border-border dark:border-gray-600 rounded-lg bg-surface-sunken dark:bg-gray-800 text-ink dark:text-white"
+                  className="w-full px-3 py-2 border border-border border-border rounded-lg bg-surface-sunken bg-surface-raised text-ink text-white"
                 />
               </div>
             </div>
@@ -255,25 +255,25 @@ export default function EmployeeProfilePage() {
           <CardContent className="space-y-4">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm font-medium text-ink-secondary dark:text-gray-300 mb-1">
+                <label className="block text-sm font-medium text-ink-secondary text-ink-muted mb-1">
                   Contact Name
                 </label>
                 <input
                   type="text"
                   value={employeeProfile?.emergency_contact || ''}
                   onChange={(e) => setEmployeeProfile(prev => prev ? { ...prev, emergency_contact: e.target.value } : null)}
-                  className="w-full px-3 py-2 border border-border dark:border-gray-600 rounded-lg bg-surface dark:bg-gray-800 text-ink dark:text-white"
+                  className="w-full px-3 py-2 border border-border border-border rounded-lg bg-surface bg-surface-raised text-ink text-white"
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-ink-secondary dark:text-gray-300 mb-1">
+                <label className="block text-sm font-medium text-ink-secondary text-ink-muted mb-1">
                   Contact Phone
                 </label>
                 <input
                   type="tel"
                   value={employeeProfile?.emergency_phone || ''}
                   onChange={(e) => setEmployeeProfile(prev => prev ? { ...prev, emergency_phone: e.target.value } : null)}
-                  className="w-full px-3 py-2 border border-border dark:border-gray-600 rounded-lg bg-surface dark:bg-gray-800 text-ink dark:text-white"
+                  className="w-full px-3 py-2 border border-border border-border rounded-lg bg-surface bg-surface-raised text-ink text-white"
                 />
               </div>
             </div>

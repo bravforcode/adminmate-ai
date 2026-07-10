@@ -124,14 +124,14 @@ export default function EmployeePayslipsPage() {
   };
 
   const statusColors = {
-    draft: 'bg-surface-sunken text-ink-secondary dark:bg-gray-800 dark:text-gray-300',
+    draft: 'bg-surface-sunken text-ink-secondary bg-surface-raised text-ink-muted',
     final: 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-300',
     paid: 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-300',
   };
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-surface-sunken dark:bg-gray-900 flex items-center justify-center">
+      <div className="min-h-screen bg-surface-sunken bg-surface flex items-center justify-center">
         <div className="text-center">
           <div className="w-8 h-8 border-4 border-blue-500 border-t-transparent rounded-full animate-spin mx-auto" />
           <p className="text-ink-muted mt-3">Loading payslips...</p>
@@ -141,12 +141,12 @@ export default function EmployeePayslipsPage() {
   }
 
   return (
-    <div className="min-h-screen bg-surface-sunken dark:bg-gray-900">
+    <div className="min-h-screen bg-surface-sunken bg-surface">
       {/* Header */}
-      <div className="bg-surface dark:bg-gray-800 border-b border-border dark:border-gray-700">
+      <div className="bg-surface bg-surface-raised border-b border-border border-border">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-          <h1 className="text-2xl font-bold text-ink dark:text-white">Payslips</h1>
-          <p className="text-ink-muted dark:text-ink-faint mt-1">
+          <h1 className="text-2xl font-bold text-ink text-white">Payslips</h1>
+          <p className="text-ink-muted text-ink-faint mt-1">
             View and download your payslips
           </p>
         </div>
@@ -158,7 +158,7 @@ export default function EmployeePayslipsPage() {
           <Card>
             <CardContent className="p-4 text-center">
               <DollarSign className="w-8 h-8 text-success mx-auto mb-2" />
-              <p className="text-2xl font-bold text-ink dark:text-white">
+              <p className="text-2xl font-bold text-ink text-white">
                 {payslips.length > 0 ? formatCurrency(payslips[0].net_pay, payslips[0].currency) : '-'}
               </p>
               <p className="text-xs text-ink-muted">Latest Net Pay</p>
@@ -167,7 +167,7 @@ export default function EmployeePayslipsPage() {
           <Card>
             <CardContent className="p-4 text-center">
               <TrendingDown className="w-8 h-8 text-destructive mx-auto mb-2" />
-              <p className="text-2xl font-bold text-ink dark:text-white">
+              <p className="text-2xl font-bold text-ink text-white">
                 {payslips.length > 0 ? formatCurrency(payslips[0].deductions, payslips[0].currency) : '-'}
               </p>
               <p className="text-xs text-ink-muted">Latest Deductions</p>
@@ -176,7 +176,7 @@ export default function EmployeePayslipsPage() {
           <Card>
             <CardContent className="p-4 text-center">
               <FileText className="w-8 h-8 text-primary mx-auto mb-2" />
-              <p className="text-2xl font-bold text-ink dark:text-white">{payslips.length}</p>
+              <p className="text-2xl font-bold text-ink text-white">{payslips.length}</p>
               <p className="text-xs text-ink-muted">Total Payslips</p>
             </CardContent>
           </Card>
@@ -207,7 +207,7 @@ export default function EmployeePayslipsPage() {
                             <FileText className="w-5 h-5 text-primary" />
                           </div>
                           <div>
-                            <p className="font-medium text-ink dark:text-white">
+                            <p className="font-medium text-ink text-white">
                               {payslip.pay_period}
                             </p>
                             <p className="text-sm text-ink-muted">
@@ -239,7 +239,7 @@ export default function EmployeePayslipsPage() {
                       <motion.div
                         initial={{ height: 0, opacity: 0 }}
                         animate={{ height: 'auto', opacity: 1 }}
-                        className="bg-surface-sunken dark:bg-gray-800/50 px-4 py-4"
+                        className="bg-surface-sunken bg-surface-raised/50 px-4 py-4"
                       >
                         <div className="grid grid-cols-2 gap-6">
                           {/* Earnings */}
@@ -250,13 +250,13 @@ export default function EmployeePayslipsPage() {
                                 .filter(i => i.category === 'earnings')
                                 .map((item, i) => (
                                   <div key={i} className="flex justify-between text-sm">
-                                    <span className="text-ink-muted dark:text-ink-faint">{item.label}</span>
-                                    <span className="font-medium text-ink dark:text-white">
+                                    <span className="text-ink-muted text-ink-faint">{item.label}</span>
+                                    <span className="font-medium text-ink text-white">
                                       {formatCurrency(item.amount, payslip.currency)}
                                     </span>
                                   </div>
                                 ))}
-                              <div className="border-t border-border dark:border-gray-700 pt-2 mt-2">
+                              <div className="border-t border-border border-border pt-2 mt-2">
                                 <div className="flex justify-between text-sm font-medium">
                                   <span>Gross Salary</span>
                                   <span>{formatCurrency(payslip.gross_salary, payslip.currency)}</span>
@@ -273,13 +273,13 @@ export default function EmployeePayslipsPage() {
                                 .filter(i => i.category === 'deductions')
                                 .map((item, i) => (
                                   <div key={i} className="flex justify-between text-sm">
-                                    <span className="text-ink-muted dark:text-ink-faint">{item.label}</span>
+                                    <span className="text-ink-muted text-ink-faint">{item.label}</span>
                                     <span className="font-medium text-destructive dark:text-red-400">
                                       {formatCurrency(Math.abs(item.amount), payslip.currency)}
                                     </span>
                                   </div>
                                 ))}
-                              <div className="border-t border-border dark:border-gray-700 pt-2 mt-2">
+                              <div className="border-t border-border border-border pt-2 mt-2">
                                 <div className="flex justify-between text-sm font-medium">
                                   <span>Total Deductions</span>
                                   <span className="text-destructive">
@@ -292,9 +292,9 @@ export default function EmployeePayslipsPage() {
                         </div>
 
                         {/* Net Pay */}
-                        <div className="mt-4 pt-4 border-t border-border dark:border-gray-700">
+                        <div className="mt-4 pt-4 border-t border-border border-border">
                           <div className="flex justify-between items-center">
-                            <span className="text-lg font-bold text-ink dark:text-white">Net Pay</span>
+                            <span className="text-lg font-bold text-ink text-white">Net Pay</span>
                             <span className="text-2xl font-bold text-success dark:text-green-400">
                               {formatCurrency(payslip.net_pay, payslip.currency)}
                             </span>

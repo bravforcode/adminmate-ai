@@ -101,13 +101,13 @@ const DeptNodeComponent = memo(function DeptNodeComponent({
               onKeyDown={(e) => e.key === 'Enter' && onTeamSelect?.(team.id)}
             >
               <span className="w-3.5" />
-              <span className="text-xs text-ink-variant dark:text-ink-variant">{team.name}</span>
+              <span className="text-xs text-ink-variant text-ink-variant">{team.name}</span>
             </div>
           ))}
         </div>
       )}
       {node.children.length > 0 && (
-        <div className="border-l border-border/20 dark:border-border/20 ml-3">
+        <div className="border-l border-border/20 border-border/20 ml-3">
           {node.children.map(child => (
             <DeptNodeComponent
               key={child.id}
@@ -137,7 +137,7 @@ export const DepartmentTree = memo(function DepartmentTree({
 
   if (tree.length === 0) {
     return (
-      <div className="flex flex-col items-center justify-center py-8 text-ink-variant dark:text-ink-variant">
+      <div className="flex flex-col items-center justify-center py-8 text-ink-variant text-ink-variant">
         <Building2 size={28} className="mb-2 opacity-40" />
         <p className="text-sm">No departments configured</p>
       </div>

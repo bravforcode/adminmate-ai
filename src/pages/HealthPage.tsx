@@ -253,14 +253,14 @@ export default function HealthPage() {
           <h1 className="text-headline-md font-bold">{t('title')}</h1>
         </header>
         <div className="bg-surface rounded-xl border border-border p-8 text-center">
-          <AlertCircle size={40} className="mx-auto text-error mb-3" />
+          <AlertCircle size={40} className="mx-auto text-destructive mb-3" />
           <h3 className="font-semibold text-ink mb-1">{t('error_title')}</h3>
           <p className="text-sm text-ink-variant mb-4">
             {(dbQuery.error as Error)?.message || t('error_description')}
           </p>
           <button
             onClick={handleRetryAll}
-            className="inline-flex items-center gap-2 px-4 py-2 bg-primary text-on-primary rounded-lg text-sm font-medium hover:opacity-90"
+            className="inline-flex items-center gap-2 px-4 py-2 bg-primary text-white rounded-lg text-sm font-medium hover:opacity-90"
           >
             <RefreshCw size={14} /> {t('common:errors.retry')}
           </button>
@@ -328,7 +328,7 @@ export default function HealthPage() {
             </p>
             <button
               onClick={() => dbQuery.refetch()}
-              className="inline-flex items-center gap-2 px-3 py-1.5 bg-primary text-on-primary rounded-lg text-xs font-medium hover:opacity-90"
+              className="inline-flex items-center gap-2 px-3 py-1.5 bg-primary text-white rounded-lg text-xs font-medium hover:opacity-90"
             >
               <RefreshCw size={12} /> {t('common:errors.retry')}
             </button>

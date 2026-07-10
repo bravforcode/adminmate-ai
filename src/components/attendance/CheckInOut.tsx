@@ -79,21 +79,21 @@ export function CheckInOut({ todayRecord, onCheckIn, onCheckOut }: CheckInOutPro
         <div className={cn(
           'w-12 h-12 rounded-full flex items-center justify-center',
           isCheckedOut
-            ? 'bg-success-container dark:bg-success-container/30'
+            ? 'bg-success-subtle dark:bg-success-subtle/30'
             : isCheckedIn
               ? 'bg-primary-container dark:bg-primary-container/30'
-              : 'bg-surface-sunken dark:bg-surface-sunken'
+              : 'bg-surface-sunken bg-surface-sunken'
         )}>
           {isCheckedOut ? (
             <CheckCircle size={24} className="text-success dark:text-success" />
           ) : isCheckedIn ? (
             <Timer size={24} className="text-primary dark:text-primary-muted" />
           ) : (
-            <Clock size={24} className="text-ink-variant dark:text-ink-variant" />
+            <Clock size={24} className="text-ink-variant text-ink-variant" />
           )}
         </div>
         <div>
-          <h3 className="text-title-sm font-semibold text-ink dark:text-ink">
+          <h3 className="text-title-sm font-semibold text-ink text-ink">
             {isCheckedOut
               ? t('checkinout.checked_out')
               : isCheckedIn
@@ -101,7 +101,7 @@ export function CheckInOut({ todayRecord, onCheckIn, onCheckOut }: CheckInOutPro
                 : t('checkinout.not_checked_in')}
           </h3>
           {checkedInTime && (
-            <p className="text-sm text-ink-variant dark:text-ink-variant">
+            <p className="text-sm text-ink-variant text-ink-variant">
               {t('checkinout.checked_in_at', { time: checkedInTime })}
               {checkedOutTime && ` · ${t('checkinout.checked_out_at', { time: checkedOutTime })}`}
               {hoursWorked && ` · ${hoursWorked}`}
@@ -148,7 +148,7 @@ export function CheckInOut({ todayRecord, onCheckIn, onCheckOut }: CheckInOutPro
       </div>
 
       {location && (
-        <p className="text-xs text-ink-variant dark:text-ink-variant mt-2 flex items-center gap-1">
+        <p className="text-xs text-ink-variant text-ink-variant mt-2 flex items-center gap-1">
           <MapPin size={12} />
           {location.lat.toFixed(4)}, {location.lng.toFixed(4)}
         </p>

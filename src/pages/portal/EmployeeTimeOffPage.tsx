@@ -143,7 +143,7 @@ export default function EmployeeTimeOffPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-surface-sunken dark:bg-gray-900 flex items-center justify-center">
+      <div className="min-h-screen bg-surface-sunken bg-surface flex items-center justify-center">
         <div className="text-center">
           <div className="w-8 h-8 border-4 border-blue-500 border-t-transparent rounded-full animate-spin mx-auto" />
           <p className="text-ink-muted mt-3">Loading leave data...</p>
@@ -153,14 +153,14 @@ export default function EmployeeTimeOffPage() {
   }
 
   return (
-    <div className="min-h-screen bg-surface-sunken dark:bg-gray-900">
+    <div className="min-h-screen bg-surface-sunken bg-surface">
       {/* Header */}
-      <div className="bg-surface dark:bg-gray-800 border-b border-border dark:border-gray-700">
+      <div className="bg-surface bg-surface-raised border-b border-border border-border">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
           <div className="flex items-center justify-between">
             <div>
-              <h1 className="text-2xl font-bold text-ink dark:text-white">Time Off</h1>
-              <p className="text-ink-muted dark:text-ink-faint mt-1">
+              <h1 className="text-2xl font-bold text-ink text-white">Time Off</h1>
+              <p className="text-ink-muted text-ink-faint mt-1">
                 Request and manage your leave
               </p>
             </div>
@@ -182,7 +182,7 @@ export default function EmployeeTimeOffPage() {
                 <CardContent className="p-4">
                   <div className={`w-2 h-2 rounded-full ${type.color} mb-2`} />
                   <p className="text-xs text-ink-muted">{type.label}</p>
-                  <p className="text-lg font-bold text-ink dark:text-white">
+                  <p className="text-lg font-bold text-ink text-white">
                     {bal?.remaining_days || 0}
                   </p>
                   <p className="text-xs text-ink-faint">days left</p>
@@ -202,7 +202,7 @@ export default function EmployeeTimeOffPage() {
               className={`px-3 py-1.5 rounded-full text-sm font-medium transition-colors ${
                 filter === f
                   ? 'bg-blue-500 text-white'
-                  : 'bg-surface-sunken dark:bg-gray-800 text-ink-muted dark:text-ink-faint hover:bg-gray-200 dark:hover:bg-gray-700'
+                  : 'bg-surface-sunken bg-surface-raised text-ink-muted text-ink-faint hover:bg-gray-200 dark:hover:bg-gray-700'
               }`}
             >
               {f.charAt(0).toUpperCase() + f.slice(1)}
@@ -236,11 +236,11 @@ export default function EmployeeTimeOffPage() {
                     >
                       <div className="flex items-center justify-between">
                         <div className="flex items-center gap-4">
-                          <div className="w-10 h-10 rounded-full bg-surface-sunken dark:bg-gray-800 flex items-center justify-center">
+                          <div className="w-10 h-10 rounded-full bg-surface-sunken bg-surface-raised flex items-center justify-center">
                             <Calendar className="w-5 h-5 text-ink-muted" />
                           </div>
                           <div>
-                            <p className="font-medium text-ink dark:text-white">
+                            <p className="font-medium text-ink text-white">
                               {LEAVE_TYPES.find(t => t.value === request.leave_type)?.label || request.leave_type}
                             </p>
                             <p className="text-sm text-ink-muted">
@@ -280,22 +280,22 @@ export default function EmployeeTimeOffPage() {
               initial={{ scale: 0.95, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.95, opacity: 0 }}
-              className="bg-surface dark:bg-gray-800 rounded-xl shadow-xl max-w-md w-full"
+              className="bg-surface bg-surface-raised rounded-xl shadow-xl max-w-md w-full"
               onClick={(e) => e.stopPropagation()}
             >
               <div className="p-6">
-                <h2 className="text-xl font-bold text-ink dark:text-white mb-4">
+                <h2 className="text-xl font-bold text-ink text-white mb-4">
                   Request Leave
                 </h2>
                 <form onSubmit={handleSubmit} className="space-y-4">
                   <div>
-                    <label className="block text-sm font-medium text-ink-secondary dark:text-gray-300 mb-1">
+                    <label className="block text-sm font-medium text-ink-secondary text-ink-muted mb-1">
                       Leave Type
                     </label>
                     <select
                       value={formData.leave_type}
                       onChange={(e) => setFormData(prev => ({ ...prev, leave_type: e.target.value }))}
-                      className="w-full px-3 py-2 border border-border dark:border-gray-600 rounded-lg bg-surface dark:bg-gray-700 text-ink dark:text-white"
+                      className="w-full px-3 py-2 border border-border border-border rounded-lg bg-surface dark:bg-gray-700 text-ink text-white"
                     >
                       {LEAVE_TYPES.map(type => (
                         <option key={type.value} value={type.value}>{type.label}</option>
@@ -304,7 +304,7 @@ export default function EmployeeTimeOffPage() {
                   </div>
                   <div className="grid grid-cols-2 gap-4">
                     <div>
-                      <label className="block text-sm font-medium text-ink-secondary dark:text-gray-300 mb-1">
+                      <label className="block text-sm font-medium text-ink-secondary text-ink-muted mb-1">
                         Start Date
                       </label>
                       <input
@@ -312,11 +312,11 @@ export default function EmployeeTimeOffPage() {
                         value={formData.start_date}
                         onChange={(e) => setFormData(prev => ({ ...prev, start_date: e.target.value }))}
                         required
-                        className="w-full px-3 py-2 border border-border dark:border-gray-600 rounded-lg bg-surface dark:bg-gray-700 text-ink dark:text-white"
+                        className="w-full px-3 py-2 border border-border border-border rounded-lg bg-surface dark:bg-gray-700 text-ink text-white"
                       />
                     </div>
                     <div>
-                      <label className="block text-sm font-medium text-ink-secondary dark:text-gray-300 mb-1">
+                      <label className="block text-sm font-medium text-ink-secondary text-ink-muted mb-1">
                         End Date
                       </label>
                       <input
@@ -324,7 +324,7 @@ export default function EmployeeTimeOffPage() {
                         value={formData.end_date}
                         onChange={(e) => setFormData(prev => ({ ...prev, end_date: e.target.value }))}
                         required
-                        className="w-full px-3 py-2 border border-border dark:border-gray-600 rounded-lg bg-surface dark:bg-gray-700 text-ink dark:text-white"
+                        className="w-full px-3 py-2 border border-border border-border rounded-lg bg-surface dark:bg-gray-700 text-ink text-white"
                       />
                     </div>
                   </div>
@@ -334,14 +334,14 @@ export default function EmployeeTimeOffPage() {
                     </p>
                   )}
                   <div>
-                    <label className="block text-sm font-medium text-ink-secondary dark:text-gray-300 mb-1">
+                    <label className="block text-sm font-medium text-ink-secondary text-ink-muted mb-1">
                       Reason (optional)
                     </label>
                     <textarea
                       value={formData.reason}
                       onChange={(e) => setFormData(prev => ({ ...prev, reason: e.target.value }))}
                       rows={3}
-                      className="w-full px-3 py-2 border border-border dark:border-gray-600 rounded-lg bg-surface dark:bg-gray-700 text-ink dark:text-white"
+                      className="w-full px-3 py-2 border border-border border-border rounded-lg bg-surface dark:bg-gray-700 text-ink text-white"
                       placeholder="Reason for leave..."
                     />
                   </div>

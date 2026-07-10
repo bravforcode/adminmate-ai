@@ -46,12 +46,12 @@ export default function GeminiMonitoringPage() {
           <p className="text-body-md text-ink-variant mt-1">{t('gemini.subtitle')}</p>
         </div>
         <div className="bg-surface rounded-xl border border-border p-8 text-center">
-          <AlertCircle size={40} className="mx-auto text-error mb-3" />
+          <AlertCircle size={40} className="mx-auto text-destructive mb-3" />
           <h3 className="font-semibold text-ink mb-1">{t('gemini.error_title')}</h3>
           <p className="text-sm text-ink-variant mb-4">{(error as Error)?.message || t('gemini.error_description')}</p>
           <button
             onClick={() => refetch()}
-            className="inline-flex items-center gap-2 px-4 py-2 bg-primary text-on-primary rounded-lg text-sm font-medium hover:opacity-90"
+            className="inline-flex items-center gap-2 px-4 py-2 bg-primary text-white rounded-lg text-sm font-medium hover:opacity-90"
           >
             <RefreshCw size={14} /> {t('common:errors.retry')}
           </button>

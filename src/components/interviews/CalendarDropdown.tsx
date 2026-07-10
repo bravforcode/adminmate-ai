@@ -47,7 +47,7 @@ export function CalendarDropdown({ interview, compact = false }: CalendarDropdow
         onClick={() => setOpen(!open)}
         className={`inline-flex items-center gap-1.5 rounded-lg text-xs font-medium transition-colors ${
           compact
-            ? 'px-2 py-1 text-ink-variant dark:text-ink-variant hover:text-primary dark:hover:text-primary-muted hover:bg-surface-sunken dark:hover:bg-surface-sunken'
+            ? 'px-2 py-1 text-ink-variant text-ink-variant hover:text-primary dark:hover:text-primary-muted hover:bg-surface-sunken dark:hover:bg-surface-sunken'
             : 'px-3 py-1.5 border border-border text-ink hover:border-primary dark:hover:border-primary hover:bg-surface-sunken dark:hover:bg-surface-sunken'
         }`}
       >
@@ -62,21 +62,21 @@ export function CalendarDropdown({ interview, compact = false }: CalendarDropdow
             onClick={handleDownloadIcs}
             className="w-full flex items-center gap-2 px-3 py-2 text-xs text-ink hover:bg-surface-sunken dark:hover:bg-surface-sunken transition-colors"
           >
-            <Download size={14} className="text-ink-variant dark:text-ink-variant" />
+            <Download size={14} className="text-ink-variant text-ink-variant" />
             {t('download_ics')}
           </button>
           <button
             onClick={handleGoogleCalendar}
             className="w-full flex items-center gap-2 px-3 py-2 text-xs text-ink hover:bg-surface-sunken dark:hover:bg-surface-sunken transition-colors"
           >
-            <ExternalLink size={14} className="text-ink-variant dark:text-ink-variant" />
+            <ExternalLink size={14} className="text-ink-variant text-ink-variant" />
             {t('google_calendar')}
           </button>
           <button
             onClick={handleOutlook}
             className="w-full flex items-center gap-2 px-3 py-2 text-xs text-ink hover:bg-surface-sunken dark:hover:bg-surface-sunken transition-colors"
           >
-            <ExternalLink size={14} className="text-ink-variant dark:text-ink-variant" />
+            <ExternalLink size={14} className="text-ink-variant text-ink-variant" />
             {t('outlook')}
           </button>
         </div>

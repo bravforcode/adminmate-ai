@@ -103,7 +103,7 @@ export function PrivacyRequest() {
           disabled={createRequest.isPending}
           className="flex items-center gap-2 p-4 bg-surface rounded-xl border border-error/30 hover:bg-error/5 transition-colors disabled:opacity-50"
         >
-          <Trash2 size={20} className="text-error" />
+          <Trash2 size={20} className="text-destructive" />
           <div className="text-left">
             <p className="text-sm font-medium text-ink">{t('pdpa.delete_title') || 'Request Data Deletion'}</p>
             <p className="text-xs text-ink-variant">{t('pdpa.delete_desc_short') || 'Anonymize your personal data'}</p>

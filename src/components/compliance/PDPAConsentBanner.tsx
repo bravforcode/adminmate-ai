@@ -156,7 +156,7 @@ export function PDPAConsentBanner({ candidateId, employeeId }: Props) {
               <button
                 onClick={handleAccept}
                 disabled={loading || selectedPurposes.size === 0 || !email}
-                className="flex items-center gap-1 px-3 py-1.5 bg-primary text-on-primary rounded-lg text-xs font-medium hover:opacity-90 disabled:opacity-50 disabled:cursor-not-allowed"
+                className="flex items-center gap-1 px-3 py-1.5 bg-primary text-white rounded-lg text-xs font-medium hover:opacity-90 disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 {loading ? <Loader2 size={12} className="animate-spin" /> : <Check size={12} />}
                 {t('pdpa.consent_button')}
@@ -165,7 +165,7 @@ export function PDPAConsentBanner({ candidateId, employeeId }: Props) {
               <button
                 onClick={handleWithdraw}
                 disabled={loading}
-                className="flex items-center gap-1 px-3 py-1.5 bg-error/10 text-error rounded-lg text-xs font-medium hover:bg-error/20 disabled:opacity-50"
+                className="flex items-center gap-1 px-3 py-1.5 bg-error/10 text-destructive rounded-lg text-xs font-medium hover:bg-error/20 disabled:opacity-50"
               >
                 {loading ? <Loader2 size={12} className="animate-spin" /> : <X size={12} />}
                 {t('pdpa.withdraw_button') || 'Withdraw Consent'}

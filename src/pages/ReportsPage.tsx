@@ -50,10 +50,10 @@ function KPICard({ title, subtitle, value, unit, icon: Icon, iconBg, iconColor, 
         </span>
       </div>
       <h3 className="text-lg font-semibold text-on-background mb-1">{title}</h3>
-      <p className="text-sm text-ink-variant dark:text-ink-variant mb-4">{subtitle}</p>
+      <p className="text-sm text-ink-variant text-ink-variant mb-4">{subtitle}</p>
       <div className="flex items-baseline gap-2">
         <span className="text-3xl font-bold text-primary dark:text-primary-muted">{value}</span>
-        <span className="text-sm text-ink-variant dark:text-ink-variant">{unit}</span>
+        <span className="text-sm text-ink-variant text-ink-variant">{unit}</span>
       </div>
       {typeof progress === 'number' && (
         <>
@@ -61,8 +61,8 @@ function KPICard({ title, subtitle, value, unit, icon: Icon, iconBg, iconColor, 
             <div className="bg-tertiary h-2.5 rounded-full" style={{ width: `${progress}%` }} />
           </div>
           <div className="flex justify-between text-sm">
-            <span className="text-ink-variant dark:text-ink-variant">{t('reports.completion', 'Completion')}</span>
-            <span className="text-tertiary font-bold">{progress}%</span>
+            <span className="text-ink-variant text-ink-variant">{t('reports.completion', 'Completion')}</span>
+            <span className="text-ink-faint font-bold">{progress}%</span>
           </div>
         </>
       )}
@@ -256,8 +256,8 @@ export function ReportsPage() {
 
       <header className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
         <div>
-          <h1 className="text-headline-md md:text-headline-lg font-bold text-on-background dark:text-ink">{t('title')}</h1>
-          <p className="text-body-md text-ink-variant dark:text-ink-variant mt-1">{t('subtitle')}</p>
+          <h1 className="text-headline-md md:text-headline-lg font-bold text-on-background text-ink">{t('title')}</h1>
+          <p className="text-body-md text-ink-variant text-ink-variant mt-1">{t('subtitle')}</p>
         </div>
         <div className="flex items-center gap-2">
           <InlineGate feature="customReports">
@@ -277,7 +277,7 @@ export function ReportsPage() {
                 onClick={() => handlePeriodChange(period)}
                 className={cn(
                   'px-4 py-2 rounded-full text-xs font-semibold transition-colors',
-                  activePeriod === period ? 'bg-surface-sunken text-primary dark:text-primary-muted' : 'text-ink-variant dark:text-ink-variant hover:bg-surface-sunken dark:hover:bg-surface-sunken'
+                  activePeriod === period ? 'bg-surface-sunken text-primary dark:text-primary-muted' : 'text-ink-variant text-ink-variant hover:bg-surface-sunken dark:hover:bg-surface-sunken'
                 )}
               >
                 {period}
@@ -293,8 +293,8 @@ export function ReportsPage() {
 
       <div className="bg-surface rounded-xl p-6 border border-border shadow-sm">
         <div className="flex items-center justify-between mb-4">
-          <h3 className="text-lg font-semibold text-on-background dark:text-ink">{t('scheduling.generate_now_title')}</h3>
-          <p className="text-sm text-ink-variant dark:text-ink-variant">{t('scheduling.generate_now_sub')}</p>
+          <h3 className="text-lg font-semibold text-on-background text-ink">{t('scheduling.generate_now_title')}</h3>
+          <p className="text-sm text-ink-variant text-ink-variant">{t('scheduling.generate_now_sub')}</p>
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
           {REPORT_TYPE_OPTIONS.map(opt => (
@@ -304,12 +304,12 @@ export function ReportsPage() {
               disabled={generatingType === opt.value}
               className="flex items-center gap-3 p-4 rounded-xl border border-border hover:border-primary dark:hover:border-primary hover:bg-surface-sunken dark:hover:bg-surface-sunken transition-all group disabled:opacity-50"
             >
-              <div className="w-10 h-10 rounded-full bg-primary-fixed flex items-center justify-center group-hover:bg-primary group-hover:text-on-primary transition-colors">
-                <opt.icon size={18} className="text-primary group-hover:text-on-primary" />
+              <div className="w-10 h-10 rounded-full bg-primary-fixed flex items-center justify-center group-hover:bg-primary group-hover:text-white transition-colors">
+                <opt.icon size={18} className="text-primary group-hover:text-white" />
               </div>
               <div className="text-left flex-1">
-                <p className="text-sm font-medium text-on-background dark:text-ink">{t(opt.labelKey)}</p>
-                <p className="text-xs text-ink-variant dark:text-ink-variant">
+                <p className="text-sm font-medium text-on-background text-ink">{t(opt.labelKey)}</p>
+                <p className="text-xs text-ink-variant text-ink-variant">
                   {generatingType === opt.value ? t('scheduling.generating') : t('scheduling.click_to_generate')}
                 </p>
               </div>
@@ -322,8 +322,8 @@ export function ReportsPage() {
         <div className="bg-surface rounded-xl p-6 border border-border shadow-sm">
           <div className="flex justify-between items-center mb-4">
             <div>
-              <h3 className="text-lg font-semibold text-on-background dark:text-ink">{t('scheduling.recent_reports')}</h3>
-              <p className="text-sm text-ink-variant dark:text-ink-variant">{t('scheduling.recent_reports_sub')}</p>
+              <h3 className="text-lg font-semibold text-on-background text-ink">{t('scheduling.recent_reports')}</h3>
+              <p className="text-sm text-ink-variant text-ink-variant">{t('scheduling.recent_reports_sub')}</p>
             </div>
           </div>
           <div className="space-y-2">
@@ -332,8 +332,8 @@ export function ReportsPage() {
                 <div className="flex items-center gap-3">
                   <FileDown size={16} className="text-outline dark:text-outline-variant" />
                   <div>
-                    <p className="text-sm font-medium text-on-background dark:text-ink">{r.title}</p>
-                    <p className="text-xs text-ink-variant dark:text-ink-variant">{new Date(r.created_at).toLocaleString()}</p>
+                    <p className="text-sm font-medium text-on-background text-ink">{r.title}</p>
+                    <p className="text-xs text-ink-variant text-ink-variant">{new Date(r.created_at).toLocaleString()}</p>
                   </div>
                 </div>
                 <Button variant="link" size="xs" onClick={() => reportService.downloadReport(r, 'html')}>{t('scheduling.download')}</Button>
@@ -367,12 +367,12 @@ export function ReportsPage() {
               value={costPerHire}
               unit={t('kpi.avg')}
               icon={DollarSign}
-              iconBg="bg-error-container"
-              iconColor="text-error"
+              iconBg="bg-destructive-subtle"
+              iconColor="text-destructive"
               trend={t('kpi.hires', { count: kpis?.hiredCount || 0 })}
               trendUp={false}
-              trendBg="bg-error-container"
-              trendColor="text-error"
+              trendBg="bg-destructive-subtle"
+              trendColor="text-destructive"
             />
             <KPICard
               title={t('kpi.onboarding_success')}
@@ -381,11 +381,11 @@ export function ReportsPage() {
               unit={t('kpi.completion')}
               icon={UserCheck}
               iconBg="bg-tertiary-fixed"
-              iconColor="text-tertiary"
+              iconColor="text-ink-faint"
               trend={kpis?.totalChecklists ? `${kpis.completedChecklists}/${kpis.totalChecklists}` : t('kpi.no_data')}
               trendUp
               trendBg="bg-surface-sunken"
-              trendColor="text-tertiary"
+              trendColor="text-ink-faint"
               progress={completionRate || 0}
             />
           </div>
@@ -394,8 +394,8 @@ export function ReportsPage() {
             <div className="lg:col-span-8 bg-surface rounded-xl p-6 border border-border shadow-sm">
               <div className="flex justify-between items-center mb-6">
                 <div>
-                  <h3 className="text-lg font-semibold text-on-background dark:text-ink">{t('chart.pipeline_title')}</h3>
-                  <p className="text-sm text-ink-variant dark:text-ink-variant">{t('chart.pipeline_subtitle')}</p>
+                  <h3 className="text-lg font-semibold text-on-background text-ink">{t('chart.pipeline_title')}</h3>
+                  <p className="text-sm text-ink-variant text-ink-variant">{t('chart.pipeline_subtitle')}</p>
                 </div>
                 <Button variant="outline" size="sm" onClick={handleExportCSV} icon={<FileDown size={16} />}>
                   {t('export_csv', { ns: 'common', defaultValue: 'Export CSV' })}
@@ -417,7 +417,7 @@ export function ReportsPage() {
 
             <div className="lg:col-span-4 bg-surface rounded-xl p-6 border border-border shadow-sm flex flex-col">
               <h3 className="text-lg font-semibold text-on-background mb-1">{t('breakdown.title')}</h3>
-              <p className="text-sm text-ink-variant dark:text-ink-variant mb-6">{t('breakdown.subtitle')}</p>
+              <p className="text-sm text-ink-variant text-ink-variant mb-6">{t('breakdown.subtitle')}</p>
               <div className="flex-1 flex flex-col justify-center gap-5">
                 {totalSources > 0 ? sourceEntries.map(([label, count], i) => (
                   <div key={label}>
@@ -426,14 +426,14 @@ export function ReportsPage() {
                         <span className={cn('w-2 h-2 rounded-full', sourceColors[i % sourceColors.length])} />
                         {label}
                       </span>
-                      <span className="font-bold text-ink dark:text-ink">{Math.round((count / totalSources) * 100)}%</span>
+                      <span className="font-bold text-ink text-ink">{Math.round((count / totalSources) * 100)}%</span>
                     </div>
                     <div className="w-full bg-surface-sunken rounded-full h-1.5">
                       <div className={cn('h-1.5 rounded-full', sourceColors[i % sourceColors.length])} style={{ width: `${(count / totalSources) * 100}%` }} />
                     </div>
                   </div>
                 )                ) : (
-                  <p className="text-sm text-ink-variant dark:text-ink-variant text-center">{t('no_data')}</p>
+                  <p className="text-sm text-ink-variant text-ink-variant text-center">{t('no_data')}</p>
                 )}
               </div>
             </div>
@@ -442,30 +442,30 @@ export function ReportsPage() {
           <div className="bg-surface rounded-xl p-6 border border-border shadow-sm">
             <div className="flex justify-between items-center mb-4">
               <div>
-                <h3 className="text-lg font-semibold text-on-background dark:text-ink">{t('table.title')}</h3>
-                <p className="text-sm text-ink-variant dark:text-ink-variant">{t('table.subtitle')}</p>
+                <h3 className="text-lg font-semibold text-on-background text-ink">{t('table.title')}</h3>
+                <p className="text-sm text-ink-variant text-ink-variant">{t('table.subtitle')}</p>
               </div>
               <Button variant="link" size="xs" onClick={() => navigate('/documents')}>{t('view_all')}</Button>
             </div>
             <div className="table-responsive overflow-x-auto -mx-6 px-6">
               <table role="table" className="w-full text-left border-collapse min-w-[400px]">
                 <thead>
-                  <tr className="bg-surface-sunken dark:bg-surface-sunken/50 border-b border-border/50 dark:border-border/50">
-                    <th className="py-3 px-4 text-xs font-semibold uppercase tracking-wider text-ink-variant dark:text-ink-variant">{t('table.report_name')}</th>
-                    <th className="py-3 px-4 text-xs font-semibold uppercase tracking-wider text-ink-variant dark:text-ink-variant">{t('table.category')}</th>
-                    <th className="py-3 px-4 text-xs font-semibold uppercase tracking-wider text-ink-variant dark:text-ink-variant">{t('table.date')}</th>
-                    <th className="py-3 px-4 text-xs font-semibold uppercase tracking-wider text-ink-variant dark:text-ink-variant text-right">{t('table.action')}</th>
+                  <tr className="bg-surface-sunken bg-surface-sunken/50 border-b border-border/50 border-border/50">
+                    <th className="py-3 px-4 text-xs font-semibold uppercase tracking-wider text-ink-variant text-ink-variant">{t('table.report_name')}</th>
+                    <th className="py-3 px-4 text-xs font-semibold uppercase tracking-wider text-ink-variant text-ink-variant">{t('table.category')}</th>
+                    <th className="py-3 px-4 text-xs font-semibold uppercase tracking-wider text-ink-variant text-ink-variant">{t('table.date')}</th>
+                    <th className="py-3 px-4 text-xs font-semibold uppercase tracking-wider text-ink-variant text-ink-variant text-right">{t('table.action')}</th>
                   </tr>
                 </thead>
-                <tbody className="text-sm text-ink dark:text-ink">
+                <tbody className="text-sm text-ink text-ink">
                   {documents && documents.length > 0 ? documents.map((doc: { id: string; document_type?: string; created_at?: string; candidates?: { full_name?: string } }) => (
-                    <tr key={doc.id} className="border-b border-border/50 dark:border-border/50 hover:bg-surface-sunken/50 dark:hover:bg-surface-sunken/30 transition-colors duration-150 group cursor-pointer">
+                    <tr key={doc.id} className="border-b border-border/50 border-border/50 hover:bg-surface-sunken/50 dark:hover:bg-surface-sunken/30 transition-colors duration-150 group cursor-pointer">
                       <td className="py-3 px-4 text-sm text-ink flex items-center gap-2">
                         <ExternalLink size={16} className="text-outline dark:text-outline-variant" />
                         {doc.candidates?.full_name || 'Document'} — {doc.document_type?.replace(/_/g, ' ')}
                       </td>
-                      <td className="py-3 px-4 text-sm text-ink dark:text-ink">
-                        <span className="bg-surface-sunken px-2 py-1 rounded text-xs dark:text-ink">{doc.document_type?.split('_')[0] || 'General'}</span>
+                      <td className="py-3 px-4 text-sm text-ink text-ink">
+                        <span className="bg-surface-sunken px-2 py-1 rounded text-xs text-ink">{doc.document_type?.split('_')[0] || 'General'}</span>
                       </td>
                       <td className="py-3 px-4 text-sm text-ink text-ink-variant">{doc.created_at ? new Date(doc.created_at).toLocaleDateString() : '-'}</td>
                       <td className="py-3 px-4 text-sm text-ink text-right">

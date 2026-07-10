@@ -9,12 +9,12 @@ interface EmployeeCardProps {
 
 const STATUS_STYLES: Record<string, string> = {
   active: 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400',
-  draft: 'bg-gray-100 text-gray-800 dark:bg-gray-900/30 dark:text-gray-400',
+  draft: 'bg-gray-100 text-gray-800 bg-surface/30 text-ink-faint',
   on_leave: 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-400',
   suspended: 'bg-orange-100 text-orange-800 dark:bg-orange-900/30 dark:text-orange-400',
   offboarding: 'bg-purple-100 text-purple-800 dark:bg-purple-900/30 dark:text-purple-400',
   terminated: 'bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-400',
-  inactive: 'bg-gray-100 text-gray-600 dark:bg-gray-900/30 dark:text-gray-500',
+  inactive: 'bg-gray-100 text-gray-600 bg-surface/30 text-ink-muted',
 }
 
 function maskPhone(phone?: string): string {
@@ -41,17 +41,17 @@ export const EmployeeCard = memo(function EmployeeCard({ employee }: EmployeeCar
       className="block bg-surface rounded-xl border border-border p-4 hover:border-primary dark:hover:border-primary hover:shadow-sm transition-all group card-hover"
     >
       <div className="flex items-start gap-4">
-        <div className="w-12 h-12 rounded-full bg-primary-container dark:bg-primary-container text-on-primary-container dark:text-primary-muted flex items-center justify-center font-bold text-lg flex-shrink-0">
+        <div className="w-12 h-12 rounded-full bg-primary-container dark:bg-primary-container text-white-container dark:text-primary-muted flex items-center justify-center font-bold text-lg flex-shrink-0">
           {initials}
         </div>
         <div className="flex-1 min-w-0">
           <h3 className="font-semibold text-ink group-hover:text-primary dark:group-hover:text-primary-muted transition-colors truncate">
             {displayName}
           </h3>
-          <p className="text-sm text-ink-variant dark:text-ink-variant flex items-center gap-1">
+          <p className="text-sm text-ink-variant text-ink-variant flex items-center gap-1">
             <Briefcase size={12} /> {employee.job_title}
           </p>
-          <div className="flex flex-wrap gap-2 mt-2 text-xs text-ink-variant dark:text-ink-variant">
+          <div className="flex flex-wrap gap-2 mt-2 text-xs text-ink-variant text-ink-variant">
             {employee.work_email && (
               <span className="flex items-center gap-1"><Mail size={12} /> {maskEmail(employee.work_email)}</span>
             )}
@@ -64,7 +64,7 @@ export const EmployeeCard = memo(function EmployeeCard({ employee }: EmployeeCar
           <span className={`inline-block px-2 py-0.5 rounded-full text-xs font-medium ${statusStyle}`}>
             {employee.employment_status.replace('_', ' ')}
           </span>
-          <span className="text-xs text-ink-variant dark:text-ink-variant">
+          <span className="text-xs text-ink-variant text-ink-variant">
             {employee.employee_number}
           </span>
         </div>

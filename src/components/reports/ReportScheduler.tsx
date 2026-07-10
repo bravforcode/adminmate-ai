@@ -58,13 +58,13 @@ export function ReportScheduler({ onClose }: SchedulerProps) {
         className="bg-surface rounded-2xl border border-border shadow-xl w-full max-w-lg mx-4"
         onClick={e => e.stopPropagation()}
       >
-        <div className="flex items-center gap-3 p-6 border-b border-border dark:border-border">
+        <div className="flex items-center gap-3 p-6 border-b border-border border-border">
           <div className="w-10 h-10 rounded-full bg-primary-fixed flex items-center justify-center">
             <Calendar size={20} className="text-primary" />
           </div>
           <div>
-            <h2 className="text-lg font-semibold text-on-background dark:text-ink">{t('scheduling.title')}</h2>
-            <p className="text-sm text-ink-variant dark:text-ink-variant">{t('scheduling.subtitle')}</p>
+            <h2 className="text-lg font-semibold text-on-background text-ink">{t('scheduling.title')}</h2>
+            <p className="text-sm text-ink-variant text-ink-variant">{t('scheduling.subtitle')}</p>
           </div>
         </div>
 
@@ -84,12 +84,12 @@ export function ReportScheduler({ onClose }: SchedulerProps) {
                     'flex items-center gap-2 px-3 py-2 rounded-lg text-sm text-left transition-colors',
                     reportType === rt.value
                       ? 'bg-primary-fixed text-primary dark:text-primary-muted font-medium'
-                      : 'bg-surface-sunken dark:bg-surface-sunken-lowest text-ink hover:bg-surface-sunken dark:hover:bg-outline'
+                      : 'bg-surface-sunken bg-surface-sunken-lowest text-ink hover:bg-surface-sunken dark:hover:bg-outline'
                   )}
                 >
                   <span className={cn(
                     'w-3 h-3 rounded-full border-2 flex-shrink-0',
-                    reportType === rt.value ? 'border-primary dark:border-accent-dim bg-primary dark:bg-primary-muted' : 'border-border dark:border-border'
+                    reportType === rt.value ? 'border-primary dark:border-accent-dim bg-primary dark:bg-primary-muted' : 'border-border border-border'
                   )} />
                   {t(rt.labelKey)}
                 </button>
@@ -111,8 +111,8 @@ export function ReportScheduler({ onClose }: SchedulerProps) {
                   className={cn(
                     'flex-1 px-3 py-2 rounded-lg text-sm font-medium transition-colors',
                     frequency === f.value
-                      ? 'bg-primary text-on-primary'
-                      : 'bg-surface-sunken dark:bg-surface-sunken-lowest text-ink hover:bg-surface-sunken dark:hover:bg-outline'
+                      ? 'bg-primary text-white'
+                      : 'bg-surface-sunken bg-surface-sunken-lowest text-ink hover:bg-surface-sunken dark:hover:bg-outline'
                   )}
                 >
                   {t(f.labelKey)}
@@ -121,29 +121,29 @@ export function ReportScheduler({ onClose }: SchedulerProps) {
             </div>
           </div>
 
-          <div className="bg-surface-sunken dark:bg-surface-sunken-lowest rounded-lg p-3">
-            <div className="flex items-center gap-2 text-sm text-ink-variant dark:text-ink-variant">
+          <div className="bg-surface-sunken bg-surface-sunken-lowest rounded-lg p-3">
+            <div className="flex items-center gap-2 text-sm text-ink-variant text-ink-variant">
               <Users size={14} />
               {t('scheduling.recipients_label')}: <span className="text-ink font-medium">{profile?.full_name || profile?.email}</span>
             </div>
           </div>
 
           {createMutation.isError && (
-            <p className="text-sm text-error dark:text-error">{t('scheduling.error')}</p>
+            <p className="text-sm text-destructive dark:text-destructive">{t('scheduling.error')}</p>
           )}
 
           <div className="flex gap-3 pt-2">
             <button
               type="button"
               onClick={onClose}
-              className="flex-1 px-4 py-2.5 border border-border rounded-lg text-sm font-medium hover:bg-surface-sunken dark:hover:bg-surface-sunken transition-colors dark:text-ink"
+              className="flex-1 px-4 py-2.5 border border-border rounded-lg text-sm font-medium hover:bg-surface-sunken dark:hover:bg-surface-sunken transition-colors text-ink"
             >
               {t('cancel', { ns: 'common' })}
             </button>
             <button
               type="submit"
               disabled={createMutation.isPending}
-              className="flex-1 px-4 py-2.5 bg-primary text-on-primary rounded-lg text-sm font-medium hover:opacity-90 disabled:opacity-50 transition-opacity"
+              className="flex-1 px-4 py-2.5 bg-primary text-white rounded-lg text-sm font-medium hover:opacity-90 disabled:opacity-50 transition-opacity"
             >
               {createMutation.isPending ? t('scheduling.creating') : t('scheduling.create')}
             </button>
@@ -186,21 +186,21 @@ export function ScheduleList({ onGenerateNow, generatingType }: ScheduleListProp
   return (
     <div className="space-y-3">
       {schedules.map(s => (
-        <div key={s.id} className="flex items-center gap-3 bg-surface rounded-xl p-4 border border-border dark:border-border">
+        <div key={s.id} className="flex items-center gap-3 bg-surface rounded-xl p-4 border border-border border-border">
           <div className={cn(
             'w-9 h-9 rounded-full flex items-center justify-center flex-shrink-0',
-            s.is_enabled ? 'bg-success-container' : 'bg-surface-sunken dark:bg-surface-sunken'
+            s.is_enabled ? 'bg-success-subtle' : 'bg-surface-sunken bg-surface-sunken'
           )}>
             {s.is_enabled
               ? <Power size={16} className="text-success" />
-              : <PowerOff size={16} className="text-ink-variant dark:text-ink-variant" />
+              : <PowerOff size={16} className="text-ink-variant text-ink-variant" />
             }
           </div>
           <div className="flex-1 min-w-0">
             <p className="text-sm font-medium text-on-background truncate">
               {t(`scheduling.type_${s.report_type}`)}
             </p>
-            <p className="text-xs text-ink-variant dark:text-ink-variant">
+            <p className="text-xs text-ink-variant text-ink-variant">
               {t(`scheduling.freq_${s.frequency}`)} · {t('scheduling.next_run')}: {new Date(s.next_run_at).toLocaleDateString()}
             </p>
           </div>
@@ -218,15 +218,15 @@ export function ScheduleList({ onGenerateNow, generatingType }: ScheduleListProp
           >
             {s.is_enabled
               ? <Power size={14} className="text-success" />
-              : <PowerOff size={14} className="text-ink-variant dark:text-ink-variant" />
+              : <PowerOff size={14} className="text-ink-variant text-ink-variant" />
             }
           </button>
           <button
             onClick={() => deleteMutation.mutate(s.id)}
-            className="p-2 rounded-lg hover:bg-error-container transition-colors min-w-[44px] min-h-[44px] flex items-center justify-center"
+            className="p-2 rounded-lg hover:bg-destructive-subtle transition-colors min-w-[44px] min-h-[44px] flex items-center justify-center"
             aria-label="Delete schedule"
           >
-            <Trash2 size={14} className="text-error" />
+            <Trash2 size={14} className="text-destructive" />
           </button>
         </div>
       ))}

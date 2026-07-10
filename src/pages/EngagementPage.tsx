@@ -211,20 +211,20 @@ export function EngagementPage() {
                 </CardHeader>
                 <CardContent className="space-y-6">
                   <div className="text-center">
-                    <p className={`text-6xl font-bold ${enps.score >= 0 ? 'text-success' : 'text-error'}`}>{enps.score}</p>
+                    <p className={`text-6xl font-bold ${enps.score >= 0 ? 'text-success' : 'text-destructive'}`}>{enps.score}</p>
                     <p className="text-sm text-ink-variant mt-1">{t('enps.current_score', 'Current eNPS Score')}</p>
                   </div>
                   <div className="grid grid-cols-3 gap-4 text-center">
-                    <div className="bg-success-container/20 rounded-xl p-4">
+                    <div className="bg-success-subtle/20 rounded-xl p-4">
                       <p className="text-2xl font-bold text-success">{enps.promoters}</p>
                       <p className="text-xs text-ink-variant">{t('enps.promoters', 'Promoters (9-10)')}</p>
                     </div>
-                    <div className="bg-warning-container/20 rounded-xl p-4">
+                    <div className="bg-warning-subtle/20 rounded-xl p-4">
                       <p className="text-2xl font-bold text-warning">{enps.passives}</p>
                       <p className="text-xs text-ink-variant">{t('enps.passives', 'Passives (7-8)')}</p>
                     </div>
-                    <div className="bg-error-container/20 rounded-xl p-4">
-                      <p className="text-2xl font-bold text-error">{enps.detractors}</p>
+                    <div className="bg-destructive-subtle/20 rounded-xl p-4">
+                      <p className="text-2xl font-bold text-destructive">{enps.detractors}</p>
                       <p className="text-xs text-ink-variant">{t('enps.detractors', 'Detractors (0-6)')}</p>
                     </div>
                   </div>
@@ -316,8 +316,8 @@ export function EngagementPage() {
                   {[
                     { label: t('culture.engagement_score', 'Engagement Score'), value: 'N/A', desc: t('culture.engagement_desc', 'Based on survey responses'), color: 'text-success' },
                     { label: t('culture.participation_rate', 'Survey Participation'), value: `${surveys.length > 0 ? Math.round(surveys.reduce((s, sv) => s + sv.response_count, 0) / Math.max(surveys.length, 1)) : 0}%`, desc: t('culture.participation_desc', 'Average response rate'), color: 'text-primary' },
-                    { label: t('culture.recognition_rate', 'Recognition Rate'), value: `${recognitions.length}`, desc: t('culture.recognition_desc', 'Total recognitions this period'), color: 'text-tertiary' },
-                    { label: t('culture.nps_score', 'eNPS Score'), value: enps ? String(enps.score) : '-', desc: t('culture.nps_desc', 'Employee Net Promoter Score'), color: enps && enps.score >= 0 ? 'text-success' : 'text-error' },
+                    { label: t('culture.recognition_rate', 'Recognition Rate'), value: `${recognitions.length}`, desc: t('culture.recognition_desc', 'Total recognitions this period'), color: 'text-ink-faint' },
+                    { label: t('culture.nps_score', 'eNPS Score'), value: enps ? String(enps.score) : '-', desc: t('culture.nps_desc', 'Employee Net Promoter Score'), color: enps && enps.score >= 0 ? 'text-success' : 'text-destructive' },
                   ].map((metric, i) => (
                     <div key={i} className="flex items-center gap-4 p-4 bg-surface-sunken rounded-xl">
                       <div className="flex-1">

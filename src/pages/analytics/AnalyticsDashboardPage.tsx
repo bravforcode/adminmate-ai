@@ -160,7 +160,7 @@ export default function AnalyticsDashboardPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-surface-sunken dark:bg-gray-900 flex items-center justify-center">
+      <div className="min-h-screen bg-surface-sunken bg-surface flex items-center justify-center">
         <div className="text-center">
           <div className="w-8 h-8 border-4 border-blue-500 border-t-transparent rounded-full animate-spin mx-auto" />
           <p className="text-ink-muted mt-3">Loading analytics...</p>
@@ -170,29 +170,29 @@ export default function AnalyticsDashboardPage() {
   }
 
   return (
-    <div className="min-h-screen bg-surface-sunken dark:bg-gray-900">
+    <div className="min-h-screen bg-surface-sunken bg-surface">
       {/* Header */}
-      <div className="bg-surface dark:bg-gray-800 border-b border-border dark:border-gray-700">
+      <div className="bg-surface bg-surface-raised border-b border-border border-border">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
           <div className="flex items-center justify-between">
             <div>
-              <h1 className="text-2xl font-bold text-ink dark:text-white flex items-center gap-2">
+              <h1 className="text-2xl font-bold text-ink text-white flex items-center gap-2">
                 <BarChart2 className="w-6 h-6 text-primary" />
                 Analytics Dashboard
               </h1>
-              <p className="text-ink-muted dark:text-ink-faint mt-1">
+              <p className="text-ink-muted text-ink-faint mt-1">
                 HR metrics and insights at a glance
               </p>
             </div>
             <div className="flex items-center gap-3">
-              <div className="flex gap-1 bg-surface-sunken dark:bg-gray-800 p-1 rounded-lg">
+              <div className="flex gap-1 bg-surface-sunken bg-surface-raised p-1 rounded-lg">
                 {(['week', 'month', 'quarter', 'year'] as const).map(range => (
                   <button
                     key={range}
                     onClick={() => setTimeRange(range)}
                     className={`px-3 py-1.5 rounded-md text-sm font-medium transition-colors ${
                       timeRange === range
-                        ? 'bg-surface dark:bg-gray-700 text-ink dark:text-white shadow-sm'
+                        ? 'bg-surface dark:bg-gray-700 text-ink text-white shadow-sm'
                         : 'text-ink-muted hover:text-ink-secondary dark:hover:text-gray-300'
                     }`}
                   >
@@ -235,7 +235,7 @@ export default function AnalyticsDashboardPage() {
                     </div>
                   </div>
                   <div className="mt-4">
-                    <p className="text-3xl font-bold text-ink dark:text-white">{metric.value}</p>
+                    <p className="text-3xl font-bold text-ink text-white">{metric.value}</p>
                     <p className="text-sm text-ink-muted mt-1">{metric.label}</p>
                   </div>
                 </CardContent>
@@ -255,10 +255,10 @@ export default function AnalyticsDashboardPage() {
                 {hiringFunnel.map((stage, i) => (
                   <div key={stage.stage}>
                     <div className="flex items-center justify-between mb-1">
-                      <span className="text-sm font-medium text-ink-secondary dark:text-gray-300">{stage.stage}</span>
+                      <span className="text-sm font-medium text-ink-secondary text-ink-muted">{stage.stage}</span>
                       <span className="text-sm text-ink-muted">{stage.count}</span>
                     </div>
-                    <div className="h-8 bg-surface-sunken dark:bg-gray-800 rounded-lg overflow-hidden">
+                    <div className="h-8 bg-surface-sunken bg-surface-raised rounded-lg overflow-hidden">
                       <motion.div
                         initial={{ width: 0 }}
                         animate={{ width: `${stage.percentage}%` }}
@@ -285,8 +285,8 @@ export default function AnalyticsDashboardPage() {
               <div className="space-y-3">
                 {departmentHeadcount.map((dept, i) => (
                   <div key={dept.department} className="flex items-center gap-3">
-                    <span className="text-sm text-ink-secondary dark:text-gray-300 w-32 truncate">{dept.department}</span>
-                    <div className="flex-1 h-6 bg-surface-sunken dark:bg-gray-800 rounded-full overflow-hidden">
+                    <span className="text-sm text-ink-secondary text-ink-muted w-32 truncate">{dept.department}</span>
+                    <div className="flex-1 h-6 bg-surface-sunken bg-surface-raised rounded-full overflow-hidden">
                       <motion.div
                         initial={{ width: 0 }}
                         animate={{ width: `${dept.percentage}%` }}
@@ -294,7 +294,7 @@ export default function AnalyticsDashboardPage() {
                         className="h-full bg-gradient-to-r from-green-500 to-emerald-600 rounded-full"
                       />
                     </div>
-                    <span className="text-sm font-medium text-ink-secondary dark:text-gray-300 w-12 text-right">{dept.count}</span>
+                    <span className="text-sm font-medium text-ink-secondary text-ink-muted w-12 text-right">{dept.count}</span>
                   </div>
                 ))}
               </div>

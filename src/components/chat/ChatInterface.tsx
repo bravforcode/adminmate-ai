@@ -38,15 +38,15 @@ export function ChatInterface() {
         )}
         {messages.map(msg => (
           <div key={msg.id} className={`flex gap-3 ${msg.sender === 'user' ? 'justify-end' : ''}`}>
-            {msg.sender === 'ai' && <div className="w-8 h-8 rounded-full bg-primary text-on-primary flex items-center justify-center flex-shrink-0"><Sparkles size={14} /></div>}
-            <div className={`max-w-[75%] rounded-xl p-3 text-sm ${msg.sender === 'user' ? 'bg-primary text-on-primary' : 'bg-surface-sunken text-ink'}`}>
+            {msg.sender === 'ai' && <div className="w-8 h-8 rounded-full bg-primary text-white flex items-center justify-center flex-shrink-0"><Sparkles size={14} /></div>}
+            <div className={`max-w-[75%] rounded-xl p-3 text-sm ${msg.sender === 'user' ? 'bg-primary text-white' : 'bg-surface-sunken text-ink'}`}>
               {DOMPurify.sanitize(msg.content)}
             </div>
           </div>
         ))}
         {isLoading && (
           <div className="flex gap-3">
-            <div className="w-8 h-8 rounded-full bg-primary text-on-primary flex items-center justify-center flex-shrink-0"><Sparkles size={14} /></div>
+            <div className="w-8 h-8 rounded-full bg-primary text-white flex items-center justify-center flex-shrink-0"><Sparkles size={14} /></div>
             <div className="bg-surface-sunken rounded-xl p-3 text-sm">
               <div className="flex gap-1"><div className="w-2 h-2 rounded-full bg-primary animate-bounce" style={{ animationDelay: '0ms' }} /><div className="w-2 h-2 rounded-full bg-primary animate-bounce" style={{ animationDelay: '150ms' }} /><div className="w-2 h-2 rounded-full bg-primary animate-bounce" style={{ animationDelay: '300ms' }} /></div>
             </div>
@@ -59,7 +59,7 @@ export function ChatInterface() {
           className="flex-1 px-4 py-3 rounded-full border border-border bg-surface-sunken-lowest text-ink focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all duration-200 outline-none text-sm"
           placeholder={t('placeholder', { ns: 'chat' })} />
         <button onClick={handleSend} disabled={isLoading || !input.trim()}
-          className="w-10 h-10 rounded-full bg-primary text-on-primary flex items-center justify-center hover:opacity-90 active:scale-[0.98] transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed">
+          className="w-10 h-10 rounded-full bg-primary text-white flex items-center justify-center hover:opacity-90 active:scale-[0.98] transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed">
           <Send size={18} />
         </button>
       </div>

@@ -58,7 +58,7 @@ export function ReviewForm({ reviewId, companyId, template, onSubmitSuccess }: R
 
   return (
     <Card>
-      <CardHeader className="border-b border-surface-container-high bg-surface-raised dark:bg-surface-sunken">
+      <CardHeader className="border-b border-surface-container-high bg-surface-raised bg-surface-sunken">
         <CardTitle className="text-lg flex items-center gap-2">
           <Star size={18} className="text-primary dark:text-primary-muted" />
           {t('review_form.title', 'Performance Review')}
@@ -68,11 +68,11 @@ export function ReviewForm({ reviewId, companyId, template, onSubmitSuccess }: R
         {criteria.map(criterion => {
           const resp = responses[criterion.key]
           return (
-            <div key={criterion.key} className="border border-border/50 dark:border-border/50 rounded-xl p-4 space-y-3">
+            <div key={criterion.key} className="border border-border/50 border-border/50 rounded-xl p-4 space-y-3">
               <div>
-                <h4 className="text-sm font-semibold text-ink dark:text-ink">{criterion.label}</h4>
+                <h4 className="text-sm font-semibold text-ink text-ink">{criterion.label}</h4>
                 {criterion.description && (
-                  <p className="text-xs text-ink-variant dark:text-ink-variant mt-0.5">{criterion.description}</p>
+                  <p className="text-xs text-ink-variant text-ink-variant mt-0.5">{criterion.description}</p>
                 )}
               </div>
 
@@ -104,17 +104,17 @@ export function ReviewForm({ reviewId, companyId, template, onSubmitSuccess }: R
               {resp?.rating && (
                 <>
                   <div>
-                    <label className="block text-xs font-medium text-ink-variant dark:text-ink-variant mb-1">{t('review_form.evidence', 'Evidence')}</label>
+                    <label className="block text-xs font-medium text-ink-variant text-ink-variant mb-1">{t('review_form.evidence', 'Evidence')}</label>
                     <textarea
                       value={resp.evidence || ''}
                       onChange={(e) => updateResponse(criterion.key, 'evidence', e.target.value)}
                       rows={2}
-                      className="w-full px-3 py-2 rounded-lg border border-border bg-surface-sunken-lowest dark:bg-surface-sunken-lowest text-ink text-sm resize-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all"
+                      className="w-full px-3 py-2 rounded-lg border border-border bg-surface-sunken-lowest bg-surface-sunken-lowest text-ink text-sm resize-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all"
                       placeholder={t('review_form.evidence_placeholder', 'Provide specific examples...')}
                     />
                   </div>
                   <div>
-                    <label className="block text-xs font-medium text-ink-variant dark:text-ink-variant mb-1">{t('review_form.confidence', 'Confidence')}</label>
+                    <label className="block text-xs font-medium text-ink-variant text-ink-variant mb-1">{t('review_form.confidence', 'Confidence')}</label>
                     <div className="flex gap-2">
                       {(['low', 'medium', 'high'] as ConfidenceLevel[]).map(level => (
                         <button
@@ -125,7 +125,7 @@ export function ReviewForm({ reviewId, companyId, template, onSubmitSuccess }: R
                             'px-3 py-1.5 rounded-lg text-xs font-medium transition-colors border',
                             resp.confidence === level
                               ? 'bg-primary-container dark:bg-primary-container/30 text-primary dark:text-primary-muted border-primary'
-                              : 'border-border text-ink-variant dark:text-ink-variant hover:bg-surface-sunken dark:hover:bg-surface-sunken'
+                              : 'border-border text-ink-variant text-ink-variant hover:bg-surface-sunken dark:hover:bg-surface-sunken'
                           )}
                         >
                           {t(`confidence.${level}`, level)}
@@ -139,7 +139,7 @@ export function ReviewForm({ reviewId, companyId, template, onSubmitSuccess }: R
           )
         })}
 
-        <div className="border-t border-border/50 dark:border-border/50 pt-4 space-y-3">
+        <div className="border-t border-border/50 border-border/50 pt-4 space-y-3">
           <div>
             <label className="block text-sm font-medium text-ink mb-1">{t('review_form.overall_rating', 'Overall Rating')}</label>
             <div className="flex items-center gap-1">
@@ -170,7 +170,7 @@ export function ReviewForm({ reviewId, companyId, template, onSubmitSuccess }: R
               value={comments}
               onChange={(e) => setComments(e.target.value)}
               rows={3}
-              className="w-full px-4 py-2.5 rounded-xl border border-border bg-surface-sunken-lowest dark:bg-surface-sunken-lowest text-ink text-sm resize-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all"
+              className="w-full px-4 py-2.5 rounded-xl border border-border bg-surface-sunken-lowest bg-surface-sunken-lowest text-ink text-sm resize-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all"
               placeholder={t('review_form.comments_placeholder', 'Additional comments...')}
             />
           </div>

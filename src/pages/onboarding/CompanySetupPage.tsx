@@ -69,7 +69,7 @@ export function CompanySetupPage() {
               <input {...register('name')} data-testid="company-name"
                 className="w-full px-3 py-2 rounded-lg border border-border bg-surface-sunken-lowest focus:border-primary focus:ring-1 focus:ring-primary outline-none"
                 placeholder={t('auth.placeholder_company')} />
-              {errors.name && <p className="text-error text-sm mt-1">{errors.name.message}</p>}
+              {errors.name && <p className="text-destructive text-sm mt-1">{errors.name.message}</p>}
             </div>
 
             <div>
@@ -93,7 +93,7 @@ export function CompanySetupPage() {
                 <option value="Logistics">{t('auth.industry_logistics')}</option>
                 <option value="Other">{t('auth.industry_other')}</option>
               </select>
-              {errors.industry && <p className="text-error text-sm mt-1">{errors.industry.message}</p>}
+              {errors.industry && <p className="text-destructive text-sm mt-1">{errors.industry.message}</p>}
             </div>
 
             <div>
@@ -128,7 +128,7 @@ export function CompanySetupPage() {
             </div>
 
             <button type="submit" disabled={isSubmitting} data-testid="setup-company"
-              className="w-full bg-primary text-on-primary py-3 rounded-lg font-label-md hover:opacity-90 transition-opacity disabled:opacity-50 flex items-center justify-center gap-2">
+              className="w-full bg-primary text-white py-3 rounded-lg font-label-md hover:opacity-90 transition-opacity disabled:opacity-50 flex items-center justify-center gap-2">
               <Globe size={18} /> {isSubmitting ? t('company.creating') : t('company.create')}
             </button>
           </form>

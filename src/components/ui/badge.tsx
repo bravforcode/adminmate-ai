@@ -9,7 +9,7 @@ const badgeVariants = cva(
       variant: {
         default: "bg-primary-subtle text-primary",
         secondary: "bg-surface-sunken text-ink-secondary",
-        destructive: "bg-error-subtle text-error",
+        destructive: "bg-error-subtle text-destructive",
         success: "bg-success-subtle text-success",
         warning: "bg-warning-subtle text-warning",
         outline: "border border-border text-ink-secondary",

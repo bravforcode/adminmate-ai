@@ -117,34 +117,34 @@ export function JobForm({ onClose }: JobFormProps) {
 
   const steps = [
     <div key="s0" className="space-y-4">
-      <h3 className="font-semibold text-lg dark:text-ink">{t('jobs.step_1')}</h3>
+      <h3 className="font-semibold text-lg text-ink">{t('jobs.step_1')}</h3>
       <div>
-        <label className="block text-sm font-medium mb-1 dark:text-ink" htmlFor="job-title">{t('jobs.title_label')} *</label>
-        <input {...register('title')} id="job-title" data-testid="job-title" aria-required="true" aria-invalid={!!errors.title} aria-describedby={errors.title ? 'job-title-error' : undefined} className="w-full px-4 py-3 rounded-xl border border-border bg-surface-sunken-lowest dark:bg-surface-sunken-lowest text-ink focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all duration-200 outline-none" placeholder={t('jobs.title_placeholder')} />
-        {errors.title && <p id="job-title-error" role="alert" className="text-error dark:text-error text-xs mt-1">{errors.title.message}</p>}
+        <label className="block text-sm font-medium mb-1 text-ink" htmlFor="job-title">{t('jobs.title_label')} *</label>
+        <input {...register('title')} id="job-title" data-testid="job-title" aria-required="true" aria-invalid={!!errors.title} aria-describedby={errors.title ? 'job-title-error' : undefined} className="w-full px-4 py-3 rounded-xl border border-border bg-surface-sunken-lowest bg-surface-sunken-lowest text-ink focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all duration-200 outline-none" placeholder={t('jobs.title_placeholder')} />
+        {errors.title && <p id="job-title-error" role="alert" className="text-destructive dark:text-destructive text-xs mt-1">{errors.title.message}</p>}
       </div>
       <div className="form-grid-2 grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div>
-          <label className="block text-sm font-medium mb-1 dark:text-ink" htmlFor="job-department">{t('jobs.department')} *</label>
-          <input {...register('department')} id="job-department" aria-required="true" aria-invalid={!!errors.department} aria-describedby={errors.department ? 'job-dept-error' : undefined} className="w-full px-4 py-3 rounded-xl border border-border bg-surface-sunken-lowest dark:bg-surface-sunken-lowest text-ink focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all duration-200 outline-none" placeholder={t('jobs.department_placeholder')} />
-          {errors.department && <p id="job-dept-error" role="alert" className="text-error dark:text-error text-xs mt-1">{errors.department.message}</p>}
+          <label className="block text-sm font-medium mb-1 text-ink" htmlFor="job-department">{t('jobs.department')} *</label>
+          <input {...register('department')} id="job-department" aria-required="true" aria-invalid={!!errors.department} aria-describedby={errors.department ? 'job-dept-error' : undefined} className="w-full px-4 py-3 rounded-xl border border-border bg-surface-sunken-lowest bg-surface-sunken-lowest text-ink focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all duration-200 outline-none" placeholder={t('jobs.department_placeholder')} />
+          {errors.department && <p id="job-dept-error" role="alert" className="text-destructive dark:text-destructive text-xs mt-1">{errors.department.message}</p>}
         </div>
         <div>
-          <label className="block text-sm font-medium mb-1 dark:text-ink" htmlFor="job-location">{t('jobs.location')} *</label>
-          <input {...register('location')} id="job-location" aria-required="true" aria-invalid={!!errors.location} aria-describedby={errors.location ? 'job-location-error' : undefined} className="w-full px-4 py-3 rounded-xl border border-border bg-surface-sunken-lowest dark:bg-surface-sunken-lowest text-ink focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all duration-200 outline-none" placeholder={t('jobs.location_placeholder')} />
-          {errors.location && <p id="job-location-error" role="alert" className="text-error dark:text-error text-xs mt-1">{errors.location.message}</p>}
+          <label className="block text-sm font-medium mb-1 text-ink" htmlFor="job-location">{t('jobs.location')} *</label>
+          <input {...register('location')} id="job-location" aria-required="true" aria-invalid={!!errors.location} aria-describedby={errors.location ? 'job-location-error' : undefined} className="w-full px-4 py-3 rounded-xl border border-border bg-surface-sunken-lowest bg-surface-sunken-lowest text-ink focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all duration-200 outline-none" placeholder={t('jobs.location_placeholder')} />
+          {errors.location && <p id="job-location-error" role="alert" className="text-destructive dark:text-destructive text-xs mt-1">{errors.location.message}</p>}
         </div>
       </div>
       <div className="form-grid-2 grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div>
-          <label className="block text-sm font-medium mb-1 dark:text-ink">{t('jobs.type')}</label>
-          <select {...register('employment_type')} data-testid="employment-type" className="w-full px-4 py-3 rounded-xl border border-border bg-surface-sunken-lowest dark:bg-surface-sunken-lowest text-ink focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all duration-200 outline-none">
+          <label className="block text-sm font-medium mb-1 text-ink">{t('jobs.type')}</label>
+          <select {...register('employment_type')} data-testid="employment-type" className="w-full px-4 py-3 rounded-xl border border-border bg-surface-sunken-lowest bg-surface-sunken-lowest text-ink focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all duration-200 outline-none">
             {EMPLOYMENT_TYPES.map(et => <option key={et.value} value={et.value}>{t(`employment.${et.value}`)}</option>)}
           </select>
         </div>
         <div>
-          <label className="block text-sm font-medium mb-1 dark:text-ink">{t('jobs.experience')}</label>
-          <select {...register('experience_level')} data-testid="experience-level" className="w-full px-4 py-3 rounded-xl border border-border bg-surface-sunken-lowest dark:bg-surface-sunken-lowest text-ink focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all duration-200 outline-none">
+          <label className="block text-sm font-medium mb-1 text-ink">{t('jobs.experience')}</label>
+          <select {...register('experience_level')} data-testid="experience-level" className="w-full px-4 py-3 rounded-xl border border-border bg-surface-sunken-lowest bg-surface-sunken-lowest text-ink focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all duration-200 outline-none">
             {EXPERIENCE_LEVELS.map(l => <option key={l.value} value={l.value}>{t(`experience.${l.value}`)}</option>)}
           </select>
         </div>
@@ -152,48 +152,48 @@ export function JobForm({ onClose }: JobFormProps) {
     </div>,
     <div key="s1" className="space-y-4">
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
-        <h3 className="font-semibold text-lg dark:text-ink">{t('jobs.step_2')}</h3>
+        <h3 className="font-semibold text-lg text-ink">{t('jobs.step_2')}</h3>
         <Button type="button" variant="default" onClick={handleGenerateJD} disabled={generating} data-testid="generate-with-ai" loading={generating} icon={<Sparkles size={16} />}>
           {generating ? t('jobs.generating') : t('jobs.generate_with_ai')}
         </Button>
       </div>
       <div>
-        <label className="block text-sm font-medium mb-1 dark:text-ink">{t('jobs.description_en')}</label>
-        <textarea {...register('description')} data-testid="jd-description" rows={5} className="w-full px-4 py-3 rounded-xl border border-border bg-surface-sunken-lowest dark:bg-surface-sunken-lowest text-ink focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all duration-200 outline-none" />
+        <label className="block text-sm font-medium mb-1 text-ink">{t('jobs.description_en')}</label>
+        <textarea {...register('description')} data-testid="jd-description" rows={5} className="w-full px-4 py-3 rounded-xl border border-border bg-surface-sunken-lowest bg-surface-sunken-lowest text-ink focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all duration-200 outline-none" />
       </div>
       <div>
-        <label className="block text-sm font-medium mb-1 dark:text-ink">{t('jobs.responsibilities')} {t('jobs.responsibilities_hint')}</label>
-        <textarea {...register('responsibilities')} rows={6} className="w-full px-4 py-3 rounded-xl border border-border bg-surface-sunken-lowest dark:bg-surface-sunken-lowest text-ink focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all duration-200 outline-none" />
+        <label className="block text-sm font-medium mb-1 text-ink">{t('jobs.responsibilities')} {t('jobs.responsibilities_hint')}</label>
+        <textarea {...register('responsibilities')} rows={6} className="w-full px-4 py-3 rounded-xl border border-border bg-surface-sunken-lowest bg-surface-sunken-lowest text-ink focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all duration-200 outline-none" />
       </div>
       <div>
-        <label className="block text-sm font-medium mb-1 dark:text-ink">{t('jobs.requirements')}</label>
-        <textarea {...register('requirements')} rows={6} className="w-full px-4 py-3 rounded-xl border border-border bg-surface-sunken-lowest dark:bg-surface-sunken-lowest text-ink focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all duration-200 outline-none" />
+        <label className="block text-sm font-medium mb-1 text-ink">{t('jobs.requirements')}</label>
+        <textarea {...register('requirements')} rows={6} className="w-full px-4 py-3 rounded-xl border border-border bg-surface-sunken-lowest bg-surface-sunken-lowest text-ink focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all duration-200 outline-none" />
       </div>
     </div>,
     <div key="s2" className="space-y-4">
-      <h3 className="font-semibold text-lg dark:text-ink">{t('jobs.step_3')}</h3>
+      <h3 className="font-semibold text-lg text-ink">{t('jobs.step_3')}</h3>
       <div className="form-grid-2 grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div>
-          <label className="block text-sm font-medium mb-1 dark:text-ink">{t('jobs.salary_min')}</label>
-          <input {...register('salary_min')} type="number" data-testid="salary-min" className="w-full px-4 py-3 rounded-xl border border-border bg-surface-sunken-lowest dark:bg-surface-sunken-lowest text-ink focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all duration-200 outline-none" />
+          <label className="block text-sm font-medium mb-1 text-ink">{t('jobs.salary_min')}</label>
+          <input {...register('salary_min')} type="number" data-testid="salary-min" className="w-full px-4 py-3 rounded-xl border border-border bg-surface-sunken-lowest bg-surface-sunken-lowest text-ink focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all duration-200 outline-none" />
         </div>
         <div>
-          <label className="block text-sm font-medium mb-1 dark:text-ink">{t('jobs.salary_max')}</label>
-          <input {...register('salary_max')} type="number" data-testid="salary-max" className="w-full px-4 py-3 rounded-xl border border-border bg-surface-sunken-lowest dark:bg-surface-sunken-lowest text-ink focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all duration-200 outline-none" />
+          <label className="block text-sm font-medium mb-1 text-ink">{t('jobs.salary_max')}</label>
+          <input {...register('salary_max')} type="number" data-testid="salary-max" className="w-full px-4 py-3 rounded-xl border border-border bg-surface-sunken-lowest bg-surface-sunken-lowest text-ink focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all duration-200 outline-none" />
         </div>
       </div>
       <div>
-        <label className="block text-sm font-medium mb-1 dark:text-ink">{t('jobs.skills_required')}</label>
-          <input {...register('skills_required')} className="w-full px-4 py-3 rounded-xl border border-border bg-surface-sunken-lowest dark:bg-surface-sunken-lowest text-ink focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all duration-200 outline-none" placeholder={t('jobs.skills_placeholder')} />
+        <label className="block text-sm font-medium mb-1 text-ink">{t('jobs.skills_required')}</label>
+          <input {...register('skills_required')} className="w-full px-4 py-3 rounded-xl border border-border bg-surface-sunken-lowest bg-surface-sunken-lowest text-ink focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all duration-200 outline-none" placeholder={t('jobs.skills_placeholder')} />
       </div>
       <div className="form-grid-2 grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div>
-          <label className="block text-sm font-medium mb-1 dark:text-ink">{t('jobs.headcount')}</label>
-          <input {...register('headcount')} type="number" min="1" className="w-full px-4 py-3 rounded-xl border border-border bg-surface-sunken-lowest dark:bg-surface-sunken-lowest text-ink focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all duration-200 outline-none" />
+          <label className="block text-sm font-medium mb-1 text-ink">{t('jobs.headcount')}</label>
+          <input {...register('headcount')} type="number" min="1" className="w-full px-4 py-3 rounded-xl border border-border bg-surface-sunken-lowest bg-surface-sunken-lowest text-ink focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all duration-200 outline-none" />
         </div>
         <div>
-          <label className="block text-sm font-medium mb-1 dark:text-ink">{t('jobs.deadline')}</label>
-          <input {...register('application_deadline')} type="date" className="w-full px-4 py-3 rounded-xl border border-border bg-surface-sunken-lowest dark:bg-surface-sunken-lowest text-ink focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all duration-200 outline-none" />
+          <label className="block text-sm font-medium mb-1 text-ink">{t('jobs.deadline')}</label>
+          <input {...register('application_deadline')} type="date" className="w-full px-4 py-3 rounded-xl border border-border bg-surface-sunken-lowest bg-surface-sunken-lowest text-ink focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all duration-200 outline-none" />
         </div>
       </div>
     </div>,

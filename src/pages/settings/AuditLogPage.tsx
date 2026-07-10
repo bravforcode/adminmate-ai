@@ -156,7 +156,7 @@ export function AuditLogPage() {
             className={cn(
               'flex items-center gap-2 px-4 py-2 rounded-lg font-medium text-sm transition-colors',
               showFilters || hasActiveFilters
-                ? 'bg-primary text-on-primary'
+                ? 'bg-primary text-white'
                 : 'bg-surface border border-border text-ink hover:bg-surface-sunken'
             )}
           >
@@ -199,7 +199,7 @@ export function AuditLogPage() {
         </div>
         <div className="bg-surface rounded-xl border border-border p-4 flex items-center gap-3">
           <div className="w-10 h-10 rounded-lg bg-tertiary/10 flex items-center justify-center">
-            <Users size={20} className="text-tertiary" />
+            <Users size={20} className="text-ink-faint" />
           </div>
           <div>
             <p className="text-xs text-ink-variant">{t('audit_log.unique_users') || 'Unique Users'}</p>
@@ -277,26 +277,26 @@ export function AuditLogPage() {
           <div className="table-responsive overflow-x-auto -mx-6 px-6">
             <table className="w-full text-sm min-w-[700px]">
               <thead>
-                <tr className="bg-surface-sunken dark:bg-surface-sunken/50 border-b border-border/50 dark:border-border/50">
-                  <th className="py-3 px-4 text-xs font-semibold uppercase tracking-wider text-ink-variant dark:text-ink-variant">{t('audit_log.timestamp') || 'Timestamp'}</th>
-                  <th className="py-3 px-4 text-xs font-semibold uppercase tracking-wider text-ink-variant dark:text-ink-variant">{t('audit_log.user') || 'User'}</th>
-                  <th className="py-3 px-4 text-xs font-semibold uppercase tracking-wider text-ink-variant dark:text-ink-variant">{t('audit_log.action') || 'Action'}</th>
-                  <th className="py-3 px-4 text-xs font-semibold uppercase tracking-wider text-ink-variant dark:text-ink-variant">{t('audit_log.resource') || 'Resource'}</th>
-                  <th className="py-3 px-4 text-xs font-semibold uppercase tracking-wider text-ink-variant dark:text-ink-variant">{t('audit_log.details') || 'Details'}</th>
-                  <th className="py-3 px-4 text-xs font-semibold uppercase tracking-wider text-ink-variant dark:text-ink-variant">{t('audit_log.ip_address') || 'IP Address'}</th>
+                <tr className="bg-surface-sunken bg-surface-sunken/50 border-b border-border/50 border-border/50">
+                  <th className="py-3 px-4 text-xs font-semibold uppercase tracking-wider text-ink-variant text-ink-variant">{t('audit_log.timestamp') || 'Timestamp'}</th>
+                  <th className="py-3 px-4 text-xs font-semibold uppercase tracking-wider text-ink-variant text-ink-variant">{t('audit_log.user') || 'User'}</th>
+                  <th className="py-3 px-4 text-xs font-semibold uppercase tracking-wider text-ink-variant text-ink-variant">{t('audit_log.action') || 'Action'}</th>
+                  <th className="py-3 px-4 text-xs font-semibold uppercase tracking-wider text-ink-variant text-ink-variant">{t('audit_log.resource') || 'Resource'}</th>
+                  <th className="py-3 px-4 text-xs font-semibold uppercase tracking-wider text-ink-variant text-ink-variant">{t('audit_log.details') || 'Details'}</th>
+                  <th className="py-3 px-4 text-xs font-semibold uppercase tracking-wider text-ink-variant text-ink-variant">{t('audit_log.ip_address') || 'IP Address'}</th>
                 </tr>
               </thead>
               <tbody>
                 {logs.map(log => (
-                  <tr key={log.id} className="border-b border-border/50 dark:border-border/50 last:border-0 hover:bg-surface-sunken/50 dark:hover:bg-surface-sunken/30 transition-colors duration-150">
+                  <tr key={log.id} className="border-b border-border/50 border-border/50 last:border-0 hover:bg-surface-sunken/50 dark:hover:bg-surface-sunken/30 transition-colors duration-150">
                     <td className="py-3 px-4 text-sm text-ink whitespace-nowrap">{formatDate(log.created_at)}</td>
-                    <td className="py-3 px-4 text-sm text-ink dark:text-ink">
+                    <td className="py-3 px-4 text-sm text-ink text-ink">
                       <div>
-                        <div className="font-medium text-ink dark:text-ink">{log.user_profiles?.full_name || 'Unknown'}</div>
-                        <div className="text-xs text-ink-variant dark:text-ink-variant">{log.user_profiles?.email || ''}</div>
+                        <div className="font-medium text-ink text-ink">{log.user_profiles?.full_name || 'Unknown'}</div>
+                        <div className="text-xs text-ink-variant text-ink-variant">{log.user_profiles?.email || ''}</div>
                       </div>
                     </td>
-                    <td className="py-3 px-4 text-sm text-ink dark:text-ink">
+                    <td className="py-3 px-4 text-sm text-ink text-ink">
                       <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-primary/10 text-primary">
                         {log.action}
                       </span>

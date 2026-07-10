@@ -12,12 +12,12 @@ type Tab = 'overview' | 'timeline' | 'documents' | 'performance'
 
 const STATUS_STYLES: Record<string, string> = {
   active: 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400',
-  draft: 'bg-gray-100 text-gray-800 dark:bg-gray-900/30 dark:text-gray-400',
+  draft: 'bg-gray-100 text-gray-800 bg-surface/30 text-ink-faint',
   on_leave: 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-400',
   suspended: 'bg-orange-100 text-orange-800 dark:bg-orange-900/30 dark:text-orange-400',
   offboarding: 'bg-purple-100 text-purple-800 dark:bg-purple-900/30 dark:text-purple-400',
   terminated: 'bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-400',
-  inactive: 'bg-gray-100 text-gray-600 dark:bg-gray-900/30 dark:text-gray-500',
+  inactive: 'bg-gray-100 text-gray-600 bg-surface/30 text-ink-muted',
 }
 
 function maskPhone(phone?: string): string {
@@ -37,9 +37,9 @@ function InfoRow({ icon: Icon, label, value, masked }: { icon: React.ElementType
   if (!value) return null
   return (
     <div className="flex items-start gap-3 py-2">
-      <Icon size={16} className="text-ink-variant dark:text-ink-variant mt-0.5 flex-shrink-0" />
+      <Icon size={16} className="text-ink-variant text-ink-variant mt-0.5 flex-shrink-0" />
       <div className="min-w-0">
-        <p className="text-xs text-ink-variant dark:text-ink-variant">{label}</p>
+        <p className="text-xs text-ink-variant text-ink-variant">{label}</p>
         <p className="text-sm text-ink font-medium">{masked ? maskEmail(value) : value}</p>
       </div>
     </div>
@@ -113,18 +113,18 @@ export function EmployeeDetailPage() {
       {/* Header Card */}
       <div className="bg-surface rounded-xl border border-border p-6">
         <div className="flex items-start gap-4">
-          <div className="w-16 h-16 rounded-full bg-primary-container dark:bg-primary-container text-on-primary-container dark:text-primary-muted flex items-center justify-center font-bold text-xl flex-shrink-0">
+          <div className="w-16 h-16 rounded-full bg-primary-container dark:bg-primary-container text-white-container dark:text-primary-muted flex items-center justify-center font-bold text-xl flex-shrink-0">
             {initials}
           </div>
           <div className="flex-1 min-w-0">
             <div className="flex items-center gap-3 flex-wrap">
-              <h1 className="text-headline-md font-bold text-ink dark:text-ink">{displayName}</h1>
+              <h1 className="text-headline-md font-bold text-ink text-ink">{displayName}</h1>
               <span className={`inline-block px-2.5 py-0.5 rounded-full text-xs font-medium ${statusStyle}`}>
                 {emp.employment_status.replace('_', ' ')}
               </span>
             </div>
-            <p className="text-body-md text-ink-variant dark:text-ink-variant mt-1">{emp.job_title}</p>
-            <div className="flex flex-wrap gap-4 mt-3 text-sm text-ink-variant dark:text-ink-variant">
+            <p className="text-body-md text-ink-variant text-ink-variant mt-1">{emp.job_title}</p>
+            <div className="flex flex-wrap gap-4 mt-3 text-sm text-ink-variant text-ink-variant">
               <span className="flex items-center gap-1"><Briefcase size={14} /> {emp.employment_type.replace('_', ' ')}</span>
               <span className="flex items-center gap-1"><Calendar size={14} /> Hired {emp.hire_date}</span>
               {emp.employee_number && <span className="flex items-center gap-1"><Shield size={14} /> {emp.employee_number}</span>}
@@ -134,7 +134,7 @@ export function EmployeeDetailPage() {
       </div>
 
       {/* Tabs */}
-      <div className="flex gap-1 border-b border-border dark:border-border">
+      <div className="flex gap-1 border-b border-border border-border">
         {tabs.map(tab => (
           <button
             key={tab.key}
@@ -142,7 +142,7 @@ export function EmployeeDetailPage() {
             className={`flex items-center gap-1.5 px-4 py-2.5 text-sm font-medium border-b-2 transition-colors ${
               activeTab === tab.key
                 ? 'border-primary text-primary dark:border-accent-dim dark:text-primary-muted'
-                : 'border-transparent text-ink-variant dark:text-ink-variant hover:text-ink dark:hover:text-ink'
+                : 'border-transparent text-ink-variant text-ink-variant hover:text-ink dark:hover:text-ink'
             }`}
           >
             <tab.icon size={14} />
@@ -191,7 +191,7 @@ export function EmployeeDetailPage() {
               <InfoRow icon={Phone} label="Phone" value={maskPhone(emp.emergency_contact_phone)} />
             </div>
             {!emp.emergency_contact_name && !emp.emergency_contact_phone && (
-              <p className="text-sm text-ink-variant/60 dark:text-ink-variant/60">No emergency contact on file</p>
+              <p className="text-sm text-ink-variant/60 text-ink-variant/60">No emergency contact on file</p>
             )}
           </div>
 

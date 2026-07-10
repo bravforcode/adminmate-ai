@@ -109,14 +109,14 @@ export function ForgotPasswordPage() {
               placeholder={t('auth.placeholder_email')}
             />
             {errors.email && (
-              <p className="text-error text-sm mt-1">{t('auth.error_invalid_email')}</p>
+              <p className="text-destructive text-sm mt-1">{t('auth.error_invalid_email')}</p>
             )}
           </div>
 
           {isLocked && (
             <div
               role="alert"
-              className="flex items-start gap-2 rounded-lg border border-error/40 bg-error-container/40 text-error px-3 py-2 text-sm"
+              className="flex items-start gap-2 rounded-lg border border-error/40 bg-destructive-subtle/40 text-destructive px-3 py-2 text-sm"
             >
               <ShieldAlert size={16} className="mt-0.5 flex-shrink-0" />
               <span>
@@ -128,7 +128,7 @@ export function ForgotPasswordPage() {
           )}
 
           {!isLocked && attempts > 0 && attemptsRemaining <= 2 && (
-            <p className="text-sm text-tertiary">
+            <p className="text-sm text-ink-faint">
               {t('auth.attempts_remaining', { count: attemptsRemaining })}
             </p>
           )}
@@ -136,7 +136,7 @@ export function ForgotPasswordPage() {
           {submitError && !isLocked && (
             <div
               role="alert"
-              className="rounded-lg border border-error/40 bg-error-container/40 text-error px-3 py-2 text-sm"
+              className="rounded-lg border border-error/40 bg-destructive-subtle/40 text-destructive px-3 py-2 text-sm"
             >
               {submitError}
             </div>
@@ -146,7 +146,7 @@ export function ForgotPasswordPage() {
             type="submit"
             disabled={isSubmitting || isLocked}
             data-testid="forgot-submit"
-            className="w-full bg-primary text-on-primary py-2.5 rounded-lg font-label-md hover:opacity-90 transition-opacity disabled:opacity-50"
+            className="w-full bg-primary text-white py-2.5 rounded-lg font-label-md hover:opacity-90 transition-opacity disabled:opacity-50"
           >
             {isSubmitting ? t('auth.sending') : t('auth.send_reset_link')}
           </button>

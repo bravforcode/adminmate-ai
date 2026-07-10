@@ -15,7 +15,7 @@ const statusConfig: Record<LeaveRequestStatus, { bg: string; text: string; icon:
   pending: { bg: 'bg-yellow-100 dark:bg-yellow-900/30', text: 'text-yellow-800 dark:text-yellow-400', icon: Clock },
   approved: { bg: 'bg-green-100 dark:bg-green-900/30', text: 'text-green-800 dark:text-green-400', icon: CheckCircle },
   rejected: { bg: 'bg-red-100 dark:bg-red-900/30', text: 'text-red-800 dark:text-red-400', icon: XCircle },
-  cancelled: { bg: 'bg-gray-100 dark:bg-gray-900/30', text: 'text-gray-800 dark:text-gray-400', icon: XCircle },
+  cancelled: { bg: 'bg-gray-100 bg-surface/30', text: 'text-gray-800 text-ink-faint', icon: XCircle },
 }
 
 export function LeavePage() {
@@ -110,7 +110,7 @@ export function LeavePage() {
     return (
       <div className="space-y-6">
         <header>
-          <h1 className="text-headline-md md:text-headline-lg font-bold text-on-background dark:text-ink">{t('title')}</h1>
+          <h1 className="text-headline-md md:text-headline-lg font-bold text-on-background text-ink">{t('title')}</h1>
         </header>
         <ErrorState title={t('common:errors.load_failed')} onRetry={refetch} />
       </div>
@@ -121,8 +121,8 @@ export function LeavePage() {
     <div className="space-y-6">
       <header className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
         <div>
-          <h1 className="text-headline-md md:text-headline-lg font-bold text-on-background dark:text-ink">{t('title')}</h1>
-          <p className="text-body-md text-ink-variant dark:text-ink-variant mt-1">{t('subtitle')}</p>
+          <h1 className="text-headline-md md:text-headline-lg font-bold text-on-background text-ink">{t('title')}</h1>
+          <p className="text-body-md text-ink-variant text-ink-variant mt-1">{t('subtitle')}</p>
         </div>
         <Button variant="default" size="sm" onClick={() => setShowForm(!showForm)} icon={<Plus size={16} />}>
           {t('request_leave')}
@@ -131,7 +131,7 @@ export function LeavePage() {
 
       {showForm && (
         <Card className="border-primary dark:border-primary">
-          <CardHeader className="border-b border-surface-container-high bg-surface-raised dark:bg-surface-sunken">
+          <CardHeader className="border-b border-surface-container-high bg-surface-raised bg-surface-sunken">
             <CardTitle className="text-lg">{t('form.title')}</CardTitle>
           </CardHeader>
           <CardContent className="space-y-4 pt-6">
@@ -141,7 +141,7 @@ export function LeavePage() {
                 <select
                   value={form.leave_type_id}
                   onChange={(e) => setForm({ ...form, leave_type_id: e.target.value })}
-                  className="w-full px-4 py-2.5 rounded-xl border border-border bg-surface-sunken-lowest dark:bg-surface-sunken-lowest text-ink focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all text-sm"
+                  className="w-full px-4 py-2.5 rounded-xl border border-border bg-surface-sunken-lowest bg-surface-sunken-lowest text-ink focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all text-sm"
                 >
                   <option value="">{t('form.select_type')}</option>
                   {leaveTypes.map(lt => (
@@ -157,7 +157,7 @@ export function LeavePage() {
                   step={0.5}
                   value={form.total_days}
                   onChange={(e) => setForm({ ...form, total_days: parseFloat(e.target.value) || 1 })}
-                  className="w-full px-4 py-2.5 rounded-xl border border-border bg-surface-sunken-lowest dark:bg-surface-sunken-lowest text-ink focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all text-sm"
+                  className="w-full px-4 py-2.5 rounded-xl border border-border bg-surface-sunken-lowest bg-surface-sunken-lowest text-ink focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all text-sm"
                 />
               </div>
               <div>
@@ -166,7 +166,7 @@ export function LeavePage() {
                   type="date"
                   value={form.start_date}
                   onChange={(e) => handleDateChange('start_date', e.target.value)}
-                  className="w-full px-4 py-2.5 rounded-xl border border-border bg-surface-sunken-lowest dark:bg-surface-sunken-lowest text-ink focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all text-sm"
+                  className="w-full px-4 py-2.5 rounded-xl border border-border bg-surface-sunken-lowest bg-surface-sunken-lowest text-ink focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all text-sm"
                 />
               </div>
               <div>
@@ -175,7 +175,7 @@ export function LeavePage() {
                   type="date"
                   value={form.end_date}
                   onChange={(e) => handleDateChange('end_date', e.target.value)}
-                  className="w-full px-4 py-2.5 rounded-xl border border-border bg-surface-sunken-lowest dark:bg-surface-sunken-lowest text-ink focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all text-sm"
+                  className="w-full px-4 py-2.5 rounded-xl border border-border bg-surface-sunken-lowest bg-surface-sunken-lowest text-ink focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all text-sm"
                 />
               </div>
             </div>
@@ -185,7 +185,7 @@ export function LeavePage() {
                 value={form.reason}
                 onChange={(e) => setForm({ ...form, reason: e.target.value })}
                 rows={3}
-                className="w-full px-4 py-2.5 rounded-xl border border-border bg-surface-sunken-lowest dark:bg-surface-sunken-lowest text-ink focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all text-sm resize-none"
+                className="w-full px-4 py-2.5 rounded-xl border border-border bg-surface-sunken-lowest bg-surface-sunken-lowest text-ink focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all text-sm resize-none"
                 placeholder={t('form.reason_placeholder')}
               />
             </div>
@@ -224,16 +224,16 @@ export function LeavePage() {
                   <div className="w-9 h-9 rounded-full bg-primary-fixed dark:bg-primary-container flex items-center justify-center">
                     <Calendar size={18} className="text-primary dark:text-primary-muted" />
                   </div>
-                  <span className="text-sm font-medium text-ink-variant dark:text-ink-variant">{lt?.name || t('balance.leave')}</span>
+                  <span className="text-sm font-medium text-ink-variant text-ink-variant">{lt?.name || t('balance.leave')}</span>
                 </div>
                 <div className="flex items-baseline gap-1 mb-2">
-                  <span className="text-2xl font-bold text-on-background dark:text-ink">{remaining}</span>
-                  <span className="text-sm text-ink-variant dark:text-ink-variant">/ {b.total_days} {t('balance.days')}</span>
+                  <span className="text-2xl font-bold text-on-background text-ink">{remaining}</span>
+                  <span className="text-sm text-ink-variant text-ink-variant">/ {b.total_days} {t('balance.days')}</span>
                 </div>
                 <div className="w-full bg-surface-sunken rounded-full h-1.5">
                   <div className="bg-primary h-1.5 rounded-full transition-all" style={{ width: `${Math.min(pct, 100)}%` }} />
                 </div>
-                <div className="flex justify-between text-xs text-ink-variant dark:text-ink-variant mt-1.5">
+                <div className="flex justify-between text-xs text-ink-variant text-ink-variant mt-1.5">
                   <span>{t('balance.used', { n: b.used_days })}</span>
                   {b.pending_days > 0 && <span>{t('balance.pending', { n: b.pending_days })}</span>}
                 </div>
@@ -260,7 +260,7 @@ export function LeavePage() {
                   'px-3 py-1.5 rounded-full text-xs font-semibold transition-colors whitespace-nowrap',
                   statusFilter === s
                     ? 'bg-surface-sunken text-primary dark:text-primary-muted'
-                    : 'text-ink-variant dark:text-ink-variant hover:bg-surface-sunken dark:hover:bg-surface-sunken'
+                    : 'text-ink-variant text-ink-variant hover:bg-surface-sunken dark:hover:bg-surface-sunken'
                 )}
               >
                 {s ? t(`status.${s}`) : t('status.all')}
@@ -274,7 +274,7 @@ export function LeavePage() {
           ) : (
             <table role="table" className="w-full text-left border-collapse min-w-[600px]">
               <thead>
-                <tr className="bg-surface-sunken dark:bg-surface-sunken/50 border-b border-border/50 dark:border-border/50">
+                <tr className="bg-surface-sunken bg-surface-sunken/50 border-b border-border/50 border-border/50">
                   <th className="py-3 px-4 text-xs font-semibold uppercase tracking-wider text-ink-variant">{t('history.type')}</th>
                   <th className="py-3 px-4 text-xs font-semibold uppercase tracking-wider text-ink-variant">{t('history.dates')}</th>
                   <th className="py-3 px-4 text-xs font-semibold uppercase tracking-wider text-ink-variant">{t('history.days')}</th>
@@ -283,7 +283,7 @@ export function LeavePage() {
                   {isManager && <th className="py-3 px-4 text-xs font-semibold uppercase tracking-wider text-ink-variant text-right">{t('history.actions')}</th>}
                 </tr>
               </thead>
-              <tbody className="text-sm text-ink dark:text-ink">
+              <tbody className="text-sm text-ink text-ink">
                 {requests.length === 0 ? (
                   <tr>
                     <td colSpan={isManager ? 6 : 5} className="p-0">
@@ -295,7 +295,7 @@ export function LeavePage() {
                     const cfg = statusConfig[req.status]
                     const StatusIcon = cfg.icon
                     return (
-                      <tr key={req.id} className="border-b border-border/50 dark:border-border/50 hover:bg-surface-sunken/50 dark:hover:bg-surface-sunken/30 transition-colors duration-150">
+                      <tr key={req.id} className="border-b border-border/50 border-border/50 hover:bg-surface-sunken/50 dark:hover:bg-surface-sunken/30 transition-colors duration-150">
                         <td className="py-3 px-4 text-sm font-medium">{req.leave_types?.name || '-'}</td>
                         <td className="py-3 px-4 text-sm">
                           {new Date(req.start_date).toLocaleDateString()} - {new Date(req.end_date).toLocaleDateString()}
@@ -347,17 +347,17 @@ export function LeavePage() {
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50" onClick={() => setRejectionModal({ id: '', reason: '' })} role="dialog" aria-modal="true" aria-label={t('reject.title')}>
           <div className="bg-surface rounded-xl border border-border shadow-xl p-6 w-full max-w-md mx-4" onClick={e => e.stopPropagation()}>
             <div className="flex items-center gap-3 mb-4">
-              <div className="w-10 h-10 rounded-full bg-error-container dark:bg-error-container/30 flex items-center justify-center">
-                <AlertCircle size={20} className="text-error dark:text-error" />
+              <div className="w-10 h-10 rounded-full bg-destructive-subtle dark:bg-destructive-subtle/30 flex items-center justify-center">
+                <AlertCircle size={20} className="text-destructive dark:text-destructive" />
               </div>
-              <h3 className="text-lg font-semibold text-ink dark:text-ink">{t('reject.title')}</h3>
+              <h3 className="text-lg font-semibold text-ink text-ink">{t('reject.title')}</h3>
             </div>
             <label className="block text-sm font-medium text-ink mb-1">{t('reject.reason_placeholder', 'Rejection reason')}</label>
             <textarea
               value={rejectionModal.reason}
               onChange={(e) => setRejectionModal({ ...rejectionModal, reason: e.target.value })}
               rows={3}
-              className="w-full px-4 py-2.5 rounded-xl border border-border bg-surface-sunken-lowest dark:bg-surface-sunken-lowest text-ink focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all text-sm resize-none mb-4"
+              className="w-full px-4 py-2.5 rounded-xl border border-border bg-surface-sunken-lowest bg-surface-sunken-lowest text-ink focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all text-sm resize-none mb-4"
               placeholder={t('reject.reason_placeholder')}
             />
             <div className="flex justify-end gap-2">

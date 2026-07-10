@@ -145,7 +145,7 @@ export function NotificationBell() {
           animate={count > 0 ? { rotate: [0, -12, 12, -8, 8, 0] } : {}}
           transition={{ duration: 0.6, ease: 'easeInOut' }}
         >
-          <Bell size={20} className="text-ink-variant dark:text-ink-variant" />
+          <Bell size={20} className="text-ink-variant text-ink-variant" />
         </motion.div>
         {count > 0 && (
           <motion.span

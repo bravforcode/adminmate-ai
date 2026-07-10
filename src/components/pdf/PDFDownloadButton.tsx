@@ -53,7 +53,7 @@ export function PDFDownloadButton({ data }: Props) {
 
   return (
     <button onClick={download} disabled={generating}
-      className="flex items-center gap-2 px-4 py-2 bg-primary text-on-primary rounded-lg text-sm font-medium hover:opacity-90 disabled:opacity-50">
+      className="flex items-center gap-2 px-4 py-2 bg-primary text-white rounded-lg text-sm font-medium hover:opacity-90 disabled:opacity-50">
       <Download size={16} /> {generating ? t('pdf.generating') : t('pdf.download')}
     </button>
   )

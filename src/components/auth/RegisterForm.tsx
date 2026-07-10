@@ -131,7 +131,7 @@ export function RegisterForm() {
           className="w-full px-3 py-2 rounded-lg border border-border bg-surface-sunken-lowest focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all"
           placeholder={t('auth.placeholder_name')}
         />
-        {errors.fullName && <p id="fullName-error" role="alert" className="text-error text-sm mt-1">{t('auth.error_name_required')}</p>}
+        {errors.fullName && <p id="fullName-error" role="alert" className="text-destructive text-sm mt-1">{t('auth.error_name_required')}</p>}
       </div>
 
       <div>
@@ -152,7 +152,7 @@ export function RegisterForm() {
           placeholder={t('auth.placeholder_company')}
         />
         {errors.companyName && (
-          <p id="companyName-error" role="alert" className="text-error text-sm mt-1">{t('auth.error_company_required')}</p>
+          <p id="companyName-error" role="alert" className="text-destructive text-sm mt-1">{t('auth.error_company_required')}</p>
         )}
       </div>
 
@@ -194,7 +194,7 @@ export function RegisterForm() {
             ))}
           </select>
           {errors.industry && (
-            <p id="industry-error" role="alert" className="text-error text-sm mt-1">{t('auth.error_industry_required')}</p>
+            <p id="industry-error" role="alert" className="text-destructive text-sm mt-1">{t('auth.error_industry_required')}</p>
           )}
         </div>
       </div>
@@ -215,7 +215,7 @@ export function RegisterForm() {
           className="w-full px-3 py-2 rounded-lg border border-border bg-surface-sunken-lowest focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all"
           placeholder={t('auth.placeholder_email')}
         />
-        {errors.email && <p id="reg-email-error" role="alert" className="text-error text-sm mt-1">{t('auth.error_invalid_email')}</p>}
+        {errors.email && <p id="reg-email-error" role="alert" className="text-destructive text-sm mt-1">{t('auth.error_invalid_email')}</p>}
       </div>
 
       <div>
@@ -266,7 +266,7 @@ export function RegisterForm() {
           </div>
         )}
         {errors.password && (
-          <p id="password-error" role="alert" className="text-error text-sm mt-1">
+          <p id="password-error" role="alert" className="text-destructive text-sm mt-1">
             {errors.password.message && PASSWORD_ERROR_MAP[errors.password.message]
               ? t(PASSWORD_ERROR_MAP[errors.password.message])
               : errors.password.message ?? ''}
@@ -290,7 +290,7 @@ export function RegisterForm() {
           placeholder="••••••••"
         />
         {errors.confirmPassword && (
-          <p id="confirmPassword-error" role="alert" className="text-error text-sm mt-1">
+          <p id="confirmPassword-error" role="alert" className="text-destructive text-sm mt-1">
             {errors.confirmPassword.message && PASSWORD_ERROR_MAP[errors.confirmPassword.message]
               ? t(PASSWORD_ERROR_MAP[errors.confirmPassword.message])
               : errors.confirmPassword.message ?? ''}
@@ -301,7 +301,7 @@ export function RegisterForm() {
       {submitError && (
         <div
           role="alert"
-          className="rounded-lg border border-error/40 bg-error-container/40 text-error px-3 py-2 text-sm"
+          className="rounded-lg border border-error/40 bg-destructive-subtle/40 text-destructive px-3 py-2 text-sm"
         >
           {submitError}
         </div>

@@ -98,7 +98,7 @@ export function ConsentManager() {
                 <button
                   onClick={() => withdrawMutation.mutate(consent.id)}
                   disabled={withdrawMutation.isPending}
-                  className="flex items-center gap-1 text-xs text-error hover:underline disabled:opacity-50"
+                  className="flex items-center gap-1 text-xs text-destructive hover:underline disabled:opacity-50"
                 >
                   {withdrawMutation.isPending ? <Loader2 size={12} className="animate-spin" /> : <XCircle size={12} />}
                   {t('pdpa.revoke_button') || 'Revoke'}

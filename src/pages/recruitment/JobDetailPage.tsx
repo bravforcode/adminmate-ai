@@ -266,7 +266,7 @@ export function JobDetailPage() {
                 {appList.map(app => (
                   <div key={app.id} className="flex items-center justify-between p-3 border border-border rounded-lg hover:bg-surface-sunken transition-colors">
                     <div className="flex items-center gap-3">
-                      <div className="w-8 h-8 rounded-full bg-primary-container text-on-primary-container flex items-center justify-center text-xs font-bold">
+                      <div className="w-8 h-8 rounded-full bg-primary-container text-white-container flex items-center justify-center text-xs font-bold">
                         {app.candidates?.full_name?.split(' ').map((n: string) => n[0]).join('').slice(0, 2).toUpperCase() ?? '?'}
                       </div>
                       <div>

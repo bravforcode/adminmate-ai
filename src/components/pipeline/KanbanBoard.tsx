@@ -39,7 +39,7 @@ export function KanbanBoard({ onSelectApplication, selectedId }: KanbanBoardProp
     <div className="h-full flex flex-col">
       <div className="flex items-center gap-4 mb-4 shrink-0">
         <select data-testid="job-filter" value={selectedJobId} onChange={e => setSelectedJobId(e.target.value)}
-          className="px-4 py-3 rounded-xl border border-border bg-surface-sunken-lowest dark:bg-surface-sunken-lowest text-ink focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all duration-200 outline-none text-sm min-w-[200px] sm:min-w-[250px] max-w-full">
+          className="px-4 py-3 rounded-xl border border-border bg-surface-sunken-lowest bg-surface-sunken-lowest text-ink focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all duration-200 outline-none text-sm min-w-[200px] sm:min-w-[250px] max-w-full">
           <option value="">{activeJobs.length ? t('pipeline.select_job') : t('pipeline.no_active_jobs')}</option>
           {activeJobs.map(j => (
             <option key={j.id} value={j.id}>{j.title} ({j.department})</option>
@@ -59,12 +59,12 @@ export function KanbanBoard({ onSelectApplication, selectedId }: KanbanBoardProp
         </div>
       ) : isError ? (
         <div className="flex-1 flex flex-col items-center justify-center">
-          <AlertCircle size={40} className="text-error mb-3" />
+          <AlertCircle size={40} className="text-destructive mb-3" />
           <h3 className="font-semibold text-ink mb-1">{t('common:errors.load_failed')}</h3>
           <p className="text-sm text-ink-variant mb-4">{(error as Error)?.message || ''}</p>
           <button
             onClick={() => refetch()}
-            className="inline-flex items-center gap-2 px-4 py-2 bg-primary text-on-primary rounded-xl text-sm font-medium hover:opacity-90 transition-all duration-200"
+            className="inline-flex items-center gap-2 px-4 py-2 bg-primary text-white rounded-xl text-sm font-medium hover:opacity-90 transition-all duration-200"
           >
             <RefreshCw size={14} /> {t('common:errors.retry')}
           </button>

@@ -154,7 +154,7 @@ export default function EmployeePortalDashboard() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-surface-sunken dark:bg-gray-900 flex items-center justify-center">
+      <div className="min-h-screen bg-surface-sunken bg-surface flex items-center justify-center">
         <div className="text-center">
           <div className="w-8 h-8 border-4 border-blue-500 border-t-transparent rounded-full animate-spin mx-auto" />
           <p className="text-ink-muted mt-3">Loading your portal...</p>
@@ -164,16 +164,16 @@ export default function EmployeePortalDashboard() {
   }
 
   return (
-    <div className="min-h-screen bg-surface-sunken dark:bg-gray-900">
+    <div className="min-h-screen bg-surface-sunken bg-surface">
       {/* Header */}
-      <div className="bg-surface dark:bg-gray-800 border-b border-border dark:border-gray-700">
+      <div className="bg-surface bg-surface-raised border-b border-border border-border">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
           <div className="flex items-center justify-between">
             <div>
-              <h1 className="text-2xl font-bold text-ink dark:text-white">
+              <h1 className="text-2xl font-bold text-ink text-white">
                 Welcome back, {profile?.full_name || user?.email?.split('@')[0] || 'Employee'}!
               </h1>
-              <p className="text-ink-muted dark:text-ink-faint mt-1">
+              <p className="text-ink-muted text-ink-faint mt-1">
                 Here's your employee portal overview
               </p>
             </div>
@@ -197,28 +197,28 @@ export default function EmployeePortalDashboard() {
           <Card>
             <CardContent className="p-4 text-center">
               <Clock className="w-8 h-8 text-primary mx-auto mb-2" />
-              <p className="text-2xl font-bold text-ink dark:text-white">{stats.leaveBalance}</p>
+              <p className="text-2xl font-bold text-ink text-white">{stats.leaveBalance}</p>
               <p className="text-xs text-ink-muted">Leave Days Left</p>
             </CardContent>
           </Card>
           <Card>
             <CardContent className="p-4 text-center">
               <FileText className="w-8 h-8 text-success mx-auto mb-2" />
-              <p className="text-2xl font-bold text-ink dark:text-white">{stats.pendingTasks}</p>
+              <p className="text-2xl font-bold text-ink text-white">{stats.pendingTasks}</p>
               <p className="text-xs text-ink-muted">Pending Tasks</p>
             </CardContent>
           </Card>
           <Card>
             <CardContent className="p-4 text-center">
               <Calendar className="w-8 h-8 text-orange-500 mx-auto mb-2" />
-              <p className="text-2xl font-bold text-ink dark:text-white">{stats.upcomingHolidays}</p>
+              <p className="text-2xl font-bold text-ink text-white">{stats.upcomingHolidays}</p>
               <p className="text-xs text-ink-muted">Upcoming Holidays</p>
             </CardContent>
           </Card>
           <Card>
             <CardContent className="p-4 text-center">
               <Bell className="w-8 h-8 text-purple-500 mx-auto mb-2" />
-              <p className="text-2xl font-bold text-ink dark:text-white">{stats.unreadNotifications}</p>
+              <p className="text-2xl font-bold text-ink text-white">{stats.unreadNotifications}</p>
               <p className="text-xs text-ink-muted">Notifications</p>
             </CardContent>
           </Card>
@@ -236,12 +236,12 @@ export default function EmployeePortalDashboard() {
                   <motion.div
                     whileHover={{ scale: 1.02 }}
                     whileTap={{ scale: 0.98 }}
-                    className="flex flex-col items-center gap-2 p-4 rounded-xl bg-surface-sunken dark:bg-gray-800 hover:bg-surface-sunken dark:hover:bg-gray-700 transition-colors cursor-pointer"
+                    className="flex flex-col items-center gap-2 p-4 rounded-xl bg-surface-sunken bg-surface-raised hover:bg-surface-sunken dark:hover:bg-gray-700 transition-colors cursor-pointer"
                   >
                     <div className={`w-12 h-12 ${action.color} rounded-full flex items-center justify-center`}>
                       <action.icon className="w-6 h-6 text-white" />
                     </div>
-                    <span className="text-sm font-medium text-ink-secondary dark:text-gray-300">{action.label}</span>
+                    <span className="text-sm font-medium text-ink-secondary text-ink-muted">{action.label}</span>
                   </motion.div>
                 </Link>
               ))}
@@ -276,8 +276,8 @@ export default function EmployeePortalDashboard() {
                         <Icon className="w-4 h-4" />
                       </div>
                       <div className="min-w-0 flex-1">
-                        <p className="font-medium text-ink dark:text-white text-sm">{activity.title}</p>
-                        <p className="text-xs text-ink-muted dark:text-ink-faint">{activity.description}</p>
+                        <p className="font-medium text-ink text-white text-sm">{activity.title}</p>
+                        <p className="text-xs text-ink-muted text-ink-faint">{activity.description}</p>
                         <p className="text-xs text-ink-faint mt-1">
                           {new Date(activity.date).toLocaleDateString()}
                         </p>
@@ -297,21 +297,21 @@ export default function EmployeePortalDashboard() {
           </CardHeader>
           <CardContent>
             <div className="space-y-3">
-              <div className="flex items-center justify-between p-3 bg-surface-sunken dark:bg-gray-800 rounded-lg">
+              <div className="flex items-center justify-between p-3 bg-surface-sunken bg-surface-raised rounded-lg">
                 <div className="flex items-center gap-3">
                   <Briefcase className="w-5 h-5 text-primary" />
                   <div>
-                    <p className="text-sm font-medium text-ink dark:text-white">Team Meeting</p>
+                    <p className="text-sm font-medium text-ink text-white">Team Meeting</p>
                     <p className="text-xs text-ink-muted">Tomorrow, 10:00 AM</p>
                   </div>
                 </div>
                 <ChevronRight className="w-4 h-4 text-ink-faint" />
               </div>
-              <div className="flex items-center justify-between p-3 bg-surface-sunken dark:bg-gray-800 rounded-lg">
+              <div className="flex items-center justify-between p-3 bg-surface-sunken bg-surface-raised rounded-lg">
                 <div className="flex items-center gap-3">
                   <FileText className="w-5 h-5 text-success" />
                   <div>
-                    <p className="text-sm font-medium text-ink dark:text-white">Performance Review</p>
+                    <p className="text-sm font-medium text-ink text-white">Performance Review</p>
                     <p className="text-xs text-ink-muted">In 3 days</p>
                   </div>
                 </div>

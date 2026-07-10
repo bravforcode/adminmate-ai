@@ -18,7 +18,7 @@ const colorMap = {
   primary:   { icon: 'text-primary',    bg: 'bg-primary-subtle',    value: 'text-ink',    trend: 'text-success' },
   secondary: { icon: 'text-ink-muted',  bg: 'bg-surface-sunken',    value: 'text-ink',    trend: 'text-success' },
   tertiary:  { icon: 'text-primary-muted', bg: 'bg-primary-subtle', value: 'text-ink',    trend: 'text-success' },
-  error:     { icon: 'text-error',      bg: 'bg-error-subtle',      value: 'text-error',  trend: 'text-error' },
+  error:     { icon: 'text-destructive',      bg: 'bg-error-subtle',      value: 'text-destructive',  trend: 'text-destructive' },
   success:   { icon: 'text-success',    bg: 'bg-success-subtle',    value: 'text-ink',    trend: 'text-success' },
 }
 
@@ -39,7 +39,7 @@ export function StatCard({ title, value, icon: Icon, color = 'primary', trend, t
             <Icon size={18} className={colors.icon} />
           </div>
           {trend && (
-            <span className={cn('text-xs font-medium', trendUp ? colors.trend : 'text-error')}>
+            <span className={cn('text-xs font-medium', trendUp ? colors.trend : 'text-destructive')}>
               {trend}
             </span>
           )}

@@ -60,7 +60,7 @@ const FRAMEWORK_LABELS: Record<string, { label: string; color: string }> = {
   PDPA: { label: 'PDPA', color: 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400' },
   GDPR: { label: 'GDPR', color: 'bg-purple-100 text-purple-700 dark:bg-purple-900/30 dark:text-purple-400' },
   CCPA: { label: 'CCPA', color: 'bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400' },
-  GENERAL: { label: 'General', color: 'bg-gray-100 text-gray-700 dark:bg-gray-900/30 dark:text-gray-400' },
+  GENERAL: { label: 'General', color: 'bg-gray-100 text-gray-700 bg-surface/30 text-ink-faint' },
 }
 
 type Tab = 'overview' | 'consent' | 'retention' | 'requests' | 'audit'
@@ -238,7 +238,7 @@ export function CompliancePage() {
             </div>
             <div className="bg-surface rounded-xl border border-border p-4 flex items-center gap-3">
               <div className="w-10 h-10 rounded-lg bg-tertiary/10 flex items-center justify-center">
-                <Clock size={20} className="text-tertiary" />
+                <Clock size={20} className="text-ink-faint" />
               </div>
               <div>
                 <p className="text-xs text-ink-variant">{t('compliance.retention_policies') || 'Retention Policies'}</p>

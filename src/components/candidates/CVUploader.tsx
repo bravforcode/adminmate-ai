@@ -64,7 +64,7 @@ export function CVUploader({ candidateId, companyId }: CVUploaderProps) {
           </div>
         )}
       </div>
-      {error && <p className="text-error text-sm mt-2">{error}</p>}
+      {error && <p className="text-destructive text-sm mt-2">{error}</p>}
     </div>
   )
 }

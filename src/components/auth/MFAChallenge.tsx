@@ -122,7 +122,7 @@ export function MFAChallenge({ factorId, onSuccess, onCancel }: MFAChallengeProp
               onClick={handleVerify}
               disabled={verifying || (!useBackupCode ? code.length < 6 : backupCode.length < 8)}
               data-testid="verify-button"
-              className="w-full bg-primary text-on-primary py-2.5 rounded-lg font-medium hover:opacity-90 disabled:opacity-50 flex items-center justify-center gap-2"
+              className="w-full bg-primary text-white py-2.5 rounded-lg font-medium hover:opacity-90 disabled:opacity-50 flex items-center justify-center gap-2"
             >
               {verifying ? (
                 <Loader2 size={18} className="animate-spin" />

@@ -94,8 +94,8 @@ export function CandidatesPage() {
     <div className="space-y-6">
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
-          <h1 className="text-headline-md font-bold text-ink dark:text-ink">{t('candidates.title')}</h1>
-          <p className="text-body-md text-ink-variant dark:text-ink-variant mt-1">{t('candidates.subtitle')}</p>
+          <h1 className="text-headline-md font-bold text-ink text-ink">{t('candidates.title')}</h1>
+          <p className="text-body-md text-ink-variant text-ink-variant mt-1">{t('candidates.subtitle')}</p>
         </div>
         <div className="flex gap-2">
           <Button variant="outline" size="md" onClick={handleExportCSV} disabled={!filtered || filtered.length === 0} icon={<Download size={16} />}>

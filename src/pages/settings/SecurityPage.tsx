@@ -138,7 +138,7 @@ function ChangePasswordCard({ t }: { t: ReturnType<typeof useTranslation>['t'] }
             </div>
           )}
           {errors.password && (
-            <p className="text-error text-sm mt-1">{errors.password.message}</p>
+            <p className="text-destructive text-sm mt-1">{errors.password.message}</p>
           )}
         </div>
 
@@ -156,14 +156,14 @@ function ChangePasswordCard({ t }: { t: ReturnType<typeof useTranslation>['t'] }
             placeholder="••••••••"
           />
           {errors.confirmPassword && (
-            <p className="text-error text-sm mt-1">{errors.confirmPassword.message}</p>
+            <p className="text-destructive text-sm mt-1">{errors.confirmPassword.message}</p>
           )}
         </div>
 
         {submitError && (
           <div
             role="alert"
-            className="rounded-lg border border-error/40 bg-error-container/40 text-error px-3 py-2 text-sm"
+            className="rounded-lg border border-error/40 bg-destructive-subtle/40 text-destructive px-3 py-2 text-sm"
           >
             {submitError}
           </div>
@@ -182,7 +182,7 @@ function ChangePasswordCard({ t }: { t: ReturnType<typeof useTranslation>['t'] }
           type="submit"
           disabled={isSubmitting}
           data-testid="change-password-button"
-          className="flex items-center gap-2 px-4 py-2 bg-primary text-on-primary rounded-lg font-medium hover:opacity-90 disabled:opacity-50 transition-opacity"
+          className="flex items-center gap-2 px-4 py-2 bg-primary text-white rounded-lg font-medium hover:opacity-90 disabled:opacity-50 transition-opacity"
         >
           {isSubmitting ? (
             <Loader2 size={16} className="animate-spin" />
@@ -447,7 +447,7 @@ export function SecurityPage() {
             </p>
             <button
               onClick={handleEnableMFA}
-              className="flex items-center gap-2 px-4 py-2 bg-primary text-on-primary rounded-lg font-medium hover:opacity-90 transition-opacity"
+              className="flex items-center gap-2 px-4 py-2 bg-primary text-white rounded-lg font-medium hover:opacity-90 transition-opacity"
             >
               <KeyRound size={16} />
               {t('mfa.enable_button')}
@@ -503,7 +503,7 @@ export function SecurityPage() {
                       <button
                         onClick={handleVerifyCode}
                         disabled={verifying || verifyCode.length < 6}
-                        className="flex items-center gap-2 px-4 py-2 bg-primary text-on-primary rounded-lg font-medium hover:opacity-90 disabled:opacity-50 transition-opacity"
+                        className="flex items-center gap-2 px-4 py-2 bg-primary text-white rounded-lg font-medium hover:opacity-90 disabled:opacity-50 transition-opacity"
                       >
                         {verifying ? (
                           <Loader2 size={16} className="animate-spin" />
@@ -569,7 +569,7 @@ export function SecurityPage() {
           <div className="mt-4 pt-4 border-t border-border">
             <button
               onClick={() => setShowDisableConfirm(true)}
-              className="flex items-center gap-2 px-4 py-2 border border-error text-error rounded-lg font-medium hover:bg-error/5 transition-colors"
+              className="flex items-center gap-2 px-4 py-2 border border-error text-destructive rounded-lg font-medium hover:bg-error/5 transition-colors"
             >
               <ShieldOff size={16} />
               {t('mfa.disable_button')}

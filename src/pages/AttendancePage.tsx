@@ -113,7 +113,7 @@ export function AttendancePage() {
     return (
       <div className="space-y-6">
         <header>
-          <h1 className="text-headline-md md:text-headline-lg font-bold text-on-background dark:text-ink">{t('title')}</h1>
+          <h1 className="text-headline-md md:text-headline-lg font-bold text-on-background text-ink">{t('title')}</h1>
         </header>
         <ErrorState title={t('common:errors.load_failed')} onRetry={refetch} />
       </div>
@@ -124,8 +124,8 @@ export function AttendancePage() {
     <div className="space-y-6">
       <header className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
         <div>
-          <h1 className="text-headline-md md:text-headline-lg font-bold text-on-background dark:text-ink">{t('title')}</h1>
-          <p className="text-body-md text-ink-variant dark:text-ink-variant mt-1">{t('subtitle')}</p>
+          <h1 className="text-headline-md md:text-headline-lg font-bold text-on-background text-ink">{t('title')}</h1>
+          <p className="text-body-md text-ink-variant text-ink-variant mt-1">{t('subtitle')}</p>
         </div>
         <div className="flex items-center gap-2">
           {!todayRecord && (
@@ -159,36 +159,36 @@ export function AttendancePage() {
             <div className="w-9 h-9 rounded-full bg-primary-fixed dark:bg-primary-container flex items-center justify-center">
               <Clock size={18} className="text-primary dark:text-primary-muted" />
             </div>
-            <span className="text-sm font-medium text-ink-variant dark:text-ink-variant">{t('stats.total_hours')}</span>
+            <span className="text-sm font-medium text-ink-variant text-ink-variant">{t('stats.total_hours')}</span>
           </div>
-          <p className="text-2xl font-bold text-on-background dark:text-ink">{stats.totalHours}h</p>
+          <p className="text-2xl font-bold text-on-background text-ink">{stats.totalHours}h</p>
         </div>
         <div className="bg-surface rounded-xl p-5 border border-border shadow-sm">
           <div className="flex items-center gap-3 mb-3">
-            <div className="w-9 h-9 rounded-full bg-tertiary-fixed dark:bg-tertiary-container flex items-center justify-center">
-              <Timer size={18} className="text-tertiary dark:text-tertiary" />
+            <div className="w-9 h-9 rounded-full bg-tertiary-fixed dark:bg-surface-sunken flex items-center justify-center">
+              <Timer size={18} className="text-ink-faint dark:text-ink-faint" />
             </div>
-            <span className="text-sm font-medium text-ink-variant dark:text-ink-variant">{t('stats.overtime')}</span>
+            <span className="text-sm font-medium text-ink-variant text-ink-variant">{t('stats.overtime')}</span>
           </div>
-          <p className="text-2xl font-bold text-on-background dark:text-ink">{stats.overtime}h</p>
+          <p className="text-2xl font-bold text-on-background text-ink">{stats.overtime}h</p>
         </div>
         <div className="bg-surface rounded-xl p-5 border border-border shadow-sm">
           <div className="flex items-center gap-3 mb-3">
-            <div className="w-9 h-9 rounded-full bg-error-container dark:bg-error-container/30 flex items-center justify-center">
-              <AlertTriangle size={18} className="text-error dark:text-error" />
+            <div className="w-9 h-9 rounded-full bg-destructive-subtle dark:bg-destructive-subtle/30 flex items-center justify-center">
+              <AlertTriangle size={18} className="text-destructive dark:text-destructive" />
             </div>
-            <span className="text-sm font-medium text-ink-variant dark:text-ink-variant">{t('stats.late_arrivals')}</span>
+            <span className="text-sm font-medium text-ink-variant text-ink-variant">{t('stats.late_arrivals')}</span>
           </div>
-          <p className="text-2xl font-bold text-on-background dark:text-ink">{stats.lateArrivals}</p>
+          <p className="text-2xl font-bold text-on-background text-ink">{stats.lateArrivals}</p>
         </div>
         <div className="bg-surface rounded-xl p-5 border border-border shadow-sm">
           <div className="flex items-center gap-3 mb-3">
             <div className="w-9 h-9 rounded-full bg-secondary-fixed dark:bg-secondary-container flex items-center justify-center">
               <CheckCircle size={18} className="text-secondary dark:text-secondary" />
             </div>
-            <span className="text-sm font-medium text-ink-variant dark:text-ink-variant">{t('stats.present_days')}</span>
+            <span className="text-sm font-medium text-ink-variant text-ink-variant">{t('stats.present_days')}</span>
           </div>
-          <p className="text-2xl font-bold text-on-background dark:text-ink">{stats.presentDays}</p>
+          <p className="text-2xl font-bold text-on-background text-ink">{stats.presentDays}</p>
         </div>
       </div>
 
@@ -198,13 +198,13 @@ export function AttendancePage() {
           onChange={(e) => setEmployeeFilter(e.target.value)}
           placeholder={t('filter_employee')}
           aria-label={t('filter_employee')}
-          className="px-4 py-2 rounded-xl border border-border bg-surface-sunken-lowest dark:bg-surface-sunken-lowest text-ink focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all text-sm w-full sm:w-64"
+          className="px-4 py-2 rounded-xl border border-border bg-surface-sunken-lowest bg-surface-sunken-lowest text-ink focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all text-sm w-full sm:w-64"
         />
         <select
           value={statusFilter}
           onChange={(e) => setStatusFilter(e.target.value as AttendanceStatus | '')}
           aria-label={t('filter_all_statuses')}
-          className="px-4 py-2 rounded-xl border border-border bg-surface-sunken-lowest dark:bg-surface-sunken-lowest text-ink focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all text-sm w-full sm:w-48"
+          className="px-4 py-2 rounded-xl border border-border bg-surface-sunken-lowest bg-surface-sunken-lowest text-ink focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all text-sm w-full sm:w-48"
         >
           <option value="">{t('filter_all_statuses')}</option>
           <option value="present">{t('status.present')}</option>
@@ -239,12 +239,12 @@ export function AttendancePage() {
           ) : (
             <div className="grid grid-cols-7 border-b border-border overflow-x-auto">
               {WEEKDAYS.map(day => (
-                <div key={day} className="py-2 px-1 text-center text-[10px] sm:text-xs font-semibold text-ink-variant dark:text-ink-variant border-r border-border/50 dark:border-border/50 last:border-r-0">
+                <div key={day} className="py-2 px-1 text-center text-[10px] sm:text-xs font-semibold text-ink-variant text-ink-variant border-r border-border/50 border-border/50 last:border-r-0">
                   {t(`weekday.${day.toLowerCase()}`)}
                 </div>
               ))}
               {Array.from({ length: startPadding }).map((_, i) => (
-                <div key={`pad-${i}`} className="min-h-[60px] sm:min-h-[100px] border-r border-b border-border/50 dark:border-border/50 last:border-r-0 bg-surface-sunken-lowest/50 dark:bg-surface-sunken/20" />
+                <div key={`pad-${i}`} className="min-h-[60px] sm:min-h-[100px] border-r border-b border-border/50 border-border/50 last:border-r-0 bg-surface-sunken-lowest/50 bg-surface-sunken/20" />
               ))}
               {calendarDays.map(({ day, date }) => {
                 const dayRecords = recordsByDate[date] ?? []
@@ -253,11 +253,11 @@ export function AttendancePage() {
                   <div
                     key={day}
                     className={cn(
-                      'min-h-[60px] sm:min-h-[100px] p-1 sm:p-1.5 border-r border-b border-border/50 dark:border-border/50 last:border-r-0 transition-colors hover:bg-surface-sunken/30 dark:hover:bg-surface-sunken/20',
+                      'min-h-[60px] sm:min-h-[100px] p-1 sm:p-1.5 border-r border-b border-border/50 border-border/50 last:border-r-0 transition-colors hover:bg-surface-sunken/30 dark:hover:bg-surface-sunken/20',
                       isToday && 'bg-primary-fixed/20 dark:bg-primary/10'
                     )}
                   >
-                    <span className={cn('text-[10px] sm:text-xs font-medium', isToday ? 'text-primary dark:text-primary-muted font-bold' : 'text-ink-variant dark:text-ink-variant')}>
+                    <span className={cn('text-[10px] sm:text-xs font-medium', isToday ? 'text-primary dark:text-primary-muted font-bold' : 'text-ink-variant text-ink-variant')}>
                       {day}
                     </span>
                     <div className="mt-0.5 sm:mt-1 space-y-0.5">
@@ -279,13 +279,13 @@ export function AttendancePage() {
       </Card>
 
       <Card>
-        <CardHeader className="border-b border-surface-container-high bg-surface-raised dark:bg-surface-sunken">
+        <CardHeader className="border-b border-surface-container-high bg-surface-raised bg-surface-sunken">
           <CardTitle className="text-lg">{t('recent_records')}</CardTitle>
         </CardHeader>
         <div className="table-responsive overflow-x-auto -mx-6 px-6">
           <table role="table" className="w-full text-left border-collapse min-w-[500px]">
             <thead>
-              <tr className="bg-surface-sunken dark:bg-surface-sunken/50 border-b border-border/50 dark:border-border/50">
+              <tr className="bg-surface-sunken bg-surface-sunken/50 border-b border-border/50 border-border/50">
                 <th className="py-3 px-4 text-xs font-semibold uppercase tracking-wider text-ink-variant">{t('table.date')}</th>
                 <th className="py-3 px-4 text-xs font-semibold uppercase tracking-wider text-ink-variant">{t('table.check_in')}</th>
                 <th className="py-3 px-4 text-xs font-semibold uppercase tracking-wider text-ink-variant">{t('table.check_out')}</th>
@@ -294,7 +294,7 @@ export function AttendancePage() {
                 <th className="py-3 px-4 text-xs font-semibold uppercase tracking-wider text-ink-variant">{t('table.method')}</th>
               </tr>
             </thead>
-            <tbody className="text-sm text-ink dark:text-ink">
+            <tbody className="text-sm text-ink text-ink">
               {records.length === 0 ? (
                 <tr>
                   <td colSpan={6} className="p-0">
@@ -303,7 +303,7 @@ export function AttendancePage() {
                 </tr>
               ) : (
                 records.slice(0, 10).map(r => (
-                  <tr key={r.id} className="border-b border-border/50 dark:border-border/50 hover:bg-surface-sunken/50 dark:hover:bg-surface-sunken/30 transition-colors duration-150">
+                  <tr key={r.id} className="border-b border-border/50 border-border/50 hover:bg-surface-sunken/50 dark:hover:bg-surface-sunken/30 transition-colors duration-150">
                     <td className="py-3 px-4 text-sm">{new Date(r.work_date).toLocaleDateString()}</td>
                     <td className="py-3 px-4 text-sm">{r.check_in ? new Date(r.check_in).toLocaleTimeString() : '-'}</td>
                     <td className="py-3 px-4 text-sm">{r.check_out ? new Date(r.check_out).toLocaleTimeString() : '-'}</td>

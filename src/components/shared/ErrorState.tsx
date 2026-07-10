@@ -14,7 +14,7 @@ export function ErrorState({ title, message, onRetry, retryLabel, icon }: ErrorS
   return (
     <div className="bg-surface rounded-xl border border-border p-8 text-center">
       <div className="w-12 h-12 rounded-xl bg-error-subtle flex items-center justify-center mx-auto mb-4">
-        {icon || <AlertCircle size={24} className="text-error" />}
+        {icon || <AlertCircle size={24} className="text-destructive" />}
       </div>
       <h3 className="text-base font-semibold text-ink mb-1">
         {title || 'Something went wrong'}
