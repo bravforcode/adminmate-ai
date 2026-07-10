@@ -94,7 +94,7 @@ export function PrivacyRequest() {
           <Download size={20} className="text-primary" />
           <div className="text-left">
             <p className="text-sm font-medium text-ink">{t('pdpa.export_title') || 'Export My Data'}</p>
-            <p className="text-xs text-ink-variant">{t('pdpa.export_desc_short') || 'Download your data as JSON'}</p>
+            <p className="text-xs text-ink-muted">{t('pdpa.export_desc_short') || 'Download your data as JSON'}</p>
           </div>
           {exportData.isPending && <Loader2 size={16} className="animate-spin ml-auto" />}
         </button>
@@ -106,7 +106,7 @@ export function PrivacyRequest() {
           <Trash2 size={20} className="text-destructive" />
           <div className="text-left">
             <p className="text-sm font-medium text-ink">{t('pdpa.delete_title') || 'Request Data Deletion'}</p>
-            <p className="text-xs text-ink-variant">{t('pdpa.delete_desc_short') || 'Anonymize your personal data'}</p>
+            <p className="text-xs text-ink-muted">{t('pdpa.delete_desc_short') || 'Anonymize your personal data'}</p>
           </div>
           {createRequest.isPending && <Loader2 size={16} className="animate-spin ml-auto" />}
         </button>
@@ -125,7 +125,7 @@ export function PrivacyRequest() {
                   {STATUS_ICONS[req.status] || <Clock size={16} />}
                   <div>
                     <p className="text-sm font-medium text-ink capitalize">{req.request_type}</p>
-                    <p className="text-xs text-ink-variant">{new Date(req.requested_at).toLocaleDateString()}</p>
+                    <p className="text-xs text-ink-muted">{new Date(req.requested_at).toLocaleDateString()}</p>
                   </div>
                 </div>
                 <span className={`text-xs px-2 py-0.5 rounded-full font-medium ${
@@ -137,7 +137,7 @@ export function PrivacyRequest() {
             ))}
           </div>
         ) : (
-          <p className="text-sm text-ink-variant text-center py-4">{t('pdpa.no_requests') || 'No privacy requests yet.'}</p>
+          <p className="text-sm text-ink-muted text-center py-4">{t('pdpa.no_requests') || 'No privacy requests yet.'}</p>
         )}
       </div>
     </div>

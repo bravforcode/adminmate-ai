@@ -52,9 +52,9 @@ export function PipelinePage() {
       <div className="flex flex-col sm:flex-row sm:justify-between sm:items-end gap-3 mb-4 shrink-0">
         <div className="min-w-0">
           <h2 className="text-2xl font-semibold text-ink tracking-tight">
-            {t('pipeline.title')} <span className="text-lg font-normal text-ink-variant ml-2">/ {t('pipeline.title_th')}</span>
+            {t('pipeline.title')} <span className="text-lg font-normal text-ink-muted ml-2">/ {t('pipeline.title_th')}</span>
           </h2>
-          <p className="text-sm text-ink-variant mt-1 truncate">{currentJob?.title || t('pipeline.all_jobs')}</p>
+          <p className="text-sm text-ink-muted mt-1 truncate">{currentJob?.title || t('pipeline.all_jobs')}</p>
         </div>
         <Button variant="outline" size="sm" onClick={() => navigate('/recruitment/jobs')} icon={<Sparkles size={16} />}>
           {t('pipeline.jd_generation')} / {t('pipeline.jd_generation_th')}
@@ -73,7 +73,7 @@ export function PipelinePage() {
             <div className="p-6 border-b border-border flex justify-between items-center bg-surface-sunken-lowest">
               <div className="flex items-center gap-2 text-primary font-bold">
                 <Sparkles size={20} className="bg-primary/10 p-1.5 rounded-lg" />
-                <h3 className="text-lg font-semibold tracking-tight">{t('pipeline.ai_insights')} <span className="font-normal text-ink-variant text-sm ml-1">/ {t('pipeline.ai_insights_th')}</span></h3>
+                <h3 className="text-lg font-semibold tracking-tight">{t('pipeline.ai_insights')} <span className="font-normal text-ink-muted text-sm ml-1">/ {t('pipeline.ai_insights_th')}</span></h3>
               </div>
               <Button variant="ghost" size="icon_md" onClick={() => setSelectedApplication(null)}>×</Button>
             </div>
@@ -86,14 +86,14 @@ export function PipelinePage() {
                   <span className="absolute bottom-0 right-0 bg-primary w-6 h-6 rounded-full border-2 border-surface-container-lowest flex items-center justify-center text-white"><Check size={14} strokeWidth={3} /></span>
                 </div>
                 <h4 className="text-xl font-bold text-ink break-words">{selectedApplication.candidates?.full_name}</h4>
-                <p className="text-sm text-ink-variant mt-1">{selectedApplication.candidates?.current_position || t('pipeline.candidate')}</p>
+                <p className="text-sm text-ink-muted mt-1">{selectedApplication.candidates?.current_position || t('pipeline.candidate')}</p>
                 <div className="mt-4 bg-primary text-white text-xs font-semibold px-4 py-1.5 rounded-full flex items-center gap-1.5 shadow-md">
                   <Sparkles size={14} /> {selectedApplication.ai_match_score || 0}% {t('pipeline.overall_match')}
                 </div>
               </div>
 
               <div className="bg-surface-sunken p-4 rounded-xl border border-border/50">
-                <h5 className="text-xs font-semibold text-ink-variant uppercase tracking-wider mb-4 flex items-center gap-2">
+                <h5 className="text-xs font-semibold text-ink-muted uppercase tracking-wider mb-4 flex items-center gap-2">
                   <CheckCircle2 size={16} className="text-primary" /> {t('pipeline.why_match')} / {t('pipeline.why_match_th')}
                 </h5>
                 {selectedApplication.ai_analysis ? (
@@ -103,7 +103,7 @@ export function PipelinePage() {
                         <Check size={18} className="text-primary mt-0.5 flex-shrink-0" />
                         <div>
                           <p className="text-sm font-semibold text-ink">{t('pipeline.skills_match')}</p>
-                          <p className="text-xs text-ink-variant mt-1 leading-snug">
+                          <p className="text-xs text-ink-muted mt-1 leading-snug">
                             {t('pipeline.matched')}: {selectedApplication.ai_analysis.matched_skills.join(', ')}
                           </p>
                         </div>
@@ -114,7 +114,7 @@ export function PipelinePage() {
                         <Check size={18} className="text-primary mt-0.5 flex-shrink-0" />
                         <div>
                           <p className="text-sm font-semibold text-ink">{t('pipeline.experience_match')}</p>
-                          <p className="text-xs text-ink-variant mt-1 leading-snug">{selectedApplication.ai_analysis.experience_match}</p>
+                          <p className="text-xs text-ink-muted mt-1 leading-snug">{selectedApplication.ai_analysis.experience_match}</p>
                         </div>
                       </li>
                     )}
@@ -123,7 +123,7 @@ export function PipelinePage() {
                         <Check size={18} className="text-primary mt-0.5 flex-shrink-0" />
                         <div>
                           <p className="text-sm font-semibold text-ink">{t('pipeline.education_match')}</p>
-                          <p className="text-xs text-ink-variant mt-1 leading-snug">{selectedApplication.ai_analysis.education_match}</p>
+                          <p className="text-xs text-ink-muted mt-1 leading-snug">{selectedApplication.ai_analysis.education_match}</p>
                         </div>
                       </li>
                     )}
@@ -131,7 +131,7 @@ export function PipelinePage() {
                 ) : (
                   <div className="flex flex-col items-center gap-2 py-4 text-center">
                     <Brain size={24} className="text-outline-variant" />
-                    <p className="text-xs text-ink-variant leading-relaxed">
+                    <p className="text-xs text-ink-muted leading-relaxed">
                       {t('pipeline.ai_screening_pending')}<br />
                       {t('pipeline.ai_screening_pending_desc')}
                     </p>

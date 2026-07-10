@@ -18,7 +18,7 @@ export function InterviewFeedbackForm({ interview, onClose }: Props) {
   const recommendations = [
     { value: 'strong_hire', label: t('interviews.feedback.strong_hire'), icon: ThumbsUp, color: 'text-green-600 dark:text-success' },
     { value: 'hire', label: t('interviews.feedback.hire'), icon: ThumbsUp, color: 'text-teal-600 dark:text-success' },
-    { value: 'neutral', label: t('interviews.feedback.neutral'), icon: Minus, color: 'text-gray-500 text-ink-variant' },
+    { value: 'neutral', label: t('interviews.feedback.neutral'), icon: Minus, color: 'text-gray-500 text-ink-muted' },
     { value: 'no_hire', label: t('interviews.feedback.no_hire'), icon: ThumbsDown, color: 'text-orange-600 dark:text-warning' },
     { value: 'strong_no_hire', label: t('interviews.feedback.strong_no_hire'), icon: ThumbsDown, color: 'text-red-600 dark:text-destructive' },
   ]

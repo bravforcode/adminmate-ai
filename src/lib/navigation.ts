@@ -27,11 +27,6 @@ import {
   type LucideIcon,
 } from 'lucide-react'
 
-/** Returns the correct landing route based on user role from DB. */
-export function getDefaultRoute(_role?: string | null): string {
-  return '/dashboard'
-}
-
 export interface NavItem {
   path?: string
   labelKey: string
@@ -42,7 +37,13 @@ export interface NavItem {
 }
 
 /** HR / Admin / Manager navigation */
-const HR_ROLES = ['admin', 'hr', 'manager']
+export const HR_ROLES = ['admin', 'hr', 'manager']
+
+/** Returns the correct landing route based on user role from DB. */
+export function getDefaultRoute(role?: string | null): string {
+  if (role && !HR_ROLES.includes(role)) return '/portal'
+  return '/dashboard'
+}
 
 export const navItems: NavItem[] = [
   // ── Primary ─────────────────────────────────────────────────
@@ -144,7 +145,7 @@ export const navItems: NavItem[] = [
       { path: '/settings', labelKey: 'nav.general', icon: Settings, roles: HR_ROLES },
       { path: '/settings/notifications', labelKey: 'nav.notifications', icon: Bell, roles: HR_ROLES },
       { path: '/settings/security', labelKey: 'nav.security', icon: Shield, roles: HR_ROLES },
-      { path: '/settings/compliance', labelKey: 'nav.compliance', icon: Shield, roles: HR_ROLES },
+      { path: '/settings/compliance', labelKey: 'nav.compliance', icon: Shield, roles: ['admin'] },
       { path: '/settings/audit-log', labelKey: 'nav.audit_log', icon: ScrollText, roles: ['admin', 'hr'] },
       { path: '/settings/import', labelKey: 'nav.import_export', icon: ArrowDownToLine, roles: HR_ROLES },
       { path: '/settings/pdpa', labelKey: 'nav.privacy_data', icon: Lock, roles: HR_ROLES },

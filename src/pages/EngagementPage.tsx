@@ -123,7 +123,7 @@ export function EngagementPage() {
       <header className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
         <div>
           <h1 className="text-headline-md md:text-headline-lg font-bold text-on-background">{t('title', 'Employee Engagement')}</h1>
-          <p className="text-body-md text-ink-variant mt-1">{t('subtitle', 'Pulse surveys, eNPS, recognition, and culture metrics')}</p>
+          <p className="text-body-md text-ink-muted mt-1">{t('subtitle', 'Pulse surveys, eNPS, recognition, and culture metrics')}</p>
         </div>
       </header>
 
@@ -138,7 +138,7 @@ export function EngagementPage() {
             className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${
               activeTab === tab
                 ? 'bg-surface-sunken text-primary'
-                : 'text-ink-variant hover:bg-surface-sunken'
+                : 'text-ink-muted hover:bg-surface-sunken'
             }`}
           >
             {t(`tabs.${tab}`, tab.charAt(0).toUpperCase() + tab.slice(1).replace('_', ' '))}
@@ -165,7 +165,7 @@ export function EngagementPage() {
                       <Badge variant={survey.status === 'active' ? 'default' : 'secondary'}>
                         {t(`survey_status.${survey.status}`, survey.status)}
                       </Badge>
-                      <span className="text-xs text-ink-variant">
+                      <span className="text-xs text-ink-muted">
                         {new Date(survey.created_at).toLocaleDateString()}
                       </span>
                     </div>
@@ -175,11 +175,11 @@ export function EngagementPage() {
                   <CardContent className="space-y-3">
                     <div className="grid grid-cols-2 gap-3 text-sm">
                       <div className="bg-surface-sunken rounded-lg p-3">
-                        <p className="text-ink-variant text-xs">{t('responses', 'Responses')}</p>
+                        <p className="text-ink-muted text-xs">{t('responses', 'Responses')}</p>
                         <p className="font-semibold text-ink">{survey.response_count}</p>
                       </div>
                       <div className="bg-surface-sunken rounded-lg p-3">
-                        <p className="text-ink-variant text-xs">{t('avg_score', 'Avg Score')}</p>
+                        <p className="text-ink-muted text-xs">{t('avg_score', 'Avg Score')}</p>
                         <p className="font-semibold text-ink">{survey.avg_score.toFixed(1)}/10</p>
                       </div>
                     </div>
@@ -212,23 +212,23 @@ export function EngagementPage() {
                 <CardContent className="space-y-6">
                   <div className="text-center">
                     <p className={`text-6xl font-bold ${enps.score >= 0 ? 'text-success' : 'text-destructive'}`}>{enps.score}</p>
-                    <p className="text-sm text-ink-variant mt-1">{t('enps.current_score', 'Current eNPS Score')}</p>
+                    <p className="text-sm text-ink-muted mt-1">{t('enps.current_score', 'Current eNPS Score')}</p>
                   </div>
                   <div className="grid grid-cols-3 gap-4 text-center">
                     <div className="bg-success-subtle/20 rounded-xl p-4">
                       <p className="text-2xl font-bold text-success">{enps.promoters}</p>
-                      <p className="text-xs text-ink-variant">{t('enps.promoters', 'Promoters (9-10)')}</p>
+                      <p className="text-xs text-ink-muted">{t('enps.promoters', 'Promoters (9-10)')}</p>
                     </div>
                     <div className="bg-warning-subtle/20 rounded-xl p-4">
                       <p className="text-2xl font-bold text-warning">{enps.passives}</p>
-                      <p className="text-xs text-ink-variant">{t('enps.passives', 'Passives (7-8)')}</p>
+                      <p className="text-xs text-ink-muted">{t('enps.passives', 'Passives (7-8)')}</p>
                     </div>
                     <div className="bg-destructive-subtle/20 rounded-xl p-4">
                       <p className="text-2xl font-bold text-destructive">{enps.detractors}</p>
-                      <p className="text-xs text-ink-variant">{t('enps.detractors', 'Detractors (0-6)')}</p>
+                      <p className="text-xs text-ink-muted">{t('enps.detractors', 'Detractors (0-6)')}</p>
                     </div>
                   </div>
-                  <div className="text-sm text-ink-variant text-center">
+                  <div className="text-sm text-ink-muted text-center">
                     {t('enps.respondents', '{{count}} respondents', { count: enps.respondents })}
                   </div>
                 </CardContent>
@@ -242,7 +242,7 @@ export function EngagementPage() {
                     <div className="flex items-end gap-2 h-24">
                       {enps.trend.map((val, i) => (
                         <div key={i} className="flex-1 flex flex-col items-center gap-1">
-                          <span className="text-[10px] text-ink-variant">{val}</span>
+                          <span className="text-[10px] text-ink-muted">{val}</span>
                           <div
                             className={`w-full rounded-t ${val >= 9 ? 'bg-success' : val >= 7 ? 'bg-warning' : 'bg-error'}`}
                             style={{ height: `${(val / 10) * 80}px` }}
@@ -285,10 +285,10 @@ export function EngagementPage() {
                             {' '}{t('recognized', 'recognized')}{' '}
                             <span className="font-semibold">{rec.to_name}</span>
                           </p>
-                          <p className="text-sm text-ink-variant mt-1">{rec.message}</p>
+                          <p className="text-sm text-ink-muted mt-1">{rec.message}</p>
                           <div className="flex items-center gap-2 mt-2">
                             <Badge variant="outline" className="text-xs">{rec.category.replace('_', ' ')}</Badge>
-                            <span className="text-xs text-ink-variant">{new Date(rec.created_at).toLocaleDateString()}</span>
+                            <span className="text-xs text-ink-muted">{new Date(rec.created_at).toLocaleDateString()}</span>
                           </div>
                         </div>
                       </div>
@@ -322,7 +322,7 @@ export function EngagementPage() {
                     <div key={i} className="flex items-center gap-4 p-4 bg-surface-sunken rounded-xl">
                       <div className="flex-1">
                         <p className="text-sm font-medium text-ink">{metric.label}</p>
-                        <p className="text-xs text-ink-variant mt-0.5">{metric.desc}</p>
+                        <p className="text-xs text-ink-muted mt-0.5">{metric.desc}</p>
                       </div>
                       <p className={`text-2xl font-bold ${metric.color}`}>{metric.value}</p>
                     </div>

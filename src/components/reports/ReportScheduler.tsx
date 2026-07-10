@@ -64,7 +64,7 @@ export function ReportScheduler({ onClose }: SchedulerProps) {
           </div>
           <div>
             <h2 className="text-lg font-semibold text-on-background text-ink">{t('scheduling.title')}</h2>
-            <p className="text-sm text-ink-variant text-ink-variant">{t('scheduling.subtitle')}</p>
+            <p className="text-sm text-ink-muted text-ink-muted">{t('scheduling.subtitle')}</p>
           </div>
         </div>
 
@@ -122,7 +122,7 @@ export function ReportScheduler({ onClose }: SchedulerProps) {
           </div>
 
           <div className="bg-surface-sunken bg-surface-sunken-lowest rounded-lg p-3">
-            <div className="flex items-center gap-2 text-sm text-ink-variant text-ink-variant">
+            <div className="flex items-center gap-2 text-sm text-ink-muted text-ink-muted">
               <Users size={14} />
               {t('scheduling.recipients_label')}: <span className="text-ink font-medium">{profile?.full_name || profile?.email}</span>
             </div>
@@ -193,14 +193,14 @@ export function ScheduleList({ onGenerateNow, generatingType }: ScheduleListProp
           )}>
             {s.is_enabled
               ? <Power size={16} className="text-success" />
-              : <PowerOff size={16} className="text-ink-variant text-ink-variant" />
+              : <PowerOff size={16} className="text-ink-muted text-ink-muted" />
             }
           </div>
           <div className="flex-1 min-w-0">
             <p className="text-sm font-medium text-on-background truncate">
               {t(`scheduling.type_${s.report_type}`)}
             </p>
-            <p className="text-xs text-ink-variant text-ink-variant">
+            <p className="text-xs text-ink-muted text-ink-muted">
               {t(`scheduling.freq_${s.frequency}`)} · {t('scheduling.next_run')}: {new Date(s.next_run_at).toLocaleDateString()}
             </p>
           </div>
@@ -218,7 +218,7 @@ export function ScheduleList({ onGenerateNow, generatingType }: ScheduleListProp
           >
             {s.is_enabled
               ? <Power size={14} className="text-success" />
-              : <PowerOff size={14} className="text-ink-variant text-ink-variant" />
+              : <PowerOff size={14} className="text-ink-muted text-ink-muted" />
             }
           </button>
           <button

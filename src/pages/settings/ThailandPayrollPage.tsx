@@ -124,7 +124,7 @@ export function ThailandPayrollPage() {
     <div className="space-y-6 max-w-4xl">
       <div>
         <h1 className="text-headline-md font-bold text-ink">Thailand Payroll</h1>
-        <p className="text-body-md text-ink-variant mt-1">Configure Thai payroll rules, tax brackets, and social security</p>
+        <p className="text-body-md text-ink-muted mt-1">Configure Thai payroll rules, tax brackets, and social security</p>
       </div>
 
       {/* Quick Navigation to Payroll Module */}
@@ -138,9 +138,9 @@ export function ThailandPayrollPage() {
           </div>
           <div>
             <p className="text-sm font-medium text-ink">Payroll Dashboard</p>
-            <p className="text-xs text-ink-variant">Overview &amp; cost summary</p>
+            <p className="text-xs text-ink-muted">Overview &amp; cost summary</p>
           </div>
-          <ArrowRight size={16} className="ml-auto text-ink-variant" />
+          <ArrowRight size={16} className="ml-auto text-ink-muted" />
         </button>
         <button
           onClick={() => navigate('/payroll/run')}
@@ -151,9 +151,9 @@ export function ThailandPayrollPage() {
           </div>
           <div>
             <p className="text-sm font-medium text-ink">Run Payroll</p>
-            <p className="text-xs text-ink-variant">Calculate &amp; approve</p>
+            <p className="text-xs text-ink-muted">Calculate &amp; approve</p>
           </div>
-          <ArrowRight size={16} className="ml-auto text-ink-variant" />
+          <ArrowRight size={16} className="ml-auto text-ink-muted" />
         </button>
         <button
           onClick={() => navigate('/payroll')}
@@ -164,9 +164,9 @@ export function ThailandPayrollPage() {
           </div>
           <div>
             <p className="text-sm font-medium text-ink">Payslips</p>
-            <p className="text-xs text-ink-variant">View &amp; download</p>
+            <p className="text-xs text-ink-muted">View &amp; download</p>
           </div>
-          <ArrowRight size={16} className="ml-auto text-ink-variant" />
+          <ArrowRight size={16} className="ml-auto text-ink-muted" />
         </button>
       </div>
 
@@ -212,7 +212,7 @@ export function ThailandPayrollPage() {
         <CardContent>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
             <div>
-              <label className="block text-sm font-medium mb-1 text-ink-variant">{t('pay_period')}</label>
+              <label className="block text-sm font-medium mb-1 text-ink-muted">{t('pay_period')}</label>
               <select
                 value={config.pay_period}
                 onChange={e => setConfig(p => ({ ...p, pay_period: e.target.value as 'monthly' | 'biweekly' }))}
@@ -223,7 +223,7 @@ export function ThailandPayrollPage() {
               </select>
             </div>
             <div>
-              <label className="block text-sm font-medium mb-1 text-ink-variant">{t('pay_day')}</label>
+              <label className="block text-sm font-medium mb-1 text-ink-muted">{t('pay_day')}</label>
               <input
                 type="number"
                 min={1}
@@ -234,7 +234,7 @@ export function ThailandPayrollPage() {
               />
             </div>
             <div>
-              <label className="block text-sm font-medium mb-1 text-ink-variant">{t('province')}</label>
+              <label className="block text-sm font-medium mb-1 text-ink-muted">{t('province')}</label>
               <select
                 value={config.province}
                 onChange={e => setConfig(p => ({ ...p, province: e.target.value }))}
@@ -249,10 +249,10 @@ export function ThailandPayrollPage() {
 
           {/* OT Rates */}
           <div className="mt-4">
-            <p className="text-sm font-medium text-ink-variant mb-3">Overtime Rates (multiplier)</p>
+            <p className="text-sm font-medium text-ink-muted mb-3">Overtime Rates (multiplier)</p>
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
               <div>
-                <label className="block text-xs mb-1 text-ink-variant">Weekday OT</label>
+                <label className="block text-xs mb-1 text-ink-muted">Weekday OT</label>
                 <input
                   type="number"
                   min={1}
@@ -264,7 +264,7 @@ export function ThailandPayrollPage() {
                 />
               </div>
               <div>
-                <label className="block text-xs mb-1 text-ink-variant">Weekend OT</label>
+                <label className="block text-xs mb-1 text-ink-muted">Weekend OT</label>
                 <input
                   type="number"
                   min={1}
@@ -276,7 +276,7 @@ export function ThailandPayrollPage() {
                 />
               </div>
               <div>
-                <label className="block text-xs mb-1 text-ink-variant">Holiday OT</label>
+                <label className="block text-xs mb-1 text-ink-muted">Holiday OT</label>
                 <input
                   type="number"
                   min={1}
@@ -288,7 +288,7 @@ export function ThailandPayrollPage() {
                 />
               </div>
             </div>
-            <p className="text-xs text-ink-variant mt-2">
+            <p className="text-xs text-ink-muted mt-2">
               Thai Labor Protection Act §24: Weekday 1.5×, Weekend 2×, Holiday 3×
             </p>
           </div>
@@ -324,9 +324,9 @@ export function ThailandPayrollPage() {
               <table className="w-full text-sm">
                 <thead>
                   <tr className="border-b border-border">
-                    <th className="text-left py-2 px-3 text-ink-variant font-medium">{t('income_range')}</th>
-                    <th className="text-right py-2 px-3 text-ink-variant font-medium">{t('tax_rate')}</th>
-                    <th className="text-right py-2 px-3 text-ink-variant font-medium">{t('example_tax')}</th>
+                    <th className="text-left py-2 px-3 text-ink-muted font-medium">{t('income_range')}</th>
+                    <th className="text-right py-2 px-3 text-ink-muted font-medium">{t('tax_rate')}</th>
+                    <th className="text-right py-2 px-3 text-ink-muted font-medium">{t('example_tax')}</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -336,7 +336,7 @@ export function ThailandPayrollPage() {
                         {b.min.toLocaleString()} – {b.max ? b.max.toLocaleString() : '∞'} THB
                       </td>
                       <td className="py-2 px-3 text-right font-medium">{b.rate}%</td>
-                      <td className="py-2 px-3 text-right text-ink-variant">
+                      <td className="py-2 px-3 text-right text-ink-muted">
                         {b.max ? `≤ ${((b.max - b.min) * b.rate / 100).toLocaleString()} THB` : t('progressive')}
                       </td>
                     </tr>
@@ -364,15 +364,15 @@ export function ThailandPayrollPage() {
           <CardContent>
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-4">
               <div className="p-3 bg-surface-sunken rounded-lg">
-                <p className="text-xs text-ink-variant">{t('employee_rate')}</p>
+                <p className="text-xs text-ink-muted">{t('employee_rate')}</p>
                 <p className="text-lg font-semibold">{TH_SS_RULES.employeeRate}%</p>
               </div>
               <div className="p-3 bg-surface-sunken rounded-lg">
-                <p className="text-xs text-ink-variant">{t('employer_rate')}</p>
+                <p className="text-xs text-ink-muted">{t('employer_rate')}</p>
                 <p className="text-lg font-semibold">{TH_SS_RULES.employerRate}%</p>
               </div>
               <div className="p-3 bg-surface-sunken rounded-lg">
-                <p className="text-xs text-ink-variant">{t('salary_cap')}</p>
+                <p className="text-xs text-ink-muted">{t('salary_cap')}</p>
                 <p className="text-lg font-semibold">{TH_SS_RULES.maxSalary.toLocaleString()} THB/mo</p>
               </div>
             </div>
@@ -395,14 +395,14 @@ export function ThailandPayrollPage() {
           <CardTitle>{t('provincial_tax')}</CardTitle>
         </CardHeader>
         <CardContent>
-          <p className="text-sm text-ink-variant mb-3">
+          <p className="text-sm text-ink-muted mb-3">
             {t('provincial_tax_desc')}
           </p>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
             {TH_PROVINCES.map(p => (
               <div key={p.code} className="flex items-center justify-between py-2 px-3 rounded-lg bg-surface-sunken">
                 <span className="text-sm">{p.name} ({p.nameTh})</span>
-                <span className="text-sm font-medium text-ink-variant">
+                <span className="text-sm font-medium text-ink-muted">
                   {p.code === 'BKK' ? '0%' : '0.1%'}
                 </span>
               </div>
@@ -420,7 +420,7 @@ export function ThailandPayrollPage() {
         <CardContent>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
             <div>
-              <label className="block text-sm font-medium mb-1 text-ink-variant">{t('monthly_salary')}</label>
+              <label className="block text-sm font-medium mb-1 text-ink-muted">{t('monthly_salary')}</label>
               <input
                 type="number"
                 min={0}
@@ -431,7 +431,7 @@ export function ThailandPayrollPage() {
               />
             </div>
             <div>
-              <label className="block text-sm font-medium mb-1 text-ink-variant">{t('province')}</label>
+              <label className="block text-sm font-medium mb-1 text-ink-muted">{t('province')}</label>
               <select
                 value={previewProvince}
                 onChange={e => setPreviewProvince(e.target.value)}
@@ -445,16 +445,16 @@ export function ThailandPayrollPage() {
           </div>
 
           <div className="bg-surface-sunken rounded-xl p-4 space-y-3">
-            <div className="flex justify-between py-1"><span className="text-sm text-ink-variant">{t('gross_monthly_income')}</span><span className="text-sm font-medium">{preview.grossIncome.toLocaleString()} THB</span></div>
+            <div className="flex justify-between py-1"><span className="text-sm text-ink-muted">{t('gross_monthly_income')}</span><span className="text-sm font-medium">{preview.grossIncome.toLocaleString()} THB</span></div>
             <div className="border-t border-border" />
-            <div className="flex justify-between py-1"><span className="text-sm text-ink-variant">{t('ss_employee')}</span><span className="text-sm font-medium text-red-600">-{preview.socialSecurityEmployee.toLocaleString()} THB</span></div>
-            <div className="flex justify-between py-1"><span className="text-sm text-ink-variant">{t('withholding_tax')}</span><span className="text-sm font-medium text-red-600">-{preview.withholdingTax.toLocaleString()} THB</span></div>
-            <div className="flex justify-between py-1"><span className="text-sm text-ink-variant">{t('provincial_tax_monthly')}</span><span className="text-sm font-medium text-red-600">-{preview.provincialTax.toLocaleString()} THB</span></div>
+            <div className="flex justify-between py-1"><span className="text-sm text-ink-muted">{t('ss_employee')}</span><span className="text-sm font-medium text-red-600">-{preview.socialSecurityEmployee.toLocaleString()} THB</span></div>
+            <div className="flex justify-between py-1"><span className="text-sm text-ink-muted">{t('withholding_tax')}</span><span className="text-sm font-medium text-red-600">-{preview.withholdingTax.toLocaleString()} THB</span></div>
+            <div className="flex justify-between py-1"><span className="text-sm text-ink-muted">{t('provincial_tax_monthly')}</span><span className="text-sm font-medium text-red-600">-{preview.provincialTax.toLocaleString()} THB</span></div>
             <div className="border-t border-border" />
-            <div className="flex justify-between py-1"><span className="text-sm text-ink-variant">{t('ss_employer')}</span><span className="text-sm font-medium text-blue-600">{preview.socialSecurityEmployer.toLocaleString()} THB</span></div>
+            <div className="flex justify-between py-1"><span className="text-sm text-ink-muted">{t('ss_employer')}</span><span className="text-sm font-medium text-blue-600">{preview.socialSecurityEmployer.toLocaleString()} THB</span></div>
             <div className="border-t border-border" />
             <div className="flex justify-between py-2"><span className="text-sm font-semibold text-ink">{t('net_pay')}</span><span className="text-lg font-bold text-primary">{preview.netPay.toLocaleString()} THB</span></div>
-            <div className="flex justify-between py-1"><span className="text-xs text-ink-variant">{t('effective_tax_rate')}</span><span className="text-xs font-medium">{preview.effectiveTaxRate}%</span></div>
+            <div className="flex justify-between py-1"><span className="text-xs text-ink-muted">{t('effective_tax_rate')}</span><span className="text-xs font-medium">{preview.effectiveTaxRate}%</span></div>
           </div>
         </CardContent>
       </Card>

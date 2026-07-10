@@ -30,11 +30,11 @@ export const InterviewCard = memo(function InterviewCard({ interview }: Intervie
       <div className="flex justify-between items-start mb-3">
         <div>
           <h3 className="font-semibold text-ink">{interview.applications?.candidates?.full_name}</h3>
-          <p className="text-sm text-ink-variant">{interview.applications?.jobs?.title}</p>
+          <p className="text-sm text-ink-muted">{interview.applications?.jobs?.title}</p>
         </div>
         <span className={cn('px-2 py-0.5 rounded text-xs font-medium', (interview.status ? STATUS_STYLES[interview.status] : '') || 'bg-surface-sunken')}>{interview.status}</span>
       </div>
-      <div className="grid grid-cols-2 gap-2 text-xs text-ink-variant mb-3">
+      <div className="grid grid-cols-2 gap-2 text-xs text-ink-muted mb-3">
         {interview.scheduled_at && <span className="flex items-center gap-1"><Calendar size={12} /> {new Date(interview.scheduled_at).toLocaleDateString()}</span>}
         {interview.scheduled_at && <span className="flex items-center gap-1"><Clock size={12} /> {new Date(interview.scheduled_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span>}
         <span className="flex items-center gap-1"><User size={12} /> {interview.interviewer_name}</span>
@@ -85,7 +85,7 @@ export const InterviewCard = memo(function InterviewCard({ interview }: Intervie
       )}
 
       {interview.feedback && interview.status === 'completed' && (
-        <div className="mt-3 p-2 bg-surface-sunken rounded text-xs text-ink-variant">
+        <div className="mt-3 p-2 bg-surface-sunken rounded text-xs text-ink-muted">
           <span className="font-medium">{t('interviews.feedback.detailed_feedback', 'Feedback')}:</span> {interview.feedback}
           {interview.rating != null && interview.rating > 0 && <span className="ml-2">{t('interviews.feedback.rating', 'Rating')}: {interview.rating}/5</span>}
           {interview.recommendation && <span className="ml-2">• {interview.recommendation}</span>}

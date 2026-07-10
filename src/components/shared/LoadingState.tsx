@@ -138,7 +138,7 @@ export function LoadingState({ rows = 4, variant = 'cards', message }: LoadingSt
       <div className="h-full">
         <KanbanSkeleton />
         {message && (
-          <div className="flex items-center justify-center gap-2 text-sm text-ink-variant py-2 mt-4">
+          <div className="flex items-center justify-center gap-2 text-sm text-ink-muted py-2 mt-4">
             <Loader2 size={14} className="animate-spin" />
             {message}
           </div>
@@ -152,7 +152,7 @@ export function LoadingState({ rows = 4, variant = 'cards', message }: LoadingSt
       <div>
         <DetailSkeleton />
         {message && (
-          <div className="flex items-center justify-center gap-2 text-sm text-ink-variant py-2 mt-4">
+          <div className="flex items-center justify-center gap-2 text-sm text-ink-muted py-2 mt-4">
             <Loader2 size={14} className="animate-spin" />
             {message}
           </div>
@@ -166,7 +166,7 @@ export function LoadingState({ rows = 4, variant = 'cards', message }: LoadingSt
       <div>
         <FormSkeleton />
         {message && (
-          <div className="flex items-center justify-center gap-2 text-sm text-ink-variant py-2 mt-4">
+          <div className="flex items-center justify-center gap-2 text-sm text-ink-muted py-2 mt-4">
             <Loader2 size={14} className="animate-spin" />
             {message}
           </div>
@@ -199,7 +199,7 @@ export function LoadingState({ rows = 4, variant = 'cards', message }: LoadingSt
           </motion.div>
         </div>
         {message && (
-          <div className="flex items-center justify-center gap-2 text-sm text-ink-variant py-3 border-t border-border border-border">
+          <div className="flex items-center justify-center gap-2 text-sm text-ink-muted py-3 border-t border-border border-border">
             <Loader2 size={14} className="animate-spin" />
             {message}
           </div>
@@ -235,7 +235,7 @@ export function LoadingState({ rows = 4, variant = 'cards', message }: LoadingSt
           </motion.div>
         ))}
         {message && (
-          <div className="flex items-center justify-center gap-2 text-sm text-ink-variant py-2">
+          <div className="flex items-center justify-center gap-2 text-sm text-ink-muted py-2">
             <Loader2 size={14} className="animate-spin" />
             {message}
           </div>
@@ -266,7 +266,7 @@ export function LoadingState({ rows = 4, variant = 'cards', message }: LoadingSt
         </motion.div>
       ))}
       {message && (
-        <div className="flex items-center justify-center gap-2 text-sm text-ink-variant py-2">
+        <div className="flex items-center justify-center gap-2 text-sm text-ink-muted py-2">
           <Loader2 size={14} className="animate-spin" />
           {message}
         </div>

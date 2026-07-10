@@ -50,25 +50,25 @@ export function TaxBreakdown({ annualIncome, socialSecurityAnnual = 0, otherDedu
         <h4 className="text-sm font-semibold text-ink mb-2">Income &amp; Deductions</h4>
         <div className="space-y-1 text-sm">
           <div className="flex justify-between">
-            <span className="text-ink-variant">Annual Gross Income</span>
+            <span className="text-ink-muted">Annual Gross Income</span>
             <span>{fmt(annualIncome)} THB</span>
           </div>
           <div className="flex justify-between">
-            <span className="text-ink-variant">Employment Deduction (50%, max 100K)</span>
+            <span className="text-ink-muted">Employment Deduction (50%, max 100K)</span>
             <span className="text-red-600">-{fmt(employmentDeduction)}</span>
           </div>
           <div className="flex justify-between">
-            <span className="text-ink-variant">Social Security (annual)</span>
+            <span className="text-ink-muted">Social Security (annual)</span>
             <span className="text-red-600">-{fmt(socialSecurityAnnual)}</span>
           </div>
           {otherDeductions > 0 && (
             <div className="flex justify-between">
-              <span className="text-ink-variant">Other Deductions</span>
+              <span className="text-ink-muted">Other Deductions</span>
               <span className="text-red-600">-{fmt(otherDeductions)}</span>
             </div>
           )}
           <div className="flex justify-between">
-            <span className="text-ink-variant">Personal Allowance</span>
+            <span className="text-ink-muted">Personal Allowance</span>
             <span className="text-red-600">-{fmt(personalAllowance)}</span>
           </div>
           <div className="flex justify-between font-semibold border-t border-border pt-1">
@@ -101,7 +101,7 @@ export function TaxBreakdown({ annualIncome, socialSecurityAnnual = 0, otherDedu
               ))}
               {bracketDetails.length === 0 && (
                 <tr>
-                  <td colSpan={4} className="py-3 text-center text-ink-variant">
+                  <td colSpan={4} className="py-3 text-center text-ink-muted">
                     No taxable income in any bracket
                   </td>
                 </tr>
@@ -116,7 +116,7 @@ export function TaxBreakdown({ annualIncome, socialSecurityAnnual = 0, otherDedu
         <span className="text-lg font-bold text-primary">{fmt(totalTax)} THB</span>
       </div>
 
-      <p className="text-xs text-ink-variant">
+      <p className="text-xs text-ink-muted">
         Social Security: {TH_SS_RULES.employeeRate}% employee + {TH_SS_RULES.employerRate}% employer,
         capped at {TH_SS_RULES.maxSalary.toLocaleString()} THB/month
         (max contribution: {(TH_SS_RULES.maxSalary * TH_SS_RULES.employeeRate / 100).toLocaleString()} THB/month)

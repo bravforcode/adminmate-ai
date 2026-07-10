@@ -71,7 +71,7 @@ export const ApplicationCard = memo(function ApplicationCard({ application, isAc
             </div>
             <div>
               <p className={cn('text-base text-ink leading-tight', isActive ? 'font-bold' : 'font-semibold')}>{application.candidates?.full_name}</p>
-              <p className="text-xs text-ink-variant mt-0.5">
+              <p className="text-xs text-ink-muted mt-0.5">
                 {application.status === 'ai_screening' ? (
                   <span className="flex items-center gap-1 text-primary">
                     <span className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse" /> {t('pipeline.processing')}
@@ -86,7 +86,7 @@ export const ApplicationCard = memo(function ApplicationCard({ application, isAc
           {matchScore > 0 && (
             <span className={cn(
               'text-xs px-2 py-1 rounded-md font-medium flex items-center gap-1',
-              matchScore >= 80 ? 'bg-primary text-white shadow-sm' : 'bg-surface-sunken text-ink-variant border border-border/50'
+              matchScore >= 80 ? 'bg-primary text-white shadow-sm' : 'bg-surface-sunken text-ink-muted border border-border/50'
             )}>
               {matchScore >= 80 && <Sparkles size={12} />}
               {t('pipeline.match_percent', { score: matchScore })}
@@ -96,11 +96,11 @@ export const ApplicationCard = memo(function ApplicationCard({ application, isAc
 
         <div className="flex justify-between items-center mt-3">
           <div className="flex gap-2">
-            <span className="text-xs text-ink-variant bg-surface-sunken px-2 py-1 rounded">
+            <span className="text-xs text-ink-muted bg-surface-sunken px-2 py-1 rounded">
               {application.candidates?.years_experience ? t('pipeline.years_experience', { count: application.candidates.years_experience }) : t('pipeline.no_experience')}
             </span>
             {application.candidates?.primary_skill && (
-              <span className="text-xs text-ink-variant bg-surface-sunken px-2 py-1 rounded">
+              <span className="text-xs text-ink-muted bg-surface-sunken px-2 py-1 rounded">
                 {application.candidates.primary_skill}
               </span>
             )}

@@ -20,6 +20,7 @@ vi.mock('../lib/supabase', () => ({
 
 vi.mock('../lib/sessionApi', () => ({
   fetchSessionStatus: vi.fn(),
+  refreshAccessToken: vi.fn(),
 }))
 
 const mockSetUser = vi.fn()
@@ -125,6 +126,63 @@ describe('useSessionRestore', () => {
 
     expect(mockSetProfile).toHaveBeenCalled()
     expect(mockSetCompany).toHaveBeenCalled()
+    expect(mockSetUser).toHaveBeenCalled()
+  })
+
+  it('should restore session via refresh + setSession when no local session but cookie is valid', async () => {
+    mockGetSession.mockResolvedValue({ data: { session: null }, error: null })
+
+    const { fetchSessionStatus, refreshAccessToken } = await import('../lib/sessionApi')
+    vi.mocked(fetchSessionStatus).mockResolvedValue({
+      valid: true,
+      user: { id: 'user-1', email: 'test@test.com' },
+    })
+    vi.mocked(refreshAccessToken).mockResolvedValue({
+      success: true,
+      data: {
+        access_token: 'refreshed-access-token',
+        user: { id: 'user-1', email: 'test@test.com' },
+      },
+    })
+
+    mockFrom.mockReturnValue(
+      createChain({
+        maybeSingle: vi.fn().mockResolvedValueOnce({
+          data: {
+            id: 'user-1',
+            email: 'test@test.com',
+            full_name: 'Test User',
+            role: 'admin',
+            company_id: 'company-1',
+            language_preference: 'en',
+            is_active: true,
+          },
+          error: null,
+        }).mockResolvedValueOnce({
+          data: {
+            id: 'company-1',
+            name: 'Test Company',
+            country: 'TH',
+            currency: 'THB',
+            locale: 'th-TH',
+          },
+          error: null,
+        }),
+      })
+    )
+
+    const { useSessionRestore } = await import('./useSessionRestore')
+    const { result } = renderHook(() => useSessionRestore())
+    await result.current.restoreSession()
+
+    expect(refreshAccessToken).toHaveBeenCalled()
+    expect(mockSetSession).toHaveBeenCalledWith(
+      expect.objectContaining({
+        access_token: 'refreshed-access-token',
+        refresh_token: expect.any(String),
+      })
+    )
+    expect(mockSetProfile).toHaveBeenCalled()
     expect(mockSetUser).toHaveBeenCalled()
   })
 

@@ -59,7 +59,7 @@ export function SettingsPage() {
       <div className="space-y-6">
         <div>
           <h1 className="text-headline-md font-bold text-ink">{t('settings.title') || 'Settings'}</h1>
-          <p className="text-body-md text-ink-variant mt-1">{t('settings.subtitle') || 'Manage your company and account settings'}</p>
+          <p className="text-body-md text-ink-muted mt-1">{t('settings.subtitle') || 'Manage your company and account settings'}</p>
         </div>
         <ErrorState
           title={t('errors.load_failed', { ns: 'common' })}
@@ -76,7 +76,7 @@ export function SettingsPage() {
       <div className="flex flex-col sm:flex-row sm:justify-between sm:items-end gap-3">
         <div>
           <h1 className="text-headline-md font-bold text-ink">{t('settings.title') || 'Settings'}</h1>
-          <p className="text-body-md text-ink-variant mt-1">{t('settings.subtitle') || 'Manage your company and account settings'}</p>
+          <p className="text-body-md text-ink-muted mt-1">{t('settings.subtitle') || 'Manage your company and account settings'}</p>
         </div>
         <Button type="submit" form="settings-form" disabled={saving}
           variant="default" size="md"
@@ -96,23 +96,23 @@ export function SettingsPage() {
             <CardContent>
               <form id="settings-form" onSubmit={handleSubmit(onSubmit)} className="space-y-4">
                 <div className="flex flex-col sm:flex-row gap-6 mb-2">
-                  <div className="w-full sm:w-32 h-32 rounded-xl bg-surface-sunken border border-border flex-shrink-0 flex items-center justify-center text-ink-variant">
+                  <div className="w-full sm:w-32 h-32 rounded-xl bg-surface-sunken border border-border flex-shrink-0 flex items-center justify-center text-ink-muted">
                     <Building2 size={40} />
                   </div>
                   <div className="flex-1 grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div className="sm:col-span-2">
-                      <label className="block text-sm font-medium mb-1 text-ink-variant">{t('settings.legal_name') || 'Legal Name (English)'} *</label>
+                      <label className="block text-sm font-medium mb-1 text-ink-muted">{t('settings.legal_name') || 'Legal Name (English)'} *</label>
                       <input {...register('name')}
                         className="w-full px-3 py-2 rounded-lg border border-border bg-surface-sunken-lowest focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all" />
                       {errors.name && <p className="text-destructive text-xs mt-1">{errors.name.message}</p>}
                     </div>
                     <div>
-                      <label className="block text-sm font-medium mb-1 text-ink-variant">{t('settings.tax_id') || 'Tax ID'}</label>
+                      <label className="block text-sm font-medium mb-1 text-ink-muted">{t('settings.tax_id') || 'Tax ID'}</label>
                       <input {...register('tax_id')}
                         className="w-full px-3 py-2 rounded-lg border border-border bg-surface-sunken-lowest focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all" />
                     </div>
                     <div>
-                      <label className="block text-sm font-medium mb-1 text-ink-variant">{t('settings.industry') || 'Primary Industry'}</label>
+                      <label className="block text-sm font-medium mb-1 text-ink-muted">{t('settings.industry') || 'Primary Industry'}</label>
                       <select {...register('industry')} className="w-full px-3 py-2 rounded-lg border border-border bg-surface-sunken-lowest focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all">
                         <option value="">{t('auth.reg_select_industry')}</option>
                         <option value="Technology">{t('auth.industry_technology')}</option>
@@ -129,17 +129,17 @@ export function SettingsPage() {
                 </div>
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                   <div>
-                    <label className="block text-sm font-medium mb-1 text-ink-variant">{t('settings.phone') || 'Phone'}</label>
+                    <label className="block text-sm font-medium mb-1 text-ink-muted">{t('settings.phone') || 'Phone'}</label>
                     <input {...register('phone')}
                       className="w-full px-3 py-2 rounded-lg border border-border bg-surface-sunken-lowest focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all" />
                   </div>
                   <div>
-                    <label className="block text-sm font-medium mb-1 text-ink-variant">{t('settings.email') || 'Email'}</label>
+                    <label className="block text-sm font-medium mb-1 text-ink-muted">{t('settings.email') || 'Email'}</label>
                     <input {...register('email')} type="email"
                       className="w-full px-3 py-2 rounded-lg border border-border bg-surface-sunken-lowest focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all" />
                   </div>
                   <div>
-                    <label className="block text-sm font-medium mb-1 text-ink-variant">{t('settings.city') || 'City'}</label>
+                    <label className="block text-sm font-medium mb-1 text-ink-muted">{t('settings.city') || 'City'}</label>
                     <input {...register('city')}
                       className="w-full px-3 py-2 rounded-lg border border-border bg-surface-sunken-lowest focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all" />
                   </div>
@@ -158,11 +158,11 @@ export function SettingsPage() {
             </CardHeader>
             <CardContent>
               <div className="space-y-3 text-sm">
-                <div className="flex justify-between py-2 border-b border-border"><span className="text-ink-variant">{t('settings.name') || 'Name'}</span><span className="font-medium">{profile?.full_name}</span></div>
-                <div className="flex justify-between py-2 border-b border-border"><span className="text-ink-variant">{t('settings.email') || 'Email'}</span><span className="font-medium">{profile?.email}</span></div>
-                <div className="flex justify-between py-2 border-b border-border"><span className="text-ink-variant">{t('settings.role') || 'Role'}</span><span className="font-medium">{profile?.role}</span></div>
-                <div className="flex justify-between py-2 border-b border-border"><span className="text-ink-variant">{t('settings.country') || 'Country'}</span><span className="font-medium">{company?.country}</span></div>
-                <div className="flex justify-between py-2"><span className="text-ink-variant">{t('settings.subscription') || 'Subscription'}</span><span className="font-medium capitalize">{company?.subscription_tier || 'free'}</span></div>
+                <div className="flex justify-between py-2 border-b border-border"><span className="text-ink-muted">{t('settings.name') || 'Name'}</span><span className="font-medium">{profile?.full_name}</span></div>
+                <div className="flex justify-between py-2 border-b border-border"><span className="text-ink-muted">{t('settings.email') || 'Email'}</span><span className="font-medium">{profile?.email}</span></div>
+                <div className="flex justify-between py-2 border-b border-border"><span className="text-ink-muted">{t('settings.role') || 'Role'}</span><span className="font-medium">{profile?.role}</span></div>
+                <div className="flex justify-between py-2 border-b border-border"><span className="text-ink-muted">{t('settings.country') || 'Country'}</span><span className="font-medium">{company?.country}</span></div>
+                <div className="flex justify-between py-2"><span className="text-ink-muted">{t('settings.subscription') || 'Subscription'}</span><span className="font-medium capitalize">{company?.subscription_tier || 'free'}</span></div>
               </div>
             </CardContent>
           </Card>
@@ -176,7 +176,7 @@ export function SettingsPage() {
             <CardContent>
               <div className="mb-4">
                 <p className="text-3xl font-bold text-primary tracking-tight">—</p>
-                <p className="text-sm text-ink-variant">{t('settings.contact_sales') || 'Contact sales for plan details'}</p>
+                <p className="text-sm text-ink-muted">{t('settings.contact_sales') || 'Contact sales for plan details'}</p>
               </div>
               <Button variant="outline" fullWidth onClick={() => navigate('/settings/billing')}>
                 {t('settings.manage_billing') || 'Manage Billing'}
@@ -214,7 +214,7 @@ export function SettingsPage() {
               <ScrollText size={20} className="text-primary" />
               <h3 className="text-title-lg font-semibold text-ink">{t('settings.audit_log') || 'Audit Log'}</h3>
             </div>
-            <p className="text-sm text-ink-variant mb-4">
+            <p className="text-sm text-ink-muted mb-4">
               {t('settings.audit_log_desc') || 'Track all system activity, user actions, and security events.'}
             </p>
             <Link
@@ -233,7 +233,7 @@ export function SettingsPage() {
             <Lock size={20} className="text-primary" />
             <h3 className="text-title-lg font-semibold text-ink">{t('pdpa.short_title') || 'Privacy & Data'}</h3>
           </div>
-          <p className="text-sm text-ink-variant mb-4">
+          <p className="text-sm text-ink-muted mb-4">
             {t('pdpa.settings_desc') || 'Export or delete your personal data. View consent history.'}
           </p>
           <Link
@@ -251,7 +251,7 @@ export function SettingsPage() {
             <CreditCard size={20} className="text-primary" />
             <h3 className="text-title-lg font-semibold text-ink">{t('billing.title') || 'Billing & Plans'}</h3>
           </div>
-          <p className="text-sm text-ink-variant mb-4">
+          <p className="text-sm text-ink-muted mb-4">
             {t('billing.subtitle') || 'Manage your subscription and billing'}
           </p>
           <Link
@@ -270,7 +270,7 @@ export function SettingsPage() {
               <Gavel size={20} className="text-ink-faint" />
               <h3 className="text-title-lg font-semibold text-ink">{t('settings.regional_compliance') || 'Regional Compliance'}</h3>
             </div>
-            <span className="text-xs font-semibold text-ink-variant bg-surface-sunken px-2 py-1 rounded">DATA GOVERNANCE</span>
+            <span className="text-xs font-semibold text-ink-muted bg-surface-sunken px-2 py-1 rounded">DATA GOVERNANCE</span>
           </div>
           <div className="space-y-4">
             {[
@@ -283,7 +283,7 @@ export function SettingsPage() {
                   <div className="w-10 h-10 rounded-full bg-surface-sunken flex items-center justify-center text-primary font-bold text-lg">{item.code}</div>
                   <div>
                     <h4 className="text-sm font-semibold text-ink">{item.name}</h4>
-                    <p className="text-xs text-ink-variant">{item.desc}</p>
+                    <p className="text-xs text-ink-muted">{item.desc}</p>
                   </div>
                 </div>
                 <div className={cn('w-12 h-6 rounded-full relative cursor-pointer transition-colors', item.active ? 'bg-primary' : 'bg-surface-sunken border border-border')}>
@@ -328,7 +328,7 @@ export function SettingsPage() {
                   </div>
                   <div>
                     <h4 className="text-sm font-semibold text-ink">{item.name}</h4>
-                    <p className="text-xs text-ink-variant">{item.connected}</p>
+                    <p className="text-xs text-ink-muted">{item.connected}</p>
                   </div>
                 </div>
                 <Button variant="secondary" size="xs" onClick={() => toast(item.helpText)}>
@@ -345,7 +345,7 @@ export function SettingsPage() {
           <RotateCcw size={20} className="text-primary" />
           <h3 className="text-title-lg font-semibold text-ink">{t('tour.restart') || 'Restart Tour'}</h3>
         </div>
-        <p className="text-sm text-ink-variant mb-4">
+        <p className="text-sm text-ink-muted mb-4">
           {t('tour.restartDescription') || 'Replay the onboarding tour to refresh your memory on key features.'}
         </p>
         <Button

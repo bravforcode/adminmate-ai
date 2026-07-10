@@ -146,7 +146,7 @@ export function AuditLogPage() {
             <ScrollText size={24} className="text-primary" />
             {t('audit_log.title') || 'Audit Log'}
           </h1>
-          <p className="text-body-md text-ink-variant mt-1">
+          <p className="text-body-md text-ink-muted mt-1">
             {t('audit_log.subtitle') || 'Track all system activity and changes'}
           </p>
         </div>
@@ -184,7 +184,7 @@ export function AuditLogPage() {
             <Activity size={20} className="text-primary" />
           </div>
           <div>
-            <p className="text-xs text-ink-variant">{t('audit_log.total_events') || 'Total Events'}</p>
+            <p className="text-xs text-ink-muted">{t('audit_log.total_events') || 'Total Events'}</p>
             <p className="text-xl font-bold text-ink">{stats.total_logs.toLocaleString()}</p>
           </div>
         </div>
@@ -193,7 +193,7 @@ export function AuditLogPage() {
             <TrendingUp size={20} className="text-secondary" />
           </div>
           <div>
-            <p className="text-xs text-ink-variant">{t('audit_log.today') || 'Today'}</p>
+            <p className="text-xs text-ink-muted">{t('audit_log.today') || 'Today'}</p>
             <p className="text-xl font-bold text-ink">{stats.today_count.toLocaleString()}</p>
           </div>
         </div>
@@ -202,7 +202,7 @@ export function AuditLogPage() {
             <Users size={20} className="text-ink-faint" />
           </div>
           <div>
-            <p className="text-xs text-ink-variant">{t('audit_log.unique_users') || 'Unique Users'}</p>
+            <p className="text-xs text-ink-muted">{t('audit_log.unique_users') || 'Unique Users'}</p>
             <p className="text-xl font-bold text-ink">{stats.unique_users}</p>
           </div>
         </div>
@@ -221,7 +221,7 @@ export function AuditLogPage() {
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-4 gap-3">
             <div>
-              <label className="block text-xs font-medium text-ink-variant mb-1">{t('audit_log.action') || 'Action'}</label>
+              <label className="block text-xs font-medium text-ink-muted mb-1">{t('audit_log.action') || 'Action'}</label>
               <select
                 value={filters.action || ''}
                 onChange={e => applyFilter('action', e.target.value)}
@@ -232,7 +232,7 @@ export function AuditLogPage() {
               </select>
             </div>
             <div>
-              <label className="block text-xs font-medium text-ink-variant mb-1">{t('audit_log.date_from') || 'From'}</label>
+              <label className="block text-xs font-medium text-ink-muted mb-1">{t('audit_log.date_from') || 'From'}</label>
               <input
                 type="date"
                 value={filters.date_from || ''}
@@ -241,7 +241,7 @@ export function AuditLogPage() {
               />
             </div>
             <div>
-              <label className="block text-xs font-medium text-ink-variant mb-1">{t('audit_log.date_to') || 'To'}</label>
+              <label className="block text-xs font-medium text-ink-muted mb-1">{t('audit_log.date_to') || 'To'}</label>
               <input
                 type="date"
                 value={filters.date_to || ''}
@@ -250,7 +250,7 @@ export function AuditLogPage() {
               />
             </div>
             <div>
-              <label className="block text-xs font-medium text-ink-variant mb-1">{t('audit_log.user') || 'User ID'}</label>
+              <label className="block text-xs font-medium text-ink-muted mb-1">{t('audit_log.user') || 'User ID'}</label>
               <input
                 type="text"
                 value={filters.user_id || ''}
@@ -278,12 +278,12 @@ export function AuditLogPage() {
             <table className="w-full text-sm min-w-[700px]">
               <thead>
                 <tr className="bg-surface-sunken bg-surface-sunken/50 border-b border-border/50 border-border/50">
-                  <th className="py-3 px-4 text-xs font-semibold uppercase tracking-wider text-ink-variant text-ink-variant">{t('audit_log.timestamp') || 'Timestamp'}</th>
-                  <th className="py-3 px-4 text-xs font-semibold uppercase tracking-wider text-ink-variant text-ink-variant">{t('audit_log.user') || 'User'}</th>
-                  <th className="py-3 px-4 text-xs font-semibold uppercase tracking-wider text-ink-variant text-ink-variant">{t('audit_log.action') || 'Action'}</th>
-                  <th className="py-3 px-4 text-xs font-semibold uppercase tracking-wider text-ink-variant text-ink-variant">{t('audit_log.resource') || 'Resource'}</th>
-                  <th className="py-3 px-4 text-xs font-semibold uppercase tracking-wider text-ink-variant text-ink-variant">{t('audit_log.details') || 'Details'}</th>
-                  <th className="py-3 px-4 text-xs font-semibold uppercase tracking-wider text-ink-variant text-ink-variant">{t('audit_log.ip_address') || 'IP Address'}</th>
+                  <th className="py-3 px-4 text-xs font-semibold uppercase tracking-wider text-ink-muted text-ink-muted">{t('audit_log.timestamp') || 'Timestamp'}</th>
+                  <th className="py-3 px-4 text-xs font-semibold uppercase tracking-wider text-ink-muted text-ink-muted">{t('audit_log.user') || 'User'}</th>
+                  <th className="py-3 px-4 text-xs font-semibold uppercase tracking-wider text-ink-muted text-ink-muted">{t('audit_log.action') || 'Action'}</th>
+                  <th className="py-3 px-4 text-xs font-semibold uppercase tracking-wider text-ink-muted text-ink-muted">{t('audit_log.resource') || 'Resource'}</th>
+                  <th className="py-3 px-4 text-xs font-semibold uppercase tracking-wider text-ink-muted text-ink-muted">{t('audit_log.details') || 'Details'}</th>
+                  <th className="py-3 px-4 text-xs font-semibold uppercase tracking-wider text-ink-muted text-ink-muted">{t('audit_log.ip_address') || 'IP Address'}</th>
                 </tr>
               </thead>
               <tbody>
@@ -293,7 +293,7 @@ export function AuditLogPage() {
                     <td className="py-3 px-4 text-sm text-ink text-ink">
                       <div>
                         <div className="font-medium text-ink text-ink">{log.user_profiles?.full_name || 'Unknown'}</div>
-                        <div className="text-xs text-ink-variant text-ink-variant">{log.user_profiles?.email || ''}</div>
+                        <div className="text-xs text-ink-muted text-ink-muted">{log.user_profiles?.email || ''}</div>
                       </div>
                     </td>
                     <td className="py-3 px-4 text-sm text-ink text-ink">
@@ -301,14 +301,14 @@ export function AuditLogPage() {
                         {log.action}
                       </span>
                     </td>
-                    <td className="py-3 px-4 text-sm text-ink text-ink-variant">
+                    <td className="py-3 px-4 text-sm text-ink text-ink-muted">
                       {log.resource_type && <span className="font-medium">{log.resource_type}</span>}
-                      {log.resource_id && <span className="text-ink-variant/60 ml-1">#{log.resource_id.slice(0, 8)}</span>}
+                      {log.resource_id && <span className="text-ink-muted/60 ml-1">#{log.resource_id.slice(0, 8)}</span>}
                     </td>
-                    <td className="py-3 px-4 text-sm text-ink text-ink-variant max-w-[200px] truncate">
+                    <td className="py-3 px-4 text-sm text-ink text-ink-muted max-w-[200px] truncate">
                       {log.details ? JSON.stringify(log.details) : '—'}
                     </td>
-                    <td className="py-3 px-4 text-sm text-ink text-ink-variant font-mono text-xs">{log.ip_address || '—'}</td>
+                    <td className="py-3 px-4 text-sm text-ink text-ink-muted font-mono text-xs">{log.ip_address || '—'}</td>
                   </tr>
                 ))}
               </tbody>

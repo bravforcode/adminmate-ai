@@ -141,7 +141,7 @@ export default function NotificationCenter() {
               </Badge>
             )}
           </h1>
-          <p className="text-sm text-ink-variant mt-1">
+          <p className="text-sm text-ink-muted mt-1">
             {t('notification_center.subtitle', 'Stay updated with important events and messages')}
           </p>
         </div>
@@ -168,7 +168,7 @@ export default function NotificationCenter() {
       {/* Filters */}
       <div className="flex items-center gap-3">
         <div className="relative flex-1 max-w-md">
-          <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-ink-variant" />
+          <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-ink-muted" />
           <Input
             placeholder={t('common:search')}
             value={searchQuery}
@@ -246,11 +246,11 @@ export default function NotificationCenter() {
                         )}>
                           {notification.title || t('notification_center.default_title', 'Notification')}
                         </span>
-                        <span className="text-xs text-ink-variant whitespace-nowrap">
+                        <span className="text-xs text-ink-muted whitespace-nowrap">
                           {new Date(notification.created_at).toLocaleString()}
                         </span>
                       </div>
-                      <p className="text-sm text-ink-variant line-clamp-2">{notification.body}</p>
+                      <p className="text-sm text-ink-muted line-clamp-2">{notification.body}</p>
                       <div className="flex items-center gap-2 mt-2">
                         <Badge variant="outline" className="text-xs">
                           {notification.notification_type.replace(/_/g, ' ')}
@@ -286,7 +286,7 @@ export default function NotificationCenter() {
             <h3 className="text-lg font-semibold text-ink mb-4">
               {t('notification_center.manage_preferences', 'Manage Notification Preferences')}
             </h3>
-            <p className="text-sm text-ink-variant mb-6">
+            <p className="text-sm text-ink-muted mb-6">
               {t('notification_center.preferences_desc', 'Choose how you want to be notified for different types of events')}
             </p>
             <div className="space-y-4">

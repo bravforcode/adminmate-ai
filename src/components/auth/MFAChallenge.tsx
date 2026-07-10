@@ -68,7 +68,7 @@ export function MFAChallenge({ factorId, onSuccess, onCancel }: MFAChallengeProp
               <h2 className="text-title-lg font-semibold text-ink">
                 {t('mfa.challenge_title')}
               </h2>
-              <p className="text-sm text-ink-variant">
+              <p className="text-sm text-ink-muted">
                 {t('mfa.challenge_subtitle')}
               </p>
             </div>
@@ -150,7 +150,7 @@ export function MFAChallenge({ factorId, onSuccess, onCancel }: MFAChallengeProp
             <div className="text-center">
               <button
                 onClick={onCancel}
-                className="text-sm text-ink-variant hover:text-ink"
+                className="text-sm text-ink-muted hover:text-ink"
               >
                 {t('common.back')}
               </button>

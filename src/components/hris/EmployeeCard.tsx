@@ -48,10 +48,10 @@ export const EmployeeCard = memo(function EmployeeCard({ employee }: EmployeeCar
           <h3 className="font-semibold text-ink group-hover:text-primary dark:group-hover:text-primary-muted transition-colors truncate">
             {displayName}
           </h3>
-          <p className="text-sm text-ink-variant text-ink-variant flex items-center gap-1">
+          <p className="text-sm text-ink-muted text-ink-muted flex items-center gap-1">
             <Briefcase size={12} /> {employee.job_title}
           </p>
-          <div className="flex flex-wrap gap-2 mt-2 text-xs text-ink-variant text-ink-variant">
+          <div className="flex flex-wrap gap-2 mt-2 text-xs text-ink-muted text-ink-muted">
             {employee.work_email && (
               <span className="flex items-center gap-1"><Mail size={12} /> {maskEmail(employee.work_email)}</span>
             )}
@@ -64,7 +64,7 @@ export const EmployeeCard = memo(function EmployeeCard({ employee }: EmployeeCar
           <span className={`inline-block px-2 py-0.5 rounded-full text-xs font-medium ${statusStyle}`}>
             {employee.employment_status.replace('_', ' ')}
           </span>
-          <span className="text-xs text-ink-variant text-ink-variant">
+          <span className="text-xs text-ink-muted text-ink-muted">
             {employee.employee_number}
           </span>
         </div>

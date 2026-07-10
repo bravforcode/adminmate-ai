@@ -96,11 +96,11 @@ export function GlobalSearch() {
       <button
         onClick={() => setOpen(true)}
         aria-label={t('search.placeholder')}
-        className="flex items-center gap-2 px-3 py-[7px] rounded-lg border border-border bg-surface-sunken/50 text-ink-variant text-[13px] cursor-pointer transition-all duration-200 min-w-0 sm:min-w-[200px] max-w-[320px] flex-1 hover:bg-surface-sunken focus-visible:ring-2 focus-visible:ring-primary/30 focus-visible:outline-none"
+        className="flex items-center gap-2 px-3 py-[7px] rounded-lg border border-border bg-surface-sunken/50 text-ink-muted text-[13px] cursor-pointer transition-all duration-200 min-w-0 sm:min-w-[200px] max-w-[320px] flex-1 hover:bg-surface-sunken focus-visible:ring-2 focus-visible:ring-primary/30 focus-visible:outline-none"
       >
         <Search size={15} />
         <span className="flex-1 text-left">{t('search.placeholder')}</span>
-        <kbd className="flex items-center gap-[2px] px-1.5 py-0.5 rounded text-[11px] font-inherit bg-surface border border-border text-ink-variant">
+        <kbd className="flex items-center gap-[2px] px-1.5 py-0.5 rounded text-[11px] font-inherit bg-surface border border-border text-ink-muted">
           <Command size={10} />K
         </kbd>
       </button>
@@ -140,7 +140,7 @@ export function GlobalSearch() {
               {loading ? (
                 <div className="w-[18px] h-[18px] border-2 border-border border-t-primary rounded-full animate-spin" />
               ) : (
-                <Search size={18} className="text-ink-variant" />
+                <Search size={18} className="text-ink-muted" />
               )}
             </div>
             <input
@@ -148,12 +148,12 @@ export function GlobalSearch() {
               value={query}
               onChange={e => setQuery(e.target.value)}
               placeholder={t('search.placeholder')}
-              className="flex-1 border-none outline-none bg-transparent text-[15px] text-ink placeholder:text-ink-variant/50"
+              className="flex-1 border-none outline-none bg-transparent text-[15px] text-ink placeholder:text-ink-muted/50"
             />
             <button
               onClick={close}
               aria-label={t('common.close')}
-              className="p-2 rounded-md text-ink-variant hover:text-ink hover:bg-surface-sunken transition-colors min-w-[44px] min-h-[44px] flex items-center justify-center"
+              className="p-2 rounded-md text-ink-muted hover:text-ink hover:bg-surface-sunken transition-colors min-w-[44px] min-h-[44px] flex items-center justify-center"
             >
               <X size={16} />
             </button>
@@ -164,26 +164,26 @@ export function GlobalSearch() {
             {/* Empty state / tips */}
             {!query.trim() && (
               <div className="px-5 py-6 text-center">
-                <p className="text-[13px] text-ink-variant m-0 mb-4">
+                <p className="text-[13px] text-ink-muted m-0 mb-4">
                   {t('search.tip')}
                 </p>
                 <div className="flex justify-center gap-4 flex-wrap">
-                  <span className="text-xs text-ink-variant flex items-center gap-1">
+                  <span className="text-xs text-ink-muted flex items-center gap-1">
                     <Users size={13} /> {t('search.candidates')}
                   </span>
-                  <span className="text-xs text-ink-variant flex items-center gap-1">
+                  <span className="text-xs text-ink-muted flex items-center gap-1">
                     <Briefcase size={13} /> {t('search.jobs')}
                   </span>
-                  <span className="text-xs text-ink-variant flex items-center gap-1">
+                  <span className="text-xs text-ink-muted flex items-center gap-1">
                     <FileText size={13} /> {t('search.applications')}
                   </span>
-                  <span className="text-xs text-ink-variant flex items-center gap-1">
+                  <span className="text-xs text-ink-muted flex items-center gap-1">
                     <Calendar size={13} /> {t('search.interviews')}
                   </span>
                 </div>
                 {recentSearches.length > 0 && (
                   <div className="mt-5 pt-3 border-t border-border/50">
-                    <p className="text-[11px] text-ink-variant m-0 mb-2 uppercase tracking-wider">
+                    <p className="text-[11px] text-ink-muted m-0 mb-2 uppercase tracking-wider">
                       {t('search.recent')}
                     </p>
                     <div className="flex flex-wrap gap-1.5 justify-center">
@@ -191,7 +191,7 @@ export function GlobalSearch() {
                         <button
                           key={r}
                           onClick={() => handleRecentClick(r)}
-                          className="flex items-center gap-1 px-2.5 py-1 rounded-md border border-border bg-surface-sunken/50 text-ink-variant text-xs cursor-pointer hover:bg-surface-sunken transition-colors"
+                          className="flex items-center gap-1 px-2.5 py-1 rounded-md border border-border bg-surface-sunken/50 text-ink-muted text-xs cursor-pointer hover:bg-surface-sunken transition-colors"
                         >
                           <Clock size={11} /> {r}
                         </button>
@@ -206,12 +206,12 @@ export function GlobalSearch() {
             {query.trim() && totalResults === 0 && !loading && (
               <div className="py-8 px-5 text-center">
                 <div className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-surface-sunken mb-3">
-                  <Search size={20} className="text-ink-variant" />
+                  <Search size={20} className="text-ink-muted" />
                 </div>
-                <p className="text-sm text-ink-variant m-0">
+                <p className="text-sm text-ink-muted m-0">
                   {t('search.no_results')}
                 </p>
-                <p className="text-xs text-ink-variant/60 mt-1 m-0">
+                <p className="text-xs text-ink-muted/60 mt-1 m-0">
                   Try a different search term
                 </p>
               </div>
@@ -222,7 +222,7 @@ export function GlobalSearch() {
               const Icon = meta.icon
               return (
                 <div key={type}>
-                  <p className="px-5 pt-2 pb-1 text-[11px] font-semibold uppercase tracking-wider text-ink-variant m-0 transition-colors">
+                  <p className="px-5 pt-2 pb-1 text-[11px] font-semibold uppercase tracking-wider text-ink-muted m-0 transition-colors">
                     {t(meta.labelKey)}
                   </p>
                   {items.map(item => (
@@ -241,7 +241,7 @@ export function GlobalSearch() {
                         <p className="text-[13px] font-medium text-ink m-0 truncate">
                           {item.title}
                         </p>
-                        <p className="text-[11px] text-ink-variant m-0 truncate">
+                        <p className="text-[11px] text-ink-muted m-0 truncate">
                           {item.subtitle}
                         </p>
                       </div>
@@ -253,7 +253,7 @@ export function GlobalSearch() {
           </div>
 
           {/* Footer hint */}
-          <div className="px-5 py-2.5 border-t border-border/50 flex items-center justify-between text-[11px] text-ink-variant">
+          <div className="px-5 py-2.5 border-t border-border/50 flex items-center justify-between text-[11px] text-ink-muted">
             <span>{totalResults > 0 ? `${totalResults} ${t('search.results_found')}` : t('search.search_hint')}</span>
             <span>
               <kbd className="px-1.5 py-px rounded border border-border text-[10px]">ESC</kbd>

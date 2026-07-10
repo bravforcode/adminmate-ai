@@ -97,10 +97,15 @@ export async function handleLogin(req: Request): Promise<Response> {
     // access_token is NOT sent in the response body — it is injected into the
     // Authorization header by the serverless edge runtime so the client never
     // sees or stores the raw token.
+    // access_token is returned in the body so the client can hydrate the
+    // Supabase SDK's in-memory session (supabase.auth.setSession). The
+    // refresh_token is NEVER sent in the body — it is transported exclusively
+    // via the httpOnly cookie set above.
     return new Response(
       JSON.stringify({
         success: true,
         data: {
+          access_token: data.session.access_token,
           user: {
             id: data.session.user.id,
             email: data.session.user.email,

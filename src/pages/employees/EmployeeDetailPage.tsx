@@ -37,9 +37,9 @@ function InfoRow({ icon: Icon, label, value, masked }: { icon: React.ElementType
   if (!value) return null
   return (
     <div className="flex items-start gap-3 py-2">
-      <Icon size={16} className="text-ink-variant text-ink-variant mt-0.5 flex-shrink-0" />
+      <Icon size={16} className="text-ink-muted text-ink-muted mt-0.5 flex-shrink-0" />
       <div className="min-w-0">
-        <p className="text-xs text-ink-variant text-ink-variant">{label}</p>
+        <p className="text-xs text-ink-muted text-ink-muted">{label}</p>
         <p className="text-sm text-ink font-medium">{masked ? maskEmail(value) : value}</p>
       </div>
     </div>
@@ -123,8 +123,8 @@ export function EmployeeDetailPage() {
                 {emp.employment_status.replace('_', ' ')}
               </span>
             </div>
-            <p className="text-body-md text-ink-variant text-ink-variant mt-1">{emp.job_title}</p>
-            <div className="flex flex-wrap gap-4 mt-3 text-sm text-ink-variant text-ink-variant">
+            <p className="text-body-md text-ink-muted text-ink-muted mt-1">{emp.job_title}</p>
+            <div className="flex flex-wrap gap-4 mt-3 text-sm text-ink-muted text-ink-muted">
               <span className="flex items-center gap-1"><Briefcase size={14} /> {emp.employment_type.replace('_', ' ')}</span>
               <span className="flex items-center gap-1"><Calendar size={14} /> Hired {emp.hire_date}</span>
               {emp.employee_number && <span className="flex items-center gap-1"><Shield size={14} /> {emp.employee_number}</span>}
@@ -142,7 +142,7 @@ export function EmployeeDetailPage() {
             className={`flex items-center gap-1.5 px-4 py-2.5 text-sm font-medium border-b-2 transition-colors ${
               activeTab === tab.key
                 ? 'border-primary text-primary dark:border-accent-dim dark:text-primary-muted'
-                : 'border-transparent text-ink-variant text-ink-variant hover:text-ink dark:hover:text-ink'
+                : 'border-transparent text-ink-muted text-ink-muted hover:text-ink dark:hover:text-ink'
             }`}
           >
             <tab.icon size={14} />
@@ -191,7 +191,7 @@ export function EmployeeDetailPage() {
               <InfoRow icon={Phone} label="Phone" value={maskPhone(emp.emergency_contact_phone)} />
             </div>
             {!emp.emergency_contact_name && !emp.emergency_contact_phone && (
-              <p className="text-sm text-ink-variant/60 text-ink-variant/60">No emergency contact on file</p>
+              <p className="text-sm text-ink-muted/60 text-ink-muted/60">No emergency contact on file</p>
             )}
           </div>
 

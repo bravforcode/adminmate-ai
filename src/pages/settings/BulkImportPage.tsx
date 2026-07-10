@@ -124,7 +124,7 @@ export function BulkImportPage() {
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
           <h1 className="text-headline-md font-bold text-ink text-ink">{t('bulk_import.title')}</h1>
-          <p className="text-body-md text-ink-variant text-ink-variant mt-1">{t('bulk_import.subtitle')}</p>
+          <p className="text-body-md text-ink-muted text-ink-muted mt-1">{t('bulk_import.subtitle')}</p>
         </div>
         <button
           onClick={handleDownloadTemplate}
@@ -146,7 +146,7 @@ export function BulkImportPage() {
                   className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
                     importType === type
                       ? 'bg-primary text-white'
-                      : 'bg-surface-sunken bg-surface-sunken-lowest text-ink-variant text-ink-variant hover:bg-surface-sunken dark:hover:bg-surface-sunken'
+                      : 'bg-surface-sunken bg-surface-sunken-lowest text-ink-muted text-ink-muted hover:bg-surface-sunken dark:hover:bg-surface-sunken'
                   }`}
                 >
                   {t(`bulk_import.type_${type}`)}
@@ -161,9 +161,9 @@ export function BulkImportPage() {
             className="bg-surface rounded-xl border-2 border-dashed border-border p-12 text-center hover:border-primary dark:hover:border-primary transition-colors cursor-pointer"
             onClick={() => fileRef.current?.click()}
           >
-            <Upload size={48} className="mx-auto mb-4 text-ink-variant text-ink-variant" />
+            <Upload size={48} className="mx-auto mb-4 text-ink-muted text-ink-muted" />
             <p className="text-ink font-medium mb-1">{t('bulk_import.drag_drop')}</p>
-            <p className="text-sm text-ink-variant text-ink-variant">{t('bulk_import.or_click')}</p>
+            <p className="text-sm text-ink-muted text-ink-muted">{t('bulk_import.or_click')}</p>
             <input
               ref={fileRef}
               type="file"
@@ -203,16 +203,16 @@ export function BulkImportPage() {
             <table className="w-full text-sm">
               <thead>
                 <tr className="border-b border-border border-border">
-                  <th className="px-4 py-3 text-left font-medium text-ink-variant text-ink-variant">#</th>
+                  <th className="px-4 py-3 text-left font-medium text-ink-muted text-ink-muted">#</th>
                   {headers.map(h => (
-                    <th key={h} className="px-4 py-3 text-left font-medium text-ink-variant text-ink-variant">{h}</th>
+                    <th key={h} className="px-4 py-3 text-left font-medium text-ink-muted text-ink-muted">{h}</th>
                   ))}
                 </tr>
               </thead>
               <tbody>
                 {previewRows.map((row, i) => (
                   <tr key={i} className="border-b border-border/50 border-border/50">
-                    <td className="px-4 py-2 text-ink-variant text-ink-variant">{i + 1}</td>
+                    <td className="px-4 py-2 text-ink-muted text-ink-muted">{i + 1}</td>
                     {headers.map(h => (
                       <td key={h} className="px-4 py-2 text-ink text-ink">{row[h]}</td>
                     ))}
@@ -223,7 +223,7 @@ export function BulkImportPage() {
           </div>
 
           {parsedData.length > 10 && (
-            <p className="text-sm text-ink-variant text-ink-variant text-center">
+            <p className="text-sm text-ink-muted text-ink-muted text-center">
               {t('bulk_import.showing_first', { count: 10, total: parsedData.length })}
             </p>
           )}
@@ -241,7 +241,7 @@ export function BulkImportPage() {
                   </p>
                 ))}
                 {validationErrors.length > 20 && (
-                  <p className="text-sm text-ink-variant text-ink-variant">
+                  <p className="text-sm text-ink-muted text-ink-muted">
                     ...and {validationErrors.length - 20} more errors
                   </p>
                 )}
@@ -279,7 +279,7 @@ export function BulkImportPage() {
               )}
               <div>
                 <h2 className="text-title-lg font-semibold text-ink text-ink">{t('bulk_import.results')}</h2>
-                <p className="text-sm text-ink-variant text-ink-variant">
+                <p className="text-sm text-ink-muted text-ink-muted">
                   {t('bulk_import.results_summary', { success: importResult.success, total: parsedData.length })}
                 </p>
               </div>

@@ -95,7 +95,7 @@ export class ErrorBoundary extends Component<Props, State> {
               reloading the page, or contact support if the problem persists.
             </p>
             {import.meta.env.DEV && this.state.error?.message ? (
-              <details className="text-left mb-6 text-xs text-ink-variant bg-surface-sunken rounded-lg p-3 border border-border">
+              <details className="text-left mb-6 text-xs text-ink-muted bg-surface-sunken rounded-lg p-3 border border-border">
                 <summary className="cursor-pointer font-medium text-ink">
                   Error details
                 </summary>

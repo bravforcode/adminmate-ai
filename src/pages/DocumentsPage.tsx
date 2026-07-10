@@ -11,7 +11,7 @@ import { Button } from '../components/ui/Button'
 import { RequestSignatureModal } from '../components/documents/RequestSignatureModal'
 
 const STATUS_COLORS: Record<string, string> = {
-  draft: 'bg-surface-sunken text-ink-variant text-ink-variant',
+  draft: 'bg-surface-sunken text-ink-muted text-ink-muted',
   pending_signature: 'bg-yellow-50 dark:bg-warning-subtle/30 text-yellow-700 dark:text-warning',
   signed: 'bg-green-50 dark:bg-success-subtle/30 text-green-700 dark:text-success',
   submitted: 'bg-blue-50 dark:bg-primary-container/30 text-blue-700 dark:text-primary-muted',
@@ -71,27 +71,27 @@ export function DocumentsPage() {
     <div className="space-y-6">
       <div>
         <h1 className="text-headline-md font-bold text-ink text-ink">{t('title')}</h1>
-        <p className="text-body-md text-ink-variant text-ink-variant mt-1">{t('subtitle')}</p>
+        <p className="text-body-md text-ink-muted text-ink-muted mt-1">{t('subtitle')}</p>
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
         <div className="bg-surface rounded-xl border border-border p-4">
-          <p className="text-sm text-ink-variant text-ink-variant">{t('total_documents')}</p>
+          <p className="text-sm text-ink-muted text-ink-muted">{t('total_documents')}</p>
           <p className="text-2xl font-bold text-ink mt-1">{stats.total}</p>
         </div>
         <div className="bg-surface rounded-xl border border-border p-4">
-          <p className="text-sm text-ink-variant text-ink-variant">{t('pending_action')}</p>
+          <p className="text-sm text-ink-muted text-ink-muted">{t('pending_action')}</p>
           <p className="text-2xl font-bold text-yellow-700 dark:text-warning mt-1">{stats.pending}</p>
         </div>
         <div className="bg-surface rounded-xl border border-border p-4">
-          <p className="text-sm text-ink-variant text-ink-variant">{t('overdue')}</p>
+          <p className="text-sm text-ink-muted text-ink-muted">{t('overdue')}</p>
           <p className="text-2xl font-bold text-destructive dark:text-destructive mt-1">{stats.overdue}</p>
         </div>
       </div>
 
       <div className="flex flex-col sm:flex-row gap-4">
         <div className="relative flex-1 max-w-full sm:max-w-sm">
-          <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-ink-variant text-ink-variant size-4" />
+          <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-ink-muted text-ink-muted size-4" />
           <input
           value={searchInput}
           onChange={handleSearchChange}
@@ -137,14 +137,14 @@ export function DocumentsPage() {
             <table role="table" className="table-card-mobile w-full text-left min-w-[600px]">
               <thead>
                 <tr className="bg-surface-sunken bg-surface-sunken/50 border-b border-border/50 border-border/50">
-                  <th className="py-3 px-4 text-xs font-semibold uppercase tracking-wider text-ink-variant text-ink-variant">{t('title')}</th>
-                  <th className="py-3 px-4 text-xs font-semibold uppercase tracking-wider text-ink-variant text-ink-variant">{t('for')}</th>
-                  <th className="py-3 px-4 text-xs font-semibold uppercase tracking-wider text-ink-variant text-ink-variant">{t('type')}</th>
-                  <th className="py-3 px-4 text-xs font-semibold uppercase tracking-wider text-ink-variant text-ink-variant">{t('region')}</th>
-                  <th className="py-3 px-4 text-xs font-semibold uppercase tracking-wider text-ink-variant text-ink-variant">{t('status', { ns: 'common' })}</th>
-                  <th className="py-3 px-4 text-xs font-semibold uppercase tracking-wider text-ink-variant text-ink-variant">{t('signature_status')}</th>
-                  <th className="py-3 px-4 text-xs font-semibold uppercase tracking-wider text-ink-variant text-ink-variant">{t('due')}</th>
-                  <th className="py-3 px-4 text-xs font-semibold uppercase tracking-wider text-ink-variant text-ink-variant text-right">{t('actions')}</th>
+                  <th className="py-3 px-4 text-xs font-semibold uppercase tracking-wider text-ink-muted text-ink-muted">{t('title')}</th>
+                  <th className="py-3 px-4 text-xs font-semibold uppercase tracking-wider text-ink-muted text-ink-muted">{t('for')}</th>
+                  <th className="py-3 px-4 text-xs font-semibold uppercase tracking-wider text-ink-muted text-ink-muted">{t('type')}</th>
+                  <th className="py-3 px-4 text-xs font-semibold uppercase tracking-wider text-ink-muted text-ink-muted">{t('region')}</th>
+                  <th className="py-3 px-4 text-xs font-semibold uppercase tracking-wider text-ink-muted text-ink-muted">{t('status', { ns: 'common' })}</th>
+                  <th className="py-3 px-4 text-xs font-semibold uppercase tracking-wider text-ink-muted text-ink-muted">{t('signature_status')}</th>
+                  <th className="py-3 px-4 text-xs font-semibold uppercase tracking-wider text-ink-muted text-ink-muted">{t('due')}</th>
+                  <th className="py-3 px-4 text-xs font-semibold uppercase tracking-wider text-ink-muted text-ink-muted text-right">{t('actions')}</th>
                 </tr>
               </thead>
               <tbody>
@@ -152,12 +152,12 @@ export function DocumentsPage() {
                   <tr key={doc.id} className="hover:bg-surface-sunken/50 dark:hover:bg-surface-sunken/30 transition-colors duration-150 border-b border-border/50 border-border/50">
                     <td className="py-3 px-4 text-sm text-ink text-ink" data-label={t('title')}>
                       <div className="flex items-center gap-2">
-                        <FileText size={16} className="text-ink-variant text-ink-variant shrink-0" />
+                        <FileText size={16} className="text-ink-muted text-ink-muted shrink-0" />
                         <span className="text-sm font-medium text-ink text-ink">{doc.name}</span>
                       </div>
                     </td>
-                    <td className="py-3 px-4 text-sm text-ink text-ink-variant" data-label={t('for')}>{doc.candidates?.full_name || doc.user_profiles?.full_name || '-'}</td>
-                    <td className="py-3 px-4 text-sm text-ink text-ink-variant" data-label={t('type')}>{doc.document_type?.replace(/_/g, ' ')}</td>
+                    <td className="py-3 px-4 text-sm text-ink text-ink-muted" data-label={t('for')}>{doc.candidates?.full_name || doc.user_profiles?.full_name || '-'}</td>
+                    <td className="py-3 px-4 text-sm text-ink text-ink-muted" data-label={t('type')}>{doc.document_type?.replace(/_/g, ' ')}</td>
                     <td className="py-3 px-4 text-sm text-ink text-ink" data-label={t('region')}><span className="px-2 py-0.5 bg-surface-sunken rounded text-xs text-ink">{doc.region}</span></td>
                     <td className="py-3 px-4 text-sm text-ink text-ink" data-label={t('status', { ns: 'common' })}><span className={cn('px-2 py-0.5 rounded text-xs font-medium', STATUS_COLORS[doc.status ?? ''] || '')}>{getStatusLabel(doc.status)}</span></td>
                     <td className="py-3 px-4 text-sm text-ink text-ink" data-label={t('signature_status')}>
@@ -166,10 +166,10 @@ export function DocumentsPage() {
                           <Clock size={10} /> {t('signature_pending')}
                         </span>
                       ) : (
-                        <span className="text-xs text-ink-variant/50 dark:text-outline-variant">-</span>
+                        <span className="text-xs text-ink-muted/50 dark:text-outline-variant">-</span>
                       )}
                     </td>
-                    <td className="py-3 px-4 text-sm text-ink text-ink-variant" data-label={t('due')}>{doc.due_date || '-'}</td>
+                    <td className="py-3 px-4 text-sm text-ink text-ink-muted" data-label={t('due')}>{doc.due_date || '-'}</td>
                     <td className="py-3 px-4 text-sm text-ink text-right" data-label={t('actions')}>
                       <div className="flex items-center justify-end gap-2">
                         {doc.reminder_enabled && (

@@ -11,7 +11,7 @@ export function CVParseResult({ cvDocument }: CVParseResultProps) {
 
   return (
     <div className="space-y-4" data-testid="cv-parsed-badge">
-      {parsed.summary && <div><h4 className="text-sm font-semibold mb-1">{t('recruitment.candidates.cv_summary', 'Summary')}</h4><p className="text-sm text-ink-variant">{parsed.summary}</p></div>}
+      {parsed.summary && <div><h4 className="text-sm font-semibold mb-1">{t('recruitment.candidates.cv_summary', 'Summary')}</h4><p className="text-sm text-ink-muted">{parsed.summary}</p></div>}
       {parsed.skills && parsed.skills.length > 0 && (
         <div data-testid="skills-section">
           <h4 className="text-sm font-semibold mb-2">{t('recruitment.candidates.cv_skills', 'Skills')}</h4>
@@ -28,8 +28,8 @@ export function CVParseResult({ cvDocument }: CVParseResultProps) {
           {parsed.work_experience.map((exp: CVParsedWorkExperience, i: number) => (
             <div key={i} className="mb-3 pl-4 border-l-2 border-border">
               <p className="text-sm font-medium">{exp.title} at {exp.company}</p>
-              <p className="text-xs text-ink-variant">{exp.start_date} - {exp.end_date || t('recruitment.candidates.cv_present', 'Present')}</p>
-              {exp.description && <p className="text-xs text-ink-variant mt-1">{exp.description}</p>}
+              <p className="text-xs text-ink-muted">{exp.start_date} - {exp.end_date || t('recruitment.candidates.cv_present', 'Present')}</p>
+              {exp.description && <p className="text-xs text-ink-muted mt-1">{exp.description}</p>}
             </div>
           ))}
         </div>
@@ -40,7 +40,7 @@ export function CVParseResult({ cvDocument }: CVParseResultProps) {
           {parsed.education.map((edu: CVParsedEducation, i: number) => (
             <div key={i} className="text-sm">
               <p className="font-medium">{edu.degree} in {edu.field}</p>
-              <p className="text-xs text-ink-variant">{edu.institution} ({edu.start_date} - {edu.end_date})</p>
+              <p className="text-xs text-ink-muted">{edu.institution} ({edu.start_date} - {edu.end_date})</p>
             </div>
           ))}
         </div>

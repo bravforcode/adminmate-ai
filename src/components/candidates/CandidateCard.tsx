@@ -19,8 +19,8 @@ export const CandidateCard = memo(function CandidateCard({ candidate }: Candidat
         </div>
         <div className="flex-1 min-w-0">
           <h3 className="font-semibold text-ink group-hover:text-primary dark:group-hover:text-primary-muted transition-colors">{candidate.full_name}</h3>
-          <p className="text-sm text-ink-variant text-ink-variant">{candidate.current_position || 'Candidate'}</p>
-          <div className="flex flex-wrap gap-2 mt-2 text-xs text-ink-variant text-ink-variant">
+          <p className="text-sm text-ink-muted text-ink-muted">{candidate.current_position || 'Candidate'}</p>
+          <div className="flex flex-wrap gap-2 mt-2 text-xs text-ink-muted text-ink-muted">
             {candidate.location && <span className="flex items-center gap-1"><MapPin size={12} /> {candidate.location}</span>}
             {candidate.email && <span className="flex items-center gap-1"><Mail size={12} /> {candidate.email}</span>}
             {candidate.phone && <span className="flex items-center gap-1"><Phone size={12} /> {candidate.phone}</span>}

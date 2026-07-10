@@ -15,7 +15,7 @@ import { Offer } from '../../types/models'
 import { LoadingState } from '../../components/shared/LoadingState'
 
 const STATUS_COLORS: Record<string, string> = {
-  draft: 'bg-surface-sunken text-ink-variant text-ink-variant',
+  draft: 'bg-surface-sunken text-ink-muted text-ink-muted',
   sent: 'bg-secondary-container text-ink-secondary-container dark:text-primary-muted',
   viewed: 'bg-purple-50 dark:bg-warning-subtle/30 text-purple-700 dark:text-warning',
   accepted: 'bg-green-50 dark:bg-success-subtle/30 text-green-700 dark:text-success',
@@ -49,7 +49,7 @@ export function HiringPage() {
       <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-4">
         <div>
           <h1 className="text-headline-md md:text-headline-lg font-bold text-ink text-ink">{t('title')}</h1>
-          <p className="text-body-md text-ink-variant text-ink-variant mt-1">{t('subtitle')}</p>
+          <p className="text-body-md text-ink-muted text-ink-muted mt-1">{t('subtitle')}</p>
         </div>
         <div className="flex gap-2">
           <Button
@@ -119,7 +119,7 @@ export function HiringPage() {
                 >
                   <doc.icon size={24} className="text-ink-faint mb-3 group-hover:text-primary dark:group-hover:text-primary-muted transition-colors" />
                   <span className="text-base font-semibold text-ink text-ink">{t(`doc_generation.${doc.key}`)}</span>
-                  <span className="text-xs text-ink-variant text-ink-variant mt-1">{t(`doc_generation.${doc.key}_sub`)}</span>
+                  <span className="text-xs text-ink-muted text-ink-muted mt-1">{t(`doc_generation.${doc.key}_sub`)}</span>
                 </button>
               ))}
             </div>
@@ -129,7 +129,7 @@ export function HiringPage() {
           <section className="bg-surface border border-border rounded-xl overflow-hidden shadow-sm">
             <div className="p-4 border-b border-border flex justify-between items-center bg-surface-sunken-lowest bg-surface-sunken-lowest">
               <h3 className="text-lg font-semibold text-ink text-ink">{t('tracking.title')}</h3>
-              <span className="text-xs font-semibold text-ink-variant text-ink-variant bg-surface-sunken px-2 py-1 rounded">
+              <span className="text-xs font-semibold text-ink-muted text-ink-muted bg-surface-sunken px-2 py-1 rounded">
                 {offers?.filter((o: Offer) => o.status !== 'accepted').length || 0} {t('tracking.pending')}
               </span>
             </div>
@@ -140,16 +140,16 @@ export function HiringPage() {
                 <table role="table" className="table-card-mobile w-full text-left border-collapse min-w-[500px]">
                   <thead>
                     <tr className="bg-surface-sunken bg-surface-sunken/50 border-b border-border/50 border-border/50">
-                      <th className="py-3 px-4 text-xs font-semibold uppercase tracking-wider text-ink-variant text-ink-variant">
+                      <th className="py-3 px-4 text-xs font-semibold uppercase tracking-wider text-ink-muted text-ink-muted">
                         {t('tracking.candidate')}
                       </th>
-                      <th className="py-3 px-4 text-xs font-semibold uppercase tracking-wider text-ink-variant text-ink-variant">
+                      <th className="py-3 px-4 text-xs font-semibold uppercase tracking-wider text-ink-muted text-ink-muted">
                         {t('tracking.doc_type')}
                       </th>
-                      <th className="py-3 px-4 text-xs font-semibold uppercase tracking-wider text-ink-variant text-ink-variant">
+                      <th className="py-3 px-4 text-xs font-semibold uppercase tracking-wider text-ink-muted text-ink-muted">
                         {t('tracking.status')}
                       </th>
-                      <th className="py-3 px-4 text-xs font-semibold uppercase tracking-wider text-ink-variant text-ink-variant text-center">
+                      <th className="py-3 px-4 text-xs font-semibold uppercase tracking-wider text-ink-muted text-ink-muted text-center">
                         {t('tracking.auto_remind')}
                       </th>
                     </tr>
@@ -166,7 +166,7 @@ export function HiringPage() {
                       >
                         <td className="py-3 px-4 text-sm text-ink text-ink" data-label={t('tracking.candidate')}>
                           <div className="text-sm font-semibold text-ink text-ink">{offer.candidates?.full_name}</div>
-                          <div className="text-xs text-ink-variant text-ink-variant">{offer.position_title}</div>
+                          <div className="text-xs text-ink-muted text-ink-muted">{offer.position_title}</div>
                         </td>
                         <td className="py-3 px-4 text-sm text-ink text-ink" data-label={t('tracking.doc_type')}>{t('tracking.offer_letter')}</td>
                         <td className="py-3 px-4 text-sm text-ink text-ink" data-label={t('tracking.status')}>
@@ -205,7 +205,7 @@ export function HiringPage() {
                     ))}
                     {offers?.length === 0 && (
                       <tr>
-                        <td colSpan={4} className="text-center py-12 text-ink-variant">
+                        <td colSpan={4} className="text-center py-12 text-ink-muted">
                           {t('no_offers')}. {t('create_first_offer')}
                         </td>
                       </tr>
@@ -226,13 +226,13 @@ export function HiringPage() {
                 <h4 className="text-base font-semibold text-ink text-ink">
                   {selectedOffer ? t('preview.offer_preview') : t('preview.empty_title')}
                 </h4>
-                <p className="text-xs text-ink-variant text-ink-variant">
+                <p className="text-xs text-ink-muted text-ink-muted">
                   {selectedOffer
                     ? `${selectedOffer.candidates?.full_name} · ${selectedOffer.jobs?.title || ''}`
                     : t('preview.empty_subtitle')}
                 </p>
               </div>
-              <button className="text-ink-variant text-ink-variant hover:text-primary dark:hover:text-primary-muted transition-colors">
+              <button className="text-ink-muted text-ink-muted hover:text-primary dark:hover:text-primary-muted transition-colors">
                 <ExternalLink size={18} />
               </button>
             </div>
@@ -276,7 +276,7 @@ export function HiringPage() {
                       {selectedOffer.start_date}
                     </span>
                   </div>
-                  <p className="text-ink-variant text-ink-variant mt-2 leading-relaxed text-xs">
+                  <p className="text-ink-muted text-ink-muted mt-2 leading-relaxed text-xs">
                     {t('preview.disclaimer')}
                   </p>
                   <div className="mt-6 border-t border-dashed border-border pt-4 flex justify-between">
@@ -291,7 +291,7 @@ export function HiringPage() {
                   </div>
                 </div>
               ) : (
-                <div className="flex flex-col items-center justify-center h-full text-ink-variant text-ink-variant relative z-10">
+                <div className="flex flex-col items-center justify-center h-full text-ink-muted text-ink-muted relative z-10">
                   <FileText size={48} className="mb-3 opacity-30" />
                   <p className="text-sm">{t('preview.select_offer')}</p>
                 </div>

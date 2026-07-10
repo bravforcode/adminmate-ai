@@ -50,20 +50,20 @@ function OKRCard({ objective, keyResults }: { objective: OkrObjective & { user_p
         <div className="flex-1 min-w-0">
           <p className="text-sm font-semibold text-ink truncate">{objective.cycle_id ? `Cycle ${objective.cycle_id.slice(0, 8)}` : t('objective', 'Objective')}</p>
           {objective.user_profiles?.full_name && (
-            <p className="text-xs text-ink-variant text-ink-variant mt-0.5">{objective.user_profiles.full_name}</p>
+            <p className="text-xs text-ink-muted text-ink-muted mt-0.5">{objective.user_profiles.full_name}</p>
           )}
         </div>
         <span className={`px-2 py-0.5 rounded text-xs font-medium ${statusCfg.color}`}>
           <StatusIcon size={12} className="inline mr-1" />
           {t(`okr_status_${objective.status}`, statusCfg.label)}
         </span>
-        {expanded ? <ChevronDown size={16} className="text-ink-variant" /> : <ChevronRight size={16} className="text-ink-variant" />}
+        {expanded ? <ChevronDown size={16} className="text-ink-muted" /> : <ChevronRight size={16} className="text-ink-muted" />}
       </button>
 
       {expanded && (
         <div className="border-t border-border/50 border-border/50 px-4 pb-4">
           {keyResults.length === 0 ? (
-            <p className="text-sm text-ink-variant/60 dark:text-outline-variant py-3 italic">{t('no_key_results', 'No key results defined')}</p>
+            <p className="text-sm text-ink-muted/60 dark:text-outline-variant py-3 italic">{t('no_key_results', 'No key results defined')}</p>
           ) : (
             <div className="space-y-3 pt-3">
               {keyResults.map(kr => {
@@ -72,7 +72,7 @@ function OKRCard({ objective, keyResults }: { objective: OkrObjective & { user_p
                   <div key={kr.id} className="flex items-center gap-3">
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center justify-between mb-1">
-                        <span className="text-xs text-ink-variant text-ink-variant">{t('target', 'Target')}: {kr.target_value}</span>
+                        <span className="text-xs text-ink-muted text-ink-muted">{t('target', 'Target')}: {kr.target_value}</span>
                         <span className="text-xs font-medium text-ink text-ink">{kr.current_value} / {kr.target_value}</span>
                       </div>
                       <div className="w-full bg-surface-sunken rounded-full h-2">
@@ -87,7 +87,7 @@ function OKRCard({ objective, keyResults }: { objective: OkrObjective & { user_p
                         />
                       </div>
                     </div>
-                    <span className="text-xs font-semibold text-ink-variant text-ink-variant w-10 text-right">{pct}%</span>
+                    <span className="text-xs font-semibold text-ink-muted text-ink-muted w-10 text-right">{pct}%</span>
                   </div>
                 )
               })}
@@ -166,9 +166,9 @@ export function OKRPage() {
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
           <h1 className="text-headline-md font-bold text-ink text-ink">{t('okr_title', 'OKRs & Goals')}</h1>
-          <p className="text-body-md text-ink-variant text-ink-variant mt-1">{t('okr_subtitle', 'Track objectives, key results, and alignment across the organization')}</p>
+          <p className="text-body-md text-ink-muted text-ink-muted mt-1">{t('okr_subtitle', 'Track objectives, key results, and alignment across the organization')}</p>
         </div>
-        <div className="flex items-center gap-2 px-4 py-2 rounded-lg bg-surface-sunken text-ink-variant text-ink-variant text-sm">
+        <div className="flex items-center gap-2 px-4 py-2 rounded-lg bg-surface-sunken text-ink-muted text-ink-muted text-sm">
           <Construction size={16} />
           <span>{t('coming_soon', 'Coming Soon')}</span>
         </div>
@@ -188,7 +188,7 @@ export function OKRPage() {
                   : 'border-border hover:border-primary/50 dark:hover:border-accent-dim/50'
               }`}
             >
-              <p className="text-xs text-ink-variant text-ink-variant">{status === 'all' ? t('all_okrs', 'All') : t(`okr_status_${status}`, cfg!.label)}</p>
+              <p className="text-xs text-ink-muted text-ink-muted">{status === 'all' ? t('all_okrs', 'All') : t(`okr_status_${status}`, cfg!.label)}</p>
               <p className="text-lg font-bold text-ink mt-1">{count}</p>
             </button>
           )
@@ -206,7 +206,7 @@ export function OKRPage() {
             style={{ width: `${avgProgress}%` }}
           />
         </div>
-        <p className="text-xs text-ink-variant text-ink-variant">{avgProgress}% {t('average', 'average')} · {statusCounts.total} {t('objectives', 'objectives')}</p>
+        <p className="text-xs text-ink-muted text-ink-muted">{avgProgress}% {t('average', 'average')} · {statusCounts.total} {t('objectives', 'objectives')}</p>
       </div>
 
       {isLoading ? (

@@ -30,7 +30,7 @@ export function PayslipViewer({
         <div className="flex items-center justify-between">
           <div>
             <CardTitle>{companyName}</CardTitle>
-            <p className="text-sm text-ink-variant mt-1">Payslip {periodLabel && `— ${periodLabel}`}</p>
+            <p className="text-sm text-ink-muted mt-1">Payslip {periodLabel && `— ${periodLabel}`}</p>
           </div>
           <div className="flex gap-2 print:hidden">
             <Button variant="outline" size="sm" icon={<Printer size={14} />} onClick={handlePrint}>
@@ -47,15 +47,15 @@ export function PayslipViewer({
       <CardContent className="pt-4 space-y-4">
         <div className="grid grid-cols-2 gap-2 text-sm">
           <div>
-            <span className="text-ink-variant">Employee:</span>
+            <span className="text-ink-muted">Employee:</span>
             <span className="ml-2 font-medium">{employeeName}</span>
           </div>
           <div>
-            <span className="text-ink-variant">Employee ID:</span>
+            <span className="text-ink-muted">Employee ID:</span>
             <span className="ml-2 font-mono text-xs">{item.employee_id}</span>
           </div>
           <div>
-            <span className="text-ink-variant">Status:</span>
+            <span className="text-ink-muted">Status:</span>
             <span className={`ml-2 px-2 py-0.5 rounded-full text-xs font-medium ${
               item.status === 'approved' ? 'bg-green-100 text-green-700' :
               item.status === 'calculated' ? 'bg-blue-100 text-blue-700' :
@@ -71,19 +71,19 @@ export function PayslipViewer({
         <div className="space-y-2">
           <h4 className="text-sm font-semibold text-ink">Earnings</h4>
           <div className="flex justify-between text-sm">
-            <span className="text-ink-variant">Base Salary</span>
+            <span className="text-ink-muted">Base Salary</span>
             <span>{fmt(item.base_salary)}</span>
           </div>
           <div className="flex justify-between text-sm">
-            <span className="text-ink-variant">Overtime Pay</span>
+            <span className="text-ink-muted">Overtime Pay</span>
             <span>{fmt(item.overtime_pay)}</span>
           </div>
           <div className="flex justify-between text-sm">
-            <span className="text-ink-variant">Bonus</span>
+            <span className="text-ink-muted">Bonus</span>
             <span>{fmt(item.bonus)}</span>
           </div>
           <div className="flex justify-between text-sm">
-            <span className="text-ink-variant">Other Earnings</span>
+            <span className="text-ink-muted">Other Earnings</span>
             <span>{fmt(item.other_earnings)}</span>
           </div>
           <div className="flex justify-between text-sm font-semibold border-t border-border pt-2">
@@ -95,15 +95,15 @@ export function PayslipViewer({
         <div className="space-y-2">
           <h4 className="text-sm font-semibold text-ink">Deductions</h4>
           <div className="flex justify-between text-sm">
-            <span className="text-ink-variant">Social Security (Employee)</span>
+            <span className="text-ink-muted">Social Security (Employee)</span>
             <span className="text-red-600">-{fmt(item.social_security_employee)}</span>
           </div>
           <div className="flex justify-between text-sm">
-            <span className="text-ink-variant">Withholding Tax</span>
+            <span className="text-ink-muted">Withholding Tax</span>
             <span className="text-red-600">-{fmt(item.Withholding_Tax)}</span>
           </div>
           <div className="flex justify-between text-sm">
-            <span className="text-ink-variant">Other Deductions</span>
+            <span className="text-ink-muted">Other Deductions</span>
             <span className="text-red-600">-{fmt(item.other_deductions)}</span>
           </div>
           <div className="flex justify-between text-sm font-semibold border-t border-border pt-2">
@@ -122,7 +122,7 @@ export function PayslipViewer({
         </div>
 
         <div className="border-t border-border pt-2">
-          <p className="text-xs text-ink-variant">
+          <p className="text-xs text-ink-muted">
             Employer SS Contribution: {fmt(item.social_security_employee)} THB (matched)
           </p>
         </div>

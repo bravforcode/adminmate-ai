@@ -64,7 +64,7 @@ function StatusRow({
             ? 'text-green-600 font-medium'
             : state === 'error'
               ? 'text-red-600 font-medium'
-              : 'text-ink-variant'
+              : 'text-ink-muted'
         }`}
       >
         {detail}
@@ -255,7 +255,7 @@ export default function HealthPage() {
         <div className="bg-surface rounded-xl border border-border p-8 text-center">
           <AlertCircle size={40} className="mx-auto text-destructive mb-3" />
           <h3 className="font-semibold text-ink mb-1">{t('error_title')}</h3>
-          <p className="text-sm text-ink-variant mb-4">
+          <p className="text-sm text-ink-muted mb-4">
             {(dbQuery.error as Error)?.message || t('error_description')}
           </p>
           <button
@@ -273,7 +273,7 @@ export default function HealthPage() {
     <div className="space-y-6 max-w-2xl">
       <header className="flex items-center justify-between">
         <h1 className="text-headline-md font-bold">{t('title')}</h1>
-        <div className="text-xs text-ink-variant">
+        <div className="text-xs text-ink-muted">
           {t('last_checked')}: <span className="font-medium">{formatTime(lastChecked?.toISOString())}</span>
         </div>
       </header>
@@ -282,7 +282,7 @@ export default function HealthPage() {
         <div className="flex items-center justify-between mb-2">
           <h3 className="font-semibold">{t('service_status')}</h3>
           {isAnyLoading ? (
-            <span className="text-xs text-ink-variant">{t('refreshing')}</span>
+            <span className="text-xs text-ink-muted">{t('refreshing')}</span>
           ) : null}
         </div>
         <StatusRow
@@ -401,7 +401,7 @@ export default function HealthPage() {
         </div>
       ) : null}
 
-      <p className="text-xs text-ink-variant">
+      <p className="text-xs text-ink-muted">
         {t('auto_refresh_note')}
       </p>
     </div>

@@ -133,7 +133,7 @@ export function LearningPage() {
       <header className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
         <div>
           <h1 className="text-headline-md md:text-headline-lg font-bold text-on-background">{t('title', 'Learning & Development')}</h1>
-          <p className="text-body-md text-ink-variant mt-1">{t('subtitle', 'Track courses, enrollments, and certifications')}</p>
+          <p className="text-body-md text-ink-muted mt-1">{t('subtitle', 'Track courses, enrollments, and certifications')}</p>
         </div>
       </header>
 
@@ -151,7 +151,7 @@ export function LearningPage() {
               </div>
             </div>
             <p className="text-2xl font-bold text-ink">{stat.value}</p>
-            <p className="text-xs text-ink-variant">{stat.label}</p>
+            <p className="text-xs text-ink-muted">{stat.label}</p>
           </div>
         ))}
       </div>
@@ -167,7 +167,7 @@ export function LearningPage() {
             className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${
               activeTab === tab
                 ? 'bg-surface-sunken text-primary'
-                : 'text-ink-variant hover:bg-surface-sunken'
+                : 'text-ink-muted hover:bg-surface-sunken'
             }`}
           >
             {t(`tabs.${tab}`, tab.charAt(0).toUpperCase() + tab.slice(1))}
@@ -195,7 +195,7 @@ export function LearningPage() {
                   key={f}
                   onClick={() => setRequiredFilter(f)}
                   className={`px-3 py-1.5 rounded-full text-xs font-medium transition-colors ${
-                    requiredFilter === f ? 'bg-surface-sunken text-primary' : 'text-ink-variant hover:bg-surface-sunken'
+                    requiredFilter === f ? 'bg-surface-sunken text-primary' : 'text-ink-muted hover:bg-surface-sunken'
                   }`}
                 >
                   {t(`filter.${f}`, f.charAt(0).toUpperCase() + f.slice(1))}
@@ -228,7 +228,7 @@ export function LearningPage() {
                       <CardDescription className="line-clamp-2">{course.description}</CardDescription>
                     </CardHeader>
                     <CardContent className="mt-auto space-y-3">
-                      <div className="flex items-center justify-between text-xs text-ink-variant">
+                      <div className="flex items-center justify-between text-xs text-ink-muted">
                         <span className="flex items-center gap-1"><Clock size={12} /> {course.duration_hours}h</span>
                         <span>{course.instructor}</span>
                       </div>
@@ -279,7 +279,7 @@ export function LearningPage() {
                         <ProgressRing progress={enr.progress} size={48} />
                         <div className="flex-1 min-w-0">
                           <p className="font-medium text-ink truncate">{course?.title || enr.course_id}</p>
-                          <p className="text-xs text-ink-variant mt-0.5">
+                          <p className="text-xs text-ink-muted mt-0.5">
                             {t('enrolled_on', 'Enrolled')} {new Date(enr.enrolled_at).toLocaleDateString()}
                           </p>
                         </div>
@@ -288,13 +288,13 @@ export function LearningPage() {
                             {t(`status.${enr.status}`, enr.status)}
                           </Badge>
                           {enr.completed_at && (
-                            <p className="text-xs text-ink-variant mt-1">{new Date(enr.completed_at).toLocaleDateString()}</p>
+                            <p className="text-xs text-ink-muted mt-1">{new Date(enr.completed_at).toLocaleDateString()}</p>
                           )}
                         </div>
                       </div>
                       {enr.status !== 'completed' && (
                         <div className="mt-3">
-                          <div className="flex justify-between text-xs text-ink-variant mb-1">
+                          <div className="flex justify-between text-xs text-ink-muted mb-1">
                             <span>{t('progress', 'Progress')}</span>
                             <span>{enr.progress}%</span>
                           </div>
@@ -341,7 +341,7 @@ export function LearningPage() {
                             </div>
                             <div className="flex-1 min-w-0">
                               <p className="font-medium text-ink truncate">{course?.title || enr.course_id}</p>
-                              <p className="text-xs text-ink-variant mt-0.5">
+                              <p className="text-xs text-ink-muted mt-0.5">
                                 {t('completed_on', 'Completed')} {enr.completed_at ? new Date(enr.completed_at).toLocaleDateString() : '-'}
                               </p>
                             </div>

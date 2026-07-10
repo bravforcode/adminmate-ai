@@ -44,22 +44,22 @@ export function DataRetention() {
       {policies?.map(policy => (
         <div key={policy.id} className="flex items-center justify-between py-3 px-3 rounded-lg bg-surface-sunken border border-border">
           <div className="flex items-center gap-3">
-            {ACTION_ICONS[policy.action] || <Clock size={16} className="text-ink-variant" />}
+            {ACTION_ICONS[policy.action] || <Clock size={16} className="text-ink-muted" />}
             <div>
               <p className="text-sm font-medium text-ink">{policy.entity_type}</p>
-              <p className="text-xs text-ink-variant capitalize">{t('compliance.retention_action') || 'Action'}: {policy.action}</p>
+              <p className="text-xs text-ink-muted capitalize">{t('compliance.retention_action') || 'Action'}: {policy.action}</p>
             </div>
           </div>
           <div className="text-right">
             <p className="text-sm font-semibold text-primary">{policy.retention_days} {t('compliance.days') || 'days'}</p>
-            <p className={`text-[10px] ${policy.is_active ? 'text-green-600' : 'text-ink-variant'}`}>
+            <p className={`text-[10px] ${policy.is_active ? 'text-green-600' : 'text-ink-muted'}`}>
               {policy.is_active ? 'Active' : 'Inactive'}
             </p>
           </div>
         </div>
       ))}
       {policies?.length === 0 && (
-        <p className="text-sm text-ink-variant text-center py-4">{t('compliance.no_retention_policies') || 'No retention policies configured.'}</p>
+        <p className="text-sm text-ink-muted text-center py-4">{t('compliance.no_retention_policies') || 'No retention policies configured.'}</p>
       )}
     </div>
   )

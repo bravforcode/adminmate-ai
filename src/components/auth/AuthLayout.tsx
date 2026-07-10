@@ -33,7 +33,7 @@ export function AuthLayout({ children, title, subtitle }: AuthLayoutProps) {
             {title}
           </h2>
           {subtitle && (
-            <p className="text-sm font-light text-ink-secondary text-ink-variant m-0 mb-6 leading-relaxed">
+            <p className="text-sm font-light text-ink-secondary text-ink-muted m-0 mb-6 leading-relaxed">
               {subtitle}
             </p>
           )}

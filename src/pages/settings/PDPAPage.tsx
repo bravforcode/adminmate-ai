@@ -103,7 +103,7 @@ export function PDPAPage() {
     <div className="space-y-6 max-w-3xl">
       <div>
         <h1 className="text-headline-md font-bold text-ink">{t('pdpa.page_title') || 'Privacy & Data'}</h1>
-        <p className="text-body-md text-ink-variant mt-1">{t('pdpa.page_subtitle') || 'Manage your personal data, exports, and consent history under PDPA / GDPR.'}</p>
+        <p className="text-body-md text-ink-muted mt-1">{t('pdpa.page_subtitle') || 'Manage your personal data, exports, and consent history under PDPA / GDPR.'}</p>
       </div>
 
       {/* Data Export */}
@@ -112,7 +112,7 @@ export function PDPAPage() {
           <Download size={20} className="text-primary" />
           <h3 className="text-title-lg font-semibold text-ink">{t('pdpa.export_title') || 'Export My Data'}</h3>
         </div>
-        <p className="text-sm text-ink-variant mb-4">
+        <p className="text-sm text-ink-muted mb-4">
           {t('pdpa.export_desc') || 'Download a complete copy of your personal data in JSON format. This includes your profile, applications, documents, and consent records.'}
         </p>
         <button
@@ -131,13 +131,13 @@ export function PDPAPage() {
           <Trash2 size={20} className="text-destructive" />
           <h3 className="text-title-lg font-semibold text-ink">{t('pdpa.delete_title') || 'Delete My Account'}</h3>
         </div>
-        <p className="text-sm text-ink-variant mb-4">
+        <p className="text-sm text-ink-muted mb-4">
           {t('pdpa.delete_desc') || 'Anonymize your personal data. PII fields will be replaced with anonymized values. Non-PII business records (application history, audit logs) will be retained for operational continuity.'}
         </p>
         <div className="bg-destructive-subtle/30 rounded-lg p-3 mb-4">
           <div className="flex items-start gap-2">
             <AlertTriangle size={16} className="text-destructive mt-0.5 flex-shrink-0" />
-            <p className="text-xs text-ink-variant">{t('pdpa.delete_warning') || 'This action is irreversible. Your name, email, phone, and other personal identifiers will be permanently anonymized.'}</p>
+            <p className="text-xs text-ink-muted">{t('pdpa.delete_warning') || 'This action is irreversible. Your name, email, phone, and other personal identifiers will be permanently anonymized.'}</p>
           </div>
         </div>
         <button
@@ -155,7 +155,7 @@ export function PDPAPage() {
           <Database size={20} className="text-primary" />
           <h3 className="text-title-lg font-semibold text-ink">{t('pdpa.categories_title') || 'Data Categories'}</h3>
         </div>
-        <p className="text-sm text-ink-variant mb-4">
+        <p className="text-sm text-ink-muted mb-4">
           {t('pdpa.categories_desc') || 'Overview of data categories stored about you.'}
         </p>
         {categoriesLoading ? (
@@ -170,12 +170,12 @@ export function PDPAPage() {
                 >
                   <div className="flex items-center gap-3">
                     <span className="text-sm font-medium text-ink">{cat.category}</span>
-                    <span className="text-xs bg-surface-sunken px-2 py-0.5 rounded text-ink-variant">{cat.record_count} records</span>
+                    <span className="text-xs bg-surface-sunken px-2 py-0.5 rounded text-ink-muted">{cat.record_count} records</span>
                   </div>
-                  {expandedCategory === cat.table_name ? <ChevronUp size={16} className="text-ink-variant" /> : <ChevronDown size={16} className="text-ink-variant" />}
+                  {expandedCategory === cat.table_name ? <ChevronUp size={16} className="text-ink-muted" /> : <ChevronDown size={16} className="text-ink-muted" />}
                 </button>
                 {expandedCategory === cat.table_name && (
-                  <div className="px-3 pb-3 text-xs text-ink-variant border-t border-border pt-2">
+                  <div className="px-3 pb-3 text-xs text-ink-muted border-t border-border pt-2">
                     {cat.description}
                   </div>
                 )}
@@ -191,7 +191,7 @@ export function PDPAPage() {
           <Shield size={20} className="text-primary" />
           <h3 className="text-title-lg font-semibold text-ink">{t('pdpa.consent_history_title') || 'Consent History'}</h3>
         </div>
-        <p className="text-sm text-ink-variant mb-4">
+        <p className="text-sm text-ink-muted mb-4">
           {t('pdpa.consent_history_desc') || 'Timeline of your consent records. Download receipts for your records.'}
         </p>
         {consentsLoading ? (
@@ -215,7 +215,7 @@ export function PDPAPage() {
                         {consent.consent_given ? 'Active' : 'Revoked'}
                       </span>
                     </div>
-                    <p className="text-xs text-ink-variant flex items-center gap-1">
+                    <p className="text-xs text-ink-muted flex items-center gap-1">
                       <Clock size={12} />
                       {new Date(consent.created_at).toLocaleDateString()} · v{consent.consent_form_version}
                     </p>
@@ -240,7 +240,7 @@ export function PDPAPage() {
             ))}
           </div>
         ) : (
-          <p className="text-sm text-ink-variant">{t('pdpa.no_consents') || 'No consent records found.'}</p>
+          <p className="text-sm text-ink-muted">{t('pdpa.no_consents') || 'No consent records found.'}</p>
         )}
       </div>
 

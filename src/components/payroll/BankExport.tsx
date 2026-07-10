@@ -91,15 +91,15 @@ export function BankExport({ items, companyName = 'Company', periodLabel = '' }:
       <CardContent className="space-y-4">
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
           <div className="p-3 bg-surface-sunken rounded-lg">
-            <p className="text-xs text-ink-variant">Employees</p>
+            <p className="text-xs text-ink-muted">Employees</p>
             <p className="text-lg font-semibold">{items.length}</p>
           </div>
           <div className="p-3 bg-surface-sunken rounded-lg">
-            <p className="text-xs text-ink-variant">Total Net Pay</p>
+            <p className="text-xs text-ink-muted">Total Net Pay</p>
             <p className="text-lg font-semibold">{fmt(totalNet)} THB</p>
           </div>
           <div className="p-3 bg-surface-sunken rounded-lg">
-            <p className="text-xs text-ink-variant">Format</p>
+            <p className="text-xs text-ink-muted">Format</p>
             <select
               value={format}
               onChange={e => setFormat(e.target.value as BankFormat)}
@@ -129,7 +129,7 @@ export function BankExport({ items, companyName = 'Company', periodLabel = '' }:
           )}
         </div>
 
-        <p className="text-xs text-ink-variant">
+        <p className="text-xs text-ink-muted">
           Exports salary transfer file for {BANK_OPTIONS.find(b => b.value === format)?.label}.
           Verify format with your bank before submitting.
         </p>

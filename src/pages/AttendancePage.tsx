@@ -125,7 +125,7 @@ export function AttendancePage() {
       <header className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
         <div>
           <h1 className="text-headline-md md:text-headline-lg font-bold text-on-background text-ink">{t('title')}</h1>
-          <p className="text-body-md text-ink-variant text-ink-variant mt-1">{t('subtitle')}</p>
+          <p className="text-body-md text-ink-muted text-ink-muted mt-1">{t('subtitle')}</p>
         </div>
         <div className="flex items-center gap-2">
           {!todayRecord && (
@@ -159,7 +159,7 @@ export function AttendancePage() {
             <div className="w-9 h-9 rounded-full bg-primary-fixed dark:bg-primary-container flex items-center justify-center">
               <Clock size={18} className="text-primary dark:text-primary-muted" />
             </div>
-            <span className="text-sm font-medium text-ink-variant text-ink-variant">{t('stats.total_hours')}</span>
+            <span className="text-sm font-medium text-ink-muted text-ink-muted">{t('stats.total_hours')}</span>
           </div>
           <p className="text-2xl font-bold text-on-background text-ink">{stats.totalHours}h</p>
         </div>
@@ -168,7 +168,7 @@ export function AttendancePage() {
             <div className="w-9 h-9 rounded-full bg-tertiary-fixed dark:bg-surface-sunken flex items-center justify-center">
               <Timer size={18} className="text-ink-faint dark:text-ink-faint" />
             </div>
-            <span className="text-sm font-medium text-ink-variant text-ink-variant">{t('stats.overtime')}</span>
+            <span className="text-sm font-medium text-ink-muted text-ink-muted">{t('stats.overtime')}</span>
           </div>
           <p className="text-2xl font-bold text-on-background text-ink">{stats.overtime}h</p>
         </div>
@@ -177,7 +177,7 @@ export function AttendancePage() {
             <div className="w-9 h-9 rounded-full bg-destructive-subtle dark:bg-destructive-subtle/30 flex items-center justify-center">
               <AlertTriangle size={18} className="text-destructive dark:text-destructive" />
             </div>
-            <span className="text-sm font-medium text-ink-variant text-ink-variant">{t('stats.late_arrivals')}</span>
+            <span className="text-sm font-medium text-ink-muted text-ink-muted">{t('stats.late_arrivals')}</span>
           </div>
           <p className="text-2xl font-bold text-on-background text-ink">{stats.lateArrivals}</p>
         </div>
@@ -186,7 +186,7 @@ export function AttendancePage() {
             <div className="w-9 h-9 rounded-full bg-secondary-fixed dark:bg-secondary-container flex items-center justify-center">
               <CheckCircle size={18} className="text-secondary dark:text-secondary" />
             </div>
-            <span className="text-sm font-medium text-ink-variant text-ink-variant">{t('stats.present_days')}</span>
+            <span className="text-sm font-medium text-ink-muted text-ink-muted">{t('stats.present_days')}</span>
           </div>
           <p className="text-2xl font-bold text-on-background text-ink">{stats.presentDays}</p>
         </div>
@@ -239,7 +239,7 @@ export function AttendancePage() {
           ) : (
             <div className="grid grid-cols-7 border-b border-border overflow-x-auto">
               {WEEKDAYS.map(day => (
-                <div key={day} className="py-2 px-1 text-center text-[10px] sm:text-xs font-semibold text-ink-variant text-ink-variant border-r border-border/50 border-border/50 last:border-r-0">
+                <div key={day} className="py-2 px-1 text-center text-[10px] sm:text-xs font-semibold text-ink-muted text-ink-muted border-r border-border/50 border-border/50 last:border-r-0">
                   {t(`weekday.${day.toLowerCase()}`)}
                 </div>
               ))}
@@ -257,7 +257,7 @@ export function AttendancePage() {
                       isToday && 'bg-primary-fixed/20 dark:bg-primary/10'
                     )}
                   >
-                    <span className={cn('text-[10px] sm:text-xs font-medium', isToday ? 'text-primary dark:text-primary-muted font-bold' : 'text-ink-variant text-ink-variant')}>
+                    <span className={cn('text-[10px] sm:text-xs font-medium', isToday ? 'text-primary dark:text-primary-muted font-bold' : 'text-ink-muted text-ink-muted')}>
                       {day}
                     </span>
                     <div className="mt-0.5 sm:mt-1 space-y-0.5">
@@ -267,7 +267,7 @@ export function AttendancePage() {
                         </div>
                       ))}
                       {dayRecords.length > 2 && (
-                        <span className="text-[8px] sm:text-[10px] text-ink-variant">+{dayRecords.length - 2}</span>
+                        <span className="text-[8px] sm:text-[10px] text-ink-muted">+{dayRecords.length - 2}</span>
                       )}
                     </div>
                   </div>
@@ -286,12 +286,12 @@ export function AttendancePage() {
           <table role="table" className="w-full text-left border-collapse min-w-[500px]">
             <thead>
               <tr className="bg-surface-sunken bg-surface-sunken/50 border-b border-border/50 border-border/50">
-                <th className="py-3 px-4 text-xs font-semibold uppercase tracking-wider text-ink-variant">{t('table.date')}</th>
-                <th className="py-3 px-4 text-xs font-semibold uppercase tracking-wider text-ink-variant">{t('table.check_in')}</th>
-                <th className="py-3 px-4 text-xs font-semibold uppercase tracking-wider text-ink-variant">{t('table.check_out')}</th>
-                <th className="py-3 px-4 text-xs font-semibold uppercase tracking-wider text-ink-variant">{t('table.hours')}</th>
-                <th className="py-3 px-4 text-xs font-semibold uppercase tracking-wider text-ink-variant">{t('table.status')}</th>
-                <th className="py-3 px-4 text-xs font-semibold uppercase tracking-wider text-ink-variant">{t('table.method')}</th>
+                <th className="py-3 px-4 text-xs font-semibold uppercase tracking-wider text-ink-muted">{t('table.date')}</th>
+                <th className="py-3 px-4 text-xs font-semibold uppercase tracking-wider text-ink-muted">{t('table.check_in')}</th>
+                <th className="py-3 px-4 text-xs font-semibold uppercase tracking-wider text-ink-muted">{t('table.check_out')}</th>
+                <th className="py-3 px-4 text-xs font-semibold uppercase tracking-wider text-ink-muted">{t('table.hours')}</th>
+                <th className="py-3 px-4 text-xs font-semibold uppercase tracking-wider text-ink-muted">{t('table.status')}</th>
+                <th className="py-3 px-4 text-xs font-semibold uppercase tracking-wider text-ink-muted">{t('table.method')}</th>
               </tr>
             </thead>
             <tbody className="text-sm text-ink text-ink">
@@ -313,7 +313,7 @@ export function AttendancePage() {
                         {t(`status.${r.status}`)}
                       </span>
                     </td>
-                    <td className="py-3 px-4 text-sm text-ink-variant capitalize">{r.method}</td>
+                    <td className="py-3 px-4 text-sm text-ink-muted capitalize">{r.method}</td>
                   </tr>
                 ))
               )}

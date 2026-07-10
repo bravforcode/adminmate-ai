@@ -55,7 +55,7 @@ export function CalendarSettings() {
       <div className="space-y-6">
         <div>
           <label className="block text-sm font-medium text-ink mb-2">{t('reminder_time')}</label>
-          <p className="text-xs text-ink-variant text-ink-variant mb-3">{t('reminder_time_desc')}</p>
+          <p className="text-xs text-ink-muted text-ink-muted mb-3">{t('reminder_time_desc')}</p>
           <div className="flex flex-wrap gap-2">
             {REMINDER_OPTIONS.map(opt => (
               <button
@@ -75,7 +75,7 @@ export function CalendarSettings() {
 
         <div>
           <label className="block text-sm font-medium text-ink mb-2">{t('default_format')}</label>
-          <p className="text-xs text-ink-variant text-ink-variant mb-3">{t('default_format_desc')}</p>
+          <p className="text-xs text-ink-muted text-ink-muted mb-3">{t('default_format_desc')}</p>
           <div className="flex flex-wrap gap-2">
             {FORMAT_OPTIONS.map(opt => (
               <button

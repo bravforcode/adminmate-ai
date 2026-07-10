@@ -90,7 +90,7 @@ export function EmployeeListPage() {
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
           <h1 className="text-headline-md font-bold text-ink text-ink">Employees</h1>
-          <p className="text-body-md text-ink-variant text-ink-variant mt-1">Manage your organization&apos;s workforce</p>
+          <p className="text-body-md text-ink-muted text-ink-muted mt-1">Manage your organization&apos;s workforce</p>
         </div>
         <div className="flex gap-2">
           <Button variant="outline" size="md" onClick={handleExportCSV} disabled={!employees || employees.length === 0} icon={<Download size={16} />}>
@@ -104,11 +104,11 @@ export function EmployeeListPage() {
 
       <div className="flex flex-col sm:flex-row gap-3">
         <div className="relative flex-1 max-w-sm">
-          <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-ink-variant text-ink-variant size-4" />
+          <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-ink-muted text-ink-muted size-4" />
           <input
             value={searchInput}
             onChange={handleSearchChange}
-            className="w-full pl-10 pr-4 py-3 rounded-xl border border-border bg-surface-sunken-lowest bg-surface-sunken-lowest text-ink focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all duration-200 outline-none text-sm placeholder:text-ink-variant/50"
+            className="w-full pl-10 pr-4 py-3 rounded-xl border border-border bg-surface-sunken-lowest bg-surface-sunken-lowest text-ink focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all duration-200 outline-none text-sm placeholder:text-ink-muted/50"
             placeholder="Search by name, number, or title..."
             data-testid="employee-search"
           />
@@ -121,7 +121,7 @@ export function EmployeeListPage() {
       {showFilters && (
         <div className="bg-surface rounded-xl border border-border p-4 flex flex-wrap gap-4">
           <div>
-            <label className="block text-xs font-medium mb-1 text-ink-variant">Status</label>
+            <label className="block text-xs font-medium mb-1 text-ink-muted">Status</label>
             <select
               value={statusFilter}
               onChange={e => setStatusFilter(e.target.value)}
@@ -132,7 +132,7 @@ export function EmployeeListPage() {
             </select>
           </div>
           <div>
-            <label className="block text-xs font-medium mb-1 text-ink-variant">Type</label>
+            <label className="block text-xs font-medium mb-1 text-ink-muted">Type</label>
             <select
               value={typeFilter}
               onChange={e => setTypeFilter(e.target.value)}
@@ -186,7 +186,7 @@ export function EmployeeListPage() {
       )}
 
       {employees && employees.length > 0 && (
-        <div className="text-sm text-ink-variant text-ink-variant text-center">
+        <div className="text-sm text-ink-muted text-ink-muted text-center">
           Showing {employees.length} employee{employees.length !== 1 ? 's' : ''}
         </div>
       )}

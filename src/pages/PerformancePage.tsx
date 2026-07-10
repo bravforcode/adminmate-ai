@@ -13,7 +13,7 @@ import type { PerformanceCycle, PerformanceReview, NineBoxAssessment } from '../
 type CycleStatus = 'draft' | 'active' | 'closed'
 
 const STATUS_COLORS: Record<CycleStatus, string> = {
-  draft: 'bg-gray-100 text-gray-700 text-ink-variant',
+  draft: 'bg-gray-100 text-gray-700 text-ink-muted',
   active: 'bg-green-50 dark:bg-success-subtle/30 text-green-700 dark:text-success',
   closed: 'bg-blue-50 dark:bg-primary-container/30 text-blue-700 dark:text-primary-muted',
 }
@@ -56,7 +56,7 @@ function KPICard({ title, value, icon: Icon, iconBg, iconColor }: { title: strin
         <div className={`w-9 h-9 rounded-full flex items-center justify-center ${iconBg}`}>
           <Icon size={18} className={iconColor} />
         </div>
-        <span className="text-sm text-ink-variant text-ink-variant">{title}</span>
+        <span className="text-sm text-ink-muted text-ink-muted">{title}</span>
       </div>
       <p className="text-2xl font-bold text-ink text-ink">{value}</p>
     </div>
@@ -158,7 +158,7 @@ export function PerformancePage() {
     <div className="space-y-6">
       <div>
         <h1 className="text-headline-md font-bold text-ink text-ink">{t('title', 'Performance Management')}</h1>
-        <p className="text-body-md text-ink-variant text-ink-variant mt-1">{t('subtitle', 'Manage review cycles, track performance, and identify talent')}</p>
+        <p className="text-body-md text-ink-muted text-ink-muted mt-1">{t('subtitle', 'Manage review cycles, track performance, and identify talent')}</p>
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
@@ -179,7 +179,7 @@ export function PerformancePage() {
             className={`px-4 py-3 text-sm font-medium transition-colors border-b-2 -mb-px ${
               activeTab === tab
                 ? 'border-primary dark:border-accent-dim text-primary dark:text-primary-muted'
-                : 'border-transparent text-ink-variant text-ink-variant hover:text-ink dark:hover:text-ink'
+                : 'border-transparent text-ink-muted text-ink-muted hover:text-ink dark:hover:text-ink'
             }`}
           >
             {tab === 'cycles' ? t('tab_cycles', 'Cycles') : tab === 'reviews' ? t('tab_reviews', 'Reviews') : t('tab_ninebox', '9-Box Grid')}
@@ -213,12 +213,12 @@ export function PerformancePage() {
                 <table role="table" className="table-card-mobile w-full text-left min-w-[600px]">
                   <thead>
                     <tr className="bg-surface-sunken bg-surface-sunken/50 border-b border-border/50 border-border/50">
-                      <th className="py-3 px-4 text-xs font-semibold uppercase tracking-wider text-ink-variant text-ink-variant">{t('cycle_name', 'Cycle Name')}</th>
-                      <th className="py-3 px-4 text-xs font-semibold uppercase tracking-wider text-ink-variant text-ink-variant">{t('type', 'Type')}</th>
-                      <th className="py-3 px-4 text-xs font-semibold uppercase tracking-wider text-ink-variant text-ink-variant">{t('period', 'Period')}</th>
-                      <th className="py-3 px-4 text-xs font-semibold uppercase tracking-wider text-ink-variant text-ink-variant">{t('status', { ns: 'common' })}</th>
-                      <th className="py-3 px-4 text-xs font-semibold uppercase tracking-wider text-ink-variant text-ink-variant">{t('reviews', 'Reviews')}</th>
-                      <th className="py-3 px-4 text-xs font-semibold uppercase tracking-wider text-ink-variant text-ink-variant text-right">{t('actions')}</th>
+                      <th className="py-3 px-4 text-xs font-semibold uppercase tracking-wider text-ink-muted text-ink-muted">{t('cycle_name', 'Cycle Name')}</th>
+                      <th className="py-3 px-4 text-xs font-semibold uppercase tracking-wider text-ink-muted text-ink-muted">{t('type', 'Type')}</th>
+                      <th className="py-3 px-4 text-xs font-semibold uppercase tracking-wider text-ink-muted text-ink-muted">{t('period', 'Period')}</th>
+                      <th className="py-3 px-4 text-xs font-semibold uppercase tracking-wider text-ink-muted text-ink-muted">{t('status', { ns: 'common' })}</th>
+                      <th className="py-3 px-4 text-xs font-semibold uppercase tracking-wider text-ink-muted text-ink-muted">{t('reviews', 'Reviews')}</th>
+                      <th className="py-3 px-4 text-xs font-semibold uppercase tracking-wider text-ink-muted text-ink-muted text-right">{t('actions')}</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -230,8 +230,8 @@ export function PerformancePage() {
                           <td className="py-3 px-4 text-sm text-ink text-ink" data-label={t('cycle_name', 'Cycle Name')}>
                             <span className="font-medium">{cycle.name}</span>
                           </td>
-                          <td className="py-3 px-4 text-sm text-ink-variant text-ink-variant" data-label={t('type', 'Type')}>{cycle.cycle_type}</td>
-                          <td className="py-3 px-4 text-sm text-ink-variant text-ink-variant" data-label={t('period', 'Period')}>
+                          <td className="py-3 px-4 text-sm text-ink-muted text-ink-muted" data-label={t('type', 'Type')}>{cycle.cycle_type}</td>
+                          <td className="py-3 px-4 text-sm text-ink-muted text-ink-muted" data-label={t('period', 'Period')}>
                             {cycle.start_date} — {cycle.end_date}
                           </td>
                           <td className="py-3 px-4 text-sm" data-label={t('status', { ns: 'common' })}>
@@ -239,7 +239,7 @@ export function PerformancePage() {
                               {cycle.status}
                             </span>
                           </td>
-                          <td className="py-3 px-4 text-sm text-ink-variant text-ink-variant" data-label={t('reviews', 'Reviews')}>
+                          <td className="py-3 px-4 text-sm text-ink-muted text-ink-muted" data-label={t('reviews', 'Reviews')}>
                             {completed}/{cycleReviews.length}
                           </td>
                           <td className="py-3 px-4 text-sm text-ink text-right" data-label={t('actions')}>
@@ -268,11 +268,11 @@ export function PerformancePage() {
                 <table role="table" className="table-card-mobile w-full text-left min-w-[600px]">
                   <thead>
                     <tr className="bg-surface-sunken bg-surface-sunken/50 border-b border-border/50 border-border/50">
-                      <th className="py-3 px-4 text-xs font-semibold uppercase tracking-wider text-ink-variant text-ink-variant">{t('employee', 'Employee')}</th>
-                      <th className="py-3 px-4 text-xs font-semibold uppercase tracking-wider text-ink-variant text-ink-variant">{t('review_type', 'Review Type')}</th>
-                      <th className="py-3 px-4 text-xs font-semibold uppercase tracking-wider text-ink-variant text-ink-variant">{t('status', { ns: 'common' })}</th>
-                      <th className="py-3 px-4 text-xs font-semibold uppercase tracking-wider text-ink-variant text-ink-variant">{t('rating', 'Rating')}</th>
-                      <th className="py-3 px-4 text-xs font-semibold uppercase tracking-wider text-ink-variant text-ink-variant">{t('submitted', 'Submitted')}</th>
+                      <th className="py-3 px-4 text-xs font-semibold uppercase tracking-wider text-ink-muted text-ink-muted">{t('employee', 'Employee')}</th>
+                      <th className="py-3 px-4 text-xs font-semibold uppercase tracking-wider text-ink-muted text-ink-muted">{t('review_type', 'Review Type')}</th>
+                      <th className="py-3 px-4 text-xs font-semibold uppercase tracking-wider text-ink-muted text-ink-muted">{t('status', { ns: 'common' })}</th>
+                      <th className="py-3 px-4 text-xs font-semibold uppercase tracking-wider text-ink-muted text-ink-muted">{t('rating', 'Rating')}</th>
+                      <th className="py-3 px-4 text-xs font-semibold uppercase tracking-wider text-ink-muted text-ink-muted">{t('submitted', 'Submitted')}</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -281,7 +281,7 @@ export function PerformancePage() {
                         <td className="py-3 px-4 text-sm font-medium text-ink text-ink" data-label={t('employee', 'Employee')}>
                           {review.user_profiles?.full_name || '-'}
                         </td>
-                        <td className="py-3 px-4 text-sm text-ink-variant text-ink-variant" data-label={t('review_type', 'Review Type')}>
+                        <td className="py-3 px-4 text-sm text-ink-muted text-ink-muted" data-label={t('review_type', 'Review Type')}>
                           {review.review_type}
                         </td>
                         <td className="py-3 px-4 text-sm" data-label={t('status', { ns: 'common' })}>
@@ -289,10 +289,10 @@ export function PerformancePage() {
                             {review.status}
                           </span>
                         </td>
-                        <td className="py-3 px-4 text-sm text-ink-variant text-ink-variant" data-label={t('rating', 'Rating')}>
+                        <td className="py-3 px-4 text-sm text-ink-muted text-ink-muted" data-label={t('rating', 'Rating')}>
                           {review.overall_rating != null ? `${review.overall_rating}/5` : '-'}
                         </td>
-                        <td className="py-3 px-4 text-sm text-ink-variant text-ink-variant" data-label={t('submitted', 'Submitted')}>
+                        <td className="py-3 px-4 text-sm text-ink-muted text-ink-muted" data-label={t('submitted', 'Submitted')}>
                           {review.submitted_at ? new Date(review.submitted_at).toLocaleDateString() : '-'}
                         </td>
                       </tr>
@@ -313,10 +313,10 @@ export function PerformancePage() {
             <>
               <div className="bg-surface rounded-xl border border-border p-6">
                 <div className="flex items-center gap-2 mb-4">
-                  <LayoutGrid size={18} className="text-ink-variant text-ink-variant" />
+                  <LayoutGrid size={18} className="text-ink-muted text-ink-muted" />
                   <h3 className="text-title-sm font-semibold text-ink text-ink">{t('nine_box_title', '9-Box Grid: Performance vs Potential')}</h3>
                 </div>
-                <p className="text-sm text-ink-variant text-ink-variant mb-6">{t('nine_box_desc', 'Employees positioned by performance score (horizontal) and potential score (vertical)')}</p>
+                <p className="text-sm text-ink-muted text-ink-muted mb-6">{t('nine_box_desc', 'Employees positioned by performance score (horizontal) and potential score (vertical)')}</p>
 
                 <div className="grid grid-cols-3 gap-2 max-w-2xl">
                   {[7, 8, 9, 4, 5, 6, 1, 2, 3].map(pos => (
@@ -333,7 +333,7 @@ export function PerformancePage() {
                     </div>
                   ))}
                 </div>
-                <div className="flex items-center gap-4 mt-4 text-xs text-ink-variant text-ink-variant">
+                <div className="flex items-center gap-4 mt-4 text-xs text-ink-muted text-ink-muted">
                   <span>← {t('performance', 'Performance')} →</span>
                   <span>↕ {t('potential', 'Potential')}</span>
                 </div>
@@ -345,19 +345,19 @@ export function PerformancePage() {
                     <table role="table" className="table-card-mobile w-full text-left min-w-[500px]">
                       <thead>
                         <tr className="bg-surface-sunken bg-surface-sunken/50 border-b border-border/50 border-border/50">
-                          <th className="py-3 px-4 text-xs font-semibold uppercase tracking-wider text-ink-variant text-ink-variant">{t('employee', 'Employee')}</th>
-                          <th className="py-3 px-4 text-xs font-semibold uppercase tracking-wider text-ink-variant text-ink-variant">{t('performance_score', 'Performance')}</th>
-                          <th className="py-3 px-4 text-xs font-semibold uppercase tracking-wider text-ink-variant text-ink-variant">{t('potential_score', 'Potential')}</th>
-                          <th className="py-3 px-4 text-xs font-semibold uppercase tracking-wider text-ink-variant text-ink-variant">{t('position', 'Position')}</th>
-                          <th className="py-3 px-4 text-xs font-semibold uppercase tracking-wider text-ink-variant text-ink-variant">{t('notes', 'Notes')}</th>
+                          <th className="py-3 px-4 text-xs font-semibold uppercase tracking-wider text-ink-muted text-ink-muted">{t('employee', 'Employee')}</th>
+                          <th className="py-3 px-4 text-xs font-semibold uppercase tracking-wider text-ink-muted text-ink-muted">{t('performance_score', 'Performance')}</th>
+                          <th className="py-3 px-4 text-xs font-semibold uppercase tracking-wider text-ink-muted text-ink-muted">{t('potential_score', 'Potential')}</th>
+                          <th className="py-3 px-4 text-xs font-semibold uppercase tracking-wider text-ink-muted text-ink-muted">{t('position', 'Position')}</th>
+                          <th className="py-3 px-4 text-xs font-semibold uppercase tracking-wider text-ink-muted text-ink-muted">{t('notes', 'Notes')}</th>
                         </tr>
                       </thead>
                       <tbody>
                         {assessments.map(a => (
                           <tr key={a.id} className="hover:bg-surface-sunken/50 dark:hover:bg-surface-sunken/30 transition-colors duration-150 border-b border-border/50 border-border/50">
                             <td className="py-3 px-4 text-sm font-medium text-ink text-ink">{a.user_profiles?.full_name || '-'}</td>
-                            <td className="py-3 px-4 text-sm text-ink-variant text-ink-variant">{a.performance_score ?? '-'}</td>
-                            <td className="py-3 px-4 text-sm text-ink-variant text-ink-variant">{a.potential_score ?? '-'}</td>
+                            <td className="py-3 px-4 text-sm text-ink-muted text-ink-muted">{a.performance_score ?? '-'}</td>
+                            <td className="py-3 px-4 text-sm text-ink-muted text-ink-muted">{a.potential_score ?? '-'}</td>
                             <td className="py-3 px-4 text-sm">
                               {a.box_position != null && (
                                 <span className={`px-2 py-0.5 rounded text-xs font-medium ${NINE_BOX_COLORS[a.box_position] || ''}`}>
@@ -365,7 +365,7 @@ export function PerformancePage() {
                                 </span>
                               )}
                             </td>
-                            <td className="py-3 px-4 text-sm text-ink-variant text-ink-variant max-w-[200px] truncate">{a.notes || '-'}</td>
+                            <td className="py-3 px-4 text-sm text-ink-muted text-ink-muted max-w-[200px] truncate">{a.notes || '-'}</td>
                           </tr>
                         ))}
                       </tbody>

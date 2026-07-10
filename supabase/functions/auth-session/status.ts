@@ -38,13 +38,16 @@ export async function handleStatus(req: Request): Promise<Response> {
 
     logRequest({ function: fn, userId: data.session.user.id, durationMs: Date.now() - start, status: 200 })
 
-    // access_token is NOT sent in the response body — session is managed
-    // exclusively via httpOnly refresh token cookie.
+    // access_token is returned in the body so the client can hydrate the
+    // Supabase SDK's in-memory session (supabase.auth.setSession). The
+    // refresh_token is NEVER sent in the body — it is transported exclusively
+    // via the httpOnly cookie set above.
     return new Response(
       JSON.stringify({
         success: true,
         data: {
           valid: true,
+          access_token: data.session.access_token,
           user: { id: data.session.user.id, email: data.session.user.email },
         },
       }),

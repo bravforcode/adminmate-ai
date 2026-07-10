@@ -74,7 +74,7 @@ export function OnboardingMgmtPage() {
     <div className="space-y-6">
       <div>
         <h1 className="text-headline-md font-bold text-ink text-ink">{t('hub')}</h1>
-        <p className="text-body-md text-ink-variant text-ink-variant mt-1">{t('subtitle')}</p>
+        <p className="text-body-md text-ink-muted text-ink-muted mt-1">{t('subtitle')}</p>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
@@ -84,7 +84,7 @@ export function OnboardingMgmtPage() {
             {myChecklist ? (
               <>
                 <div className="mb-4">
-                  <div className="flex justify-between text-sm text-ink-variant text-ink-variant mb-1">
+                  <div className="flex justify-between text-sm text-ink-muted text-ink-muted mb-1">
                     <span>{t('progress')}</span>
                     <span>{myChecklist.progress_percentage || 0}%</span>
                   </div>
@@ -119,10 +119,10 @@ export function OnboardingMgmtPage() {
                           {isCompleted ? <Check size={14} /> : isCurrent ? <div className="w-2 h-2 bg-primary rounded-full" /> : null}
                         </div>
                         <div className="flex-1">
-                          <p className={cn('text-sm font-semibold text-ink', isCompleted && 'line-through text-ink-variant text-ink-variant')}>{task.task_name}</p>
+                          <p className={cn('text-sm font-semibold text-ink', isCompleted && 'line-through text-ink-muted text-ink-muted')}>{task.task_name}</p>
                           {isCurrent && <p className="text-xs text-destructive mt-0.5">{t('due_today')}</p>}
                           {isUpcoming && task.assigned_to && (
-                            <p className="text-xs text-ink-variant mt-0.5">{t('requires')} {task.assigned_to}</p>
+                            <p className="text-xs text-ink-muted mt-0.5">{t('requires')} {task.assigned_to}</p>
                           )}
                         </div>
                         {isCurrent && (
@@ -136,7 +136,7 @@ export function OnboardingMgmtPage() {
                 </div>
               </>
             ) : (
-              <p className="text-sm text-ink-variant text-ink-variant py-4">{t('no_checklist')}</p>
+              <p className="text-sm text-ink-muted text-ink-muted py-4">{t('no_checklist')}</p>
             )}
           </div>
 
@@ -159,23 +159,23 @@ export function OnboardingMgmtPage() {
                   <table role="table" className="table-card-mobile w-full text-left border-collapse min-w-[500px]">
                     <thead>
                       <tr className="bg-surface-sunken bg-surface-sunken/50 border-b border-border/50 border-border/50">
-                        <th className="py-3 px-4 text-xs font-semibold uppercase tracking-wider text-ink-variant text-ink-variant">{t('employee')}</th>
-                        <th className="py-3 px-4 text-xs font-semibold uppercase tracking-wider text-ink-variant text-ink-variant">{t('role')}</th>
-                        <th className="py-3 px-4 text-xs font-semibold uppercase tracking-wider text-ink-variant text-ink-variant">{t('progress')}</th>
-                        <th className="py-3 px-4 text-xs font-semibold uppercase tracking-wider text-ink-variant text-ink-variant">{t('status')}</th>
+                        <th className="py-3 px-4 text-xs font-semibold uppercase tracking-wider text-ink-muted text-ink-muted">{t('employee')}</th>
+                        <th className="py-3 px-4 text-xs font-semibold uppercase tracking-wider text-ink-muted text-ink-muted">{t('role')}</th>
+                        <th className="py-3 px-4 text-xs font-semibold uppercase tracking-wider text-ink-muted text-ink-muted">{t('progress')}</th>
+                        <th className="py-3 px-4 text-xs font-semibold uppercase tracking-wider text-ink-muted text-ink-muted">{t('status')}</th>
                       </tr>
                     </thead>
                     <tbody>
                       {checklists?.map((cl: { id: string; template_name?: string; progress_percentage?: number; status?: string; user_profiles?: { full_name?: string } }) => (
                         <tr key={cl.id} className="border-b border-border/50 border-border/50 hover:bg-surface-sunken/50 dark:hover:bg-surface-sunken/30 transition-colors duration-150 last:border-0">
                           <td className="py-3 px-4 text-sm text-ink text-ink" data-label={t('employee')}>{cl.user_profiles?.full_name}</td>
-                          <td className="py-3 px-4 text-sm text-ink text-ink-variant" data-label={t('role')}>{cl.template_name}</td>
+                          <td className="py-3 px-4 text-sm text-ink text-ink-muted" data-label={t('role')}>{cl.template_name}</td>
                           <td className="py-3 px-4 text-sm text-ink text-ink" data-label={t('progress')}>
                             <div className="flex items-center gap-2 w-24 sm:w-32">
                               <div className="flex-1 bg-surface-sunken h-1.5 rounded-full overflow-hidden">
                                 <div className={cn('h-full rounded-full', (cl.progress_percentage ?? 0) >= 80 ? 'bg-green-500' : (cl.progress_percentage ?? 0) >= 40 ? 'bg-primary' : 'bg-yellow-500')} style={{ width: `${cl.progress_percentage || 0}%` }} />
                               </div>
-                              <span className="text-xs text-ink-variant text-ink-variant">{cl.progress_percentage || 0}%</span>
+                              <span className="text-xs text-ink-muted text-ink-muted">{cl.progress_percentage || 0}%</span>
                             </div>
                           </td>
                           <td className="py-3 px-4 text-sm text-ink text-ink" data-label={t('status')}>
@@ -210,7 +210,7 @@ export function OnboardingMgmtPage() {
               </div>
               <div>
                 <h3 className="text-sm font-bold text-white-container text-ink">Mate AI</h3>
-                <p className="text-xs text-inverse-primary text-ink-variant">{t('ai.hr_assistant')}</p>
+                <p className="text-xs text-inverse-primary text-ink-muted">{t('ai.hr_assistant')}</p>
               </div>
             </div>
             <div className="flex-1 p-4 overflow-y-auto bg-surface flex flex-col gap-3">
@@ -288,7 +288,7 @@ export function OnboardingMgmtPage() {
                 <div key={offer.id} className="flex items-center justify-between py-2 border-b border-border last:border-0">
                   <div>
                     <p className="text-sm font-medium text-ink">{offer.candidates?.full_name}</p>
-                    <p className="text-xs text-ink-variant text-ink-variant">{offer.position_title}</p>
+                    <p className="text-xs text-ink-muted text-ink-muted">{offer.position_title}</p>
                   </div>
                   <Button
                     variant="default"

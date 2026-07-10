@@ -144,7 +144,7 @@ export function CompliancePage() {
       {/* Header */}
       <div>
         <h1 className="text-headline-md font-bold text-ink">{t('compliance.title')}</h1>
-        <p className="text-body-md text-ink-variant mt-1">{t('compliance.subtitle', { country })}</p>
+        <p className="text-body-md text-ink-muted mt-1">{t('compliance.subtitle', { country })}</p>
       </div>
 
       {/* Compliance Score Card */}
@@ -156,12 +156,12 @@ export function CompliancePage() {
             </div>
             <div>
               <h3 className="text-title-lg font-semibold text-ink">{t('compliance.score_title') || 'Compliance Score'}</h3>
-              <p className="text-sm text-ink-variant">{t('compliance.score_subtitle', { country }) || `${country} regulatory framework`}</p>
+              <p className="text-sm text-ink-muted">{t('compliance.score_subtitle', { country }) || `${country} regulatory framework`}</p>
             </div>
           </div>
           <div className="text-right">
             <p className={`text-3xl font-bold ${complianceScore >= 80 ? 'text-green-600' : complianceScore >= 50 ? 'text-yellow-600' : 'text-red-600'}`}>{complianceScore}%</p>
-            <p className="text-xs text-ink-variant">{passedChecks}/{checks.length} {t('compliance.checks_passed') || 'checks passed'}</p>
+            <p className="text-xs text-ink-muted">{passedChecks}/{checks.length} {t('compliance.checks_passed') || 'checks passed'}</p>
           </div>
         </div>
         <div className="w-full bg-surface-sunken rounded-full h-2">
@@ -178,7 +178,7 @@ export function CompliancePage() {
             className={`flex items-center gap-2 px-4 py-2 rounded-md text-sm font-medium transition-colors whitespace-nowrap ${
               activeTab === tab.key
                 ? 'bg-surface text-ink shadow-sm'
-                : 'text-ink-variant hover:text-ink'
+                : 'text-ink-muted hover:text-ink'
             }`}
           >
             {tab.icon}
@@ -223,7 +223,7 @@ export function CompliancePage() {
                 <CheckCircle size={20} className="text-primary" />
               </div>
               <div>
-                <p className="text-xs text-ink-variant">{t('compliance.active_consents') || 'Active Consents'}</p>
+                <p className="text-xs text-ink-muted">{t('compliance.active_consents') || 'Active Consents'}</p>
                 <p className="text-xl font-bold text-ink">{consentStats?.active ?? 0}</p>
               </div>
             </div>
@@ -232,7 +232,7 @@ export function CompliancePage() {
                 <FileDown size={20} className="text-secondary" />
               </div>
               <div>
-                <p className="text-xs text-ink-variant">{t('compliance.pending_requests') || 'Pending Requests'}</p>
+                <p className="text-xs text-ink-muted">{t('compliance.pending_requests') || 'Pending Requests'}</p>
                 <p className="text-xl font-bold text-ink">{deletionRequests?.filter(r => r.status === 'pending').length ?? 0}</p>
               </div>
             </div>
@@ -241,7 +241,7 @@ export function CompliancePage() {
                 <Clock size={20} className="text-ink-faint" />
               </div>
               <div>
-                <p className="text-xs text-ink-variant">{t('compliance.retention_policies') || 'Retention Policies'}</p>
+                <p className="text-xs text-ink-muted">{t('compliance.retention_policies') || 'Retention Policies'}</p>
                 <p className="text-xl font-bold text-ink">{retentionPolicies?.length ?? 0}</p>
               </div>
             </div>
@@ -258,14 +258,14 @@ export function CompliancePage() {
           <div className="grid grid-cols-2 gap-4 mb-4">
             <div className="bg-surface-sunken rounded-lg p-4 text-center">
               <p className="text-2xl font-bold text-ink">{consentStats?.total ?? 0}</p>
-              <p className="text-xs text-ink-variant">{t('compliance.total_consents') || 'Total Consents'}</p>
+              <p className="text-xs text-ink-muted">{t('compliance.total_consents') || 'Total Consents'}</p>
             </div>
             <div className="bg-surface-sunken rounded-lg p-4 text-center">
               <p className="text-2xl font-bold text-green-600">{consentStats?.active ?? 0}</p>
-              <p className="text-xs text-ink-variant">{t('compliance.active_consents') || 'Active Consents'}</p>
+              <p className="text-xs text-ink-muted">{t('compliance.active_consents') || 'Active Consents'}</p>
             </div>
           </div>
-          <p className="text-sm text-ink-variant">
+          <p className="text-sm text-ink-muted">
             {t('compliance.consent_desc') || 'All data collection requires explicit user consent. Consent records include purpose, timestamp, IP address, and user agent for audit trail compliance.'}
           </p>
         </div>
@@ -283,7 +283,7 @@ export function CompliancePage() {
                 <div key={policy.id as string} className="flex items-center justify-between py-3 px-3 rounded-lg bg-surface-sunken border border-border">
                   <div>
                     <p className="text-sm font-medium text-ink">{policy.entity_type as string}</p>
-                    <p className="text-xs text-ink-variant">{t('compliance.retention_action') || 'Action'}: {policy.action as string}</p>
+                    <p className="text-xs text-ink-muted">{t('compliance.retention_action') || 'Action'}: {policy.action as string}</p>
                   </div>
                   <span className="text-sm font-semibold text-primary">{policy.retention_days as number} {t('compliance.days') || 'days'}</span>
                 </div>
@@ -291,9 +291,9 @@ export function CompliancePage() {
             </div>
           ) : (
             <div className="space-y-3 text-sm">
-              <div className="flex justify-between py-2 border-b border-border"><span className="text-ink-variant">{t('compliance.cv_data')}</span><span>{t('compliance.cv_data_retention')}</span></div>
-              <div className="flex justify-between py-2 border-b border-border"><span className="text-ink-variant">{t('compliance.employee_data')}</span><span>{t('compliance.employee_data_retention')}</span></div>
-              <div className="flex justify-between py-2"><span className="text-ink-variant">{t('compliance.chat_history')}</span><span>{t('compliance.chat_history_retention')}</span></div>
+              <div className="flex justify-between py-2 border-b border-border"><span className="text-ink-muted">{t('compliance.cv_data')}</span><span>{t('compliance.cv_data_retention')}</span></div>
+              <div className="flex justify-between py-2 border-b border-border"><span className="text-ink-muted">{t('compliance.employee_data')}</span><span>{t('compliance.employee_data_retention')}</span></div>
+              <div className="flex justify-between py-2"><span className="text-ink-muted">{t('compliance.chat_history')}</span><span>{t('compliance.chat_history_retention')}</span></div>
             </div>
           )}
         </div>
@@ -308,14 +308,14 @@ export function CompliancePage() {
           {requestsLoading ? (
             <div className="space-y-2">{[1, 2, 3].map(i => <div key={i} className="h-16 bg-surface-sunken rounded-lg animate-shimmer" />)}</div>
           ) : deletionRequests?.length === 0 ? (
-            <p className="text-sm text-ink-variant">{t('empty.compliance_requests_title')}</p>
+            <p className="text-sm text-ink-muted">{t('empty.compliance_requests_title')}</p>
           ) : (
             <div className="space-y-2">
               {deletionRequests?.map(req => (
                 <div key={req.id} className="flex items-center justify-between p-3 rounded-lg border border-border">
                   <div>
                     <p className="text-sm font-medium">{req.requester_email}</p>
-                    <p className="text-xs text-ink-variant">{req.request_type} · {req.created_at ? new Date(req.created_at).toLocaleDateString() : ''}</p>
+                    <p className="text-xs text-ink-muted">{req.request_type} · {req.created_at ? new Date(req.created_at).toLocaleDateString() : ''}</p>
                   </div>
                   <div className="flex items-center gap-2">
                     <span className={`text-xs px-2 py-0.5 rounded-full font-medium ${
@@ -351,14 +351,14 @@ export function CompliancePage() {
                 <div key={log.id} className="flex items-center justify-between py-2 px-3 rounded-lg bg-surface-sunken">
                   <div className="flex items-center gap-3">
                     <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-primary/10 text-primary">{log.action}</span>
-                    <span className="text-sm text-ink-variant">{log.user_profiles?.full_name || 'System'}</span>
+                    <span className="text-sm text-ink-muted">{log.user_profiles?.full_name || 'System'}</span>
                   </div>
-                  <span className="text-xs text-ink-variant">{new Date(log.created_at).toLocaleString()}</span>
+                  <span className="text-xs text-ink-muted">{new Date(log.created_at).toLocaleString()}</span>
                 </div>
               ))}
             </div>
           ) : (
-            <p className="text-sm text-ink-variant">{t('empty.audit_log_title')}</p>
+            <p className="text-sm text-ink-muted">{t('empty.audit_log_title')}</p>
           )}
         </div>
       )}

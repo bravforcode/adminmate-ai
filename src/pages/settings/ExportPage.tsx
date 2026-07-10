@@ -68,7 +68,7 @@ export function ExportPage() {
       <header className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
         <div>
           <h1 className="text-headline-md md:text-headline-lg font-bold text-on-background text-ink">{t('export_data.title')}</h1>
-          <p className="text-body-md text-ink-variant text-ink-variant mt-1">{t('export_data.subtitle')}</p>
+          <p className="text-body-md text-ink-muted text-ink-muted mt-1">{t('export_data.subtitle')}</p>
         </div>
       </header>
 
@@ -149,23 +149,23 @@ export function ExportPage() {
           <table className="w-full text-sm min-w-[600px]">
             <thead>
               <tr className="border-b border-border/50 border-border/50">
-                <th className="px-4 py-3 text-left font-medium text-ink-variant">{t('export_data.table.entity')}</th>
-                <th className="px-4 py-3 text-left font-medium text-ink-variant">{t('export_data.table.status')}</th>
-                <th className="px-4 py-3 text-left font-medium text-ink-variant">{t('export_data.table.date')}</th>
-                <th className="px-4 py-3 text-left font-medium text-ink-variant">{t('export_data.table.download')}</th>
+                <th className="px-4 py-3 text-left font-medium text-ink-muted">{t('export_data.table.entity')}</th>
+                <th className="px-4 py-3 text-left font-medium text-ink-muted">{t('export_data.table.status')}</th>
+                <th className="px-4 py-3 text-left font-medium text-ink-muted">{t('export_data.table.date')}</th>
+                <th className="px-4 py-3 text-left font-medium text-ink-muted">{t('export_data.table.download')}</th>
               </tr>
             </thead>
             <tbody>
               {historyLoading ? (
                 <tr><td colSpan={4} className="py-8 text-center"><Spinner size={24} className="mx-auto" /></td></tr>
               ) : exportHistory.length === 0 ? (
-                <tr><td colSpan={4} className="py-8 text-center text-ink-variant">{t('export_data.no_history')}</td></tr>
+                <tr><td colSpan={4} className="py-8 text-center text-ink-muted">{t('export_data.no_history')}</td></tr>
               ) : (
                 exportHistory.map((job: ExportJob) => (
                   <tr key={job.id} className="border-b border-border/30 border-border/30 hover:bg-surface-sunken/50 transition-colors">
                     <td className="px-4 py-3 capitalize">{job.entity_type}</td>
                     <td className="px-4 py-3"><Badge variant={statusBadgeVariant[job.status] ?? 'secondary'}>{job.status}</Badge></td>
-                    <td className="px-4 py-3 text-ink-variant">{new Date(job.created_at).toLocaleDateString()}</td>
+                    <td className="px-4 py-3 text-ink-muted">{new Date(job.created_at).toLocaleDateString()}</td>
                     <td className="px-4 py-3">
                       {job.status === 'completed' && job.file_url ? (
                         <Button variant="ghost" size="icon_sm" onClick={() => handleDownload(job.file_url!)} icon={<Download size={16} />}>

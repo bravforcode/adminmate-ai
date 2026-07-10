@@ -72,7 +72,7 @@ export function ReviewForm({ reviewId, companyId, template, onSubmitSuccess }: R
               <div>
                 <h4 className="text-sm font-semibold text-ink text-ink">{criterion.label}</h4>
                 {criterion.description && (
-                  <p className="text-xs text-ink-variant text-ink-variant mt-0.5">{criterion.description}</p>
+                  <p className="text-xs text-ink-muted text-ink-muted mt-0.5">{criterion.description}</p>
                 )}
               </div>
 
@@ -104,7 +104,7 @@ export function ReviewForm({ reviewId, companyId, template, onSubmitSuccess }: R
               {resp?.rating && (
                 <>
                   <div>
-                    <label className="block text-xs font-medium text-ink-variant text-ink-variant mb-1">{t('review_form.evidence', 'Evidence')}</label>
+                    <label className="block text-xs font-medium text-ink-muted text-ink-muted mb-1">{t('review_form.evidence', 'Evidence')}</label>
                     <textarea
                       value={resp.evidence || ''}
                       onChange={(e) => updateResponse(criterion.key, 'evidence', e.target.value)}
@@ -114,7 +114,7 @@ export function ReviewForm({ reviewId, companyId, template, onSubmitSuccess }: R
                     />
                   </div>
                   <div>
-                    <label className="block text-xs font-medium text-ink-variant text-ink-variant mb-1">{t('review_form.confidence', 'Confidence')}</label>
+                    <label className="block text-xs font-medium text-ink-muted text-ink-muted mb-1">{t('review_form.confidence', 'Confidence')}</label>
                     <div className="flex gap-2">
                       {(['low', 'medium', 'high'] as ConfidenceLevel[]).map(level => (
                         <button
@@ -125,7 +125,7 @@ export function ReviewForm({ reviewId, companyId, template, onSubmitSuccess }: R
                             'px-3 py-1.5 rounded-lg text-xs font-medium transition-colors border',
                             resp.confidence === level
                               ? 'bg-primary-container dark:bg-primary-container/30 text-primary dark:text-primary-muted border-primary'
-                              : 'border-border text-ink-variant text-ink-variant hover:bg-surface-sunken dark:hover:bg-surface-sunken'
+                              : 'border-border text-ink-muted text-ink-muted hover:bg-surface-sunken dark:hover:bg-surface-sunken'
                           )}
                         >
                           {t(`confidence.${level}`, level)}

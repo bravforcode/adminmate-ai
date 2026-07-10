@@ -90,8 +90,8 @@ function KPICard({ title, value, subtitle, icon: Icon, iconBg, iconColor, trend,
         )}
       </div>
       <h3 className="text-2xl font-bold text-ink">{value}</h3>
-      <p className="text-sm text-ink-variant mt-1">{title}</p>
-      {subtitle && <p className="text-xs text-ink-variant mt-0.5">{subtitle}</p>}
+      <p className="text-sm text-ink-muted mt-1">{title}</p>
+      {subtitle && <p className="text-xs text-ink-muted mt-0.5">{subtitle}</p>}
     </Card>
   )
 }
@@ -101,7 +101,7 @@ function BarChartCSS({ data, maxValue }: { data: { label: string; value: number;
     <div className="space-y-3">
       {data.map((item, i) => (
         <div key={item.label} className="flex items-center gap-3">
-          <span className="text-xs text-ink-variant w-24 truncate">{item.label}</span>
+          <span className="text-xs text-ink-muted w-24 truncate">{item.label}</span>
           <div className="flex-1 bg-surface-sunken rounded-full h-5 overflow-hidden">
             <div
               className={cn('h-5 rounded-full transition-all', item.color || BAR_COLORS[i % BAR_COLORS.length])}
@@ -128,7 +128,7 @@ function HorizontalBarChart({ data }: { data: { label: string; value: number; co
               style={{ height: `${(item.value / max) * 100}%`, minHeight: item.value > 0 ? 4 : 0 }}
             />
           </div>
-          <span className="text-[10px] text-ink-variant truncate w-full text-center">{item.label}</span>
+          <span className="text-[10px] text-ink-muted truncate w-full text-center">{item.label}</span>
         </div>
       ))}
     </div>
@@ -149,7 +149,7 @@ function DonutBar({ data, total }: { data: { label: string; value: number; color
       </div>
       <div className="flex flex-wrap gap-3 mt-2">
         {data.map((item) => (
-          <div key={item.label} className="flex items-center gap-1.5 text-xs text-ink-variant">
+          <div key={item.label} className="flex items-center gap-1.5 text-xs text-ink-muted">
             <span className={cn('w-2.5 h-2.5 rounded-full', item.color)} />
             {item.label} ({total > 0 ? Math.round((item.value / total) * 100) : 0}%)
           </div>
@@ -318,7 +318,7 @@ export function PeopleAnalyticsPage() {
       <header className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
         <div>
           <h1 className="text-headline-md md:text-headline-lg font-bold text-on-background">{t('people_analytics.title', 'People Analytics')}</h1>
-          <p className="text-body-md text-ink-variant mt-1">{t('people_analytics.subtitle', 'Workforce metrics and insights')}</p>
+          <p className="text-body-md text-ink-muted mt-1">{t('people_analytics.subtitle', 'Workforce metrics and insights')}</p>
         </div>
         <Select value={period} onValueChange={setPeriod}>
           <SelectTrigger className="w-40">
@@ -407,7 +407,7 @@ export function PeopleAnalyticsPage() {
                       <div className="w-full bg-surface-sunken rounded-full h-2">
                         <div className="bg-primary h-2 rounded-full" style={{ width: `${retentionRate}%` }} />
                       </div>
-                      <p className="text-xs text-ink-variant mt-1">{data.total} total · {data.terminated} left</p>
+                      <p className="text-xs text-ink-muted mt-1">{data.total} total · {data.terminated} left</p>
                     </div>
                   )
                 })}
@@ -425,17 +425,17 @@ export function PeopleAnalyticsPage() {
                 <div className="grid grid-cols-2 gap-4 mb-4">
                   <div className="p-3 rounded-lg bg-surface-sunken text-center">
                     <p className="text-2xl font-bold text-ink">{metrics.avgDaysToHire}</p>
-                    <p className="text-xs text-ink-variant">{t('pa.avg_days_hire', 'Avg Days to Hire')}</p>
+                    <p className="text-xs text-ink-muted">{t('pa.avg_days_hire', 'Avg Days to Hire')}</p>
                   </div>
                   <div className="p-3 rounded-lg bg-surface-sunken text-center">
                     <p className="text-2xl font-bold text-ink">{metrics.acceptanceRate}%</p>
-                    <p className="text-xs text-ink-variant">{t('pa.offer_acceptance', 'Offer Acceptance')}</p>
+                    <p className="text-xs text-ink-muted">{t('pa.offer_acceptance', 'Offer Acceptance')}</p>
                   </div>
                 </div>
                 <div className="space-y-1 text-sm">
-                  <div className="flex justify-between"><span className="text-ink-variant">{t('pa.total_applications', 'Total Applications')}</span><span className="font-semibold">{metrics.totalApps}</span></div>
-                  <div className="flex justify-between"><span className="text-ink-variant">{t('pa.hired', 'Hired')}</span><span className="font-semibold text-green-600">{metrics.hiredCount}</span></div>
-                  <div className="flex justify-between"><span className="text-ink-variant">{t('pa.rejected', 'Rejected')}</span><span className="font-semibold text-red-600">{metrics.rejectedCount}</span></div>
+                  <div className="flex justify-between"><span className="text-ink-muted">{t('pa.total_applications', 'Total Applications')}</span><span className="font-semibold">{metrics.totalApps}</span></div>
+                  <div className="flex justify-between"><span className="text-ink-muted">{t('pa.hired', 'Hired')}</span><span className="font-semibold text-green-600">{metrics.hiredCount}</span></div>
+                  <div className="flex justify-between"><span className="text-ink-muted">{t('pa.rejected', 'Rejected')}</span><span className="font-semibold text-red-600">{metrics.rejectedCount}</span></div>
                 </div>
               </CardContent>
             </Card>
@@ -465,14 +465,14 @@ export function PeopleAnalyticsPage() {
                 <div className="grid grid-cols-2 gap-4 mb-4">
                   <div className="p-3 rounded-lg bg-surface-sunken text-center">
                     <p className="text-2xl font-bold text-ink">${metrics.avgSalary.toLocaleString()}</p>
-                    <p className="text-xs text-ink-variant">{t('pa.avg_salary', 'Avg Salary')}</p>
+                    <p className="text-xs text-ink-muted">{t('pa.avg_salary', 'Avg Salary')}</p>
                   </div>
                   <div className="p-3 rounded-lg bg-surface-sunken text-center">
                     <p className="text-2xl font-bold text-ink">${metrics.medianSalary.toLocaleString()}</p>
-                    <p className="text-xs text-ink-variant">{t('pa.median_salary', 'Median Salary')}</p>
+                    <p className="text-xs text-ink-muted">{t('pa.median_salary', 'Median Salary')}</p>
                   </div>
                 </div>
-                <p className="text-xs text-ink-variant mb-2">Based on {metrics.totalSalaries} employees</p>
+                <p className="text-xs text-ink-muted mb-2">Based on {metrics.totalSalaries} employees</p>
               </CardContent>
             </Card>
 
@@ -496,15 +496,15 @@ export function PeopleAnalyticsPage() {
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                 <div className="p-4 rounded-lg border border-border bg-surface-sunken text-center">
                   <p className="text-2xl font-bold text-ink">{metrics.absenceRate}%</p>
-                  <p className="text-xs text-ink-variant">{t('pa.absence_rate', 'Absence Rate')}</p>
+                  <p className="text-xs text-ink-muted">{t('pa.absence_rate', 'Absence Rate')}</p>
                 </div>
                 <div className="p-4 rounded-lg border border-border bg-surface-sunken text-center">
                   <p className="text-2xl font-bold text-ink">{metrics.approvedLeaves}</p>
-                  <p className="text-xs text-ink-variant">{t('pa.approved_leaves', 'Approved Leaves')}</p>
+                  <p className="text-xs text-ink-muted">{t('pa.approved_leaves', 'Approved Leaves')}</p>
                 </div>
                 <div className="p-4 rounded-lg border border-border bg-surface-sunken text-center">
                   <p className="text-2xl font-bold text-orange-600">{metrics.sickLeaves}</p>
-                  <p className="text-xs text-ink-variant">{t('pa.sick_leaves', 'Sick Leaves')}</p>
+                  <p className="text-xs text-ink-muted">{t('pa.sick_leaves', 'Sick Leaves')}</p>
                 </div>
               </div>
             </CardContent>

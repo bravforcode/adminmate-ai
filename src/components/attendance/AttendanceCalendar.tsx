@@ -72,7 +72,7 @@ export function AttendanceCalendar({ records, onDateClick }: AttendanceCalendarP
 
       <div className="grid grid-cols-7">
         {WEEKDAYS.map(day => (
-          <div key={day} className="py-2 px-1 text-center text-[10px] sm:text-xs font-semibold text-ink-variant text-ink-variant border-r border-b border-border/50 border-border/50 last:border-r-0">
+          <div key={day} className="py-2 px-1 text-center text-[10px] sm:text-xs font-semibold text-ink-muted text-ink-muted border-r border-b border-border/50 border-border/50 last:border-r-0">
             {t(`weekday.${day.toLowerCase()}`)}
           </div>
         ))}
@@ -91,7 +91,7 @@ export function AttendanceCalendar({ records, onDateClick }: AttendanceCalendarP
                 isToday && 'bg-primary-fixed/20 dark:bg-primary/10'
               )}
             >
-              <span className={cn('text-[10px] sm:text-xs font-medium', isToday ? 'text-primary dark:text-primary-muted font-bold' : 'text-ink-variant text-ink-variant')}>
+              <span className={cn('text-[10px] sm:text-xs font-medium', isToday ? 'text-primary dark:text-primary-muted font-bold' : 'text-ink-muted text-ink-muted')}>
                 {day}
               </span>
               <div className="mt-0.5 sm:mt-1 space-y-0.5">
@@ -101,7 +101,7 @@ export function AttendanceCalendar({ records, onDateClick }: AttendanceCalendarP
                   </div>
                 ))}
                 {dayRecords.length > 2 && (
-                  <span className="text-[8px] sm:text-[10px] text-ink-variant">+{dayRecords.length - 2}</span>
+                  <span className="text-[8px] sm:text-[10px] text-ink-muted">+{dayRecords.length - 2}</span>
                 )}
               </div>
             </button>

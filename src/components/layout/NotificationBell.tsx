@@ -145,7 +145,7 @@ export function NotificationBell() {
           animate={count > 0 ? { rotate: [0, -12, 12, -8, 8, 0] } : {}}
           transition={{ duration: 0.6, ease: 'easeInOut' }}
         >
-          <Bell size={20} className="text-ink-variant text-ink-variant" />
+          <Bell size={20} className="text-ink-muted text-ink-muted" />
         </motion.div>
         {count > 0 && (
           <motion.span
@@ -173,7 +173,7 @@ export function NotificationBell() {
             <div className="flex items-center justify-between px-4 py-3 border-b border-border/70">
               <div>
                 <p className="text-sm font-semibold text-ink">{t('notification_center.title')}</p>
-                <p className="text-xs text-ink-variant">
+                <p className="text-xs text-ink-muted">
                   {count > 0
                     ? t('notification_center.unread_summary', { count })
                     : t('notification_center.all_caught_up')}
@@ -183,7 +183,7 @@ export function NotificationBell() {
                 type="button"
                 onClick={() => void handleMarkAllRead()}
                 disabled={markingAll || count === 0}
-                className="inline-flex items-center gap-1 rounded-lg px-2.5 py-1.5 text-xs font-medium text-primary hover:bg-primary/10 disabled:text-ink-variant disabled:hover:bg-transparent"
+                className="inline-flex items-center gap-1 rounded-lg px-2.5 py-1.5 text-xs font-medium text-primary hover:bg-primary/10 disabled:text-ink-muted disabled:hover:bg-transparent"
               >
                 <CheckCheck size={14} />
                 {markingAll ? t('common:loading') : t('notification_center.mark_all_read')}
@@ -192,11 +192,11 @@ export function NotificationBell() {
 
             <div className="max-h-[22rem] overflow-y-auto">
               {loading ? (
-                <div className="px-4 py-10 text-sm text-center text-ink-variant">
+                <div className="px-4 py-10 text-sm text-center text-ink-muted">
                   {t('common:loading')}
                 </div>
               ) : items.length === 0 ? (
-                <div className="px-4 py-10 text-sm text-center text-ink-variant">
+                <div className="px-4 py-10 text-sm text-center text-ink-muted">
                   {t('notification_center.empty')}
                 </div>
               ) : (
@@ -223,11 +223,11 @@ export function NotificationBell() {
                           <p className="text-sm font-medium text-ink truncate">
                             {notification.title || t('notification_center.default_title')}
                           </p>
-                          <span className="text-[11px] text-ink-variant whitespace-nowrap">
+                          <span className="text-[11px] text-ink-muted whitespace-nowrap">
                             {formatter.format(new Date(notification.created_at))}
                           </span>
                         </div>
-                        <p className="mt-1 text-sm text-ink-variant line-clamp-2">
+                        <p className="mt-1 text-sm text-ink-muted line-clamp-2">
                           {notification.message}
                         </p>
                       </div>

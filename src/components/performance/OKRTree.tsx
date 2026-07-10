@@ -50,7 +50,7 @@ export function OKRTree({ objectives, keyResults, onObjectiveClick, onKeyResultC
 
   if (objectives.length === 0) {
     return (
-      <div className="text-center py-8 text-ink-variant text-ink-variant">
+      <div className="text-center py-8 text-ink-muted text-ink-muted">
         <Target size={32} className="mx-auto mb-2 opacity-50" />
         <p className="text-sm">{t('no_okrs', 'No OKRs Found')}</p>
       </div>
@@ -79,20 +79,20 @@ export function OKRTree({ objectives, keyResults, onObjectiveClick, onKeyResultC
               <div className="flex-1 min-w-0">
                 <p className="text-sm font-semibold text-ink truncate">{obj.title}</p>
                 {obj.user_profiles?.full_name && (
-                  <p className="text-xs text-ink-variant text-ink-variant mt-0.5">{obj.user_profiles.full_name}</p>
+                  <p className="text-xs text-ink-muted text-ink-muted mt-0.5">{obj.user_profiles.full_name}</p>
                 )}
               </div>
               <span className={cn('px-2 py-0.5 rounded text-xs font-medium', statusCfg.color)}>
                 <StatusIcon size={12} className="inline mr-1" />
                 {t(`okr_status_${obj.status}`, statusCfg.label)}
               </span>
-              {isExpanded ? <ChevronDown size={16} className="text-ink-variant" /> : <ChevronRight size={16} className="text-ink-variant" />}
+              {isExpanded ? <ChevronDown size={16} className="text-ink-muted" /> : <ChevronRight size={16} className="text-ink-muted" />}
             </button>
 
             {isExpanded && (
               <div className="border-t border-border/50 border-border/50 px-4 pb-4">
                 {objKeyResults.length === 0 ? (
-                  <p className="text-sm text-ink-variant/60 dark:text-outline-variant py-3 italic">{t('no_key_results', 'No key results defined')}</p>
+                  <p className="text-sm text-ink-muted/60 dark:text-outline-variant py-3 italic">{t('no_key_results', 'No key results defined')}</p>
                 ) : (
                   <div className="space-y-3 pt-3">
                     {objKeyResults.map(kr => {
@@ -106,7 +106,7 @@ export function OKRTree({ objectives, keyResults, onObjectiveClick, onKeyResultC
                           <div className="flex-1 min-w-0">
                             <p className="text-xs font-medium text-ink truncate mb-1">{kr.title}</p>
                             <div className="flex items-center justify-between mb-1">
-                              <span className="text-[10px] text-ink-variant text-ink-variant">{t('target', 'Target')}: {kr.target_value}{kr.unit ? ` ${kr.unit}` : ''}</span>
+                              <span className="text-[10px] text-ink-muted text-ink-muted">{t('target', 'Target')}: {kr.target_value}{kr.unit ? ` ${kr.unit}` : ''}</span>
                               <span className="text-[10px] font-medium text-ink text-ink">{kr.current_value} / {kr.target_value}</span>
                             </div>
                             <div className="w-full bg-surface-sunken rounded-full h-2">
@@ -120,7 +120,7 @@ export function OKRTree({ objectives, keyResults, onObjectiveClick, onKeyResultC
                               />
                             </div>
                           </div>
-                          <span className="text-xs font-semibold text-ink-variant text-ink-variant w-10 text-right">{pct}%</span>
+                          <span className="text-xs font-semibold text-ink-muted text-ink-muted w-10 text-right">{pct}%</span>
                         </button>
                       )
                     })}

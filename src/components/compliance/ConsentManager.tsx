@@ -69,7 +69,7 @@ export function ConsentManager() {
               </div>
               <div className="text-left">
                 <p className="text-sm font-medium text-ink">{consent.consent_type}</p>
-                <p className="text-xs text-ink-variant flex items-center gap-1">
+                <p className="text-xs text-ink-muted flex items-center gap-1">
                   <Clock size={12} />
                   {new Date(consent.created_at).toLocaleDateString()} · v{consent.consent_form_version}
                 </p>
@@ -88,7 +88,7 @@ export function ConsentManager() {
           </button>
           {expandedId === consent.id && (
             <div className="px-3 pb-3 border-t border-border pt-2 space-y-2">
-              <div className="text-xs text-ink-variant">
+              <div className="text-xs text-ink-muted">
                 <p><strong>Email:</strong> {consent.data_subject_email}</p>
                 <p><strong>Purposes:</strong> {consent.purposes.join(', ') || 'None'}</p>
                 {consent.ip_address && <p><strong>IP:</strong> {consent.ip_address}</p>}
@@ -109,7 +109,7 @@ export function ConsentManager() {
         </div>
       ))}
       {consents?.length === 0 && (
-        <p className="text-sm text-ink-variant text-center py-4">{t('pdpa.no_consents') || 'No consent records found.'}</p>
+        <p className="text-sm text-ink-muted text-center py-4">{t('pdpa.no_consents') || 'No consent records found.'}</p>
       )}
     </div>
   )

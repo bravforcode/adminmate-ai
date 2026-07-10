@@ -161,7 +161,7 @@ export function ImportPage() {
       <header className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
         <div>
           <h1 className="text-headline-md md:text-headline-lg font-bold text-on-background text-ink">{t('import_data.title')}</h1>
-          <p className="text-body-md text-ink-variant text-ink-variant mt-1">{t('import_data.subtitle')}</p>
+          <p className="text-body-md text-ink-muted text-ink-muted mt-1">{t('import_data.subtitle')}</p>
         </div>
       </header>
 
@@ -197,9 +197,9 @@ export function ImportPage() {
                 )}
               >
                 <input {...getInputProps()} />
-                <Upload size={48} className="mx-auto mb-4 text-ink-variant text-ink-variant" />
+                <Upload size={48} className="mx-auto mb-4 text-ink-muted text-ink-muted" />
                 <p className="text-ink font-medium mb-1">{t('import_data.drag_drop')}</p>
-                <p className="text-sm text-ink-variant text-ink-variant">{t('import_data.accepted_formats')}</p>
+                <p className="text-sm text-ink-muted text-ink-muted">{t('import_data.accepted_formats')}</p>
               </div>
             </CardContent>
           </Card>
@@ -216,7 +216,7 @@ export function ImportPage() {
           <Card>
             <CardContent className="pt-6">
               <div className="space-y-3">
-                <div className="grid grid-cols-[1fr,auto,1fr] gap-4 items-center px-4 py-2 text-xs font-semibold text-ink-variant uppercase tracking-wider">
+                <div className="grid grid-cols-[1fr,auto,1fr] gap-4 items-center px-4 py-2 text-xs font-semibold text-ink-muted uppercase tracking-wider">
                   <span>{t('import_data.source_column')}</span>
                   <span />
                   <span>{t('import_data.target_field')}</span>
@@ -224,7 +224,7 @@ export function ImportPage() {
                 {csvHeaders.map(header => (
                   <div key={header} className="grid grid-cols-[1fr,auto,1fr] gap-4 items-center bg-surface-sunken-lowest bg-surface-sunken-lowest rounded-lg px-4 py-3">
                     <span className="text-sm text-ink font-medium">{header}</span>
-                    <ArrowRight size={16} className="text-ink-variant" />
+                    <ArrowRight size={16} className="text-ink-muted" />
                     <select
                       value={mappings[header] ?? ''}
                       onChange={(e) => handleMappingChange(header, e.target.value)}
@@ -262,16 +262,16 @@ export function ImportPage() {
               <table className="w-full text-sm min-w-[500px]">
                 <thead>
                   <tr className="border-b border-border/50 border-border/50">
-                    <th className="px-4 py-3 text-left font-medium text-ink-variant">#</th>
+                    <th className="px-4 py-3 text-left font-medium text-ink-muted">#</th>
                     {Object.entries(mappings).filter(([, t]) => t).map(([source]) => (
-                      <th key={source} className="px-4 py-3 text-left font-medium text-ink-variant">{source}</th>
+                      <th key={source} className="px-4 py-3 text-left font-medium text-ink-muted">{source}</th>
                     ))}
                   </tr>
                 </thead>
                 <tbody>
                   {previewRows.map((row, i) => (
                     <tr key={i} className="border-b border-border/30 border-border/30">
-                      <td className="px-4 py-2 text-ink-variant">{i + 1}</td>
+                      <td className="px-4 py-2 text-ink-muted">{i + 1}</td>
                       {Object.entries(mappings).filter(([, t]) => t).map(([source]) => (
                         <td key={source} className="px-4 py-2 text-ink">{row[source]}</td>
                       ))}
@@ -283,7 +283,7 @@ export function ImportPage() {
           </Card>
 
           {csvData.length > 10 && (
-            <p className="text-sm text-ink-variant text-center">
+            <p className="text-sm text-ink-muted text-center">
               {t('import_data.showing_first', { count: 10, total: csvData.length })}
             </p>
           )}
@@ -311,13 +311,13 @@ export function ImportPage() {
                   <>
                     <CheckCircle2 size={48} className="mx-auto mb-4 text-green-500" />
                     <h2 className="text-title-lg font-semibold text-ink mb-2">{t('import_data.success')}</h2>
-                    <p className="text-ink-variant">{csvData.length} {t('import_data.rows_imported')}</p>
+                    <p className="text-ink-muted">{csvData.length} {t('import_data.rows_imported')}</p>
                   </>
                 ) : (
                   <>
                     <AlertCircle size={48} className="mx-auto mb-4 text-yellow-500" />
                     <h2 className="text-title-lg font-semibold text-ink mb-2">{t('import_data.completed_with_errors')}</h2>
-                    <p className="text-ink-variant">{validationErrors.length} {t('import_data.errors_found')}</p>
+                    <p className="text-ink-muted">{validationErrors.length} {t('import_data.errors_found')}</p>
                     <div className="mt-4 max-h-48 overflow-y-auto text-left bg-surface-sunken-lowest rounded-lg p-3 space-y-1">
                       {validationErrors.slice(0, 20).map((err, i) => (
                         <p key={i} className="text-sm">
@@ -343,26 +343,26 @@ export function ImportPage() {
           <table className="w-full text-sm min-w-[600px]">
             <thead>
               <tr className="border-b border-border/50 border-border/50">
-                <th className="px-4 py-3 text-left font-medium text-ink-variant">{t('import_data.table.file')}</th>
-                <th className="px-4 py-3 text-left font-medium text-ink-variant">{t('import_data.table.entity')}</th>
-                <th className="px-4 py-3 text-left font-medium text-ink-variant">{t('import_data.table.rows')}</th>
-                <th className="px-4 py-3 text-left font-medium text-ink-variant">{t('import_data.table.status')}</th>
-                <th className="px-4 py-3 text-left font-medium text-ink-variant">{t('import_data.table.date')}</th>
+                <th className="px-4 py-3 text-left font-medium text-ink-muted">{t('import_data.table.file')}</th>
+                <th className="px-4 py-3 text-left font-medium text-ink-muted">{t('import_data.table.entity')}</th>
+                <th className="px-4 py-3 text-left font-medium text-ink-muted">{t('import_data.table.rows')}</th>
+                <th className="px-4 py-3 text-left font-medium text-ink-muted">{t('import_data.table.status')}</th>
+                <th className="px-4 py-3 text-left font-medium text-ink-muted">{t('import_data.table.date')}</th>
               </tr>
             </thead>
             <tbody>
               {historyLoading ? (
                 <tr><td colSpan={5} className="py-8 text-center"><Spinner size={24} className="mx-auto" /></td></tr>
               ) : importHistory.length === 0 ? (
-                <tr><td colSpan={5} className="py-8 text-center text-ink-variant">{t('import_data.no_history')}</td></tr>
+                <tr><td colSpan={5} className="py-8 text-center text-ink-muted">{t('import_data.no_history')}</td></tr>
               ) : (
                 importHistory.map((job: ImportJob) => (
                   <tr key={job.id} className="border-b border-border/30 border-border/30 hover:bg-surface-sunken/50 transition-colors">
-                    <td className="px-4 py-3"><div className="flex items-center gap-2"><FileText size={16} className="text-ink-variant" />{job.file_name}</div></td>
+                    <td className="px-4 py-3"><div className="flex items-center gap-2"><FileText size={16} className="text-ink-muted" />{job.file_name}</div></td>
                     <td className="px-4 py-3 capitalize">{job.entity_type}</td>
                     <td className="px-4 py-3">{job.processed_rows}/{job.total_rows}</td>
                     <td className="px-4 py-3"><Badge variant={statusBadgeVariant[job.status] ?? 'secondary'}>{job.status}</Badge></td>
-                    <td className="px-4 py-3 text-ink-variant">{new Date(job.created_at).toLocaleDateString()}</td>
+                    <td className="px-4 py-3 text-ink-muted">{new Date(job.created_at).toLocaleDateString()}</td>
                   </tr>
                 ))
               )}

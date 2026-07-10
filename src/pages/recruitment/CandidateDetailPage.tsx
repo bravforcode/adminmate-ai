@@ -91,7 +91,7 @@ export function CandidateDetailPage() {
   }, [candidate, navigate])
 
   if (isLoading) return <LoadingState variant="detail" />
-  if (!candidate) return <div className="p-8 text-center text-ink-variant">{t('recruitment.candidates.candidate_not_found', 'Candidate not found')}</div>
+  if (!candidate) return <div className="p-8 text-center text-ink-muted">{t('recruitment.candidates.candidate_not_found', 'Candidate not found')}</div>
 
   const applications = candidate.applications ?? []
   const cvDocuments = candidate.cv_documents ?? []
@@ -122,8 +122,8 @@ export function CandidateDetailPage() {
             <div className="flex items-start justify-between gap-4">
               <div>
                 <h1 className="text-headline-md font-bold text-ink">{candidate.full_name}</h1>
-                <p className="text-body-md text-ink-variant">{candidate.current_position || t('recruitment.candidates.title', 'Candidate')}</p>
-                <div className="flex flex-wrap gap-3 mt-2 text-sm text-ink-variant">
+                <p className="text-body-md text-ink-muted">{candidate.current_position || t('recruitment.candidates.title', 'Candidate')}</p>
+                <div className="flex flex-wrap gap-3 mt-2 text-sm text-ink-muted">
                   {candidate.email && <span className="flex items-center gap-1"><Mail size={14} /> {candidate.email}</span>}
                   {candidate.phone && <span className="flex items-center gap-1"><Phone size={14} /> {candidate.phone}</span>}
                   {candidate.location && <span className="flex items-center gap-1"><MapPin size={14} /> {candidate.location}</span>}
@@ -146,19 +146,19 @@ export function CandidateDetailPage() {
         {/* Quick Stats */}
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mt-4">
           <div className="bg-surface-sunken rounded-lg p-3 text-center">
-            <p className="text-xs text-ink-variant">{t('recruitment.candidates.applications', 'Applications')}</p>
+            <p className="text-xs text-ink-muted">{t('recruitment.candidates.applications', 'Applications')}</p>
             <p className="text-lg font-bold text-ink">{applications.length}</p>
           </div>
           <div className="bg-surface-sunken rounded-lg p-3 text-center">
-            <p className="text-xs text-ink-variant">{t('recruitment.candidates.documents', 'Documents')}</p>
+            <p className="text-xs text-ink-muted">{t('recruitment.candidates.documents', 'Documents')}</p>
             <p className="text-lg font-bold text-ink">{cvDocuments.length}</p>
           </div>
           <div className="bg-surface-sunken rounded-lg p-3 text-center">
-            <p className="text-xs text-ink-variant">{t('recruitment.candidates.experience', 'Experience')}</p>
+            <p className="text-xs text-ink-muted">{t('recruitment.candidates.experience', 'Experience')}</p>
             <p className="text-lg font-bold text-ink">{candidate.experience_years ?? '—'} yrs</p>
           </div>
           <div className="bg-surface-sunken rounded-lg p-3 text-center">
-            <p className="text-xs text-ink-variant">{t('recruitment.candidates.source_label', 'Source')}</p>
+            <p className="text-xs text-ink-muted">{t('recruitment.candidates.source_label', 'Source')}</p>
             <p className="text-sm font-medium text-ink truncate">{candidate.source ?? '—'}</p>
           </div>
         </div>
@@ -173,7 +173,7 @@ export function CandidateDetailPage() {
             className={`flex items-center gap-2 px-4 py-2 rounded-md text-sm font-medium transition-colors whitespace-nowrap ${
               activeTab === tab.key
                 ? 'bg-surface shadow-sm text-ink'
-                : 'text-ink-variant hover:text-ink'
+                : 'text-ink-muted hover:text-ink'
             }`}
           >
             <tab.icon size={14} />
@@ -207,21 +207,21 @@ export function CandidateDetailPage() {
             {/* Candidate Info */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="space-y-3">
-                <h3 className="text-sm font-semibold text-ink-variant uppercase tracking-wider">{t('recruitment.candidates.personal_info', 'Personal Information')}</h3>
+                <h3 className="text-sm font-semibold text-ink-muted uppercase tracking-wider">{t('recruitment.candidates.personal_info', 'Personal Information')}</h3>
                 <dl className="space-y-2 text-sm">
-                  <div className="flex justify-between"><dt className="text-ink-variant">{t('recruitment.candidates.full_name', 'Full Name')}</dt><dd className="text-ink font-medium">{candidate.full_name}</dd></div>
-                  <div className="flex justify-between"><dt className="text-ink-variant">{t('recruitment.candidates.email', 'Email')}</dt><dd className="text-ink font-medium">{candidate.email ?? '—'}</dd></div>
-                  <div className="flex justify-between"><dt className="text-ink-variant">{t('recruitment.candidates.phone', 'Phone')}</dt><dd className="text-ink font-medium">{candidate.phone ?? '—'}</dd></div>
-                  <div className="flex justify-between"><dt className="text-ink-variant">{t('recruitment.candidates.location', 'Location')}</dt><dd className="text-ink font-medium">{candidate.location ?? '—'}</dd></div>
+                  <div className="flex justify-between"><dt className="text-ink-muted">{t('recruitment.candidates.full_name', 'Full Name')}</dt><dd className="text-ink font-medium">{candidate.full_name}</dd></div>
+                  <div className="flex justify-between"><dt className="text-ink-muted">{t('recruitment.candidates.email', 'Email')}</dt><dd className="text-ink font-medium">{candidate.email ?? '—'}</dd></div>
+                  <div className="flex justify-between"><dt className="text-ink-muted">{t('recruitment.candidates.phone', 'Phone')}</dt><dd className="text-ink font-medium">{candidate.phone ?? '—'}</dd></div>
+                  <div className="flex justify-between"><dt className="text-ink-muted">{t('recruitment.candidates.location', 'Location')}</dt><dd className="text-ink font-medium">{candidate.location ?? '—'}</dd></div>
                 </dl>
               </div>
               <div className="space-y-3">
-                <h3 className="text-sm font-semibold text-ink-variant uppercase tracking-wider">{t('recruitment.candidates.professional_info', 'Professional Information')}</h3>
+                <h3 className="text-sm font-semibold text-ink-muted uppercase tracking-wider">{t('recruitment.candidates.professional_info', 'Professional Information')}</h3>
                 <dl className="space-y-2 text-sm">
-                  <div className="flex justify-between"><dt className="text-ink-variant">{t('recruitment.candidates.current_position', 'Current Position')}</dt><dd className="text-ink font-medium">{candidate.current_position ?? '—'}</dd></div>
-                  <div className="flex justify-between"><dt className="text-ink-variant">{t('recruitment.candidates.experience_years', 'Experience')}</dt><dd className="text-ink font-medium">{candidate.experience_years != null ? `${candidate.experience_years} years` : '—'}</dd></div>
-                  <div className="flex justify-between"><dt className="text-ink-variant">{t('recruitment.candidates.source_label', 'Source')}</dt><dd className="text-ink font-medium">{candidate.source ?? '—'}</dd></div>
-                  <div className="flex justify-between"><dt className="text-ink-variant">{t('recruitment.candidates.language', 'Language')}</dt><dd className="text-ink font-medium">{candidate.preferred_language ?? '—'}</dd></div>
+                  <div className="flex justify-between"><dt className="text-ink-muted">{t('recruitment.candidates.current_position', 'Current Position')}</dt><dd className="text-ink font-medium">{candidate.current_position ?? '—'}</dd></div>
+                  <div className="flex justify-between"><dt className="text-ink-muted">{t('recruitment.candidates.experience_years', 'Experience')}</dt><dd className="text-ink font-medium">{candidate.experience_years != null ? `${candidate.experience_years} years` : '—'}</dd></div>
+                  <div className="flex justify-between"><dt className="text-ink-muted">{t('recruitment.candidates.source_label', 'Source')}</dt><dd className="text-ink font-medium">{candidate.source ?? '—'}</dd></div>
+                  <div className="flex justify-between"><dt className="text-ink-muted">{t('recruitment.candidates.language', 'Language')}</dt><dd className="text-ink font-medium">{candidate.preferred_language ?? '—'}</dd></div>
                 </dl>
               </div>
             </div>
@@ -232,16 +232,16 @@ export function CandidateDetailPage() {
         {activeTab === 'applications' && (
           <div className="space-y-3">
             {applications.length === 0 ? (
-              <p className="text-sm text-ink-variant text-center py-8">{t('recruitment.candidates.no_applications', 'No applications yet')}</p>
+              <p className="text-sm text-ink-muted text-center py-8">{t('recruitment.candidates.no_applications', 'No applications yet')}</p>
             ) : (
               applications.map((app: Record<string, unknown>) => (
                 <div key={app.id as string} className="border border-border rounded-lg p-4">
                   <div className="flex items-center justify-between cursor-pointer" onClick={() => setExpandedApp(expandedApp === (app.id as string) ? null : (app.id as string))}>
                     <div className="flex items-center gap-3">
-                      <Briefcase size={16} className="text-ink-variant" />
+                      <Briefcase size={16} className="text-ink-muted" />
                       <div>
                         <p className="text-sm font-medium text-ink">{(app.jobs as Record<string, unknown>)?.title as string ?? 'Unknown Position'}</p>
-                        <p className="text-xs text-ink-variant">Applied {formatDate(app.created_at as string)}</p>
+                        <p className="text-xs text-ink-muted">Applied {formatDate(app.created_at as string)}</p>
                       </div>
                     </div>
                     <div className="flex items-center gap-3">
@@ -286,16 +286,16 @@ export function CandidateDetailPage() {
           <div className="space-y-4">
             <CVUploader candidateId={candidate.id} companyId={company?.id ?? ''} />
             {cvDocuments.length === 0 ? (
-              <p className="text-sm text-ink-variant text-center py-8">{t('recruitment.candidates.no_documents', 'No documents uploaded')}</p>
+              <p className="text-sm text-ink-muted text-center py-8">{t('recruitment.candidates.no_documents', 'No documents uploaded')}</p>
             ) : (
               <div className="space-y-2">
                 {cvDocuments.map((cv: CVDocument) => (
                   <div key={cv.id} className="flex items-center justify-between p-3 border border-border rounded-lg">
                     <div className="flex items-center gap-3">
-                      <FileText size={16} className="text-ink-variant" />
+                      <FileText size={16} className="text-ink-muted" />
                       <div>
                         <p className="text-sm font-medium text-ink">{cv.file_name ?? 'CV Document'}</p>
-                        <p className="text-xs text-ink-variant">
+                        <p className="text-xs text-ink-muted">
                           {cv.file_size ? `${(cv.file_size / 1024).toFixed(1)} KB` : ''} {cv.is_current && <span className="text-primary ml-1">• Current</span>}
                         </p>
                       </div>
@@ -333,13 +333,13 @@ export function CandidateDetailPage() {
               </Button>
             </div>
             {!notes || notes.length === 0 ? (
-              <p className="text-sm text-ink-variant text-center py-8">{t('recruitment.candidates.no_notes', 'No notes yet')}</p>
+              <p className="text-sm text-ink-muted text-center py-8">{t('recruitment.candidates.no_notes', 'No notes yet')}</p>
             ) : (
               <div className="space-y-3">
                 {notes.map((note: CandidateNote) => (
                   <div key={note.id} className="p-4 bg-surface-sunken rounded-lg">
                     <p className="text-sm text-ink whitespace-pre-wrap">{note.content}</p>
-                    <p className="text-xs text-ink-variant mt-2">{formatDateTime(note.created_at)}</p>
+                    <p className="text-xs text-ink-muted mt-2">{formatDateTime(note.created_at)}</p>
                   </div>
                 ))}
               </div>
@@ -351,7 +351,7 @@ export function CandidateDetailPage() {
         {activeTab === 'timeline' && (
           <div className="space-y-0">
             {!timeline || timeline.length === 0 ? (
-              <p className="text-sm text-ink-variant text-center py-8">{t('recruitment.candidates.no_timeline', 'No timeline events')}</p>
+              <p className="text-sm text-ink-muted text-center py-8">{t('recruitment.candidates.no_timeline', 'No timeline events')}</p>
             ) : (
               <div className="relative">
                 <div className="absolute left-4 top-0 bottom-0 w-px bg-outline-variant" />
@@ -361,7 +361,7 @@ export function CandidateDetailPage() {
                       <div className="absolute left-2.5 top-1 w-3 h-3 rounded-full bg-primary border-2 border-surface" />
                       <div>
                         <p className="text-sm font-medium text-ink">{event.description}</p>
-                        <p className="text-xs text-ink-variant">{formatDateTime(event.created_at)}</p>
+                        <p className="text-xs text-ink-muted">{formatDateTime(event.created_at)}</p>
                         {event.event_type && (
                           <span className="inline-block mt-1 px-2 py-0.5 bg-primary/10 text-primary rounded text-xs">{event.event_type}</span>
                         )}
@@ -379,12 +379,12 @@ export function CandidateDetailPage() {
           <div className="space-y-4">
             <div className="p-4 bg-surface-sunken rounded-lg border border-border">
               <h3 className="text-sm font-semibold text-ink mb-2">{t('recruitment.candidates.ai_scoring', 'AI Scoring')}</h3>
-              <p className="text-sm text-ink-variant">
+              <p className="text-sm text-ink-muted">
                 {t('recruitment.candidates.ai_scoring_desc', 'AI scores are generated based on candidate data and job requirements. All scores require HR review and override.')}
               </p>
             </div>
             {applications.filter((a: Record<string, unknown>) => a.ai_match_score != null).length === 0 ? (
-              <p className="text-sm text-ink-variant text-center py-8">{t('recruitment.candidates.no_scores', 'No AI scores available yet')}</p>
+              <p className="text-sm text-ink-muted text-center py-8">{t('recruitment.candidates.no_scores', 'No AI scores available yet')}</p>
             ) : (
               <div className="space-y-3">
                 {applications
@@ -393,11 +393,11 @@ export function CandidateDetailPage() {
                     <div key={app.id as string} className="flex items-center justify-between p-4 border border-border rounded-lg">
                       <div>
                         <p className="text-sm font-medium text-ink">{(app.jobs as Record<string, unknown>)?.title as string ?? 'Unknown'}</p>
-                        <p className="text-xs text-ink-variant">{t('recruitment.candidates.match_score', 'Match Score')}</p>
+                        <p className="text-xs text-ink-muted">{t('recruitment.candidates.match_score', 'Match Score')}</p>
                       </div>
                       <div className="text-right">
                         <p className="text-lg font-bold text-primary">{app.ai_match_score as number}%</p>
-                        <p className="text-xs text-ink-variant">{t('recruitment.candidates.hr_review_required', 'HR review required')}</p>
+                        <p className="text-xs text-ink-muted">{t('recruitment.candidates.hr_review_required', 'HR review required')}</p>
                       </div>
                     </div>
                   ))}

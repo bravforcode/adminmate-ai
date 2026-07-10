@@ -120,7 +120,7 @@ export function BenefitsPage() {
       <header className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
         <div>
           <h1 className="text-headline-md md:text-headline-lg font-bold text-on-background">{t('title', 'Benefits')}</h1>
-          <p className="text-body-md text-ink-variant mt-1">{t('subtitle', 'Manage your benefits plans and enrollments')}</p>
+          <p className="text-body-md text-ink-muted mt-1">{t('subtitle', 'Manage your benefits plans and enrollments')}</p>
         </div>
         {isOpenEnrollment && (
           <Badge variant="default">{t('open_enrollment', 'Open Enrollment Active')}</Badge>
@@ -138,7 +138,7 @@ export function BenefitsPage() {
             className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${
               activeTab === tab
                 ? 'bg-surface-sunken text-primary'
-                : 'text-ink-variant hover:bg-surface-sunken'
+                : 'text-ink-muted hover:bg-surface-sunken'
             }`}
           >
             {t(`tabs.${tab}`, tab.charAt(0).toUpperCase() + tab.slice(1))}
@@ -184,20 +184,20 @@ export function BenefitsPage() {
                       </div>
                     </CardHeader>
                     <CardContent className="space-y-3">
-                      <p className="text-sm text-ink-variant">{plan.description}</p>
+                      <p className="text-sm text-ink-muted">{plan.description}</p>
                       <div className="grid grid-cols-2 gap-3 text-sm">
                         <div className="bg-surface-sunken rounded-lg p-3">
-                          <p className="text-ink-variant text-xs">{t('monthly_premium', 'Monthly Premium')}</p>
+                          <p className="text-ink-muted text-xs">{t('monthly_premium', 'Monthly Premium')}</p>
                           <p className="font-semibold text-ink">${plan.monthly_premium.toLocaleString()}</p>
                         </div>
                         <div className="bg-surface-sunken rounded-lg p-3">
-                          <p className="text-ink-variant text-xs">{t('employer_contribution', 'Employer Pays')}</p>
+                          <p className="text-ink-muted text-xs">{t('employer_contribution', 'Employer Pays')}</p>
                           <p className="font-semibold text-success">${plan.employer_contribution.toLocaleString()}</p>
                         </div>
                       </div>
                       {selectedPlan === plan.id && (
                         <div className="pt-3 border-t border-border">
-                          <p className="text-xs font-medium text-ink-variant mb-2">{t('coverage_options', 'Coverage Options')}</p>
+                          <p className="text-xs font-medium text-ink-muted mb-2">{t('coverage_options', 'Coverage Options')}</p>
                           <div className="flex flex-wrap gap-2">
                             {plan.coverage_options.map(opt => (
                               <Badge key={opt} variant="outline">{opt}</Badge>
@@ -237,10 +237,10 @@ export function BenefitsPage() {
                   <table className="w-full text-left min-w-[500px]">
                     <thead>
                       <tr className="border-b border-border">
-                        <th className="py-2 px-3 text-xs font-semibold uppercase text-ink-variant">{t('enrollment.plan', 'Plan')}</th>
-                        <th className="py-2 px-3 text-xs font-semibold uppercase text-ink-variant">{t('enrollment.status', 'Status')}</th>
-                        <th className="py-2 px-3 text-xs font-semibold uppercase text-ink-variant">{t('enrollment.coverage', 'Coverage')}</th>
-                        <th className="py-2 px-3 text-xs font-semibold uppercase text-ink-variant text-right">{t('enrollment.your_cost', 'Your Cost')}</th>
+                        <th className="py-2 px-3 text-xs font-semibold uppercase text-ink-muted">{t('enrollment.plan', 'Plan')}</th>
+                        <th className="py-2 px-3 text-xs font-semibold uppercase text-ink-muted">{t('enrollment.status', 'Status')}</th>
+                        <th className="py-2 px-3 text-xs font-semibold uppercase text-ink-muted">{t('enrollment.coverage', 'Coverage')}</th>
+                        <th className="py-2 px-3 text-xs font-semibold uppercase text-ink-muted text-right">{t('enrollment.your_cost', 'Your Cost')}</th>
                       </tr>
                     </thead>
                     <tbody className="text-sm">
@@ -254,7 +254,7 @@ export function BenefitsPage() {
                                 {t(`status.${enr.status}`, enr.status)}
                               </Badge>
                             </td>
-                            <td className="py-3 px-3 text-ink-variant">{enr.coverage_level}</td>
+                            <td className="py-3 px-3 text-ink-muted">{enr.coverage_level}</td>
                             <td className="py-3 px-3 text-right font-medium">${enr.employee_contribution.toLocaleString()}/mo</td>
                           </tr>
                         )
@@ -280,21 +280,21 @@ export function BenefitsPage() {
             <CardContent className="space-y-4">
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                 <div className="bg-surface-sunken rounded-xl p-5 text-center">
-                  <p className="text-xs text-ink-variant mb-1">{t('calculator.total_plans', 'Total Plans')}</p>
+                  <p className="text-xs text-ink-muted mb-1">{t('calculator.total_plans', 'Total Plans')}</p>
                   <p className="text-3xl font-bold text-ink">{plans.length}</p>
                 </div>
                 <div className="bg-surface-sunken rounded-xl p-5 text-center">
-                  <p className="text-xs text-ink-variant mb-1">{t('calculator.your_monthly', 'Your Monthly Cost')}</p>
+                  <p className="text-xs text-ink-muted mb-1">{t('calculator.your_monthly', 'Your Monthly Cost')}</p>
                   <p className="text-3xl font-bold text-primary">${totalEmployeeCost.toLocaleString()}</p>
                 </div>
                 <div className="bg-surface-sunken rounded-xl p-5 text-center">
-                  <p className="text-xs text-ink-variant mb-1">{t('calculator.employer_monthly', 'Employer Monthly Cost')}</p>
+                  <p className="text-xs text-ink-muted mb-1">{t('calculator.employer_monthly', 'Employer Monthly Cost')}</p>
                   <p className="text-3xl font-bold text-success">${totalEmployerCost.toLocaleString()}</p>
                 </div>
               </div>
               <div className="bg-surface-sunken rounded-xl p-5">
                 <div className="flex items-center justify-between mb-2">
-                  <span className="text-sm text-ink-variant">{t('calculator.total_value', 'Total Benefits Value')}</span>
+                  <span className="text-sm text-ink-muted">{t('calculator.total_value', 'Total Benefits Value')}</span>
                   <span className="text-lg font-bold text-ink">${(totalEmployeeCost + totalEmployerCost).toLocaleString()}/mo</span>
                 </div>
                 <div className="w-full bg-surface-sunken rounded-full h-2">
@@ -303,7 +303,7 @@ export function BenefitsPage() {
                     style={{ width: `${totalEmployeeCost + totalEmployerCost > 0 ? Math.round((totalEmployerCost / (totalEmployeeCost + totalEmployerCost)) * 100) : 0}%` }}
                   />
                 </div>
-                <p className="text-xs text-ink-variant mt-1">{t('calculator.employer_pct', 'Employer covers')} {totalEmployeeCost + totalEmployerCost > 0 ? Math.round((totalEmployerCost / (totalEmployeeCost + totalEmployerCost)) * 100) : 0}%</p>
+                <p className="text-xs text-ink-muted mt-1">{t('calculator.employer_pct', 'Employer covers')} {totalEmployeeCost + totalEmployerCost > 0 ? Math.round((totalEmployerCost / (totalEmployeeCost + totalEmployerCost)) * 100) : 0}%</p>
               </div>
             </CardContent>
           </Card>

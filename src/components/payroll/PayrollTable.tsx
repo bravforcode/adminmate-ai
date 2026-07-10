@@ -47,7 +47,7 @@ export function PayrollTable({ items, onViewPayslip }: PayrollTableProps) {
   return (
     <div className="space-y-3">
       <div className="relative">
-        <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-ink-variant" />
+        <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-ink-muted" />
         <input
           type="text"
           placeholder="Search by employee ID..."
@@ -71,7 +71,7 @@ export function PayrollTable({ items, onViewPayslip }: PayrollTableProps) {
               ] as [SortKey, string][]).map(([key, label]) => (
                 <th
                   key={key}
-                  className="text-left py-2.5 px-3 font-medium text-ink-variant cursor-pointer select-none hover:text-ink"
+                  className="text-left py-2.5 px-3 font-medium text-ink-muted cursor-pointer select-none hover:text-ink"
                   onClick={() => toggleSort(key)}
                 >
                   <span className="inline-flex items-center gap-1">
@@ -106,7 +106,7 @@ export function PayrollTable({ items, onViewPayslip }: PayrollTableProps) {
             ))}
             {sorted.length === 0 && (
               <tr>
-                <td colSpan={onViewPayslip ? 8 : 7} className="py-8 text-center text-ink-variant">
+                <td colSpan={onViewPayslip ? 8 : 7} className="py-8 text-center text-ink-muted">
                   No payroll items found.
                 </td>
               </tr>

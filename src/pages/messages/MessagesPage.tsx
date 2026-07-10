@@ -154,11 +154,11 @@ export default function MessagesPage() {
       <header className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
         <div>
           <h1 className="text-2xl font-bold text-on-background">{t('messages.title', 'Messages')}</h1>
-          <p className="text-sm text-ink-variant mt-1">{t('messages.subtitle', 'Manage message templates, drafts, and approvals')}</p>
+          <p className="text-sm text-ink-muted mt-1">{t('messages.subtitle', 'Manage message templates, drafts, and approvals')}</p>
         </div>
         <div className="flex items-center gap-2">
           <div className="relative">
-            <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-ink-variant" />
+            <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-ink-muted" />
             <Input
               placeholder={t('common:search')}
               value={searchQuery}
@@ -230,8 +230,8 @@ export default function MessagesPage() {
                           {draft.subject && (
                             <p className="text-sm font-medium text-ink mb-1">{draft.subject}</p>
                           )}
-                          <p className="text-sm text-ink-variant line-clamp-2">{draft.body}</p>
-                          <p className="text-xs text-ink-variant mt-2">
+                          <p className="text-sm text-ink-muted line-clamp-2">{draft.body}</p>
+                          <p className="text-xs text-ink-muted mt-2">
                             {t('messages.to', 'To')}: {draft.recipient_type} • {new Date(draft.created_at).toLocaleString()}
                           </p>
                         </div>
@@ -305,11 +305,11 @@ export default function MessagesPage() {
                         <span className="text-sm font-medium text-ink">
                           {t('messages.pending_approval', 'Pending Approval')}
                         </span>
-                        <span className="text-xs text-ink-variant">
+                        <span className="text-xs text-ink-muted">
                           {new Date(approval.created_at).toLocaleString()}
                         </span>
                       </div>
-                      <p className="text-sm text-ink-variant">
+                      <p className="text-sm text-ink-muted">
                         {t('messages.draft_id', 'Draft')}: {approval.message_draft_id}
                       </p>
                     </div>
@@ -368,7 +368,7 @@ export default function MessagesPage() {
                         {template.is_active ? t('messages.active', 'Active') : t('messages.inactive', 'Inactive')}
                       </Badge>
                     </div>
-                    <p className="text-xs text-ink-variant mb-3 line-clamp-2">
+                    <p className="text-xs text-ink-muted mb-3 line-clamp-2">
                       {template.description ?? template.body_template.slice(0, 100)}
                     </p>
                     <div className="flex items-center justify-between">

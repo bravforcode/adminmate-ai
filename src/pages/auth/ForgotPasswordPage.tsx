@@ -95,7 +95,7 @@ export function ForgotPasswordPage() {
       ) : (
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4" noValidate>
           <div>
-            <label htmlFor="email" className="block text-label-md text-ink-variant mb-1">
+            <label htmlFor="email" className="block text-label-md text-ink-muted mb-1">
               {t('auth.email')}
             </label>
             <input

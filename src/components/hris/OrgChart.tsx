@@ -67,7 +67,7 @@ const OrgChartNodeComponent = memo(function OrgChartNodeComponent({
         onKeyDown={(e) => e.key === 'Enter' && onNodeClick?.(node.employee_id)}
       >
         {hasChildren ? (
-          <ChevronDown size={14} className="text-ink-variant flex-shrink-0" />
+          <ChevronDown size={14} className="text-ink-muted flex-shrink-0" />
         ) : (
           <span className="w-3.5 flex-shrink-0" />
         )}
@@ -76,10 +76,10 @@ const OrgChartNodeComponent = memo(function OrgChartNodeComponent({
         </div>
         <div className="min-w-0 flex-1">
           <p className="text-sm font-medium text-ink truncate">{node.displayName}</p>
-          <p className="text-xs text-ink-variant text-ink-variant truncate">{node.jobTitle}</p>
+          <p className="text-xs text-ink-muted text-ink-muted truncate">{node.jobTitle}</p>
         </div>
         {node.department_id && (
-          <span className="text-xs text-ink-variant/60 px-1.5 py-0.5 rounded bg-surface-sunken-lowest bg-surface-sunken-lowest flex-shrink-0">
+          <span className="text-xs text-ink-muted/60 px-1.5 py-0.5 rounded bg-surface-sunken-lowest bg-surface-sunken-lowest flex-shrink-0">
             Dept
           </span>
         )}
@@ -100,7 +100,7 @@ export const OrgChart = memo(function OrgChart({ nodes, onNodeClick }: OrgChartP
 
   if (tree.length === 0) {
     return (
-      <div className="flex flex-col items-center justify-center py-12 text-ink-variant text-ink-variant">
+      <div className="flex flex-col items-center justify-center py-12 text-ink-muted text-ink-muted">
         <User size={36} className="mb-2 opacity-40" />
         <p className="text-sm">No org chart data available</p>
       </div>

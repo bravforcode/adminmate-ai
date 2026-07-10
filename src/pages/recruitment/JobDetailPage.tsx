@@ -82,7 +82,7 @@ export function JobDetailPage() {
   }, [id, updateJob, t])
 
   if (isLoading) return <LoadingState variant="detail" />
-  if (!job) return <div className="p-8 text-center text-ink-variant">{t('recruitment.jobs.job_not_found', 'Job not found')}</div>
+  if (!job) return <div className="p-8 text-center text-ink-muted">{t('recruitment.jobs.job_not_found', 'Job not found')}</div>
 
   const appList = applications ?? []
   const statusCounts = appList.reduce((acc: Record<string, number>, app) => {
@@ -109,7 +109,7 @@ export function JobDetailPage() {
         <div className="flex justify-between items-start mb-4">
           <div>
             <h1 className="text-headline-lg font-bold text-ink">{job.title}</h1>
-            <p className="text-body-lg text-ink-variant mt-1">{job.department}</p>
+            <p className="text-body-lg text-ink-muted mt-1">{job.department}</p>
           </div>
           <div className="flex items-center gap-2">
             <JobStatusBadge status={job.status} />
@@ -127,7 +127,7 @@ export function JobDetailPage() {
         </div>
 
         {/* Job Meta */}
-        <div className="flex flex-wrap gap-4 text-sm text-ink-variant mb-4">
+        <div className="flex flex-wrap gap-4 text-sm text-ink-muted mb-4">
           {job.location && <span className="flex items-center gap-1"><MapPin size={14} /> {job.location}</span>}
           {job.employment_type && <span className="flex items-center gap-1"><Clock size={14} /> {job.employment_type.replace('_', ' ')}</span>}
           {job.headcount != null && <span className="flex items-center gap-1"><Users size={14} /> {t('recruitment.jobs.headcount_positions', '{{count}} position(s)', { count: job.headcount })}</span>}
@@ -183,7 +183,7 @@ export function JobDetailPage() {
             className={`flex items-center gap-2 px-4 py-2 rounded-md text-sm font-medium transition-colors ${
               activeTab === tab.key
                 ? 'bg-surface shadow-sm text-ink'
-                : 'text-ink-variant hover:text-ink'
+                : 'text-ink-muted hover:text-ink'
             }`}
           >
             <tab.icon size={14} />
@@ -203,31 +203,31 @@ export function JobDetailPage() {
             {job.description && (
               <div>
                 <h3 className="font-semibold mb-2">{t('recruitment.jobs.description', 'Description')}</h3>
-                <p className="text-sm text-ink-variant whitespace-pre-wrap">{job.description}</p>
+                <p className="text-sm text-ink-muted whitespace-pre-wrap">{job.description}</p>
               </div>
             )}
             {job.description_th && (
               <div>
                 <h3 className="font-semibold mb-2">{t('recruitment.jobs.description_th', 'Description (Thai)')}</h3>
-                <p className="text-sm text-ink-variant whitespace-pre-wrap">{job.description_th}</p>
+                <p className="text-sm text-ink-muted whitespace-pre-wrap">{job.description_th}</p>
               </div>
             )}
             {job.responsibilities?.length > 0 && (
               <div>
                 <h3 className="font-semibold mb-2">{t('recruitment.jobs.responsibilities', 'Responsibilities')}</h3>
-                <ul className="list-disc pl-5 text-sm text-ink-variant space-y-1">{job.responsibilities.map((r: string, i: number) => <li key={i}>{r}</li>)}</ul>
+                <ul className="list-disc pl-5 text-sm text-ink-muted space-y-1">{job.responsibilities.map((r: string, i: number) => <li key={i}>{r}</li>)}</ul>
               </div>
             )}
             {job.requirements?.length > 0 && (
               <div>
                 <h3 className="font-semibold mb-2">{t('recruitment.jobs.requirements', 'Requirements')}</h3>
-                <ul className="list-disc pl-5 text-sm text-ink-variant space-y-1">{job.requirements.map((r: string, i: number) => <li key={i}>{r}</li>)}</ul>
+                <ul className="list-disc pl-5 text-sm text-ink-muted space-y-1">{job.requirements.map((r: string, i: number) => <li key={i}>{r}</li>)}</ul>
               </div>
             )}
             {job.nice_to_have?.length > 0 && (
               <div>
                 <h3 className="font-semibold mb-2">{t('recruitment.jobs.nice_to_have', 'Nice to Have')}</h3>
-                <ul className="list-disc pl-5 text-sm text-ink-variant space-y-1">{(job.nice_to_have as string[]).map((r: string, i: number) => <li key={i}>{r}</li>)}</ul>
+                <ul className="list-disc pl-5 text-sm text-ink-muted space-y-1">{(job.nice_to_have as string[]).map((r: string, i: number) => <li key={i}>{r}</li>)}</ul>
               </div>
             )}
             {job.skills_required?.length > 0 && (
@@ -239,7 +239,7 @@ export function JobDetailPage() {
             {job.experience_level && (
               <div>
                 <h3 className="font-semibold mb-2">{t('recruitment.jobs.experience_level', 'Experience Level')}</h3>
-                <p className="text-sm text-ink-variant">{job.experience_level}</p>
+                <p className="text-sm text-ink-muted">{job.experience_level}</p>
               </div>
             )}
           </div>
@@ -252,7 +252,7 @@ export function JobDetailPage() {
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
               {Object.entries(statusCounts).map(([status, count]) => (
                 <div key={status} className="bg-surface-sunken rounded-lg p-3 text-center">
-                  <p className="text-xs text-ink-variant capitalize">{status}</p>
+                  <p className="text-xs text-ink-muted capitalize">{status}</p>
                   <p className="text-lg font-bold text-ink">{count}</p>
                 </div>
               ))}
@@ -260,7 +260,7 @@ export function JobDetailPage() {
 
             {/* Applicant List */}
             {appList.length === 0 ? (
-              <p className="text-sm text-ink-variant text-center py-8">{t('recruitment.jobs.no_applicants', 'No applicants yet')}</p>
+              <p className="text-sm text-ink-muted text-center py-8">{t('recruitment.jobs.no_applicants', 'No applicants yet')}</p>
             ) : (
               <div className="space-y-2">
                 {appList.map(app => (
@@ -271,7 +271,7 @@ export function JobDetailPage() {
                       </div>
                       <div>
                         <p className="text-sm font-medium text-ink">{app.candidates?.full_name ?? 'Unknown'}</p>
-                        <p className="text-xs text-ink-variant">{app.candidates?.current_position ?? ''} • Applied {formatDate(app.created_at)}</p>
+                        <p className="text-xs text-ink-muted">{app.candidates?.current_position ?? ''} • Applied {formatDate(app.created_at)}</p>
                       </div>
                     </div>
                     <div className="flex items-center gap-3">
@@ -297,19 +297,19 @@ export function JobDetailPage() {
           <div className="space-y-6">
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
               <div className="bg-surface-sunken rounded-lg p-4 text-center">
-                <p className="text-xs text-ink-variant">{t('recruitment.jobs.total_applicants', 'Total')}</p>
+                <p className="text-xs text-ink-muted">{t('recruitment.jobs.total_applicants', 'Total')}</p>
                 <p className="text-2xl font-bold text-ink">{appList.length}</p>
               </div>
               <div className="bg-surface-sunken rounded-lg p-4 text-center">
-                <p className="text-xs text-ink-variant">{t('recruitment.jobs.shortlisted', 'Shortlisted')}</p>
+                <p className="text-xs text-ink-muted">{t('recruitment.jobs.shortlisted', 'Shortlisted')}</p>
                 <p className="text-2xl font-bold text-primary">{statusCounts['shortlisted'] ?? 0}</p>
               </div>
               <div className="bg-surface-sunken rounded-lg p-4 text-center">
-                <p className="text-xs text-ink-variant">{t('recruitment.jobs.interviewing', 'Interviewing')}</p>
+                <p className="text-xs text-ink-muted">{t('recruitment.jobs.interviewing', 'Interviewing')}</p>
                 <p className="text-2xl font-bold text-blue-600">{statusCounts['interviewing'] ?? 0}</p>
               </div>
               <div className="bg-surface-sunken rounded-lg p-4 text-center">
-                <p className="text-xs text-ink-variant">{t('recruitment.jobs.hired', 'Hired')}</p>
+                <p className="text-xs text-ink-muted">{t('recruitment.jobs.hired', 'Hired')}</p>
                 <p className="text-2xl font-bold text-green-600">{statusCounts['hired'] ?? 0}</p>
               </div>
             </div>
@@ -324,7 +324,7 @@ export function JobDetailPage() {
                   const widthPct = Math.max((count / maxCount) * 100, 5)
                   return (
                     <div key={stage} className="flex items-center gap-3">
-                      <span className="text-xs text-ink-variant w-24 capitalize">{stage}</span>
+                      <span className="text-xs text-ink-muted w-24 capitalize">{stage}</span>
                       <div className="flex-1 bg-surface-sunken rounded-full h-6 overflow-hidden">
                         <div
                           className="h-full bg-primary/20 rounded-full flex items-center justify-end pr-2 transition-all"

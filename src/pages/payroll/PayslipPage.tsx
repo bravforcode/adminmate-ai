@@ -125,7 +125,7 @@ export function PayslipPage() {
       <Button variant="outline" size="sm" icon={<ArrowLeft size={14} />} onClick={() => navigate(-1)}>
         Back
       </Button>
-      <div className="text-center py-12 text-ink-variant">
+      <div className="text-center py-12 text-ink-muted">
         <p className="text-lg font-medium mb-2">Payslip not found</p>
         <p className="text-sm">No payslip data available for this employee.</p>
       </div>

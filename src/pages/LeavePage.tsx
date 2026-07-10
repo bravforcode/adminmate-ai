@@ -122,7 +122,7 @@ export function LeavePage() {
       <header className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
         <div>
           <h1 className="text-headline-md md:text-headline-lg font-bold text-on-background text-ink">{t('title')}</h1>
-          <p className="text-body-md text-ink-variant text-ink-variant mt-1">{t('subtitle')}</p>
+          <p className="text-body-md text-ink-muted text-ink-muted mt-1">{t('subtitle')}</p>
         </div>
         <Button variant="default" size="sm" onClick={() => setShowForm(!showForm)} icon={<Plus size={16} />}>
           {t('request_leave')}
@@ -224,16 +224,16 @@ export function LeavePage() {
                   <div className="w-9 h-9 rounded-full bg-primary-fixed dark:bg-primary-container flex items-center justify-center">
                     <Calendar size={18} className="text-primary dark:text-primary-muted" />
                   </div>
-                  <span className="text-sm font-medium text-ink-variant text-ink-variant">{lt?.name || t('balance.leave')}</span>
+                  <span className="text-sm font-medium text-ink-muted text-ink-muted">{lt?.name || t('balance.leave')}</span>
                 </div>
                 <div className="flex items-baseline gap-1 mb-2">
                   <span className="text-2xl font-bold text-on-background text-ink">{remaining}</span>
-                  <span className="text-sm text-ink-variant text-ink-variant">/ {b.total_days} {t('balance.days')}</span>
+                  <span className="text-sm text-ink-muted text-ink-muted">/ {b.total_days} {t('balance.days')}</span>
                 </div>
                 <div className="w-full bg-surface-sunken rounded-full h-1.5">
                   <div className="bg-primary h-1.5 rounded-full transition-all" style={{ width: `${Math.min(pct, 100)}%` }} />
                 </div>
-                <div className="flex justify-between text-xs text-ink-variant text-ink-variant mt-1.5">
+                <div className="flex justify-between text-xs text-ink-muted text-ink-muted mt-1.5">
                   <span>{t('balance.used', { n: b.used_days })}</span>
                   {b.pending_days > 0 && <span>{t('balance.pending', { n: b.pending_days })}</span>}
                 </div>
@@ -260,7 +260,7 @@ export function LeavePage() {
                   'px-3 py-1.5 rounded-full text-xs font-semibold transition-colors whitespace-nowrap',
                   statusFilter === s
                     ? 'bg-surface-sunken text-primary dark:text-primary-muted'
-                    : 'text-ink-variant text-ink-variant hover:bg-surface-sunken dark:hover:bg-surface-sunken'
+                    : 'text-ink-muted text-ink-muted hover:bg-surface-sunken dark:hover:bg-surface-sunken'
                 )}
               >
                 {s ? t(`status.${s}`) : t('status.all')}
@@ -275,12 +275,12 @@ export function LeavePage() {
             <table role="table" className="w-full text-left border-collapse min-w-[600px]">
               <thead>
                 <tr className="bg-surface-sunken bg-surface-sunken/50 border-b border-border/50 border-border/50">
-                  <th className="py-3 px-4 text-xs font-semibold uppercase tracking-wider text-ink-variant">{t('history.type')}</th>
-                  <th className="py-3 px-4 text-xs font-semibold uppercase tracking-wider text-ink-variant">{t('history.dates')}</th>
-                  <th className="py-3 px-4 text-xs font-semibold uppercase tracking-wider text-ink-variant">{t('history.days')}</th>
-                  <th className="py-3 px-4 text-xs font-semibold uppercase tracking-wider text-ink-variant">{t('history.status')}</th>
-                  <th className="py-3 px-4 text-xs font-semibold uppercase tracking-wider text-ink-variant">{t('history.reason')}</th>
-                  {isManager && <th className="py-3 px-4 text-xs font-semibold uppercase tracking-wider text-ink-variant text-right">{t('history.actions')}</th>}
+                  <th className="py-3 px-4 text-xs font-semibold uppercase tracking-wider text-ink-muted">{t('history.type')}</th>
+                  <th className="py-3 px-4 text-xs font-semibold uppercase tracking-wider text-ink-muted">{t('history.dates')}</th>
+                  <th className="py-3 px-4 text-xs font-semibold uppercase tracking-wider text-ink-muted">{t('history.days')}</th>
+                  <th className="py-3 px-4 text-xs font-semibold uppercase tracking-wider text-ink-muted">{t('history.status')}</th>
+                  <th className="py-3 px-4 text-xs font-semibold uppercase tracking-wider text-ink-muted">{t('history.reason')}</th>
+                  {isManager && <th className="py-3 px-4 text-xs font-semibold uppercase tracking-wider text-ink-muted text-right">{t('history.actions')}</th>}
                 </tr>
               </thead>
               <tbody className="text-sm text-ink text-ink">
@@ -307,7 +307,7 @@ export function LeavePage() {
                             {t(`status.${req.status}`)}
                           </span>
                         </td>
-                        <td className="py-3 px-4 text-sm text-ink-variant max-w-[200px] truncate">{req.reason || '-'}</td>
+                        <td className="py-3 px-4 text-sm text-ink-muted max-w-[200px] truncate">{req.reason || '-'}</td>
                         {isManager && (
                           <td className="py-3 px-4 text-right">
                             {req.status === 'pending' && (

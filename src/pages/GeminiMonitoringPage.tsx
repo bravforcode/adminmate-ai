@@ -43,12 +43,12 @@ export default function GeminiMonitoringPage() {
       <div className="space-y-6">
         <div>
           <h1 className="text-headline-md font-bold text-ink">{t('gemini.title')}</h1>
-          <p className="text-body-md text-ink-variant mt-1">{t('gemini.subtitle')}</p>
+          <p className="text-body-md text-ink-muted mt-1">{t('gemini.subtitle')}</p>
         </div>
         <div className="bg-surface rounded-xl border border-border p-8 text-center">
           <AlertCircle size={40} className="mx-auto text-destructive mb-3" />
           <h3 className="font-semibold text-ink mb-1">{t('gemini.error_title')}</h3>
-          <p className="text-sm text-ink-variant mb-4">{(error as Error)?.message || t('gemini.error_description')}</p>
+          <p className="text-sm text-ink-muted mb-4">{(error as Error)?.message || t('gemini.error_description')}</p>
           <button
             onClick={() => refetch()}
             className="inline-flex items-center gap-2 px-4 py-2 bg-primary text-white rounded-lg text-sm font-medium hover:opacity-90"
@@ -64,7 +64,7 @@ export default function GeminiMonitoringPage() {
     <div className="space-y-6">
       <div>
         <h1 className="text-headline-md font-bold text-ink">{t('gemini.title')}</h1>
-        <p className="text-body-md text-ink-variant mt-1">{t('gemini.subtitle')}</p>
+        <p className="text-body-md text-ink-muted mt-1">{t('gemini.subtitle')}</p>
       </div>
 
       {isLoading ? (
@@ -75,21 +75,21 @@ export default function GeminiMonitoringPage() {
             <div className="bg-surface rounded-xl border border-border p-5">
               <div className="flex items-center gap-2 mb-3"><Zap size={20} className="text-primary" /><span className="text-sm font-semibold">{t('gemini.today')}</span></div>
               <p className="text-3xl font-bold text-ink">{todayTotal}</p>
-              <p className="text-xs text-ink-variant mt-1">{t('gemini.daily_limit', { limit: DAILY_LIMIT })}</p>
+              <p className="text-xs text-ink-muted mt-1">{t('gemini.daily_limit', { limit: DAILY_LIMIT })}</p>
             </div>
             <div className="bg-surface rounded-xl border border-border p-5">
-              <span className="block text-sm font-semibold text-ink-variant mb-1">{t('gemini.usage')}</span>
+              <span className="block text-sm font-semibold text-ink-muted mb-1">{t('gemini.usage')}</span>
               <div className="w-full bg-surface-sunken rounded-full h-3 mt-2">
                 <div className={`h-3 rounded-full transition-all ${usagePct > 90 ? 'bg-error' : usagePct > 70 ? 'bg-yellow-500' : 'bg-primary'}`} style={{ width: `${Math.min(usagePct, 100)}%` }} />
               </div>
-              <p className="text-right text-xs text-ink-variant mt-1">{usagePct}%</p>
+              <p className="text-right text-xs text-ink-muted mt-1">{usagePct}%</p>
             </div>
             <div className={`bg-surface rounded-xl border p-5 ${usagePct > 70 ? 'border-yellow-300' : 'border-border'}`}>
               <span className={`inline-flex items-center gap-1 px-2 py-0.5 rounded text-xs font-medium ${alertStyles[alertLevel]}`}>
                 <AlertTriangle size={12} />
                 {t(`gemini.alert.label.${alertLevel}`)}
               </span>
-              <p className="text-xs text-ink-variant mt-3">{t(`gemini.alert.${alertLevel}`)}</p>
+              <p className="text-xs text-ink-muted mt-3">{t(`gemini.alert.${alertLevel}`)}</p>
             </div>
           </div>
 
@@ -107,7 +107,7 @@ export default function GeminiMonitoringPage() {
                     </div>
                   ))}
                 </div>
-              ) : <p className="text-sm text-ink-variant">{t('gemini.no_usage_today')}</p>}
+              ) : <p className="text-sm text-ink-muted">{t('gemini.no_usage_today')}</p>}
             </div>
             <div className="bg-surface rounded-xl border border-border p-6">
               <h3 className="font-semibold mb-4">{t('gemini.last_7_days')}</h3>
@@ -125,7 +125,7 @@ export default function GeminiMonitoringPage() {
                   </BarChart>
                 </ResponsiveContainer>
               ) : (
-                <p className="text-sm text-ink-variant text-center py-12">{t('gemini.no_usage_today')}</p>
+                <p className="text-sm text-ink-muted text-center py-12">{t('gemini.no_usage_today')}</p>
               )}
             </div>
           </div>

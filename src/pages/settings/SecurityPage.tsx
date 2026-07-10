@@ -94,7 +94,7 @@ function ChangePasswordCard({ t }: { t: ReturnType<typeof useTranslation>['t'] }
 
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-4" noValidate>
         <div>
-          <label htmlFor="new-password" className="block text-label-md text-ink-variant mb-1">
+          <label htmlFor="new-password" className="block text-label-md text-ink-muted mb-1">
             {t('auth.new_password')}
           </label>
           <div className="relative">
@@ -112,7 +112,7 @@ function ChangePasswordCard({ t }: { t: ReturnType<typeof useTranslation>['t'] }
             <button
               type="button"
               onClick={() => setShowPassword(!showPassword)}
-              className="absolute right-2 top-1/2 -translate-y-1/2 text-ink-variant hover:text-primary"
+              className="absolute right-2 top-1/2 -translate-y-1/2 text-ink-muted hover:text-primary"
               tabIndex={-1}
               aria-label={showPassword ? t('auth.hide_password') : t('auth.show_password')}
             >
@@ -128,11 +128,11 @@ function ChangePasswordCard({ t }: { t: ReturnType<typeof useTranslation>['t'] }
                 />
               </div>
               <div className="flex items-center justify-between mt-1">
-                <span className="text-xs text-ink-variant">
+                <span className="text-xs text-ink-muted">
                   {t(`auth.password_${strength.label}`)}
                 </span>
                 {strength.hints.length > 0 && (
-                  <span className="text-xs text-ink-variant">{strength.hints[0]}</span>
+                  <span className="text-xs text-ink-muted">{strength.hints[0]}</span>
                 )}
               </div>
             </div>
@@ -143,7 +143,7 @@ function ChangePasswordCard({ t }: { t: ReturnType<typeof useTranslation>['t'] }
         </div>
 
         <div>
-          <label htmlFor="confirm-password" className="block text-label-md text-ink-variant mb-1">
+          <label htmlFor="confirm-password" className="block text-label-md text-ink-muted mb-1">
             {t('auth.confirm_password')}
           </label>
           <input
@@ -396,7 +396,7 @@ export function SecurityPage() {
         <h1 className="text-headline-md font-bold text-ink">
           {t('mfa.title') || 'Security'}
         </h1>
-        <p className="text-body-md text-ink-variant mt-1">
+        <p className="text-body-md text-ink-muted mt-1">
           {t('mfa.subtitle') || 'Manage two-factor authentication and account security'}
         </p>
       </div>
@@ -431,7 +431,7 @@ export function SecurityPage() {
               : t('mfa.status_disabled')}
           </span>
           {mfaStatus?.verifiedAt && (
-            <span className="text-xs text-ink-variant">
+            <span className="text-xs text-ink-muted">
               {t('mfa.enabled_on', {
                 date: new Date(mfaStatus.verifiedAt).toLocaleDateString(),
               })}
@@ -442,7 +442,7 @@ export function SecurityPage() {
         {/* Enable MFA Flow */}
         {!mfaStatus?.active && !setupState && (
           <div>
-            <p className="text-sm text-ink-variant mb-4">
+            <p className="text-sm text-ink-muted mb-4">
               {t('mfa.enable_description')}
             </p>
             <button
@@ -471,16 +471,16 @@ export function SecurityPage() {
                       className="w-48 h-48"
                     />
                   ) : (
-                    <div className="w-48 h-48 flex items-center justify-center text-ink-variant text-sm">
+                    <div className="w-48 h-48 flex items-center justify-center text-ink-muted text-sm">
                       <Loader2 size={24} className="animate-spin" />
                     </div>
                   )}
                 </div>
                 <div className="flex-1 space-y-3">
-                  <p className="text-sm text-ink-variant">
+                  <p className="text-sm text-ink-muted">
                     {t('mfa.scan_instructions')}
                   </p>
-                  <ol className="text-sm text-ink-variant space-y-1 list-decimal list-inside">
+                  <ol className="text-sm text-ink-muted space-y-1 list-decimal list-inside">
                     <li>{t('mfa.step_1')}</li>
                     <li>{t('mfa.step_2')}</li>
                     <li>{t('mfa.step_3')}</li>
@@ -523,7 +523,7 @@ export function SecurityPage() {
                 setVerifyCode('')
                 setQrDataUrl(null)
               }}
-              className="text-sm text-ink-variant hover:text-ink"
+              className="text-sm text-ink-muted hover:text-ink"
             >
               {t('common.cancel')}
             </button>
@@ -580,7 +580,7 @@ export function SecurityPage() {
         {/* Disable Confirmation */}
         {showDisableConfirm && (
           <div className="mt-4 pt-4 border-t border-border space-y-3">
-            <p className="text-sm text-ink-variant">
+            <p className="text-sm text-ink-muted">
               {t('mfa.disable_confirm_message')}
             </p>
             <div className="flex gap-2">

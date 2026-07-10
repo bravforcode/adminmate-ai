@@ -116,7 +116,7 @@ export function RegisterForm() {
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-4" noValidate>
       <div>
-        <label htmlFor="fullName" className="block text-label-md text-ink-variant mb-1">
+        <label htmlFor="fullName" className="block text-label-md text-ink-muted mb-1">
           {t('auth.full_name')}
         </label>
         <input
@@ -135,7 +135,7 @@ export function RegisterForm() {
       </div>
 
       <div>
-        <label htmlFor="companyName" className="block text-label-md text-ink-variant mb-1">
+        <label htmlFor="companyName" className="block text-label-md text-ink-muted mb-1">
           <span className="inline-flex items-center gap-1">
             <Building2 size={14} /> {t('auth.company_name')}
           </span>
@@ -158,7 +158,7 @@ export function RegisterForm() {
 
       <div className="grid grid-cols-2 gap-3">
         <div>
-          <label htmlFor="country" className="block text-label-md text-ink-variant mb-1">
+          <label htmlFor="country" className="block text-label-md text-ink-muted mb-1">
             {t('company.country')}
           </label>
           <select
@@ -174,7 +174,7 @@ export function RegisterForm() {
           </select>
         </div>
         <div>
-          <label htmlFor="industry" className="block text-label-md text-ink-variant mb-1">
+          <label htmlFor="industry" className="block text-label-md text-ink-muted mb-1">
             {t('company.industry')}
           </label>
           <select
@@ -200,7 +200,7 @@ export function RegisterForm() {
       </div>
 
       <div>
-        <label htmlFor="email" className="block text-label-md text-ink-variant mb-1">
+        <label htmlFor="email" className="block text-label-md text-ink-muted mb-1">
           {t('auth.email')}
         </label>
         <input
@@ -219,7 +219,7 @@ export function RegisterForm() {
       </div>
 
       <div>
-        <label htmlFor="password" className="block text-label-md text-ink-variant mb-1">
+        <label htmlFor="password" className="block text-label-md text-ink-muted mb-1">
           {t('auth.password')}
         </label>
         <div className="relative">
@@ -238,7 +238,7 @@ export function RegisterForm() {
           <button
             type="button"
             onClick={() => setShowPassword(!showPassword)}
-            className="absolute right-2 top-1/2 -translate-y-1/2 text-ink-variant hover:text-primary"
+            className="absolute right-2 top-1/2 -translate-y-1/2 text-ink-muted hover:text-primary"
             tabIndex={-1}
             aria-label={showPassword ? t('auth.hide_password') : t('auth.show_password')}
           >
@@ -254,11 +254,11 @@ export function RegisterForm() {
               />
             </div>
             <div className="flex items-center justify-between mt-1">
-              <span className="text-xs text-ink-variant">
+              <span className="text-xs text-ink-muted">
                 {t(`auth.password_${strength.label}`)}
               </span>
               {strength.hints.length > 0 && (
-                <span className="text-xs text-ink-variant">
+                <span className="text-xs text-ink-muted">
                   {strength.hints[0]}
                 </span>
               )}
@@ -275,7 +275,7 @@ export function RegisterForm() {
       </div>
 
       <div>
-        <label htmlFor="confirmPassword" className="block text-label-md text-ink-variant mb-1">
+        <label htmlFor="confirmPassword" className="block text-label-md text-ink-muted mb-1">
           {t('auth.confirm_password')}
         </label>
         <input
@@ -319,14 +319,14 @@ export function RegisterForm() {
         {isSubmitting ? t('auth.registering') : t('auth.create_account')}
       </Button>
 
-      <p className="text-center text-sm text-ink-variant mt-4">
+      <p className="text-center text-sm text-ink-muted mt-4">
         {t('auth.already_have_account')}{' '}
         <Link to="/login" className="text-primary underline hover:text-primary/80">
           {t('auth.sign_in')}
         </Link>
       </p>
 
-      <p className="text-center text-xs text-ink-variant flex items-center justify-center gap-1">
+      <p className="text-center text-xs text-ink-muted flex items-center justify-center gap-1">
         <Check size={12} /> {t('auth.admin_role_note')}
       </p>
     </form>

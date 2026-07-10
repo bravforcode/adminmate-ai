@@ -9,7 +9,7 @@ export function PermissionDenied() {
       <h1 className="text-2xl font-semibold text-ink text-ink">
         {t('permission_denied_title', 'Access Denied')}
       </h1>
-      <p className="text-ink-variant text-ink-variant max-w-md">
+      <p className="text-ink-muted text-ink-muted max-w-md">
         {t('permission_denied_message', 'You do not have permission to access this page. Contact your administrator if you believe this is an error.')}
       </p>
     </div>

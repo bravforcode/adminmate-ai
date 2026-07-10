@@ -104,7 +104,7 @@ export function SignaturePad({ onSave, height = 200, className }: SignaturePadPr
         />
         {!hasDrawn && (
           <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-            <span className="text-ink-variant/50 dark:text-outline-variant text-sm">{t('documents.sign_here', 'Sign here')}</span>
+            <span className="text-ink-muted/50 dark:text-outline-variant text-sm">{t('documents.sign_here', 'Sign here')}</span>
           </div>
         )}
       </div>

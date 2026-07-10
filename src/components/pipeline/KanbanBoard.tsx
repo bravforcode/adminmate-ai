@@ -52,16 +52,16 @@ export function KanbanBoard({ onSelectApplication, selectedId }: KanbanBoardProp
           <LoadingState variant="kanban" />
         </div>
       ) : !selectedJobId ? (
-        <div className="flex-1 flex flex-col items-center justify-center text-ink-variant">
+        <div className="flex-1 flex flex-col items-center justify-center text-ink-muted">
           <Inbox size={48} className="mb-3 text-outline-variant" />
           <p className="text-sm font-medium">{t('pipeline.select_job_prompt')}</p>
-          <p className="text-xs text-ink-variant/70 mt-1">{t('pipeline.select_job_prompt_desc')}</p>
+          <p className="text-xs text-ink-muted/70 mt-1">{t('pipeline.select_job_prompt_desc')}</p>
         </div>
       ) : isError ? (
         <div className="flex-1 flex flex-col items-center justify-center">
           <AlertCircle size={40} className="text-destructive mb-3" />
           <h3 className="font-semibold text-ink mb-1">{t('common:errors.load_failed')}</h3>
-          <p className="text-sm text-ink-variant mb-4">{(error as Error)?.message || ''}</p>
+          <p className="text-sm text-ink-muted mb-4">{(error as Error)?.message || ''}</p>
           <button
             onClick={() => refetch()}
             className="inline-flex items-center gap-2 px-4 py-2 bg-primary text-white rounded-xl text-sm font-medium hover:opacity-90 transition-all duration-200"
@@ -70,7 +70,7 @@ export function KanbanBoard({ onSelectApplication, selectedId }: KanbanBoardProp
           </button>
         </div>
       ) : isLoading ? (
-        <div className="flex-1 flex items-center justify-center text-ink-variant">{t('pipeline.loading_pipeline')}</div>
+        <div className="flex-1 flex items-center justify-center text-ink-muted">{t('pipeline.loading_pipeline')}</div>
       ) : (
         <>
         <div ref={boardRef} className="kanban-board flex-1 overflow-x-auto flex gap-6 pb-4 kanban-scroll snap-x snap-mandatory scroll-smooth">

@@ -6,6 +6,7 @@ import { AppLayout } from '../components/layout/AppLayout'
 import { ErrorBoundary } from '../components/common/ErrorBoundary'
 import { AnimatedPage } from '../components/shared/AnimatedPage'
 import { useAuthStore } from '../stores/authStore'
+import { HR_ROLES } from '../lib/navigation'
 
 // ── Per-route error boundary + suspense wrapper ────────────────
 function RouteWrapper({ children }: { children: React.ReactNode }) {
@@ -88,8 +89,6 @@ const EmployeeProfilePage = lazy(() => import('../pages/portal/EmployeeProfilePa
 const EmployeeTimeOffPage = lazy(() => import('../pages/portal/EmployeeTimeOffPage'))
 const EmployeePayslipsPage = lazy(() => import('../pages/portal/EmployeePayslipsPage'))
 const WorkflowAutomationPage = lazy(() => import('../pages/automation/WorkflowAutomationPage'))
-
-const HR_ROLES = ['admin', 'hr', 'manager']
 
 function PublicRoot() {
   const profile = useAuthStore(s => s.profile)
@@ -489,7 +488,7 @@ export const router = createBrowserRouter([
       {
         path: '/portal',
         element: (
-          <AuthGuard callInitSession={false} requiredRoles={HR_ROLES}>
+          <AuthGuard callInitSession={false}>
             <AnimatedPage><RouteWrapper><EmployeePortalDashboard /></RouteWrapper></AnimatedPage>
           </AuthGuard>
         ),
@@ -497,7 +496,7 @@ export const router = createBrowserRouter([
       {
         path: '/portal/profile',
         element: (
-          <AuthGuard callInitSession={false} requiredRoles={HR_ROLES}>
+          <AuthGuard callInitSession={false}>
             <AnimatedPage><RouteWrapper><EmployeeProfilePage /></RouteWrapper></AnimatedPage>
           </AuthGuard>
         ),
@@ -505,7 +504,7 @@ export const router = createBrowserRouter([
       {
         path: '/portal/time-off',
         element: (
-          <AuthGuard callInitSession={false} requiredRoles={HR_ROLES}>
+          <AuthGuard callInitSession={false}>
             <AnimatedPage><RouteWrapper><EmployeeTimeOffPage /></RouteWrapper></AnimatedPage>
           </AuthGuard>
         ),
@@ -513,7 +512,7 @@ export const router = createBrowserRouter([
       {
         path: '/portal/payslips',
         element: (
-          <AuthGuard callInitSession={false} requiredRoles={HR_ROLES}>
+          <AuthGuard callInitSession={false}>
             <AnimatedPage><RouteWrapper><EmployeePayslipsPage /></RouteWrapper></AnimatedPage>
           </AuthGuard>
         ),

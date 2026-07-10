@@ -83,7 +83,7 @@ export function JobsPage() {
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
           <h1 className="text-headline-md font-bold text-ink text-ink">{t('jobs.title')}</h1>
-          <p className="text-body-md text-ink-variant text-ink-variant mt-1">{t('jobs.subtitle')}</p>
+          <p className="text-body-md text-ink-muted text-ink-muted mt-1">{t('jobs.subtitle')}</p>
         </div>
         <div className="flex gap-2">
           <Button
@@ -109,11 +109,11 @@ export function JobsPage() {
 
       <div className="flex flex-col sm:flex-row gap-3">
         <div className="relative max-w-sm flex-1">
-          <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-ink-variant text-ink-variant size-4" />
+          <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-ink-muted text-ink-muted size-4" />
           <input
             value={searchInput}
             onChange={handleSearchChange}
-            className="w-full pl-10 pr-4 py-3 rounded-xl border border-border bg-surface-sunken-lowest bg-surface-sunken-lowest text-ink focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all duration-200 outline-none text-sm placeholder:text-ink-variant/50"
+            className="w-full pl-10 pr-4 py-3 rounded-xl border border-border bg-surface-sunken-lowest bg-surface-sunken-lowest text-ink focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all duration-200 outline-none text-sm placeholder:text-ink-muted/50"
             placeholder={t('jobs.search_placeholder')}
           />
         </div>

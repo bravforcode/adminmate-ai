@@ -27,11 +27,11 @@ export function ChatInterface() {
           <div className="text-center py-12">
             <Bot size={48} className="mx-auto text-primary mb-4" />
             <h3 className="font-semibold text-lg mb-2">{t('empty.chat_welcome_title')}</h3>
-            <p className="text-sm text-ink-variant mb-6">{t('empty.chat_welcome_description')}</p>
+            <p className="text-sm text-ink-muted mb-6">{t('empty.chat_welcome_description')}</p>
             <div className="flex flex-wrap justify-center gap-2">
               {suggestionItems.map(s => (
                 <button key={s} onClick={() => { setInput(s); setTimeout(() => handleSend(), 100) }}
-                  className="px-3 py-1.5 bg-surface-sunken rounded-full text-sm hover:bg-surface-sunken dark:hover:bg-outline transition-colors text-ink-variant">{s}</button>
+                  className="px-3 py-1.5 bg-surface-sunken rounded-full text-sm hover:bg-surface-sunken dark:hover:bg-outline transition-colors text-ink-muted">{s}</button>
               ))}
             </div>
           </div>

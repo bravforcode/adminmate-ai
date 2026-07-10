@@ -28,12 +28,12 @@ export function KanbanColumn({ stage, applications, onSelectApplication, selecte
       <div className="flex justify-between items-center px-2">
         <h3 className="text-base font-semibold text-ink flex items-center gap-2">
           {t(stage.labelKey)}
-          <span className="bg-surface-sunken text-ink-variant text-xs px-2 py-0.5 rounded-full ml-auto">{applications.length}</span>
+          <span className="bg-surface-sunken text-ink-muted text-xs px-2 py-0.5 rounded-full ml-auto">{applications.length}</span>
         </h3>
       </div>
       <div role="list" aria-label={`${t(stage.labelKey)} - ${applications.length} candidates`} className="kanban-column-list flex flex-col gap-3 overflow-y-auto pr-2 pb-2 max-h-[calc(100vh-280px)]">
         {applications.length === 0 ? (
-          <p className="text-xs text-center text-ink-variant py-4" role="listitem">{t('pipeline.no_candidates')}</p>
+          <p className="text-xs text-center text-ink-muted py-4" role="listitem">{t('pipeline.no_candidates')}</p>
         ) : (
           applications.map(app => (
             <ApplicationCard

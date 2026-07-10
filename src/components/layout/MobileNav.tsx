@@ -86,7 +86,7 @@ export function MobileNav() {
               className="p-2 rounded-lg hover:bg-surface-sunken dark:hover:bg-surface-sunken transition-colors min-w-[44px] min-h-[44px] flex items-center justify-center"
               aria-label={t('nav.close_menu')}
             >
-              <X size={18} className="text-ink-variant text-ink-variant" />
+              <X size={18} className="text-ink-muted text-ink-muted" />
             </button>
           </div>
           <div className="p-2">
@@ -115,7 +115,7 @@ export function MobileNav() {
       <nav aria-label="Mobile navigation" className="md:hidden fixed bottom-0 left-0 right-0 bg-surface border-t border-border z-50 flex justify-around py-2" style={{ paddingBottom: 'max(8px, env(safe-area-inset-bottom))' }}>
         {primaryItems.map(item => (
           <NavLink key={item.path} to={item.path!} className={({ isActive }) =>
-            `flex flex-col items-center gap-0.5 px-3 py-1.5 rounded-lg text-xs transition-all duration-200 ease-out ${isActive ? 'text-primary dark:text-primary-muted bg-surface-sunken scale-105 shadow-sm' : 'text-ink-variant text-ink-variant hover:text-ink dark:hover:text-ink active:scale-95'}`
+            `flex flex-col items-center gap-0.5 px-3 py-1.5 rounded-lg text-xs transition-all duration-200 ease-out ${isActive ? 'text-primary dark:text-primary-muted bg-surface-sunken scale-105 shadow-sm' : 'text-ink-muted text-ink-muted hover:text-ink dark:hover:text-ink active:scale-95'}`
           }>
             <item.icon size={22} strokeWidth={2.2} />
             <span className="font-medium">{t(item.labelKey)}</span>
@@ -132,7 +132,7 @@ export function MobileNav() {
             className={`flex flex-col items-center gap-0.5 px-3 py-1.5 rounded-lg text-xs transition-all duration-200 ease-out ${
               moreOpen
                 ? 'text-primary dark:text-primary-muted bg-surface-sunken scale-105 shadow-sm'
-                : 'text-ink-variant text-ink-variant hover:text-ink dark:hover:text-ink active:scale-95'
+                : 'text-ink-muted text-ink-muted hover:text-ink dark:hover:text-ink active:scale-95'
             }`}
           >
             <MoreHorizontal size={22} strokeWidth={2.2} />

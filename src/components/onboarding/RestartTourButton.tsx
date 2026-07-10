@@ -14,7 +14,7 @@ export function RestartTourButton() {
   return (
     <button
       onClick={handleRestart}
-      className="flex items-center gap-2 text-sm text-ink-variant hover:text-primary transition-colors px-3 py-2 rounded-lg hover:bg-surface-sunken w-full"
+      className="flex items-center gap-2 text-sm text-ink-muted hover:text-primary transition-colors px-3 py-2 rounded-lg hover:bg-surface-sunken w-full"
     >
       <RotateCcw size={16} />
       {t('tour.restart')}

@@ -76,7 +76,7 @@ export function ResetPasswordPage() {
     return (
       <AuthLayout title={t('auth.reset_password')} subtitle={t('auth.invalid_reset_link')}>
         <div className="text-center space-y-4">
-          <p className="text-body-md text-ink-variant">{t('auth.invalid_reset_link_desc')}</p>
+          <p className="text-body-md text-ink-muted">{t('auth.invalid_reset_link_desc')}</p>
           <Link
             to="/forgot-password"
             className="text-primary hover:underline inline-flex items-center gap-1"
@@ -94,12 +94,12 @@ export function ResetPasswordPage() {
         <div className="text-center space-y-4">
           <CheckCircle2 size={48} className="mx-auto text-primary" />
           <p className="text-body-md text-ink">{t('auth.password_updated')}</p>
-          <p className="text-sm text-ink-variant">{t('auth.redirecting')}</p>
+          <p className="text-sm text-ink-muted">{t('auth.redirecting')}</p>
         </div>
       ) : (
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4" noValidate>
           <div>
-            <label htmlFor="password" className="block text-label-md text-ink-variant mb-1">
+            <label htmlFor="password" className="block text-label-md text-ink-muted mb-1">
               <span className="inline-flex items-center gap-1">
                 <KeyRound size={14} /> {t('auth.new_password')}
               </span>
@@ -119,7 +119,7 @@ export function ResetPasswordPage() {
               <button
                 type="button"
                 onClick={() => setShowPassword(!showPassword)}
-                className="absolute right-2 top-1/2 -translate-y-1/2 text-ink-variant hover:text-primary"
+                className="absolute right-2 top-1/2 -translate-y-1/2 text-ink-muted hover:text-primary"
                 tabIndex={-1}
                 aria-label={showPassword ? t('auth.hide_password') : t('auth.show_password')}
               >
@@ -135,11 +135,11 @@ export function ResetPasswordPage() {
                   />
                 </div>
                 <div className="flex items-center justify-between mt-1">
-                  <span className="text-xs text-ink-variant">
+                  <span className="text-xs text-ink-muted">
                     {t(`auth.password_${strength.label}`)}
                   </span>
                   {strength.hints.length > 0 && (
-                    <span className="text-xs text-ink-variant">{strength.hints[0]}</span>
+                    <span className="text-xs text-ink-muted">{strength.hints[0]}</span>
                   )}
                 </div>
               </div>
@@ -152,7 +152,7 @@ export function ResetPasswordPage() {
           <div>
             <label
               htmlFor="confirmPassword"
-              className="block text-label-md text-ink-variant mb-1"
+              className="block text-label-md text-ink-muted mb-1"
             >
               {t('auth.confirm_password')}
             </label>

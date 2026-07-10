@@ -54,13 +54,13 @@ export function CVUploader({ candidateId, companyId }: CVUploaderProps) {
         {uploading || parsing ? (
           <div className="space-y-2">
             <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto" />
-            <p className="text-sm text-ink-variant">{uploading ? t('candidates.uploading') : t('candidates.parsing')}</p>
+            <p className="text-sm text-ink-muted">{uploading ? t('candidates.uploading') : t('candidates.parsing')}</p>
           </div>
         ) : (
           <div className="space-y-2">
-            <Upload size={32} className="mx-auto text-ink-variant" />
+            <Upload size={32} className="mx-auto text-ink-muted" />
             <p className="text-sm font-medium">{t('candidates.upload_prompt')}</p>
-            <p className="text-xs text-ink-variant">{t('candidates.upload_hint')}</p>
+            <p className="text-xs text-ink-muted">{t('candidates.upload_hint')}</p>
           </div>
         )}
       </div>

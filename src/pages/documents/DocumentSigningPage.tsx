@@ -65,7 +65,7 @@ export default function DocumentSigningPage() {
       <div className="min-h-screen flex items-center justify-center bg-surface bg-surface-sunken-lowest">
         <div className="flex flex-col items-center gap-3">
           <Loader2 size={32} className="animate-spin text-primary" />
-          <p className="text-sm text-ink-variant text-ink-variant">{t('common:loading')}</p>
+          <p className="text-sm text-ink-muted text-ink-muted">{t('common:loading')}</p>
         </div>
       </div>
     )
@@ -82,12 +82,12 @@ export default function DocumentSigningPage() {
               </div>
               <div>
                 <h1 className="text-lg font-semibold text-ink text-ink">{t('sign_title')}</h1>
-                <p className="text-sm text-ink-variant text-ink-variant">{documentName}</p>
+                <p className="text-sm text-ink-muted text-ink-muted">{documentName}</p>
               </div>
             </div>
 
             <div className="mb-6 p-4 bg-surface-sunken bg-surface-sunken/30 rounded-xl">
-              <p className="text-sm text-ink-variant text-ink-variant">{t('signing_as')}</p>
+              <p className="text-sm text-ink-muted text-ink-muted">{t('signing_as')}</p>
               <p className="font-medium text-ink text-ink">{signerName}</p>
             </div>
 
@@ -97,7 +97,7 @@ export default function DocumentSigningPage() {
 
                 <button
                   onClick={() => setShowDecline(true)}
-                  className="w-full text-center text-sm text-ink-variant text-ink-variant hover:text-destructive dark:hover:text-destructive transition-colors py-2"
+                  className="w-full text-center text-sm text-ink-muted text-ink-muted hover:text-destructive dark:hover:text-destructive transition-colors py-2"
                 >
                   {t('decline_to_sign')}
                 </button>
@@ -141,7 +141,7 @@ export default function DocumentSigningPage() {
               <CheckCircle size={32} className="text-green-600 dark:text-success" />
             </div>
             <h1 className="text-xl font-semibold text-ink mb-2">{t('signed_title')}</h1>
-            <p className="text-ink-variant text-ink-variant">{t('signed_message')}</p>
+            <p className="text-ink-muted text-ink-muted">{t('signed_message')}</p>
           </div>
         )}
 
@@ -151,7 +151,7 @@ export default function DocumentSigningPage() {
               <XCircle size={32} className="text-red-600 dark:text-destructive" />
             </div>
             <h1 className="text-xl font-semibold text-ink mb-2">{t('declined_title')}</h1>
-            <p className="text-ink-variant text-ink-variant">{t('declined_message')}</p>
+            <p className="text-ink-muted text-ink-muted">{t('declined_message')}</p>
           </div>
         )}
 
@@ -161,7 +161,7 @@ export default function DocumentSigningPage() {
               <AlertTriangle size={32} className="text-yellow-600 dark:text-warning" />
             </div>
             <h1 className="text-xl font-semibold text-ink mb-2">{t('invalid_link_title')}</h1>
-            <p className="text-ink-variant text-ink-variant">{t('invalid_link_message')}</p>
+            <p className="text-ink-muted text-ink-muted">{t('invalid_link_message')}</p>
           </div>
         )}
       </div>

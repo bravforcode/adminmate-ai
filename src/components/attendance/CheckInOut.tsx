@@ -89,7 +89,7 @@ export function CheckInOut({ todayRecord, onCheckIn, onCheckOut }: CheckInOutPro
           ) : isCheckedIn ? (
             <Timer size={24} className="text-primary dark:text-primary-muted" />
           ) : (
-            <Clock size={24} className="text-ink-variant text-ink-variant" />
+            <Clock size={24} className="text-ink-muted text-ink-muted" />
           )}
         </div>
         <div>
@@ -101,7 +101,7 @@ export function CheckInOut({ todayRecord, onCheckIn, onCheckOut }: CheckInOutPro
                 : t('checkinout.not_checked_in')}
           </h3>
           {checkedInTime && (
-            <p className="text-sm text-ink-variant text-ink-variant">
+            <p className="text-sm text-ink-muted text-ink-muted">
               {t('checkinout.checked_in_at', { time: checkedInTime })}
               {checkedOutTime && ` · ${t('checkinout.checked_out_at', { time: checkedOutTime })}`}
               {hoursWorked && ` · ${hoursWorked}`}
@@ -148,7 +148,7 @@ export function CheckInOut({ todayRecord, onCheckIn, onCheckOut }: CheckInOutPro
       </div>
 
       {location && (
-        <p className="text-xs text-ink-variant text-ink-variant mt-2 flex items-center gap-1">
+        <p className="text-xs text-ink-muted text-ink-muted mt-2 flex items-center gap-1">
           <MapPin size={12} />
           {location.lat.toFixed(4)}, {location.lng.toFixed(4)}
         </p>

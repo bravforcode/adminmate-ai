@@ -50,7 +50,7 @@ export function UserMenu() {
           >
             <div className="px-4 py-2 border-b border-border border-border">
               <p className="text-sm font-semibold text-ink text-ink">{profile?.full_name}</p>
-              <p className="text-xs text-ink-variant text-ink-variant">{profile?.email}</p>
+              <p className="text-xs text-ink-muted text-ink-muted">{profile?.email}</p>
               <span className="mt-1 inline-block text-xs font-medium capitalize bg-secondary-container text-ink-secondary-container dark:text-primary-muted px-2 py-0.5 rounded-full">
                 {profile?.role || 'user'}
               </span>
@@ -58,13 +58,13 @@ export function UserMenu() {
 
             <button
               onClick={() => { navigate('/settings'); setOpen(false) }}
-              className="w-full flex items-center gap-3 px-4 py-2 text-sm text-ink-variant text-ink-variant hover:bg-surface-sunken dark:hover:bg-surface-sunken transition-colors"
+              className="w-full flex items-center gap-3 px-4 py-2 text-sm text-ink-muted text-ink-muted hover:bg-surface-sunken dark:hover:bg-surface-sunken transition-colors"
             >
               <User size={16} /> {t('nav.profile')}
             </button>
             <button
               onClick={() => { navigate('/settings'); setOpen(false) }}
-              className="w-full flex items-center gap-3 px-4 py-2 text-sm text-ink-variant text-ink-variant hover:bg-surface-sunken dark:hover:bg-surface-sunken transition-colors"
+              className="w-full flex items-center gap-3 px-4 py-2 text-sm text-ink-muted text-ink-muted hover:bg-surface-sunken dark:hover:bg-surface-sunken transition-colors"
             >
               <Settings size={16} /> {t('nav.settings')}
             </button>
@@ -76,7 +76,7 @@ export function UserMenu() {
                 window.location.reload()
                 setOpen(false)
               }}
-              className="w-full flex items-center gap-3 px-4 py-2 text-sm text-ink-variant text-ink-variant hover:bg-surface-sunken dark:hover:bg-surface-sunken transition-colors"
+              className="w-full flex items-center gap-3 px-4 py-2 text-sm text-ink-muted text-ink-muted hover:bg-surface-sunken dark:hover:bg-surface-sunken transition-colors"
             >
               <RotateCcw size={16} /> {t('tour.restart')}
             </button>

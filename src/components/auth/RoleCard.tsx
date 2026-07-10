@@ -67,7 +67,7 @@ export function RoleCard({
       </h2>
 
       {/* Subtitle */}
-      <p className="text-[13px] text-ink-secondary text-ink-variant leading-relaxed mb-6">
+      <p className="text-[13px] text-ink-secondary text-ink-muted leading-relaxed mb-6">
         {subtitle}
       </p>
 
