@@ -62,11 +62,9 @@ function SidebarGroup({ item, onClose }: { item: NavItem; onClose?: () => void }
         />
       </button>
 
-      {open && item.children && (
-        <div className="ml-4 mt-0.5 flex flex-col gap-0.5 border-l border-white/8 pl-2">
-          {item.children
-            .filter(child => !child.roles || true) // role filtering already done upstream
-            .map(child => (
+        {open && item.children && (
+          <div className="ml-4 mt-0.5 flex flex-col gap-0.5 border-l border-white/8 pl-2">
+            {item.children.map(child => (
               <NavLink
                 key={child.path}
                 to={child.path!}
