@@ -128,7 +128,7 @@ export default function AnalyticsDashboardPage() {
           change: 8,
           trend: 'up',
           icon: FileText,
-          color: 'bg-green-500',
+          color: 'bg-success',
         },
         {
           label: 'Avg. Time to Hire',
@@ -160,40 +160,40 @@ export default function AnalyticsDashboardPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex items-center justify-center">
+      <div className="min-h-screen bg-surface-sunken dark:bg-gray-900 flex items-center justify-center">
         <div className="text-center">
           <div className="w-8 h-8 border-4 border-blue-500 border-t-transparent rounded-full animate-spin mx-auto" />
-          <p className="text-gray-500 mt-3">Loading analytics...</p>
+          <p className="text-ink-muted mt-3">Loading analytics...</p>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
+    <div className="min-h-screen bg-surface-sunken dark:bg-gray-900">
       {/* Header */}
-      <div className="bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700">
+      <div className="bg-surface dark:bg-gray-800 border-b border-border dark:border-gray-700">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
           <div className="flex items-center justify-between">
             <div>
-              <h1 className="text-2xl font-bold text-gray-900 dark:text-white flex items-center gap-2">
-                <BarChart2 className="w-6 h-6 text-blue-500" />
+              <h1 className="text-2xl font-bold text-ink dark:text-white flex items-center gap-2">
+                <BarChart2 className="w-6 h-6 text-primary" />
                 Analytics Dashboard
               </h1>
-              <p className="text-gray-500 dark:text-gray-400 mt-1">
+              <p className="text-ink-muted dark:text-ink-faint mt-1">
                 HR metrics and insights at a glance
               </p>
             </div>
             <div className="flex items-center gap-3">
-              <div className="flex gap-1 bg-gray-100 dark:bg-gray-800 p-1 rounded-lg">
+              <div className="flex gap-1 bg-surface-sunken dark:bg-gray-800 p-1 rounded-lg">
                 {(['week', 'month', 'quarter', 'year'] as const).map(range => (
                   <button
                     key={range}
                     onClick={() => setTimeRange(range)}
                     className={`px-3 py-1.5 rounded-md text-sm font-medium transition-colors ${
                       timeRange === range
-                        ? 'bg-white dark:bg-gray-700 text-gray-900 dark:text-white shadow-sm'
-                        : 'text-gray-500 hover:text-gray-700 dark:hover:text-gray-300'
+                        ? 'bg-surface dark:bg-gray-700 text-ink dark:text-white shadow-sm'
+                        : 'text-ink-muted hover:text-ink-secondary dark:hover:text-gray-300'
                     }`}
                   >
                     {range.charAt(0).toUpperCase() + range.slice(1)}
@@ -225,7 +225,7 @@ export default function AnalyticsDashboardPage() {
                     <div className={`w-12 h-12 ${metric.color} rounded-xl flex items-center justify-center`}>
                       <metric.icon className="w-6 h-6 text-white" />
                     </div>
-                    <div className={`flex items-center gap-1 text-sm font-medium ${metric.trend === 'up' ? 'text-green-600' : 'text-red-600'}`}>
+                    <div className={`flex items-center gap-1 text-sm font-medium ${metric.trend === 'up' ? 'text-success' : 'text-destructive'}`}>
                       {metric.trend === 'up' ? (
                         <ArrowUpRight className="w-4 h-4" />
                       ) : (
@@ -235,8 +235,8 @@ export default function AnalyticsDashboardPage() {
                     </div>
                   </div>
                   <div className="mt-4">
-                    <p className="text-3xl font-bold text-gray-900 dark:text-white">{metric.value}</p>
-                    <p className="text-sm text-gray-500 mt-1">{metric.label}</p>
+                    <p className="text-3xl font-bold text-ink dark:text-white">{metric.value}</p>
+                    <p className="text-sm text-ink-muted mt-1">{metric.label}</p>
                   </div>
                 </CardContent>
               </Card>
@@ -255,10 +255,10 @@ export default function AnalyticsDashboardPage() {
                 {hiringFunnel.map((stage, i) => (
                   <div key={stage.stage}>
                     <div className="flex items-center justify-between mb-1">
-                      <span className="text-sm font-medium text-gray-700 dark:text-gray-300">{stage.stage}</span>
-                      <span className="text-sm text-gray-500">{stage.count}</span>
+                      <span className="text-sm font-medium text-ink-secondary dark:text-gray-300">{stage.stage}</span>
+                      <span className="text-sm text-ink-muted">{stage.count}</span>
                     </div>
-                    <div className="h-8 bg-gray-100 dark:bg-gray-800 rounded-lg overflow-hidden">
+                    <div className="h-8 bg-surface-sunken dark:bg-gray-800 rounded-lg overflow-hidden">
                       <motion.div
                         initial={{ width: 0 }}
                         animate={{ width: `${stage.percentage}%` }}
@@ -285,8 +285,8 @@ export default function AnalyticsDashboardPage() {
               <div className="space-y-3">
                 {departmentHeadcount.map((dept, i) => (
                   <div key={dept.department} className="flex items-center gap-3">
-                    <span className="text-sm text-gray-700 dark:text-gray-300 w-32 truncate">{dept.department}</span>
-                    <div className="flex-1 h-6 bg-gray-100 dark:bg-gray-800 rounded-full overflow-hidden">
+                    <span className="text-sm text-ink-secondary dark:text-gray-300 w-32 truncate">{dept.department}</span>
+                    <div className="flex-1 h-6 bg-surface-sunken dark:bg-gray-800 rounded-full overflow-hidden">
                       <motion.div
                         initial={{ width: 0 }}
                         animate={{ width: `${dept.percentage}%` }}
@@ -294,7 +294,7 @@ export default function AnalyticsDashboardPage() {
                         className="h-full bg-gradient-to-r from-green-500 to-emerald-600 rounded-full"
                       />
                     </div>
-                    <span className="text-sm font-medium text-gray-700 dark:text-gray-300 w-12 text-right">{dept.count}</span>
+                    <span className="text-sm font-medium text-ink-secondary dark:text-gray-300 w-12 text-right">{dept.count}</span>
                   </div>
                 ))}
               </div>
@@ -316,13 +316,13 @@ export default function AnalyticsDashboardPage() {
                       transition={{ delay: i * 0.1, duration: 0.5 }}
                       className="w-full bg-gradient-to-t from-amber-500 to-orange-500 rounded-t-lg"
                     />
-                    <span className="text-xs text-gray-500 mt-2">{data.month}</span>
+                    <span className="text-xs text-ink-muted mt-2">{data.month}</span>
                   </div>
                 ))}
               </div>
               <div className="mt-4 flex items-center justify-between text-sm">
-                <span className="text-gray-500">Average: {(turnoverData.reduce((a, b) => a + b.rate, 0) / turnoverData.length).toFixed(1)}%</span>
-                <span className="text-green-600 font-medium">Below industry avg (8.2%)</span>
+                <span className="text-ink-muted">Average: {(turnoverData.reduce((a, b) => a + b.rate, 0) / turnoverData.length).toFixed(1)}%</span>
+                <span className="text-success font-medium">Below industry avg (8.2%)</span>
               </div>
             </CardContent>
           </Card>
@@ -365,19 +365,19 @@ export default function AnalyticsDashboardPage() {
           <CardContent>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               <div className="text-center">
-                <p className="text-sm text-gray-500 mb-2">Your Company</p>
-                <p className="text-3xl font-bold text-blue-600">3.2%</p>
-                <p className="text-sm text-gray-500">Turnover Rate</p>
+                <p className="text-sm text-ink-muted mb-2">Your Company</p>
+                <p className="text-3xl font-bold text-primary">3.2%</p>
+                <p className="text-sm text-ink-muted">Turnover Rate</p>
               </div>
               <div className="text-center">
-                <p className="text-sm text-gray-500 mb-2">Industry Average</p>
-                <p className="text-3xl font-bold text-gray-400">8.2%</p>
-                <p className="text-sm text-gray-500">Turnover Rate</p>
+                <p className="text-sm text-ink-muted mb-2">Industry Average</p>
+                <p className="text-3xl font-bold text-ink-faint">8.2%</p>
+                <p className="text-sm text-ink-muted">Turnover Rate</p>
               </div>
               <div className="text-center">
-                <p className="text-sm text-gray-500 mb-2">Top Performers</p>
-                <p className="text-3xl font-bold text-green-600">2.8%</p>
-                <p className="text-sm text-gray-500">Turnover Rate</p>
+                <p className="text-sm text-ink-muted mb-2">Top Performers</p>
+                <p className="text-3xl font-bold text-success">2.8%</p>
+                <p className="text-sm text-ink-muted">Turnover Rate</p>
               </div>
             </div>
           </CardContent>

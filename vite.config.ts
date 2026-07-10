@@ -25,9 +25,10 @@ export default defineConfig({
           'vendor-i18n': ['react-i18next', 'i18next'],
           'vendor-charts': ['recharts'],
           'vendor-motion': ['motion'],
+          'vendor-pdf': ['@react-pdf/renderer'],
         },
       },
     },
-    chunkSizeWarningLimit: 500,
+    chunkSizeWarningLimit: 1500, // raised for @react-pdf/renderer (gzipped 492KB, uncompressed 1.47MB)
   },
 })

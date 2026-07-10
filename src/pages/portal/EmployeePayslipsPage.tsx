@@ -124,29 +124,29 @@ export default function EmployeePayslipsPage() {
   };
 
   const statusColors = {
-    draft: 'bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-300',
+    draft: 'bg-surface-sunken text-ink-secondary dark:bg-gray-800 dark:text-gray-300',
     final: 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-300',
     paid: 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-300',
   };
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex items-center justify-center">
+      <div className="min-h-screen bg-surface-sunken dark:bg-gray-900 flex items-center justify-center">
         <div className="text-center">
           <div className="w-8 h-8 border-4 border-blue-500 border-t-transparent rounded-full animate-spin mx-auto" />
-          <p className="text-gray-500 mt-3">Loading payslips...</p>
+          <p className="text-ink-muted mt-3">Loading payslips...</p>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
+    <div className="min-h-screen bg-surface-sunken dark:bg-gray-900">
       {/* Header */}
-      <div className="bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700">
+      <div className="bg-surface dark:bg-gray-800 border-b border-border dark:border-gray-700">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-          <h1 className="text-2xl font-bold text-gray-900 dark:text-white">Payslips</h1>
-          <p className="text-gray-500 dark:text-gray-400 mt-1">
+          <h1 className="text-2xl font-bold text-ink dark:text-white">Payslips</h1>
+          <p className="text-ink-muted dark:text-ink-faint mt-1">
             View and download your payslips
           </p>
         </div>
@@ -157,27 +157,27 @@ export default function EmployeePayslipsPage() {
         <div className="grid grid-cols-3 gap-4">
           <Card>
             <CardContent className="p-4 text-center">
-              <DollarSign className="w-8 h-8 text-green-500 mx-auto mb-2" />
-              <p className="text-2xl font-bold text-gray-900 dark:text-white">
+              <DollarSign className="w-8 h-8 text-success mx-auto mb-2" />
+              <p className="text-2xl font-bold text-ink dark:text-white">
                 {payslips.length > 0 ? formatCurrency(payslips[0].net_pay, payslips[0].currency) : '-'}
               </p>
-              <p className="text-xs text-gray-500">Latest Net Pay</p>
+              <p className="text-xs text-ink-muted">Latest Net Pay</p>
             </CardContent>
           </Card>
           <Card>
             <CardContent className="p-4 text-center">
-              <TrendingDown className="w-8 h-8 text-red-500 mx-auto mb-2" />
-              <p className="text-2xl font-bold text-gray-900 dark:text-white">
+              <TrendingDown className="w-8 h-8 text-destructive mx-auto mb-2" />
+              <p className="text-2xl font-bold text-ink dark:text-white">
                 {payslips.length > 0 ? formatCurrency(payslips[0].deductions, payslips[0].currency) : '-'}
               </p>
-              <p className="text-xs text-gray-500">Latest Deductions</p>
+              <p className="text-xs text-ink-muted">Latest Deductions</p>
             </CardContent>
           </Card>
           <Card>
             <CardContent className="p-4 text-center">
-              <FileText className="w-8 h-8 text-blue-500 mx-auto mb-2" />
-              <p className="text-2xl font-bold text-gray-900 dark:text-white">{payslips.length}</p>
-              <p className="text-xs text-gray-500">Total Payslips</p>
+              <FileText className="w-8 h-8 text-primary mx-auto mb-2" />
+              <p className="text-2xl font-bold text-ink dark:text-white">{payslips.length}</p>
+              <p className="text-xs text-ink-muted">Total Payslips</p>
             </CardContent>
           </Card>
         </div>
@@ -191,44 +191,44 @@ export default function EmployeePayslipsPage() {
             {payslips.length === 0 ? (
               <div className="text-center py-12">
                 <FileText className="w-12 h-12 text-gray-300 mx-auto mb-3" />
-                <p className="text-gray-500">No payslips available yet</p>
+                <p className="text-ink-muted">No payslips available yet</p>
               </div>
             ) : (
               <div className="divide-y divide-gray-100 dark:divide-gray-800">
                 {payslips.map((payslip) => (
                   <div key={payslip.id}>
                     <div
-                      className="p-4 hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors cursor-pointer"
+                      className="p-4 hover:bg-surface-sunken dark:hover:bg-gray-800/50 transition-colors cursor-pointer"
                       onClick={() => setExpandedId(expandedId === payslip.id ? null : payslip.id)}
                     >
                       <div className="flex items-center justify-between">
                         <div className="flex items-center gap-4">
                           <div className="w-10 h-10 rounded-full bg-blue-50 dark:bg-blue-900/30 flex items-center justify-center">
-                            <FileText className="w-5 h-5 text-blue-500" />
+                            <FileText className="w-5 h-5 text-primary" />
                           </div>
                           <div>
-                            <p className="font-medium text-gray-900 dark:text-white">
+                            <p className="font-medium text-ink dark:text-white">
                               {payslip.pay_period}
                             </p>
-                            <p className="text-sm text-gray-500">
+                            <p className="text-sm text-ink-muted">
                               Paid: {new Date(payslip.pay_date).toLocaleDateString()}
                             </p>
                           </div>
                         </div>
                         <div className="flex items-center gap-4">
                           <div className="text-right">
-                            <p className="font-bold text-green-600 dark:text-green-400">
+                            <p className="font-bold text-success dark:text-green-400">
                               {formatCurrency(payslip.net_pay, payslip.currency)}
                             </p>
-                            <p className="text-xs text-gray-400">net pay</p>
+                            <p className="text-xs text-ink-faint">net pay</p>
                           </div>
                           <span className={`px-2 py-1 rounded-full text-xs font-medium ${statusColors[payslip.status]}`}>
                             {payslip.status.charAt(0).toUpperCase() + payslip.status.slice(1)}
                           </span>
                           {expandedId === payslip.id ? (
-                            <ChevronUp className="w-5 h-5 text-gray-400" />
+                            <ChevronUp className="w-5 h-5 text-ink-faint" />
                           ) : (
-                            <ChevronDown className="w-5 h-5 text-gray-400" />
+                            <ChevronDown className="w-5 h-5 text-ink-faint" />
                           )}
                         </div>
                       </div>
@@ -239,24 +239,24 @@ export default function EmployeePayslipsPage() {
                       <motion.div
                         initial={{ height: 0, opacity: 0 }}
                         animate={{ height: 'auto', opacity: 1 }}
-                        className="bg-gray-50 dark:bg-gray-800/50 px-4 py-4"
+                        className="bg-surface-sunken dark:bg-gray-800/50 px-4 py-4"
                       >
                         <div className="grid grid-cols-2 gap-6">
                           {/* Earnings */}
                           <div>
-                            <h4 className="text-sm font-medium text-gray-500 mb-3">Earnings</h4>
+                            <h4 className="text-sm font-medium text-ink-muted mb-3">Earnings</h4>
                             <div className="space-y-2">
                               {payslip.items
                                 .filter(i => i.category === 'earnings')
                                 .map((item, i) => (
                                   <div key={i} className="flex justify-between text-sm">
-                                    <span className="text-gray-600 dark:text-gray-400">{item.label}</span>
-                                    <span className="font-medium text-gray-900 dark:text-white">
+                                    <span className="text-ink-muted dark:text-ink-faint">{item.label}</span>
+                                    <span className="font-medium text-ink dark:text-white">
                                       {formatCurrency(item.amount, payslip.currency)}
                                     </span>
                                   </div>
                                 ))}
-                              <div className="border-t border-gray-200 dark:border-gray-700 pt-2 mt-2">
+                              <div className="border-t border-border dark:border-gray-700 pt-2 mt-2">
                                 <div className="flex justify-between text-sm font-medium">
                                   <span>Gross Salary</span>
                                   <span>{formatCurrency(payslip.gross_salary, payslip.currency)}</span>
@@ -267,22 +267,22 @@ export default function EmployeePayslipsPage() {
 
                           {/* Deductions */}
                           <div>
-                            <h4 className="text-sm font-medium text-gray-500 mb-3">Deductions</h4>
+                            <h4 className="text-sm font-medium text-ink-muted mb-3">Deductions</h4>
                             <div className="space-y-2">
                               {payslip.items
                                 .filter(i => i.category === 'deductions')
                                 .map((item, i) => (
                                   <div key={i} className="flex justify-between text-sm">
-                                    <span className="text-gray-600 dark:text-gray-400">{item.label}</span>
-                                    <span className="font-medium text-red-600 dark:text-red-400">
+                                    <span className="text-ink-muted dark:text-ink-faint">{item.label}</span>
+                                    <span className="font-medium text-destructive dark:text-red-400">
                                       {formatCurrency(Math.abs(item.amount), payslip.currency)}
                                     </span>
                                   </div>
                                 ))}
-                              <div className="border-t border-gray-200 dark:border-gray-700 pt-2 mt-2">
+                              <div className="border-t border-border dark:border-gray-700 pt-2 mt-2">
                                 <div className="flex justify-between text-sm font-medium">
                                   <span>Total Deductions</span>
-                                  <span className="text-red-600">
+                                  <span className="text-destructive">
                                     {formatCurrency(payslip.deductions, payslip.currency)}
                                   </span>
                                 </div>
@@ -292,10 +292,10 @@ export default function EmployeePayslipsPage() {
                         </div>
 
                         {/* Net Pay */}
-                        <div className="mt-4 pt-4 border-t border-gray-200 dark:border-gray-700">
+                        <div className="mt-4 pt-4 border-t border-border dark:border-gray-700">
                           <div className="flex justify-between items-center">
-                            <span className="text-lg font-bold text-gray-900 dark:text-white">Net Pay</span>
-                            <span className="text-2xl font-bold text-green-600 dark:text-green-400">
+                            <span className="text-lg font-bold text-ink dark:text-white">Net Pay</span>
+                            <span className="text-2xl font-bold text-success dark:text-green-400">
                               {formatCurrency(payslip.net_pay, payslip.currency)}
                             </span>
                           </div>

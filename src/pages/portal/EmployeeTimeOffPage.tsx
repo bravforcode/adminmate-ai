@@ -38,7 +38,7 @@ const LEAVE_TYPES = [
   { value: 'personal', label: 'Personal Leave', color: 'bg-purple-500' },
   { value: 'maternity', label: 'Maternity Leave', color: 'bg-pink-500' },
   { value: 'paternity', label: 'Paternity Leave', color: 'bg-indigo-500' },
-  { value: 'bereavement', label: 'Bereavement Leave', color: 'bg-gray-500' },
+  { value: 'bereavement', label: 'Bereavement Leave', color: 'bg-surface-sunken0' },
 ];
 
 export default function EmployeeTimeOffPage() {
@@ -143,24 +143,24 @@ export default function EmployeeTimeOffPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex items-center justify-center">
+      <div className="min-h-screen bg-surface-sunken dark:bg-gray-900 flex items-center justify-center">
         <div className="text-center">
           <div className="w-8 h-8 border-4 border-blue-500 border-t-transparent rounded-full animate-spin mx-auto" />
-          <p className="text-gray-500 mt-3">Loading leave data...</p>
+          <p className="text-ink-muted mt-3">Loading leave data...</p>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
+    <div className="min-h-screen bg-surface-sunken dark:bg-gray-900">
       {/* Header */}
-      <div className="bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700">
+      <div className="bg-surface dark:bg-gray-800 border-b border-border dark:border-gray-700">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
           <div className="flex items-center justify-between">
             <div>
-              <h1 className="text-2xl font-bold text-gray-900 dark:text-white">Time Off</h1>
-              <p className="text-gray-500 dark:text-gray-400 mt-1">
+              <h1 className="text-2xl font-bold text-ink dark:text-white">Time Off</h1>
+              <p className="text-ink-muted dark:text-ink-faint mt-1">
                 Request and manage your leave
               </p>
             </div>
@@ -181,11 +181,11 @@ export default function EmployeeTimeOffPage() {
               <Card key={type.value}>
                 <CardContent className="p-4">
                   <div className={`w-2 h-2 rounded-full ${type.color} mb-2`} />
-                  <p className="text-xs text-gray-500">{type.label}</p>
-                  <p className="text-lg font-bold text-gray-900 dark:text-white">
+                  <p className="text-xs text-ink-muted">{type.label}</p>
+                  <p className="text-lg font-bold text-ink dark:text-white">
                     {bal?.remaining_days || 0}
                   </p>
-                  <p className="text-xs text-gray-400">days left</p>
+                  <p className="text-xs text-ink-faint">days left</p>
                 </CardContent>
               </Card>
             );
@@ -194,7 +194,7 @@ export default function EmployeeTimeOffPage() {
 
         {/* Filters */}
         <div className="flex items-center gap-2">
-          <Filter className="w-4 h-4 text-gray-500" />
+          <Filter className="w-4 h-4 text-ink-muted" />
           {(['all', 'pending', 'approved', 'rejected'] as const).map((f) => (
             <button
               key={f}
@@ -202,7 +202,7 @@ export default function EmployeeTimeOffPage() {
               className={`px-3 py-1.5 rounded-full text-sm font-medium transition-colors ${
                 filter === f
                   ? 'bg-blue-500 text-white'
-                  : 'bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-700'
+                  : 'bg-surface-sunken dark:bg-gray-800 text-ink-muted dark:text-ink-faint hover:bg-gray-200 dark:hover:bg-gray-700'
               }`}
             >
               {f.charAt(0).toUpperCase() + f.slice(1)}
@@ -221,7 +221,7 @@ export default function EmployeeTimeOffPage() {
             {filteredRequests.length === 0 ? (
               <div className="text-center py-12">
                 <Calendar className="w-12 h-12 text-gray-300 mx-auto mb-3" />
-                <p className="text-gray-500">No leave requests found</p>
+                <p className="text-ink-muted">No leave requests found</p>
               </div>
             ) : (
               <div className="divide-y divide-gray-100 dark:divide-gray-800">
@@ -232,23 +232,23 @@ export default function EmployeeTimeOffPage() {
                       key={request.id}
                       initial={{ opacity: 0 }}
                       animate={{ opacity: 1 }}
-                      className="p-4 hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors"
+                      className="p-4 hover:bg-surface-sunken dark:hover:bg-gray-800/50 transition-colors"
                     >
                       <div className="flex items-center justify-between">
                         <div className="flex items-center gap-4">
-                          <div className="w-10 h-10 rounded-full bg-gray-100 dark:bg-gray-800 flex items-center justify-center">
-                            <Calendar className="w-5 h-5 text-gray-500" />
+                          <div className="w-10 h-10 rounded-full bg-surface-sunken dark:bg-gray-800 flex items-center justify-center">
+                            <Calendar className="w-5 h-5 text-ink-muted" />
                           </div>
                           <div>
-                            <p className="font-medium text-gray-900 dark:text-white">
+                            <p className="font-medium text-ink dark:text-white">
                               {LEAVE_TYPES.find(t => t.value === request.leave_type)?.label || request.leave_type}
                             </p>
-                            <p className="text-sm text-gray-500">
+                            <p className="text-sm text-ink-muted">
                               {new Date(request.start_date).toLocaleDateString()} - {new Date(request.end_date).toLocaleDateString()}
-                              <span className="ml-2 text-gray-400">({request.days} days)</span>
+                              <span className="ml-2 text-ink-faint">({request.days} days)</span>
                             </p>
                             {request.reason && (
-                              <p className="text-sm text-gray-400 mt-1">{request.reason}</p>
+                              <p className="text-sm text-ink-faint mt-1">{request.reason}</p>
                             )}
                           </div>
                         </div>
@@ -280,22 +280,22 @@ export default function EmployeeTimeOffPage() {
               initial={{ scale: 0.95, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.95, opacity: 0 }}
-              className="bg-white dark:bg-gray-800 rounded-xl shadow-xl max-w-md w-full"
+              className="bg-surface dark:bg-gray-800 rounded-xl shadow-xl max-w-md w-full"
               onClick={(e) => e.stopPropagation()}
             >
               <div className="p-6">
-                <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4">
+                <h2 className="text-xl font-bold text-ink dark:text-white mb-4">
                   Request Leave
                 </h2>
                 <form onSubmit={handleSubmit} className="space-y-4">
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                    <label className="block text-sm font-medium text-ink-secondary dark:text-gray-300 mb-1">
                       Leave Type
                     </label>
                     <select
                       value={formData.leave_type}
                       onChange={(e) => setFormData(prev => ({ ...prev, leave_type: e.target.value }))}
-                      className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                      className="w-full px-3 py-2 border border-border dark:border-gray-600 rounded-lg bg-surface dark:bg-gray-700 text-ink dark:text-white"
                     >
                       {LEAVE_TYPES.map(type => (
                         <option key={type.value} value={type.value}>{type.label}</option>
@@ -304,7 +304,7 @@ export default function EmployeeTimeOffPage() {
                   </div>
                   <div className="grid grid-cols-2 gap-4">
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                      <label className="block text-sm font-medium text-ink-secondary dark:text-gray-300 mb-1">
                         Start Date
                       </label>
                       <input
@@ -312,11 +312,11 @@ export default function EmployeeTimeOffPage() {
                         value={formData.start_date}
                         onChange={(e) => setFormData(prev => ({ ...prev, start_date: e.target.value }))}
                         required
-                        className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                        className="w-full px-3 py-2 border border-border dark:border-gray-600 rounded-lg bg-surface dark:bg-gray-700 text-ink dark:text-white"
                       />
                     </div>
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                      <label className="block text-sm font-medium text-ink-secondary dark:text-gray-300 mb-1">
                         End Date
                       </label>
                       <input
@@ -324,24 +324,24 @@ export default function EmployeeTimeOffPage() {
                         value={formData.end_date}
                         onChange={(e) => setFormData(prev => ({ ...prev, end_date: e.target.value }))}
                         required
-                        className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                        className="w-full px-3 py-2 border border-border dark:border-gray-600 rounded-lg bg-surface dark:bg-gray-700 text-ink dark:text-white"
                       />
                     </div>
                   </div>
                   {formData.start_date && formData.end_date && (
-                    <p className="text-sm text-blue-500">
+                    <p className="text-sm text-primary">
                       {calculateDays(formData.start_date, formData.end_date)} day(s)
                     </p>
                   )}
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                    <label className="block text-sm font-medium text-ink-secondary dark:text-gray-300 mb-1">
                       Reason (optional)
                     </label>
                     <textarea
                       value={formData.reason}
                       onChange={(e) => setFormData(prev => ({ ...prev, reason: e.target.value }))}
                       rows={3}
-                      className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                      className="w-full px-3 py-2 border border-border dark:border-gray-600 rounded-lg bg-surface dark:bg-gray-700 text-ink dark:text-white"
                       placeholder="Reason for leave..."
                     />
                   </div>

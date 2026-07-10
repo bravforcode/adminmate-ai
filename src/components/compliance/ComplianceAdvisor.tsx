@@ -26,10 +26,10 @@ import { useAuthStore } from '../../stores/authStore';
 // --- Compliance Status Badge ---
 function StatusBadge({ status }: { status: ComplianceCheck['status'] }) {
   const config = {
-    compliant: { icon: CheckCircle2, color: 'text-green-500', bg: 'bg-green-50 dark:bg-green-950/30' },
+    compliant: { icon: CheckCircle2, color: 'text-success', bg: 'bg-green-50 dark:bg-green-950/30' },
     warning: { icon: AlertTriangle, color: 'text-amber-500', bg: 'bg-amber-50 dark:bg-amber-950/30' },
-    non_compliant: { icon: XCircle, color: 'text-red-500', bg: 'bg-red-50 dark:bg-red-950/30' },
-    unknown: { icon: FileText, color: 'text-gray-500', bg: 'bg-gray-50 dark:bg-gray-950/30' },
+    non_compliant: { icon: XCircle, color: 'text-destructive', bg: 'bg-red-50 dark:bg-red-950/30' },
+    unknown: { icon: FileText, color: 'text-ink-muted', bg: 'bg-surface-sunken dark:bg-gray-950/30' },
   };
   const { icon: Icon, color, bg } = config[status];
   return (
@@ -56,13 +56,13 @@ function CheckCard({ check }: { check: ComplianceCheck }) {
   const [expanded, setExpanded] = useState(false);
 
   return (
-    <div className="border border-gray-200 dark:border-gray-700 rounded-lg p-4 hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors">
+    <div className="border border-border dark:border-gray-700 rounded-lg p-4 hover:bg-surface-sunken dark:hover:bg-gray-800/50 transition-colors">
       <div className="flex items-start justify-between gap-3">
         <div className="flex items-center gap-3 min-w-0">
           <SeverityDot severity={check.severity} />
           <div className="min-w-0">
-            <p className="font-medium text-gray-900 dark:text-white text-sm">{check.title}</p>
-            <p className="text-xs text-gray-500 dark:text-gray-400 truncate">{check.description}</p>
+            <p className="font-medium text-ink dark:text-white text-sm">{check.title}</p>
+            <p className="text-xs text-ink-muted dark:text-ink-faint truncate">{check.description}</p>
           </div>
         </div>
         <div className="flex items-center gap-2 flex-shrink-0">
@@ -85,10 +85,10 @@ function CheckCard({ check }: { check: ComplianceCheck }) {
             className="overflow-hidden"
           >
             <div className="mt-3 pt-3 border-t border-gray-100 dark:border-gray-800 space-y-2">
-              <p className="text-sm text-gray-700 dark:text-gray-300">
+              <p className="text-sm text-ink-secondary dark:text-gray-300">
                 <strong>Recommendation:</strong> {check.recommendation}
               </p>
-              <div className="flex items-center gap-4 text-xs text-gray-500">
+              <div className="flex items-center gap-4 text-xs text-ink-muted">
                 <span className="flex items-center gap-1">
                   <Clock className="w-3 h-3" />
                   Last checked: {new Date(check.last_checked).toLocaleDateString()}
@@ -116,10 +116,10 @@ function AlertItem({ alert }: { alert: ComplianceAlert }) {
     <div className={`border-l-4 p-3 rounded-r-lg ${severityColors[alert.severity]}`}>
       <div className="flex items-start justify-between gap-2">
         <div>
-          <p className="font-medium text-sm text-gray-900 dark:text-white">{alert.title}</p>
-          <p className="text-xs text-gray-600 dark:text-gray-400 mt-0.5">{alert.message}</p>
+          <p className="font-medium text-sm text-ink dark:text-white">{alert.title}</p>
+          <p className="text-xs text-ink-muted dark:text-ink-faint mt-0.5">{alert.message}</p>
         </div>
-        <span className="text-xs text-gray-500 whitespace-nowrap">
+        <span className="text-xs text-ink-muted whitespace-nowrap">
           {new Date(alert.created_at).toLocaleDateString()}
         </span>
       </div>
@@ -168,18 +168,18 @@ export function ComplianceAdvisor() {
     return (
       <Card>
         <CardContent className="p-8 text-center">
-          <RefreshCw className="w-6 h-6 animate-spin mx-auto text-gray-400" />
-          <p className="text-gray-500 mt-2">Running compliance checks...</p>
+          <RefreshCw className="w-6 h-6 animate-spin mx-auto text-ink-faint" />
+          <p className="text-ink-muted mt-2">Running compliance checks...</p>
         </CardContent>
       </Card>
     );
   }
 
   const riskColors = {
-    low: 'text-green-600 bg-green-50 dark:bg-green-950/30',
+    low: 'text-success bg-green-50 dark:bg-green-950/30',
     medium: 'text-amber-600 bg-amber-50 dark:bg-amber-950/30',
     high: 'text-orange-600 bg-orange-50 dark:bg-orange-950/30',
-    critical: 'text-red-600 bg-red-50 dark:bg-red-950/30',
+    critical: 'text-destructive bg-red-50 dark:bg-red-950/30',
   };
 
   const checksByCountry = report?.checks.reduce((acc, check) => {
@@ -193,11 +193,11 @@ export function ComplianceAdvisor() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h2 className="text-2xl font-bold text-gray-900 dark:text-white flex items-center gap-2">
-            <Shield className="w-6 h-6 text-blue-500" />
+          <h2 className="text-2xl font-bold text-ink dark:text-white flex items-center gap-2">
+            <Shield className="w-6 h-6 text-primary" />
             AI Compliance Advisor
           </h2>
-          <p className="text-gray-500 dark:text-gray-400 mt-1">
+          <p className="text-ink-muted dark:text-ink-faint mt-1">
             Real-time compliance monitoring across all regions
           </p>
         </div>
@@ -217,10 +217,10 @@ export function ComplianceAdvisor() {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
           <Card>
             <CardContent className="p-6 text-center">
-              <div className={`text-4xl font-bold ${report.overall_score >= 80 ? 'text-green-600' : report.overall_score >= 50 ? 'text-amber-600' : 'text-red-600'}`}>
+              <div className={`text-4xl font-bold ${report.overall_score >= 80 ? 'text-success' : report.overall_score >= 50 ? 'text-amber-600' : 'text-destructive'}`}>
                 {report.overall_score}%
               </div>
-              <p className="text-sm text-gray-500 mt-1">Overall Score</p>
+              <p className="text-sm text-ink-muted mt-1">Overall Score</p>
             </CardContent>
           </Card>
           <Card>
@@ -228,36 +228,36 @@ export function ComplianceAdvisor() {
               <div className={`inline-flex items-center gap-2 px-3 py-1 rounded-full text-sm font-medium ${riskColors[report.risk_level]}`}>
                 {report.risk_level.toUpperCase()}
               </div>
-              <p className="text-sm text-gray-500 mt-2">Risk Level</p>
+              <p className="text-sm text-ink-muted mt-2">Risk Level</p>
             </CardContent>
           </Card>
           <Card>
             <CardContent className="p-6 text-center">
-              <div className="text-4xl font-bold text-gray-900 dark:text-white">
+              <div className="text-4xl font-bold text-ink dark:text-white">
                 {report.checks.filter(c => c.status === 'compliant').length}/{report.checks.length}
               </div>
-              <p className="text-sm text-gray-500 mt-1">Checks Passed</p>
+              <p className="text-sm text-ink-muted mt-1">Checks Passed</p>
             </CardContent>
           </Card>
           <Card>
             <CardContent className="p-6 text-center">
               <div className="text-4xl font-bold text-amber-600">{alerts.length}</div>
-              <p className="text-sm text-gray-500 mt-1">Active Alerts</p>
+              <p className="text-sm text-ink-muted mt-1">Active Alerts</p>
             </CardContent>
           </Card>
         </div>
       )}
 
       {/* Tabs */}
-      <div className="flex gap-1 bg-gray-100 dark:bg-gray-800 p-1 rounded-lg">
+      <div className="flex gap-1 bg-surface-sunken dark:bg-gray-800 p-1 rounded-lg">
         {(['overview', 'checks', 'alerts'] as const).map(tab => (
           <button
             key={tab}
             onClick={() => setActiveTab(tab)}
             className={`flex-1 py-2 px-4 rounded-md text-sm font-medium transition-colors ${
               activeTab === tab
-                ? 'bg-white dark:bg-gray-700 text-gray-900 dark:text-white shadow-sm'
-                : 'text-gray-500 hover:text-gray-700 dark:hover:text-gray-300'
+                ? 'bg-surface dark:bg-gray-700 text-ink dark:text-white shadow-sm'
+                : 'text-ink-muted hover:text-ink-secondary dark:hover:text-gray-300'
             }`}
           >
             {tab === 'overview' && 'Overview'}
@@ -280,7 +280,7 @@ export function ComplianceAdvisor() {
             {report?.summary && (
               <Card>
                 <CardContent className="p-4">
-                  <p className="text-sm text-gray-700 dark:text-gray-300">{report.summary}</p>
+                  <p className="text-sm text-ink-secondary dark:text-gray-300">{report.summary}</p>
                 </CardContent>
               </Card>
             )}
@@ -295,7 +295,7 @@ export function ComplianceAdvisor() {
                   <CardContent>
                     <div className="space-y-3">
                       <div>
-                        <p className="text-xs font-medium text-gray-500 uppercase tracking-wide mb-2">Frameworks</p>
+                        <p className="text-xs font-medium text-ink-muted uppercase tracking-wide mb-2">Frameworks</p>
                         <div className="flex flex-wrap gap-2">
                           {countryInfo.frameworks.map(f => (
                             <span key={f} className="px-2 py-1 bg-blue-50 dark:bg-blue-950/30 text-blue-700 dark:text-blue-300 rounded text-xs">
@@ -305,11 +305,11 @@ export function ComplianceAdvisor() {
                         </div>
                       </div>
                       <div>
-                        <p className="text-xs font-medium text-gray-500 uppercase tracking-wide mb-2">Key Requirements</p>
+                        <p className="text-xs font-medium text-ink-muted uppercase tracking-wide mb-2">Key Requirements</p>
                         <ul className="space-y-1">
                           {countryInfo.keyRequirements.map((req, i) => (
-                            <li key={i} className="text-sm text-gray-600 dark:text-gray-400 flex items-start gap-2">
-                              <span className="text-blue-500 mt-1">•</span>
+                            <li key={i} className="text-sm text-ink-muted dark:text-ink-faint flex items-start gap-2">
+                              <span className="text-primary mt-1">•</span>
                               {req}
                             </li>
                           ))}
@@ -333,7 +333,7 @@ export function ComplianceAdvisor() {
           >
             {Object.entries(checksByCountry).map(([country, checks]) => (
               <div key={country}>
-                <h3 className="text-sm font-medium text-gray-500 uppercase tracking-wide mb-3">{country}</h3>
+                <h3 className="text-sm font-medium text-ink-muted uppercase tracking-wide mb-3">{country}</h3>
                 <div className="space-y-2">
                   {checks.map(check => (
                     <CheckCard key={check.id} check={check} />
@@ -355,8 +355,8 @@ export function ComplianceAdvisor() {
             {alerts.length === 0 ? (
               <Card>
                 <CardContent className="p-8 text-center">
-                  <CheckCircle2 className="w-12 h-12 text-green-500 mx-auto mb-3" />
-                  <p className="text-gray-500">No active compliance alerts</p>
+                  <CheckCircle2 className="w-12 h-12 text-success mx-auto mb-3" />
+                  <p className="text-ink-muted">No active compliance alerts</p>
                 </CardContent>
               </Card>
             ) : (

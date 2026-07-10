@@ -90,22 +90,22 @@ export default function EmployeeProfilePage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex items-center justify-center">
+      <div className="min-h-screen bg-surface-sunken dark:bg-gray-900 flex items-center justify-center">
         <div className="text-center">
           <div className="w-8 h-8 border-4 border-blue-500 border-t-transparent rounded-full animate-spin mx-auto" />
-          <p className="text-gray-500 mt-3">Loading profile...</p>
+          <p className="text-ink-muted mt-3">Loading profile...</p>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
+    <div className="min-h-screen bg-surface-sunken dark:bg-gray-900">
       {/* Header */}
-      <div className="bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700">
+      <div className="bg-surface dark:bg-gray-800 border-b border-border dark:border-gray-700">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-          <h1 className="text-2xl font-bold text-gray-900 dark:text-white">My Profile</h1>
-          <p className="text-gray-500 dark:text-gray-400 mt-1">
+          <h1 className="text-2xl font-bold text-ink dark:text-white">My Profile</h1>
+          <p className="text-ink-muted dark:text-ink-faint mt-1">
             Manage your personal information
           </p>
         </div>
@@ -125,7 +125,7 @@ export default function EmployeeProfilePage() {
                       className="w-full h-full object-cover"
                     />
                   ) : (
-                    <User className="w-12 h-12 text-gray-400" />
+                    <User className="w-12 h-12 text-ink-faint" />
                   )}
                 </div>
                 <button className="absolute bottom-0 right-0 w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center text-white hover:bg-blue-600 transition-colors">
@@ -133,11 +133,11 @@ export default function EmployeeProfilePage() {
                 </button>
               </div>
               <div>
-                <h2 className="text-xl font-bold text-gray-900 dark:text-white">
+                <h2 className="text-xl font-bold text-ink dark:text-white">
                   {employeeProfile?.first_name} {employeeProfile?.last_name}
                 </h2>
-                <p className="text-gray-500">{employeeProfile?.position}</p>
-                <p className="text-sm text-gray-400">{employeeProfile?.department}</p>
+                <p className="text-ink-muted">{employeeProfile?.position}</p>
+                <p className="text-sm text-ink-faint">{employeeProfile?.department}</p>
               </div>
             </div>
           </CardContent>
@@ -151,29 +151,29 @@ export default function EmployeeProfilePage() {
           <CardContent className="space-y-4">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                <label className="block text-sm font-medium text-ink-secondary dark:text-gray-300 mb-1">
                   First Name
                 </label>
                 <input
                   type="text"
                   value={employeeProfile?.first_name || ''}
                   disabled
-                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-gray-50 dark:bg-gray-800 text-gray-900 dark:text-white"
+                  className="w-full px-3 py-2 border border-border dark:border-gray-600 rounded-lg bg-surface-sunken dark:bg-gray-800 text-ink dark:text-white"
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                <label className="block text-sm font-medium text-ink-secondary dark:text-gray-300 mb-1">
                   Last Name
                 </label>
                 <input
                   type="text"
                   value={employeeProfile?.last_name || ''}
                   disabled
-                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-gray-50 dark:bg-gray-800 text-gray-900 dark:text-white"
+                  className="w-full px-3 py-2 border border-border dark:border-gray-600 rounded-lg bg-surface-sunken dark:bg-gray-800 text-ink dark:text-white"
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                <label className="block text-sm font-medium text-ink-secondary dark:text-gray-300 mb-1">
                   <Mail className="w-4 h-4 inline mr-1" />
                   Email
                 </label>
@@ -181,11 +181,11 @@ export default function EmployeeProfilePage() {
                   type="email"
                   value={employeeProfile?.email || ''}
                   disabled
-                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-gray-50 dark:bg-gray-800 text-gray-900 dark:text-white"
+                  className="w-full px-3 py-2 border border-border dark:border-gray-600 rounded-lg bg-surface-sunken dark:bg-gray-800 text-ink dark:text-white"
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                <label className="block text-sm font-medium text-ink-secondary dark:text-gray-300 mb-1">
                   <Phone className="w-4 h-4 inline mr-1" />
                   Phone
                 </label>
@@ -193,11 +193,11 @@ export default function EmployeeProfilePage() {
                   type="tel"
                   value={employeeProfile?.phone || ''}
                   onChange={(e) => setEmployeeProfile(prev => prev ? { ...prev, phone: e.target.value } : null)}
-                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
+                  className="w-full px-3 py-2 border border-border dark:border-gray-600 rounded-lg bg-surface dark:bg-gray-800 text-ink dark:text-white"
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                <label className="block text-sm font-medium text-ink-secondary dark:text-gray-300 mb-1">
                   <MapPin className="w-4 h-4 inline mr-1" />
                   Location
                 </label>
@@ -205,11 +205,11 @@ export default function EmployeeProfilePage() {
                   type="text"
                   value={employeeProfile?.location || ''}
                   onChange={(e) => setEmployeeProfile(prev => prev ? { ...prev, location: e.target.value } : null)}
-                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
+                  className="w-full px-3 py-2 border border-border dark:border-gray-600 rounded-lg bg-surface dark:bg-gray-800 text-ink dark:text-white"
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                <label className="block text-sm font-medium text-ink-secondary dark:text-gray-300 mb-1">
                   <Briefcase className="w-4 h-4 inline mr-1" />
                   Position
                 </label>
@@ -217,11 +217,11 @@ export default function EmployeeProfilePage() {
                   type="text"
                   value={employeeProfile?.position || ''}
                   disabled
-                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-gray-50 dark:bg-gray-800 text-gray-900 dark:text-white"
+                  className="w-full px-3 py-2 border border-border dark:border-gray-600 rounded-lg bg-surface-sunken dark:bg-gray-800 text-ink dark:text-white"
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                <label className="block text-sm font-medium text-ink-secondary dark:text-gray-300 mb-1">
                   <Calendar className="w-4 h-4 inline mr-1" />
                   Hire Date
                 </label>
@@ -229,18 +229,18 @@ export default function EmployeeProfilePage() {
                   type="text"
                   value={employeeProfile?.hire_date ? new Date(employeeProfile.hire_date).toLocaleDateString() : ''}
                   disabled
-                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-gray-50 dark:bg-gray-800 text-gray-900 dark:text-white"
+                  className="w-full px-3 py-2 border border-border dark:border-gray-600 rounded-lg bg-surface-sunken dark:bg-gray-800 text-ink dark:text-white"
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                <label className="block text-sm font-medium text-ink-secondary dark:text-gray-300 mb-1">
                   Nationality
                 </label>
                 <input
                   type="text"
                   value={employeeProfile?.nationality || ''}
                   disabled
-                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-gray-50 dark:bg-gray-800 text-gray-900 dark:text-white"
+                  className="w-full px-3 py-2 border border-border dark:border-gray-600 rounded-lg bg-surface-sunken dark:bg-gray-800 text-ink dark:text-white"
                 />
               </div>
             </div>
@@ -255,25 +255,25 @@ export default function EmployeeProfilePage() {
           <CardContent className="space-y-4">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                <label className="block text-sm font-medium text-ink-secondary dark:text-gray-300 mb-1">
                   Contact Name
                 </label>
                 <input
                   type="text"
                   value={employeeProfile?.emergency_contact || ''}
                   onChange={(e) => setEmployeeProfile(prev => prev ? { ...prev, emergency_contact: e.target.value } : null)}
-                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
+                  className="w-full px-3 py-2 border border-border dark:border-gray-600 rounded-lg bg-surface dark:bg-gray-800 text-ink dark:text-white"
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                <label className="block text-sm font-medium text-ink-secondary dark:text-gray-300 mb-1">
                   Contact Phone
                 </label>
                 <input
                   type="tel"
                   value={employeeProfile?.emergency_phone || ''}
                   onChange={(e) => setEmployeeProfile(prev => prev ? { ...prev, emergency_phone: e.target.value } : null)}
-                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
+                  className="w-full px-3 py-2 border border-border dark:border-gray-600 rounded-lg bg-surface dark:bg-gray-800 text-ink dark:text-white"
                 />
               </div>
             </div>
