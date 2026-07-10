@@ -415,10 +415,10 @@ export default function LandingPage() {
                       <feature.icon className={`w-5 h-5 ${feature.color}`} />
                     </div>
                     <h3 className="font-medium text-ink text-sm mb-1">
-                      {t(`landing.features.${feature.key}.title`)}
+                      {t(`features.${feature.key}.title`)}
                     </h3>
                     <p className="text-ink-muted text-xs">
-                      {t(`landing.features.${feature.key}.description`)}
+                      {t(`features.${feature.key}.description`)}
                     </p>
                   </CardContent>
                 </Card>
@@ -452,10 +452,10 @@ export default function LandingPage() {
                 <diff.icon className={`w-4 h-4 mt-0.5 flex-shrink-0 ${diff.color}`} />
                 <div>
                   <h3 className="font-medium text-ink text-sm">
-                    {t(`landing.differentiators.${diff.key}.title`)}
+                    {t(`differentiators.${diff.key}.title`)}
                   </h3>
                   <p className="text-ink-muted text-xs mt-0.5">
-                    {t(`landing.differentiators.${diff.key}.description`)}
+                    {t(`differentiators.${diff.key}.desc`)}
                   </p>
                 </div>
               </motion.div>
