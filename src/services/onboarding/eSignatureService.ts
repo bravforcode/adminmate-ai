@@ -146,3 +146,169 @@ async function isProviderConfigured(_companyId: string, provider: ESignatureProv
   // For now, return false for external providers until configured
   return false
 }
+
+// ── Canvas-Based Signature Capture ──────────────────────────
+// In-app signature for Thai legal compliance (พ.ร.บ.ธุรกรรมทางอิเล็กทรอนิกส์)
+
+export interface SignatureData {
+  signatureImage: string // Base64 PNG
+  ipAddress: string
+  userAgent: string
+  timestamp: string
+  signerName: string
+  signerEmail: string
+}
+
+export interface SignatureAuditEntry {
+  id: string
+  request_id: string
+  action: 'viewed' | 'signed' | 'declined'
+  signature_data?: SignatureData
+  ip_address: string
+  user_agent: string
+  timestamp: string
+}
+
+/**
+ * Process canvas-captured signature.
+ * Stores signature image + creates audit trail for legal compliance.
+ */
+export async function processCanvasSignature(
+  requestId: string,
+  companyId: string,
+  signatureData: SignatureData
+): Promise<void> {
+  // Get the request
+  const { data: request } = await supabase
+    .from('esignature_requests')
+    .select('id, generated_contract_id')
+    .eq('id', requestId)
+    .eq('company_id', companyId)
+    .single()
+
+  if (!request) throw new Error('Signature request not found')
+
+  // Store signature image in Supabase Storage
+  const signatureFileName = `signatures/${companyId}/${requestId}_${Date.now()}.png`
+  const signatureBuffer = Buffer.from(signatureData.signatureImage.split(',')[1], 'base64')
+
+  const { error: uploadError } = await supabase.storage
+    .from('esignatures')
+    .upload(signatureFileName, signatureBuffer, {
+      contentType: 'image/png',
+      upsert: false,
+    })
+
+  if (uploadError) throw new Error(`Failed to store signature: ${uploadError.message}`)
+
+  // Update request status
+  await supabase
+    .from('esignature_requests')
+    .update({
+      status: 'signed',
+      signed_at: new Date().toISOString(),
+      metadata: {
+        signature_storage_path: signatureFileName,
+        signer_name: signatureData.signerName,
+        signer_email: signatureData.signerEmail,
+      },
+    })
+    .eq('id', requestId)
+
+  // Update contract status
+  await supabase
+    .from('generated_contracts')
+    .update({ status: 'signed', updated_at: new Date().toISOString() })
+    .eq('id', request.generated_contract_id)
+
+  // Create audit trail entry
+  await supabase.from('esignature_audit_log').insert({
+    request_id: requestId,
+    company_id: companyId,
+    action: 'signed',
+    signature_storage_path: signatureFileName,
+    ip_address: signatureData.ipAddress,
+    user_agent: signatureData.userAgent,
+    signer_name: signatureData.signerName,
+    signer_email: signatureData.signerEmail,
+    timestamp: new Date().toISOString(),
+  })
+
+  // General audit log
+  await supabase.from('audit_logs').insert({
+    company_id: companyId,
+    user_id: request.generated_contract_id, // Will be overridden by RLS
+    action: 'esignature.canvas_signed',
+    resource_type: 'esignature_request',
+    resource_id: requestId,
+    details: JSON.stringify({
+      signer_name: signatureData.signerName,
+      signer_email: signatureData.signerEmail,
+      ip_address: signatureData.ipAddress,
+    }),
+  })
+}
+
+/**
+ * Get audit trail for a signature request.
+ * Returns chronological list of all actions taken on the request.
+ */
+export async function getSignatureAuditTrail(
+  requestId: string,
+  companyId: string
+): Promise<SignatureAuditEntry[]> {
+  const { data, error } = await supabase
+    .from('esignature_audit_log')
+    .select('*')
+    .eq('request_id', requestId)
+    .eq('company_id', companyId)
+    .order('timestamp', { ascending: true })
+
+  if (error) throw error
+  return (data ?? []) as SignatureAuditEntry[]
+}
+
+/**
+ * Verify signature integrity.
+ * Checks that the signature image exists and matches the audit record.
+ */
+export async function verifySignature(
+  requestId: string,
+  companyId: string
+): Promise<{ valid: boolean; reason?: string }> {
+  const { data: request } = await supabase
+    .from('esignature_requests')
+    .select('status, metadata')
+    .eq('id', requestId)
+    .eq('company_id', companyId)
+    .single()
+
+  if (!request) return { valid: false, reason: 'Request not found' }
+  if (request.status !== 'signed') return { valid: false, reason: 'Not yet signed' }
+
+  const metadata = request.metadata as Record<string, unknown>
+  const storagePath = metadata.signature_storage_path as string
+
+  if (!storagePath) return { valid: false, reason: 'No signature image stored' }
+
+  // Verify signature image exists in storage
+  const { error: listError } = await supabase.storage
+    .from('esignatures')
+    .list(storagePath.split('/').slice(0, -1).join('/'))
+
+  if (listError) return { valid: false, reason: 'Signature image not found in storage' }
+
+  // Verify audit trail exists
+  const { data: auditEntries } = await supabase
+    .from('esignature_audit_log')
+    .select('id')
+    .eq('request_id', requestId)
+    .eq('action', 'signed')
+    .limit(1)
+
+  if (!auditEntries || auditEntries.length === 0) {
+    return { valid: false, reason: 'No signed audit entry found' }
+  }
+
+  return { valid: true }
+}

@@ -53,10 +53,10 @@ function StatusRow({
   detail?: string
 }) {
   return (
-    <div className="flex items-center justify-between py-2 border-b border-outline-variant last:border-b-0">
+    <div className="flex items-center justify-between py-2 border-b border-border last:border-b-0">
       <div className="flex items-center gap-3">
         <StatusDot state={state} />
-        <span className="text-sm font-medium text-on-surface">{label}</span>
+        <span className="text-sm font-medium text-ink">{label}</span>
       </div>
       <span
         className={`text-sm ${
@@ -64,7 +64,7 @@ function StatusRow({
             ? 'text-green-600 font-medium'
             : state === 'error'
               ? 'text-red-600 font-medium'
-              : 'text-on-surface-variant'
+              : 'text-ink-variant'
         }`}
       >
         {detail}
@@ -252,10 +252,10 @@ export default function HealthPage() {
         <header className="flex items-center justify-between">
           <h1 className="text-headline-md font-bold">{t('title')}</h1>
         </header>
-        <div className="bg-surface rounded-xl border border-outline-variant p-8 text-center">
+        <div className="bg-surface rounded-xl border border-border p-8 text-center">
           <AlertCircle size={40} className="mx-auto text-error mb-3" />
-          <h3 className="font-semibold text-on-surface mb-1">{t('error_title')}</h3>
-          <p className="text-sm text-on-surface-variant mb-4">
+          <h3 className="font-semibold text-ink mb-1">{t('error_title')}</h3>
+          <p className="text-sm text-ink-variant mb-4">
             {(dbQuery.error as Error)?.message || t('error_description')}
           </p>
           <button
@@ -273,16 +273,16 @@ export default function HealthPage() {
     <div className="space-y-6 max-w-2xl">
       <header className="flex items-center justify-between">
         <h1 className="text-headline-md font-bold">{t('title')}</h1>
-        <div className="text-xs text-on-surface-variant">
+        <div className="text-xs text-ink-variant">
           {t('last_checked')}: <span className="font-medium">{formatTime(lastChecked?.toISOString())}</span>
         </div>
       </header>
 
-      <div className="bg-surface rounded-xl border border-outline-variant p-6">
+      <div className="bg-surface rounded-xl border border-border p-6">
         <div className="flex items-center justify-between mb-2">
           <h3 className="font-semibold">{t('service_status')}</h3>
           {isAnyLoading ? (
-            <span className="text-xs text-on-surface-variant">{t('refreshing')}</span>
+            <span className="text-xs text-ink-variant">{t('refreshing')}</span>
           ) : null}
         </div>
         <StatusRow
@@ -317,7 +317,7 @@ export default function HealthPage() {
         />
       </div>
 
-      <div className="bg-surface rounded-xl border border-outline-variant p-6">
+      <div className="bg-surface rounded-xl border border-border p-6">
         <h3 className="font-semibold mb-4">{t('labels.database')}</h3>
         {dbQuery.isLoading ? (
           <LoadingState variant="list" rows={3} message={t('common:loading')} />
@@ -364,7 +364,7 @@ export default function HealthPage() {
       </div>
 
       {metricsQuery.data ? (
-        <div className="bg-surface rounded-xl border border-outline-variant p-6">
+        <div className="bg-surface rounded-xl border border-border p-6">
           <h3 className="font-semibold mb-4">{t('system_metrics')}</h3>
           <div className="grid grid-cols-2 gap-3 text-sm">
             <div className="flex justify-between col-span-2 sm:col-span-1">
@@ -401,7 +401,7 @@ export default function HealthPage() {
         </div>
       ) : null}
 
-      <p className="text-xs text-on-surface-variant">
+      <p className="text-xs text-ink-variant">
         {t('auto_refresh_note')}
       </p>
     </div>

@@ -42,37 +42,37 @@ export function CandidateForm({ onClose }: CandidateFormProps) {
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
       <div className="flex items-center gap-2 mb-4">
-        <UserPlus size={20} className="text-primary dark:text-accent-dim" />
-        <h3 className="font-semibold dark:text-on-surface">{t('candidates.add_candidate', { ns: 'recruitment' })}</h3>
+        <UserPlus size={20} className="text-primary dark:text-primary-muted" />
+        <h3 className="font-semibold dark:text-ink">{t('candidates.add_candidate', { ns: 'recruitment' })}</h3>
       </div>
       <div>
-        <label className="block text-sm font-medium mb-1 dark:text-on-surface">{t('candidates.name', { ns: 'recruitment' })} *</label>
-        <input {...register('full_name')} data-testid="candidate-name" aria-required="true" aria-invalid={!!errors.full_name} aria-describedby={errors.full_name ? 'candidate-name-error' : undefined} className="w-full px-4 py-3 rounded-xl border border-outline-variant dark:border-outline bg-surface-container-lowest dark:bg-surface-container-lowest text-on-surface dark:text-on-surface focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all duration-200 outline-none" placeholder={t('candidates.name_placeholder', { ns: 'recruitment' })} />
+        <label className="block text-sm font-medium mb-1 dark:text-ink">{t('candidates.name', { ns: 'recruitment' })} *</label>
+        <input {...register('full_name')} data-testid="candidate-name" aria-required="true" aria-invalid={!!errors.full_name} aria-describedby={errors.full_name ? 'candidate-name-error' : undefined} className="w-full px-4 py-3 rounded-xl border border-border bg-surface-sunken-lowest dark:bg-surface-sunken-lowest text-ink focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all duration-200 outline-none" placeholder={t('candidates.name_placeholder', { ns: 'recruitment' })} />
         {errors.full_name && <p id="candidate-name-error" role="alert" className="text-error dark:text-error text-xs mt-1">{errors.full_name.message}</p>}
       </div>
       <div className="form-grid-2 grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div>
-          <label className="block text-sm font-medium mb-1 dark:text-on-surface" htmlFor="candidate-email">{t('candidates.email', { ns: 'recruitment' })}</label>
-          <input {...register('email')} id="candidate-email" type="email" data-testid="candidate-email" aria-invalid={!!errors.email} aria-describedby={errors.email ? 'candidate-email-error' : undefined} className="w-full px-4 py-3 rounded-xl border border-outline-variant dark:border-outline bg-surface-container-lowest dark:bg-surface-container-lowest text-on-surface dark:text-on-surface focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all duration-200 outline-none" />
+          <label className="block text-sm font-medium mb-1 dark:text-ink" htmlFor="candidate-email">{t('candidates.email', { ns: 'recruitment' })}</label>
+          <input {...register('email')} id="candidate-email" type="email" data-testid="candidate-email" aria-invalid={!!errors.email} aria-describedby={errors.email ? 'candidate-email-error' : undefined} className="w-full px-4 py-3 rounded-xl border border-border bg-surface-sunken-lowest dark:bg-surface-sunken-lowest text-ink focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all duration-200 outline-none" />
         </div>
         <div>
-          <label className="block text-sm font-medium mb-1 dark:text-on-surface">{t('candidates.phone', { ns: 'recruitment' })}</label>
-          <input {...register('phone')} className="w-full px-4 py-3 rounded-xl border border-outline-variant dark:border-outline bg-surface-container-lowest dark:bg-surface-container-lowest text-on-surface dark:text-on-surface focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all duration-200 outline-none" />
+          <label className="block text-sm font-medium mb-1 dark:text-ink">{t('candidates.phone', { ns: 'recruitment' })}</label>
+          <input {...register('phone')} className="w-full px-4 py-3 rounded-xl border border-border bg-surface-sunken-lowest dark:bg-surface-sunken-lowest text-ink focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all duration-200 outline-none" />
         </div>
       </div>
       <div className="form-grid-2 grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div>
-          <label className="block text-sm font-medium mb-1 dark:text-on-surface">{t('candidates.position', { ns: 'recruitment' })}</label>
-          <input {...register('current_position')} className="w-full px-4 py-3 rounded-xl border border-outline-variant dark:border-outline bg-surface-container-lowest dark:bg-surface-container-lowest text-on-surface dark:text-on-surface focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all duration-200 outline-none" placeholder={t('candidates.position_placeholder', { ns: 'recruitment' })} />
+          <label className="block text-sm font-medium mb-1 dark:text-ink">{t('candidates.position', { ns: 'recruitment' })}</label>
+          <input {...register('current_position')} className="w-full px-4 py-3 rounded-xl border border-border bg-surface-sunken-lowest dark:bg-surface-sunken-lowest text-ink focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all duration-200 outline-none" placeholder={t('candidates.position_placeholder', { ns: 'recruitment' })} />
         </div>
         <div>
-          <label className="block text-sm font-medium mb-1 dark:text-on-surface">{t('candidates.location', { ns: 'recruitment' })}</label>
-          <input {...register('location')} className="w-full px-4 py-3 rounded-xl border border-outline-variant dark:border-outline bg-surface-container-lowest dark:bg-surface-container-lowest text-on-surface dark:text-on-surface focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all duration-200 outline-none" placeholder={t('candidates.location_placeholder', { ns: 'recruitment' })} />
+          <label className="block text-sm font-medium mb-1 dark:text-ink">{t('candidates.location', { ns: 'recruitment' })}</label>
+          <input {...register('location')} className="w-full px-4 py-3 rounded-xl border border-border bg-surface-sunken-lowest dark:bg-surface-sunken-lowest text-ink focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all duration-200 outline-none" placeholder={t('candidates.location_placeholder', { ns: 'recruitment' })} />
         </div>
       </div>
       <div>
-        <label className="block text-sm font-medium mb-1 dark:text-on-surface">{t('candidates.source', { ns: 'recruitment' })}</label>
-        <select {...register('source')} className="w-full px-4 py-3 rounded-xl border border-outline-variant dark:border-outline bg-surface-container-lowest dark:bg-surface-container-lowest text-on-surface dark:text-on-surface focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all duration-200 outline-none">
+        <label className="block text-sm font-medium mb-1 dark:text-ink">{t('candidates.source', { ns: 'recruitment' })}</label>
+        <select {...register('source')} className="w-full px-4 py-3 rounded-xl border border-border bg-surface-sunken-lowest dark:bg-surface-sunken-lowest text-ink focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all duration-200 outline-none">
           <option value="direct">{t('candidates.sources.direct', { ns: 'recruitment' })}</option>
           <option value="linkedin">{t('candidates.sources.linkedin', { ns: 'recruitment' })}</option>
           <option value="referral">{t('candidates.sources.referral', { ns: 'recruitment' })}</option>

@@ -52,8 +52,8 @@ export function InterviewsPage() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-headline-md font-bold text-on-surface dark:text-on-surface">{t('interviews.title')}</h1>
-        <p className="text-body-md text-on-surface-variant dark:text-on-surface-variant mt-1">{t('interviews.subtitle')}</p>
+        <h1 className="text-headline-md font-bold text-ink dark:text-ink">{t('interviews.title')}</h1>
+        <p className="text-body-md text-ink-variant dark:text-ink-variant mt-1">{t('interviews.subtitle')}</p>
       </div>
 
       {((tab === 'upcoming' && upcoming && upcoming.length > 0) || (tab === 'past' && past && past.length > 0)) && (
@@ -82,12 +82,12 @@ export function InterviewsPage() {
         </div>
       )}
 
-      <div className="flex gap-1 bg-surface-container-low dark:bg-surface-container-low rounded-lg p-1 w-fit">
+      <div className="flex gap-1 bg-surface-sunken rounded-lg p-1 w-fit">
         <button
           onClick={() => handleTabChange('upcoming')}
           className={cn(
             'px-4 py-2 rounded-md text-sm font-medium transition-colors',
-            tab === 'upcoming' ? 'bg-surface dark:bg-surface shadow-sm text-on-surface dark:text-on-surface' : 'text-on-surface-variant dark:text-on-surface-variant hover:text-on-surface dark:hover:text-on-surface'
+            tab === 'upcoming' ? 'bg-surface shadow-sm text-ink dark:text-ink' : 'text-ink-variant dark:text-ink-variant hover:text-ink dark:hover:text-ink'
           )}
         >
           {t('interviews.tab_upcoming')}
@@ -96,7 +96,7 @@ export function InterviewsPage() {
           onClick={() => handleTabChange('past')}
           className={cn(
             'px-4 py-2 rounded-md text-sm font-medium transition-colors',
-            tab === 'past' ? 'bg-surface dark:bg-surface shadow-sm text-on-surface dark:text-on-surface' : 'text-on-surface-variant dark:text-on-surface-variant hover:text-on-surface dark:hover:text-on-surface'
+            tab === 'past' ? 'bg-surface shadow-sm text-ink dark:text-ink' : 'text-ink-variant dark:text-ink-variant hover:text-ink dark:hover:text-ink'
           )}
         >
           {t('interviews.tab_past')}
@@ -104,7 +104,7 @@ export function InterviewsPage() {
       </div>
 
       {selectedAppId && (
-        <div className="bg-surface dark:bg-surface rounded-xl border border-outline-variant dark:border-outline p-6">
+        <div className="bg-surface rounded-xl border border-border p-6">
           <ScheduleInterviewForm applicationId={selectedAppId} onClose={() => setSelectedAppId('')} />
         </div>
       )}

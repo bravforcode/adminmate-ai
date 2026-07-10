@@ -56,18 +56,18 @@ export function OfferForm({ applicationId, onClose }: Props) {
       <div className="flex items-center gap-2 mb-4"><Sparkles size={20} className="text-primary" /><h3 className="font-semibold">{t('form.title')}</h3></div>
       <div>
         <label className="block text-sm font-medium mb-1" htmlFor="offer-position">{t('form.position_title')} *</label>
-        <input {...register('position_title')} id="offer-position" aria-required="true" aria-invalid={!!errors.position_title} aria-describedby={errors.position_title ? 'offer-position-error' : undefined} className="w-full px-4 py-3 rounded-xl border border-outline-variant dark:border-outline bg-surface-container-lowest dark:bg-surface-container-lowest text-on-surface dark:text-on-surface focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all duration-200 outline-none" />
+        <input {...register('position_title')} id="offer-position" aria-required="true" aria-invalid={!!errors.position_title} aria-describedby={errors.position_title ? 'offer-position-error' : undefined} className="w-full px-4 py-3 rounded-xl border border-border bg-surface-sunken-lowest dark:bg-surface-sunken-lowest text-ink focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all duration-200 outline-none" />
         {errors.position_title && <p id="offer-position-error" role="alert" className="text-error text-xs mt-1">{errors.position_title.message}</p>}
       </div>
       <div className="form-grid-2 grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div>
           <label className="block text-sm font-medium mb-1" htmlFor="offer-salary">{t('form.salary_offered')} *</label>
-          <input {...register('salary_offered')} id="offer-salary" type="number" aria-required="true" aria-invalid={!!errors.salary_offered} aria-describedby={errors.salary_offered ? 'offer-salary-error' : undefined} className="w-full px-4 py-3 rounded-xl border border-outline-variant dark:border-outline bg-surface-container-lowest dark:bg-surface-container-lowest text-on-surface dark:text-on-surface focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all duration-200 outline-none" />
+          <input {...register('salary_offered')} id="offer-salary" type="number" aria-required="true" aria-invalid={!!errors.salary_offered} aria-describedby={errors.salary_offered ? 'offer-salary-error' : undefined} className="w-full px-4 py-3 rounded-xl border border-border bg-surface-sunken-lowest dark:bg-surface-sunken-lowest text-ink focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all duration-200 outline-none" />
           {errors.salary_offered && <p id="offer-salary-error" role="alert" className="text-error text-xs mt-1">{errors.salary_offered.message}</p>}
         </div>
         <div>
           <label className="block text-sm font-medium mb-1">{t('form.currency')}</label>
-          <select {...register('salary_currency')} className="w-full px-4 py-3 rounded-xl border border-outline-variant dark:border-outline bg-surface-container-lowest dark:bg-surface-container-lowest text-on-surface dark:text-on-surface focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all duration-200 outline-none">
+          <select {...register('salary_currency')} className="w-full px-4 py-3 rounded-xl border border-border bg-surface-sunken-lowest dark:bg-surface-sunken-lowest text-ink focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all duration-200 outline-none">
             <option value="THB">THB</option><option value="VND">VND</option><option value="IDR">IDR</option><option value="USD">USD</option>
           </select>
         </div>
@@ -75,21 +75,21 @@ export function OfferForm({ applicationId, onClose }: Props) {
       <div className="form-grid-2 grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div>
           <label className="block text-sm font-medium mb-1" htmlFor="offer-start-date">{t('form.start_date')} *</label>
-          <input {...register('start_date')} id="offer-start-date" type="date" aria-required="true" aria-invalid={!!errors.start_date} aria-describedby={errors.start_date ? 'offer-start-date-error' : undefined} className="w-full px-4 py-3 rounded-xl border border-outline-variant dark:border-outline bg-surface-container-lowest dark:bg-surface-container-lowest text-on-surface dark:text-on-surface focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all duration-200 outline-none" />
+          <input {...register('start_date')} id="offer-start-date" type="date" aria-required="true" aria-invalid={!!errors.start_date} aria-describedby={errors.start_date ? 'offer-start-date-error' : undefined} className="w-full px-4 py-3 rounded-xl border border-border bg-surface-sunken-lowest dark:bg-surface-sunken-lowest text-ink focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all duration-200 outline-none" />
           {errors.start_date && <p id="offer-start-date-error" role="alert" className="text-error text-xs mt-1">{errors.start_date.message}</p>}
         </div>
         <div>
           <label className="block text-sm font-medium mb-1">{t('form.work_hours')}</label>
-          <input {...register('work_hours')} className="w-full px-4 py-3 rounded-xl border border-outline-variant dark:border-outline bg-surface-container-lowest dark:bg-surface-container-lowest text-on-surface dark:text-on-surface focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all duration-200 outline-none" />
+          <input {...register('work_hours')} className="w-full px-4 py-3 rounded-xl border border-border bg-surface-sunken-lowest dark:bg-surface-sunken-lowest text-ink focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all duration-200 outline-none" />
         </div>
       </div>
       <div>
         <label className="block text-sm font-medium mb-1">{t('form.benefits')}</label>
-        <textarea {...register('benefits')} rows={3} className="w-full px-4 py-3 rounded-xl border border-outline-variant dark:border-outline bg-surface-container-lowest dark:bg-surface-container-lowest text-on-surface dark:text-on-surface focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all duration-200 outline-none" placeholder={t('form.benefits_placeholder')} />
+        <textarea {...register('benefits')} rows={3} className="w-full px-4 py-3 rounded-xl border border-border bg-surface-sunken-lowest dark:bg-surface-sunken-lowest text-ink focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all duration-200 outline-none" placeholder={t('form.benefits_placeholder')} />
       </div>
       <div>
         <label className="block text-sm font-medium mb-1">{t('form.special_conditions')}</label>
-        <textarea {...register('special_conditions')} rows={2} className="w-full px-4 py-3 rounded-xl border border-outline-variant dark:border-outline bg-surface-container-lowest dark:bg-surface-container-lowest text-on-surface dark:text-on-surface focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all duration-200 outline-none" />
+        <textarea {...register('special_conditions')} rows={2} className="w-full px-4 py-3 rounded-xl border border-border bg-surface-sunken-lowest dark:bg-surface-sunken-lowest text-ink focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all duration-200 outline-none" />
       </div>
       <div className="form-actions flex justify-end gap-3 pt-4">
         <Button variant="outline" type="button" onClick={onClose}>{t('form.cancel')}</Button>

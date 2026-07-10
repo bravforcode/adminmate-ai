@@ -82,8 +82,8 @@ export function JobsPage() {
     <div className="space-y-6">
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
-          <h1 className="text-headline-md font-bold text-on-surface dark:text-on-surface">{t('jobs.title')}</h1>
-          <p className="text-body-md text-on-surface-variant dark:text-on-surface-variant mt-1">{t('jobs.subtitle')}</p>
+          <h1 className="text-headline-md font-bold text-ink dark:text-ink">{t('jobs.title')}</h1>
+          <p className="text-body-md text-ink-variant dark:text-ink-variant mt-1">{t('jobs.subtitle')}</p>
         </div>
         <div className="flex gap-2">
           <Button
@@ -109,18 +109,18 @@ export function JobsPage() {
 
       <div className="flex flex-col sm:flex-row gap-3">
         <div className="relative max-w-sm flex-1">
-          <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant dark:text-on-surface-variant size-4" />
+          <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-ink-variant dark:text-ink-variant size-4" />
           <input
             value={searchInput}
             onChange={handleSearchChange}
-            className="w-full pl-10 pr-4 py-3 rounded-xl border border-outline-variant dark:border-outline bg-surface-container-lowest dark:bg-surface-container-lowest text-on-surface dark:text-on-surface focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all duration-200 outline-none text-sm placeholder:text-on-surface-variant/50"
+            className="w-full pl-10 pr-4 py-3 rounded-xl border border-border bg-surface-sunken-lowest dark:bg-surface-sunken-lowest text-ink focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all duration-200 outline-none text-sm placeholder:text-ink-variant/50"
             placeholder={t('jobs.search_placeholder')}
           />
         </div>
         <select
           value={statusFilter}
           onChange={e => setStatusFilter(e.target.value)}
-          className="px-4 py-3 rounded-xl border border-outline-variant dark:border-outline bg-surface-container-lowest dark:bg-surface-container-lowest text-on-surface dark:text-on-surface text-sm outline-none appearance-none cursor-pointer"
+          className="px-4 py-3 rounded-xl border border-border bg-surface-sunken-lowest dark:bg-surface-sunken-lowest text-ink text-sm outline-none appearance-none cursor-pointer"
         >
           <option value="">{t('jobs.all_statuses', 'All Statuses')}</option>
           <option value="draft">{t('jobs.status_draft', 'Draft')}</option>
@@ -131,7 +131,7 @@ export function JobsPage() {
       </div>
 
       {showForm && (
-        <div className="bg-surface dark:bg-surface rounded-xl border border-outline-variant dark:border-outline p-6">
+        <div className="bg-surface rounded-xl border border-border p-6">
           <JobForm onClose={() => setShowForm(false)} />
         </div>
       )}

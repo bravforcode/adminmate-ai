@@ -67,7 +67,7 @@ const DeptNodeComponent = memo(function DeptNodeComponent({
         className={`flex items-center gap-2 p-2 rounded-lg cursor-pointer transition-colors ${
           isSelected
             ? 'bg-primary/10 text-primary dark:bg-primary/20'
-            : 'hover:bg-surface-container-low dark:hover:bg-surface-container-low'
+            : 'hover:bg-surface-sunken dark:hover:bg-surface-sunken'
         } ${depth > 0 ? 'ml-4' : ''}`}
         onClick={() => onDepartmentSelect?.(node.id)}
         role="button"
@@ -75,14 +75,14 @@ const DeptNodeComponent = memo(function DeptNodeComponent({
         onKeyDown={(e) => e.key === 'Enter' && onDepartmentSelect?.(node.id)}
       >
         {hasContent ? (
-          <ChevronDown size={14} className="text-on-surface-variant flex-shrink-0" />
+          <ChevronDown size={14} className="text-ink-variant flex-shrink-0" />
         ) : (
           <span className="w-3.5 flex-shrink-0" />
         )}
-        <Building2 size={14} className="text-on-surface-variant flex-shrink-0" />
-        <span className="text-sm font-medium text-on-surface dark:text-on-surface truncate">{node.name}</span>
+        <Building2 size={14} className="text-ink-variant flex-shrink-0" />
+        <span className="text-sm font-medium text-ink truncate">{node.name}</span>
         {node.status === 'inactive' && (
-          <span className="text-xs text-on-surface-variant/60 px-1.5 py-0.5 rounded bg-surface-container-lowest">inactive</span>
+          <span className="text-xs text-ink-variant/60 px-1.5 py-0.5 rounded bg-surface-sunken-lowest">inactive</span>
         )}
       </div>
       {node.teams.length > 0 && (
@@ -93,7 +93,7 @@ const DeptNodeComponent = memo(function DeptNodeComponent({
               className={`flex items-center gap-2 p-1.5 rounded-lg cursor-pointer transition-colors ${
                 selectedTeamId === team.id
                   ? 'bg-primary/10 text-primary dark:bg-primary/20'
-                  : 'hover:bg-surface-container-low dark:hover:bg-surface-container-low'
+                  : 'hover:bg-surface-sunken dark:hover:bg-surface-sunken'
               }`}
               onClick={() => onTeamSelect?.(team.id)}
               role="button"
@@ -101,13 +101,13 @@ const DeptNodeComponent = memo(function DeptNodeComponent({
               onKeyDown={(e) => e.key === 'Enter' && onTeamSelect?.(team.id)}
             >
               <span className="w-3.5" />
-              <span className="text-xs text-on-surface-variant dark:text-on-surface-variant">{team.name}</span>
+              <span className="text-xs text-ink-variant dark:text-ink-variant">{team.name}</span>
             </div>
           ))}
         </div>
       )}
       {node.children.length > 0 && (
-        <div className="border-l border-outline-variant/20 dark:border-outline/20 ml-3">
+        <div className="border-l border-border/20 dark:border-border/20 ml-3">
           {node.children.map(child => (
             <DeptNodeComponent
               key={child.id}
@@ -137,7 +137,7 @@ export const DepartmentTree = memo(function DepartmentTree({
 
   if (tree.length === 0) {
     return (
-      <div className="flex flex-col items-center justify-center py-8 text-on-surface-variant dark:text-on-surface-variant">
+      <div className="flex flex-col items-center justify-center py-8 text-ink-variant dark:text-ink-variant">
         <Building2 size={28} className="mb-2 opacity-40" />
         <p className="text-sm">No departments configured</p>
       </div>

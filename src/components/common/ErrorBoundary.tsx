@@ -83,20 +83,20 @@ export class ErrorBoundary extends Component<Props, State> {
           aria-live="assertive"
           className="min-h-screen flex flex-col items-center justify-center px-4 py-12 bg-surface font-sans"
         >
-          <div className="max-w-md w-full bg-surface-container rounded-2xl shadow-lg border border-outline-variant p-8 text-center">
-            <div className="w-16 h-16 mx-auto mb-6 rounded-full bg-error/10 text-error flex items-center justify-center text-3xl font-bold">
+          <div className="max-w-md w-full bg-surface rounded-xl shadow-md border border-border p-8 text-center">
+            <div className="w-14 h-14 mx-auto mb-5 rounded-xl bg-error-subtle text-error flex items-center justify-center text-2xl font-bold">
               !
             </div>
-            <h1 className="text-2xl font-bold text-on-surface mb-2">
+            <h1 className="text-xl font-semibold text-ink mb-2">
               Something went wrong
             </h1>
-            <p className="text-on-surface-variant mb-6 text-sm leading-relaxed">
+            <p className="text-ink-muted mb-6 text-sm leading-relaxed">
               An unexpected error occurred. Our team has been notified. You can try
               reloading the page, or contact support if the problem persists.
             </p>
             {import.meta.env.DEV && this.state.error?.message ? (
-              <details className="text-left mb-6 text-xs text-on-surface-variant bg-surface-dim rounded-lg p-3 border border-outline-variant">
-                <summary className="cursor-pointer font-medium text-on-surface">
+              <details className="text-left mb-6 text-xs text-ink-variant bg-surface-sunken rounded-lg p-3 border border-border">
+                <summary className="cursor-pointer font-medium text-ink">
                   Error details
                 </summary>
                 <pre className="mt-2 whitespace-pre-wrap break-words">
@@ -109,14 +109,14 @@ export class ErrorBoundary extends Component<Props, State> {
                 type="button"
                 ref={this.reloadButtonRef}
                 onClick={this.handleReload}
-                className="px-6 py-2.5 bg-primary text-on-primary rounded-lg font-medium hover:opacity-90 transition-colors focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
+                className="px-5 py-2 bg-primary text-white rounded-lg font-medium hover:opacity-90 transition-colors focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
               >
                 Reload page
               </button>
               <button
                 type="button"
                 onClick={this.handleReset}
-                className="px-6 py-2.5 bg-surface-container text-on-surface border border-outline-variant rounded-lg font-medium hover:bg-surface-container-high transition-colors focus:outline-none focus:ring-2 focus:ring-outline-variant focus:ring-offset-2"
+                className="px-5 py-2 bg-surface-sunken text-ink border border-border rounded-lg font-medium hover:bg-surface-sunken transition-colors focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
               >
                 Try again
               </button>

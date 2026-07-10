@@ -121,8 +121,8 @@ export function PDPAConsentBanner({ candidateId, employeeId }: Props) {
       <div className="flex items-start gap-3">
         <Shield size={20} className={`flex-shrink-0 mt-0.5 ${accepted ? 'text-green-600 dark:text-green-400' : 'text-primary'}`} />
         <div className="flex-1 min-w-0">
-          <h4 className="text-sm font-semibold text-on-surface">{t('pdpa.title')}</h4>
-          <p className="text-xs text-on-surface-variant mt-1">{t('pdpa.description')}</p>
+          <h4 className="text-sm font-semibold text-ink">{t('pdpa.title')}</h4>
+          <p className="text-xs text-ink-variant mt-1">{t('pdpa.description')}</p>
 
           {!accepted && (
             <div className="mt-3 space-y-2">
@@ -132,9 +132,9 @@ export function PDPAConsentBanner({ candidateId, employeeId }: Props) {
                     type="checkbox"
                     checked={selectedPurposes.has(p.id)}
                     onChange={() => togglePurpose(p.id)}
-                    className="rounded border-outline-variant text-primary focus:ring-primary/30"
+                    className="rounded border-border text-primary focus:ring-primary/30"
                   />
-                  <span className="text-xs text-on-surface-variant group-hover:text-on-surface transition-colors">
+                  <span className="text-xs text-ink-variant group-hover:text-ink transition-colors">
                     {t(p.key)}
                   </span>
                 </label>

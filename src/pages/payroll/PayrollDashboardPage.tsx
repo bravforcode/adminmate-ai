@@ -85,8 +85,8 @@ export function PayrollDashboardPage() {
     <div className="space-y-6 max-w-6xl">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-headline-md font-bold text-on-surface">Payroll Dashboard</h1>
-          <p className="text-body-md text-on-surface-variant mt-1">Overview of payroll costs, approvals, and recent runs</p>
+          <h1 className="text-headline-md font-bold text-ink">Payroll Dashboard</h1>
+          <p className="text-body-md text-ink-variant mt-1">Overview of payroll costs, approvals, and recent runs</p>
         </div>
         <Button variant="default" onClick={() => navigate('/payroll/run')}>
           Run Payroll
@@ -102,7 +102,7 @@ export function PayrollDashboardPage() {
                 <DollarSign size={20} className="text-primary" />
               </div>
               <div>
-                <p className="text-xs text-on-surface-variant">Total Paid (YTD)</p>
+                <p className="text-xs text-ink-variant">Total Paid (YTD)</p>
                 <p className="text-lg font-bold">{fmt(summary?.totalPaid ?? 0)} THB</p>
               </div>
             </div>
@@ -115,10 +115,10 @@ export function PayrollDashboardPage() {
                 <Clock size={20} className="text-amber-600" />
               </div>
               <div>
-                <p className="text-xs text-on-surface-variant">Pending Approvals</p>
+                <p className="text-xs text-ink-variant">Pending Approvals</p>
                 <p className="text-lg font-bold">{summary?.pendingCount ?? 0}</p>
                 {summary?.pendingTotal ? (
-                  <p className="text-xs text-on-surface-variant">{fmt(summary.pendingTotal)} THB</p>
+                  <p className="text-xs text-ink-variant">{fmt(summary.pendingTotal)} THB</p>
                 ) : null}
               </div>
             </div>
@@ -131,7 +131,7 @@ export function PayrollDashboardPage() {
                 <TrendingUp size={20} className="text-green-600" />
               </div>
               <div>
-                <p className="text-xs text-on-surface-variant">Last Run Net</p>
+                <p className="text-xs text-ink-variant">Last Run Net</p>
                 <p className="text-lg font-bold">
                   {summary?.lastRun ? fmt(summary.lastRun.total_net ?? 0) : '—'} THB
                 </p>
@@ -146,7 +146,7 @@ export function PayrollDashboardPage() {
                 <CheckCircle size={20} className="text-blue-600" />
               </div>
               <div>
-                <p className="text-xs text-on-surface-variant">Active Cycles</p>
+                <p className="text-xs text-ink-variant">Active Cycles</p>
                 <p className="text-lg font-bold">{summary?.activeCycles.length ?? 0}</p>
               </div>
             </div>
@@ -162,7 +162,7 @@ export function PayrollDashboardPage() {
             <CardTitle>Pending Approvals</CardTitle>
           </CardHeader>
           <CardContent>
-            <p className="text-sm text-on-surface-variant mb-3">
+            <p className="text-sm text-ink-variant mb-3">
               {summary.pendingCount} payroll run{summary.pendingCount > 1 ? 's' : ''} awaiting approval
               ({fmt(summary.pendingTotal)} THB total)
             </p>
@@ -181,23 +181,23 @@ export function PayrollDashboardPage() {
         </CardHeader>
         <CardContent>
           {summary?.recentRuns.length === 0 ? (
-            <p className="text-sm text-on-surface-variant text-center py-6">No payroll runs yet.</p>
+            <p className="text-sm text-ink-variant text-center py-6">No payroll runs yet.</p>
           ) : (
             <div className="overflow-x-auto">
               <table className="w-full text-sm">
                 <thead>
-                  <tr className="border-b border-outline-variant">
-                    <th className="text-left py-2 px-3 text-on-surface-variant font-medium">Date</th>
-                    <th className="text-left py-2 px-3 text-on-surface-variant font-medium">Status</th>
-                    <th className="text-right py-2 px-3 text-on-surface-variant font-medium">Gross</th>
-                    <th className="text-right py-2 px-3 text-on-surface-variant font-medium">Deductions</th>
-                    <th className="text-right py-2 px-3 text-on-surface-variant font-medium">Net</th>
+                  <tr className="border-b border-border">
+                    <th className="text-left py-2 px-3 text-ink-variant font-medium">Date</th>
+                    <th className="text-left py-2 px-3 text-ink-variant font-medium">Status</th>
+                    <th className="text-right py-2 px-3 text-ink-variant font-medium">Gross</th>
+                    <th className="text-right py-2 px-3 text-ink-variant font-medium">Deductions</th>
+                    <th className="text-right py-2 px-3 text-ink-variant font-medium">Net</th>
                     <th className="py-2 px-3" />
                   </tr>
                 </thead>
                 <tbody>
                   {summary?.recentRuns.map(run => (
-                    <tr key={run.id} className="border-b border-outline-variant last:border-0 hover:bg-surface-container-low">
+                    <tr key={run.id} className="border-b border-border last:border-0 hover:bg-surface-sunken">
                       <td className="py-2 px-3 text-xs">{new Date(run.created_at).toLocaleDateString()}</td>
                       <td className="py-2 px-3">
                         <span className={`px-2 py-0.5 rounded-full text-xs font-medium ${statusColor(run.status)}`}>

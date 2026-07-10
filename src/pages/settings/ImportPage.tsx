@@ -160,8 +160,8 @@ export function ImportPage() {
     <div className="space-y-6">
       <header className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
         <div>
-          <h1 className="text-headline-md md:text-headline-lg font-bold text-on-background dark:text-on-surface">{t('import_data.title')}</h1>
-          <p className="text-body-md text-on-surface-variant dark:text-on-surface-variant mt-1">{t('import_data.subtitle')}</p>
+          <h1 className="text-headline-md md:text-headline-lg font-bold text-on-background dark:text-ink">{t('import_data.title')}</h1>
+          <p className="text-body-md text-ink-variant dark:text-ink-variant mt-1">{t('import_data.subtitle')}</p>
         </div>
       </header>
 
@@ -193,13 +193,13 @@ export function ImportPage() {
                 {...getRootProps()}
                 className={cn(
                   'border-2 border-dashed rounded-xl p-12 text-center cursor-pointer transition-colors',
-                  isDragActive ? 'border-primary bg-primary/5' : 'border-outline-variant dark:border-outline hover:border-primary/50'
+                  isDragActive ? 'border-primary bg-primary/5' : 'border-border hover:border-primary/50'
                 )}
               >
                 <input {...getInputProps()} />
-                <Upload size={48} className="mx-auto mb-4 text-on-surface-variant dark:text-on-surface-variant" />
-                <p className="text-on-surface dark:text-on-surface font-medium mb-1">{t('import_data.drag_drop')}</p>
-                <p className="text-sm text-on-surface-variant dark:text-on-surface-variant">{t('import_data.accepted_formats')}</p>
+                <Upload size={48} className="mx-auto mb-4 text-ink-variant dark:text-ink-variant" />
+                <p className="text-ink font-medium mb-1">{t('import_data.drag_drop')}</p>
+                <p className="text-sm text-ink-variant dark:text-ink-variant">{t('import_data.accepted_formats')}</p>
               </div>
             </CardContent>
           </Card>
@@ -210,25 +210,25 @@ export function ImportPage() {
         <div className="space-y-6">
           <div className="flex items-center gap-2">
             <Button variant="ghost" size="icon_md" onClick={reset} icon={<ArrowLeft size={18} />} />
-            <h2 className="text-title-lg font-semibold text-on-surface dark:text-on-surface">{t('import_data.map_columns')}</h2>
+            <h2 className="text-title-lg font-semibold text-ink dark:text-ink">{t('import_data.map_columns')}</h2>
           </div>
 
           <Card>
             <CardContent className="pt-6">
               <div className="space-y-3">
-                <div className="grid grid-cols-[1fr,auto,1fr] gap-4 items-center px-4 py-2 text-xs font-semibold text-on-surface-variant uppercase tracking-wider">
+                <div className="grid grid-cols-[1fr,auto,1fr] gap-4 items-center px-4 py-2 text-xs font-semibold text-ink-variant uppercase tracking-wider">
                   <span>{t('import_data.source_column')}</span>
                   <span />
                   <span>{t('import_data.target_field')}</span>
                 </div>
                 {csvHeaders.map(header => (
-                  <div key={header} className="grid grid-cols-[1fr,auto,1fr] gap-4 items-center bg-surface-container-lowest dark:bg-surface-container-lowest rounded-lg px-4 py-3">
-                    <span className="text-sm text-on-surface dark:text-on-surface font-medium">{header}</span>
-                    <ArrowRight size={16} className="text-on-surface-variant" />
+                  <div key={header} className="grid grid-cols-[1fr,auto,1fr] gap-4 items-center bg-surface-sunken-lowest dark:bg-surface-sunken-lowest rounded-lg px-4 py-3">
+                    <span className="text-sm text-ink font-medium">{header}</span>
+                    <ArrowRight size={16} className="text-ink-variant" />
                     <select
                       value={mappings[header] ?? ''}
                       onChange={(e) => handleMappingChange(header, e.target.value)}
-                      className="px-3 py-1.5 rounded-lg border border-outline-variant dark:border-outline bg-surface text-on-surface text-sm"
+                      className="px-3 py-1.5 rounded-lg border border-border bg-surface text-ink text-sm"
                     >
                       <option value="">-- {t('import_data.skip')} --</option>
                       {fields.map(f => (
@@ -253,7 +253,7 @@ export function ImportPage() {
         <div className="space-y-6">
           <div className="flex items-center gap-2">
             <Button variant="ghost" size="icon_md" onClick={() => setStep('mapping')} icon={<ArrowLeft size={18} />} />
-            <h2 className="text-title-lg font-semibold text-on-surface dark:text-on-surface">{t('import_data.preview')}</h2>
+            <h2 className="text-title-lg font-semibold text-ink dark:text-ink">{t('import_data.preview')}</h2>
             <Badge variant="secondary">{csvData.length} {t('import_data.rows')}</Badge>
           </div>
 
@@ -261,19 +261,19 @@ export function ImportPage() {
             <div className="overflow-x-auto">
               <table className="w-full text-sm min-w-[500px]">
                 <thead>
-                  <tr className="border-b border-outline-variant/50 dark:border-outline/50">
-                    <th className="px-4 py-3 text-left font-medium text-on-surface-variant">#</th>
+                  <tr className="border-b border-border/50 dark:border-border/50">
+                    <th className="px-4 py-3 text-left font-medium text-ink-variant">#</th>
                     {Object.entries(mappings).filter(([, t]) => t).map(([source]) => (
-                      <th key={source} className="px-4 py-3 text-left font-medium text-on-surface-variant">{source}</th>
+                      <th key={source} className="px-4 py-3 text-left font-medium text-ink-variant">{source}</th>
                     ))}
                   </tr>
                 </thead>
                 <tbody>
                   {previewRows.map((row, i) => (
-                    <tr key={i} className="border-b border-outline-variant/30 dark:border-outline/30">
-                      <td className="px-4 py-2 text-on-surface-variant">{i + 1}</td>
+                    <tr key={i} className="border-b border-border/30 dark:border-border/30">
+                      <td className="px-4 py-2 text-ink-variant">{i + 1}</td>
                       {Object.entries(mappings).filter(([, t]) => t).map(([source]) => (
-                        <td key={source} className="px-4 py-2 text-on-surface">{row[source]}</td>
+                        <td key={source} className="px-4 py-2 text-ink">{row[source]}</td>
                       ))}
                     </tr>
                   ))}
@@ -283,7 +283,7 @@ export function ImportPage() {
           </Card>
 
           {csvData.length > 10 && (
-            <p className="text-sm text-on-surface-variant text-center">
+            <p className="text-sm text-ink-variant text-center">
               {t('import_data.showing_first', { count: 10, total: csvData.length })}
             </p>
           )}
@@ -310,15 +310,15 @@ export function ImportPage() {
                 {validationErrors.length === 0 ? (
                   <>
                     <CheckCircle2 size={48} className="mx-auto mb-4 text-green-500" />
-                    <h2 className="text-title-lg font-semibold text-on-surface dark:text-on-surface mb-2">{t('import_data.success')}</h2>
-                    <p className="text-on-surface-variant">{csvData.length} {t('import_data.rows_imported')}</p>
+                    <h2 className="text-title-lg font-semibold text-ink mb-2">{t('import_data.success')}</h2>
+                    <p className="text-ink-variant">{csvData.length} {t('import_data.rows_imported')}</p>
                   </>
                 ) : (
                   <>
                     <AlertCircle size={48} className="mx-auto mb-4 text-yellow-500" />
-                    <h2 className="text-title-lg font-semibold text-on-surface dark:text-on-surface mb-2">{t('import_data.completed_with_errors')}</h2>
-                    <p className="text-on-surface-variant">{validationErrors.length} {t('import_data.errors_found')}</p>
-                    <div className="mt-4 max-h-48 overflow-y-auto text-left bg-surface-container-lowest rounded-lg p-3 space-y-1">
+                    <h2 className="text-title-lg font-semibold text-ink mb-2">{t('import_data.completed_with_errors')}</h2>
+                    <p className="text-ink-variant">{validationErrors.length} {t('import_data.errors_found')}</p>
+                    <div className="mt-4 max-h-48 overflow-y-auto text-left bg-surface-sunken-lowest rounded-lg p-3 space-y-1">
                       {validationErrors.slice(0, 20).map((err, i) => (
                         <p key={i} className="text-sm">
                           Row {err.row_number}: <span className="text-red-500">{err.error_message}</span>
@@ -336,33 +336,33 @@ export function ImportPage() {
       )}
 
       <Card>
-        <CardHeader className="border-b border-surface-container-high dark:border-outline bg-surface-bright dark:bg-surface-container-low">
+        <CardHeader className="border-b border-surface-container-high bg-surface-raised dark:bg-surface-sunken">
           <CardTitle className="text-lg">{t('import_data.history')}</CardTitle>
         </CardHeader>
         <div className="overflow-x-auto">
           <table className="w-full text-sm min-w-[600px]">
             <thead>
-              <tr className="border-b border-outline-variant/50 dark:border-outline/50">
-                <th className="px-4 py-3 text-left font-medium text-on-surface-variant">{t('import_data.table.file')}</th>
-                <th className="px-4 py-3 text-left font-medium text-on-surface-variant">{t('import_data.table.entity')}</th>
-                <th className="px-4 py-3 text-left font-medium text-on-surface-variant">{t('import_data.table.rows')}</th>
-                <th className="px-4 py-3 text-left font-medium text-on-surface-variant">{t('import_data.table.status')}</th>
-                <th className="px-4 py-3 text-left font-medium text-on-surface-variant">{t('import_data.table.date')}</th>
+              <tr className="border-b border-border/50 dark:border-border/50">
+                <th className="px-4 py-3 text-left font-medium text-ink-variant">{t('import_data.table.file')}</th>
+                <th className="px-4 py-3 text-left font-medium text-ink-variant">{t('import_data.table.entity')}</th>
+                <th className="px-4 py-3 text-left font-medium text-ink-variant">{t('import_data.table.rows')}</th>
+                <th className="px-4 py-3 text-left font-medium text-ink-variant">{t('import_data.table.status')}</th>
+                <th className="px-4 py-3 text-left font-medium text-ink-variant">{t('import_data.table.date')}</th>
               </tr>
             </thead>
             <tbody>
               {historyLoading ? (
                 <tr><td colSpan={5} className="py-8 text-center"><Spinner size={24} className="mx-auto" /></td></tr>
               ) : importHistory.length === 0 ? (
-                <tr><td colSpan={5} className="py-8 text-center text-on-surface-variant">{t('import_data.no_history')}</td></tr>
+                <tr><td colSpan={5} className="py-8 text-center text-ink-variant">{t('import_data.no_history')}</td></tr>
               ) : (
                 importHistory.map((job: ImportJob) => (
-                  <tr key={job.id} className="border-b border-outline-variant/30 dark:border-outline/30 hover:bg-surface-container-high/50 transition-colors">
-                    <td className="px-4 py-3"><div className="flex items-center gap-2"><FileText size={16} className="text-on-surface-variant" />{job.file_name}</div></td>
+                  <tr key={job.id} className="border-b border-border/30 dark:border-border/30 hover:bg-surface-sunken/50 transition-colors">
+                    <td className="px-4 py-3"><div className="flex items-center gap-2"><FileText size={16} className="text-ink-variant" />{job.file_name}</div></td>
                     <td className="px-4 py-3 capitalize">{job.entity_type}</td>
                     <td className="px-4 py-3">{job.processed_rows}/{job.total_rows}</td>
                     <td className="px-4 py-3"><Badge variant={statusBadgeVariant[job.status] ?? 'secondary'}>{job.status}</Badge></td>
-                    <td className="px-4 py-3 text-on-surface-variant">{new Date(job.created_at).toLocaleDateString()}</td>
+                    <td className="px-4 py-3 text-ink-variant">{new Date(job.created_at).toLocaleDateString()}</td>
                   </tr>
                 ))
               )}

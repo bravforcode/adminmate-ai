@@ -42,13 +42,13 @@ export default function GeminiMonitoringPage() {
     return (
       <div className="space-y-6">
         <div>
-          <h1 className="text-headline-md font-bold text-on-surface">{t('gemini.title')}</h1>
-          <p className="text-body-md text-on-surface-variant mt-1">{t('gemini.subtitle')}</p>
+          <h1 className="text-headline-md font-bold text-ink">{t('gemini.title')}</h1>
+          <p className="text-body-md text-ink-variant mt-1">{t('gemini.subtitle')}</p>
         </div>
-        <div className="bg-surface rounded-xl border border-outline-variant p-8 text-center">
+        <div className="bg-surface rounded-xl border border-border p-8 text-center">
           <AlertCircle size={40} className="mx-auto text-error mb-3" />
-          <h3 className="font-semibold text-on-surface mb-1">{t('gemini.error_title')}</h3>
-          <p className="text-sm text-on-surface-variant mb-4">{(error as Error)?.message || t('gemini.error_description')}</p>
+          <h3 className="font-semibold text-ink mb-1">{t('gemini.error_title')}</h3>
+          <p className="text-sm text-ink-variant mb-4">{(error as Error)?.message || t('gemini.error_description')}</p>
           <button
             onClick={() => refetch()}
             className="inline-flex items-center gap-2 px-4 py-2 bg-primary text-on-primary rounded-lg text-sm font-medium hover:opacity-90"
@@ -63,8 +63,8 @@ export default function GeminiMonitoringPage() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-headline-md font-bold text-on-surface">{t('gemini.title')}</h1>
-        <p className="text-body-md text-on-surface-variant mt-1">{t('gemini.subtitle')}</p>
+        <h1 className="text-headline-md font-bold text-ink">{t('gemini.title')}</h1>
+        <p className="text-body-md text-ink-variant mt-1">{t('gemini.subtitle')}</p>
       </div>
 
       {isLoading ? (
@@ -72,44 +72,44 @@ export default function GeminiMonitoringPage() {
       ) : (
         <>
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-            <div className="bg-surface rounded-xl border border-outline-variant p-5">
+            <div className="bg-surface rounded-xl border border-border p-5">
               <div className="flex items-center gap-2 mb-3"><Zap size={20} className="text-primary" /><span className="text-sm font-semibold">{t('gemini.today')}</span></div>
-              <p className="text-3xl font-bold text-on-surface">{todayTotal}</p>
-              <p className="text-xs text-on-surface-variant mt-1">{t('gemini.daily_limit', { limit: DAILY_LIMIT })}</p>
+              <p className="text-3xl font-bold text-ink">{todayTotal}</p>
+              <p className="text-xs text-ink-variant mt-1">{t('gemini.daily_limit', { limit: DAILY_LIMIT })}</p>
             </div>
-            <div className="bg-surface rounded-xl border border-outline-variant p-5">
-              <span className="block text-sm font-semibold text-on-surface-variant mb-1">{t('gemini.usage')}</span>
-              <div className="w-full bg-surface-container-high rounded-full h-3 mt-2">
+            <div className="bg-surface rounded-xl border border-border p-5">
+              <span className="block text-sm font-semibold text-ink-variant mb-1">{t('gemini.usage')}</span>
+              <div className="w-full bg-surface-sunken rounded-full h-3 mt-2">
                 <div className={`h-3 rounded-full transition-all ${usagePct > 90 ? 'bg-error' : usagePct > 70 ? 'bg-yellow-500' : 'bg-primary'}`} style={{ width: `${Math.min(usagePct, 100)}%` }} />
               </div>
-              <p className="text-right text-xs text-on-surface-variant mt-1">{usagePct}%</p>
+              <p className="text-right text-xs text-ink-variant mt-1">{usagePct}%</p>
             </div>
-            <div className={`bg-surface rounded-xl border p-5 ${usagePct > 70 ? 'border-yellow-300' : 'border-outline-variant'}`}>
+            <div className={`bg-surface rounded-xl border p-5 ${usagePct > 70 ? 'border-yellow-300' : 'border-border'}`}>
               <span className={`inline-flex items-center gap-1 px-2 py-0.5 rounded text-xs font-medium ${alertStyles[alertLevel]}`}>
                 <AlertTriangle size={12} />
                 {t(`gemini.alert.label.${alertLevel}`)}
               </span>
-              <p className="text-xs text-on-surface-variant mt-3">{t(`gemini.alert.${alertLevel}`)}</p>
+              <p className="text-xs text-ink-variant mt-3">{t(`gemini.alert.${alertLevel}`)}</p>
             </div>
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            <div className="bg-surface rounded-xl border border-outline-variant p-6">
+            <div className="bg-surface rounded-xl border border-border p-6">
               <h3 className="font-semibold mb-4 flex items-center gap-2"><Calendar size={16} /> {t('gemini.today_by_feature')}</h3>
               {usage?.daily?.length ? (
                 <div className="space-y-3">
                   {usage.daily.map((u: { feature: string; count: number }) => (
                     <div key={u.feature}>
                       <div className="flex justify-between text-sm mb-1"><span>{u.feature.replace(/_/g, ' ')}</span><span className="font-medium">{u.count}</span></div>
-                      <div className="w-full bg-surface-container-high rounded-full h-2">
+                      <div className="w-full bg-surface-sunken rounded-full h-2">
                         <div className="h-2 rounded-full" style={{ width: `${Math.min((u.count / DAILY_LIMIT) * 100 * 5, 100)}%`, backgroundColor: LIMIT_COLORS[u.feature] || '#94a3b8' }} />
                       </div>
                     </div>
                   ))}
                 </div>
-              ) : <p className="text-sm text-on-surface-variant">{t('gemini.no_usage_today')}</p>}
+              ) : <p className="text-sm text-ink-variant">{t('gemini.no_usage_today')}</p>}
             </div>
-            <div className="bg-surface rounded-xl border border-outline-variant p-6">
+            <div className="bg-surface rounded-xl border border-border p-6">
               <h3 className="font-semibold mb-4">{t('gemini.last_7_days')}</h3>
               {weeklyData.length > 0 ? (
                 <ResponsiveContainer width="100%" height={240}>
@@ -125,7 +125,7 @@ export default function GeminiMonitoringPage() {
                   </BarChart>
                 </ResponsiveContainer>
               ) : (
-                <p className="text-sm text-on-surface-variant text-center py-12">{t('gemini.no_usage_today')}</p>
+                <p className="text-sm text-ink-variant text-center py-12">{t('gemini.no_usage_today')}</p>
               )}
             </div>
           </div>

@@ -60,32 +60,32 @@ const OrgChartNodeComponent = memo(function OrgChartNodeComponent({
   return (
     <div className="select-none">
       <div
-        className={`flex items-center gap-2 p-2 rounded-lg hover:bg-surface-container-low dark:hover:bg-surface-container-low cursor-pointer transition-colors ${depth > 0 ? 'ml-6' : ''}`}
+        className={`flex items-center gap-2 p-2 rounded-lg hover:bg-surface-sunken dark:hover:bg-surface-sunken cursor-pointer transition-colors ${depth > 0 ? 'ml-6' : ''}`}
         onClick={() => onNodeClick?.(node.employee_id)}
         role="button"
         tabIndex={0}
         onKeyDown={(e) => e.key === 'Enter' && onNodeClick?.(node.employee_id)}
       >
         {hasChildren ? (
-          <ChevronDown size={14} className="text-on-surface-variant flex-shrink-0" />
+          <ChevronDown size={14} className="text-ink-variant flex-shrink-0" />
         ) : (
           <span className="w-3.5 flex-shrink-0" />
         )}
-        <div className="w-8 h-8 rounded-full bg-primary-container dark:bg-primary-container text-on-primary-container dark:text-accent-dim flex items-center justify-center text-xs font-bold flex-shrink-0">
+        <div className="w-8 h-8 rounded-full bg-primary-container dark:bg-primary-container text-on-primary-container dark:text-primary-muted flex items-center justify-center text-xs font-bold flex-shrink-0">
           {initials}
         </div>
         <div className="min-w-0 flex-1">
-          <p className="text-sm font-medium text-on-surface dark:text-on-surface truncate">{node.displayName}</p>
-          <p className="text-xs text-on-surface-variant dark:text-on-surface-variant truncate">{node.jobTitle}</p>
+          <p className="text-sm font-medium text-ink truncate">{node.displayName}</p>
+          <p className="text-xs text-ink-variant dark:text-ink-variant truncate">{node.jobTitle}</p>
         </div>
         {node.department_id && (
-          <span className="text-xs text-on-surface-variant/60 px-1.5 py-0.5 rounded bg-surface-container-lowest dark:bg-surface-container-lowest flex-shrink-0">
+          <span className="text-xs text-ink-variant/60 px-1.5 py-0.5 rounded bg-surface-sunken-lowest dark:bg-surface-sunken-lowest flex-shrink-0">
             Dept
           </span>
         )}
       </div>
       {hasChildren && (
-        <div className="border-l border-outline-variant/30 dark:border-outline/30 ml-5">
+        <div className="border-l border-border/30 dark:border-border/30 ml-5">
           {node.children.map(child => (
             <OrgChartNodeComponent key={child.employee_id} node={child} depth={depth + 1} onNodeClick={onNodeClick} />
           ))}
@@ -100,7 +100,7 @@ export const OrgChart = memo(function OrgChart({ nodes, onNodeClick }: OrgChartP
 
   if (tree.length === 0) {
     return (
-      <div className="flex flex-col items-center justify-center py-12 text-on-surface-variant dark:text-on-surface-variant">
+      <div className="flex flex-col items-center justify-center py-12 text-ink-variant dark:text-ink-variant">
         <User size={36} className="mb-2 opacity-40" />
         <p className="text-sm">No org chart data available</p>
       </div>

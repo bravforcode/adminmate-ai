@@ -62,20 +62,20 @@ export function LeaveRequestForm({ leaveTypes, onSuccess, onCancel }: LeaveReque
 
   return (
     <Card className="border-primary dark:border-primary">
-      <CardHeader className="border-b border-surface-container-high dark:border-outline bg-surface-bright dark:bg-surface-container-low">
+      <CardHeader className="border-b border-surface-container-high bg-surface-raised dark:bg-surface-sunken">
         <CardTitle className="text-lg flex items-center gap-2">
-          <Calendar size={18} className="text-primary dark:text-accent-dim" />
+          <Calendar size={18} className="text-primary dark:text-primary-muted" />
           {t('form.title')}
         </CardTitle>
       </CardHeader>
       <CardContent className="space-y-4 pt-6">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
-            <label className="block text-sm font-medium text-on-surface dark:text-on-surface mb-1">{t('form.leave_type')}</label>
+            <label className="block text-sm font-medium text-ink mb-1">{t('form.leave_type')}</label>
             <select
               value={form.leave_type_id}
               onChange={(e) => setForm({ ...form, leave_type_id: e.target.value })}
-              className="w-full px-4 py-2.5 rounded-xl border border-outline-variant dark:border-outline bg-surface-container-lowest dark:bg-surface-container-lowest text-on-surface dark:text-on-surface focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all text-sm"
+              className="w-full px-4 py-2.5 rounded-xl border border-border bg-surface-sunken-lowest dark:bg-surface-sunken-lowest text-ink focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all text-sm"
             >
               <option value="">{t('form.select_type')}</option>
               {leaveTypes.map(lt => (
@@ -84,42 +84,42 @@ export function LeaveRequestForm({ leaveTypes, onSuccess, onCancel }: LeaveReque
             </select>
           </div>
           <div>
-            <label className="block text-sm font-medium text-on-surface dark:text-on-surface mb-1">{t('form.total_days')}</label>
+            <label className="block text-sm font-medium text-ink mb-1">{t('form.total_days')}</label>
             <input
               type="number"
               min={0.5}
               step={0.5}
               value={form.total_days}
               onChange={(e) => setForm({ ...form, total_days: parseFloat(e.target.value) || 1 })}
-              className="w-full px-4 py-2.5 rounded-xl border border-outline-variant dark:border-outline bg-surface-container-lowest dark:bg-surface-container-lowest text-on-surface dark:text-on-surface focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all text-sm"
+              className="w-full px-4 py-2.5 rounded-xl border border-border bg-surface-sunken-lowest dark:bg-surface-sunken-lowest text-ink focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all text-sm"
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-on-surface dark:text-on-surface mb-1">{t('form.start_date')}</label>
+            <label className="block text-sm font-medium text-ink mb-1">{t('form.start_date')}</label>
             <input
               type="date"
               value={form.start_date}
               onChange={(e) => handleDateChange('start_date', e.target.value)}
-              className="w-full px-4 py-2.5 rounded-xl border border-outline-variant dark:border-outline bg-surface-container-lowest dark:bg-surface-container-lowest text-on-surface dark:text-on-surface focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all text-sm"
+              className="w-full px-4 py-2.5 rounded-xl border border-border bg-surface-sunken-lowest dark:bg-surface-sunken-lowest text-ink focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all text-sm"
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-on-surface dark:text-on-surface mb-1">{t('form.end_date')}</label>
+            <label className="block text-sm font-medium text-ink mb-1">{t('form.end_date')}</label>
             <input
               type="date"
               value={form.end_date}
               onChange={(e) => handleDateChange('end_date', e.target.value)}
-              className="w-full px-4 py-2.5 rounded-xl border border-outline-variant dark:border-outline bg-surface-container-lowest dark:bg-surface-container-lowest text-on-surface dark:text-on-surface focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all text-sm"
+              className="w-full px-4 py-2.5 rounded-xl border border-border bg-surface-sunken-lowest dark:bg-surface-sunken-lowest text-ink focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all text-sm"
             />
           </div>
         </div>
         <div>
-          <label className="block text-sm font-medium text-on-surface dark:text-on-surface mb-1">{t('form.reason')}</label>
+          <label className="block text-sm font-medium text-ink mb-1">{t('form.reason')}</label>
           <textarea
             value={form.reason}
             onChange={(e) => setForm({ ...form, reason: e.target.value })}
             rows={3}
-            className="w-full px-4 py-2.5 rounded-xl border border-outline-variant dark:border-outline bg-surface-container-lowest dark:bg-surface-container-lowest text-on-surface dark:text-on-surface focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all text-sm resize-none"
+            className="w-full px-4 py-2.5 rounded-xl border border-border bg-surface-sunken-lowest dark:bg-surface-sunken-lowest text-ink focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all text-sm resize-none"
             placeholder={t('form.reason_placeholder')}
           />
         </div>

@@ -10,7 +10,7 @@ const STATUS_CONFIG: Record<OkrStatus, { color: string; icon: typeof Target; lab
   on_track: { color: 'bg-green-50 dark:bg-success-container/30 text-green-700 dark:text-success', icon: CheckCircle2, label: 'On Track' },
   at_risk: { color: 'bg-yellow-50 dark:bg-warning-container/30 text-yellow-700 dark:text-warning', icon: AlertTriangle, label: 'At Risk' },
   behind: { color: 'bg-red-50 dark:bg-error-container/30 text-red-700 dark:text-error', icon: AlertTriangle, label: 'Behind' },
-  completed: { color: 'bg-blue-50 dark:bg-primary-container/30 text-blue-700 dark:text-accent-dim', icon: CheckCircle2, label: 'Completed' },
+  completed: { color: 'bg-blue-50 dark:bg-primary-container/30 text-blue-700 dark:text-primary-muted', icon: CheckCircle2, label: 'Completed' },
 }
 
 function ProgressRing({ progress, size = 40 }: { progress: number; size?: number }) {
@@ -50,7 +50,7 @@ export function OKRTree({ objectives, keyResults, onObjectiveClick, onKeyResultC
 
   if (objectives.length === 0) {
     return (
-      <div className="text-center py-8 text-on-surface-variant dark:text-on-surface-variant">
+      <div className="text-center py-8 text-ink-variant dark:text-ink-variant">
         <Target size={32} className="mx-auto mb-2 opacity-50" />
         <p className="text-sm">{t('no_okrs', 'No OKRs Found')}</p>
       </div>
@@ -66,33 +66,33 @@ export function OKRTree({ objectives, keyResults, onObjectiveClick, onKeyResultC
         const StatusIcon = statusCfg.icon
 
         return (
-          <div key={obj.id} className="bg-surface dark:bg-surface rounded-xl border border-outline-variant dark:border-outline overflow-hidden">
+          <div key={obj.id} className="bg-surface rounded-xl border border-border overflow-hidden">
             <button
               onClick={() => {
                 toggleExpand(obj.id)
                 onObjectiveClick?.(obj)
               }}
               aria-expanded={isExpanded}
-              className="w-full flex items-center gap-4 p-4 text-left hover:bg-surface-container-high/50 dark:hover:bg-surface-container/30 transition-colors"
+              className="w-full flex items-center gap-4 p-4 text-left hover:bg-surface-sunken/50 dark:hover:bg-surface-sunken/30 transition-colors"
             >
               <ProgressRing progress={obj.progress} />
               <div className="flex-1 min-w-0">
-                <p className="text-sm font-semibold text-on-surface dark:text-on-surface truncate">{obj.title}</p>
+                <p className="text-sm font-semibold text-ink truncate">{obj.title}</p>
                 {obj.user_profiles?.full_name && (
-                  <p className="text-xs text-on-surface-variant dark:text-on-surface-variant mt-0.5">{obj.user_profiles.full_name}</p>
+                  <p className="text-xs text-ink-variant dark:text-ink-variant mt-0.5">{obj.user_profiles.full_name}</p>
                 )}
               </div>
               <span className={cn('px-2 py-0.5 rounded text-xs font-medium', statusCfg.color)}>
                 <StatusIcon size={12} className="inline mr-1" />
                 {t(`okr_status_${obj.status}`, statusCfg.label)}
               </span>
-              {isExpanded ? <ChevronDown size={16} className="text-on-surface-variant" /> : <ChevronRight size={16} className="text-on-surface-variant" />}
+              {isExpanded ? <ChevronDown size={16} className="text-ink-variant" /> : <ChevronRight size={16} className="text-ink-variant" />}
             </button>
 
             {isExpanded && (
-              <div className="border-t border-outline-variant/50 dark:border-outline/50 px-4 pb-4">
+              <div className="border-t border-border/50 dark:border-border/50 px-4 pb-4">
                 {objKeyResults.length === 0 ? (
-                  <p className="text-sm text-on-surface-variant/60 dark:text-outline-variant py-3 italic">{t('no_key_results', 'No key results defined')}</p>
+                  <p className="text-sm text-ink-variant/60 dark:text-outline-variant py-3 italic">{t('no_key_results', 'No key results defined')}</p>
                 ) : (
                   <div className="space-y-3 pt-3">
                     {objKeyResults.map(kr => {
@@ -101,15 +101,15 @@ export function OKRTree({ objectives, keyResults, onObjectiveClick, onKeyResultC
                         <button
                           key={kr.id}
                           onClick={() => onKeyResultClick?.(kr)}
-                          className="flex items-center gap-3 w-full text-left hover:bg-surface-container-high/30 dark:hover:bg-surface-container/20 rounded-lg p-2 -mx-2 transition-colors"
+                          className="flex items-center gap-3 w-full text-left hover:bg-surface-sunken/30 dark:hover:bg-surface-sunken/20 rounded-lg p-2 -mx-2 transition-colors"
                         >
                           <div className="flex-1 min-w-0">
-                            <p className="text-xs font-medium text-on-surface dark:text-on-surface truncate mb-1">{kr.title}</p>
+                            <p className="text-xs font-medium text-ink truncate mb-1">{kr.title}</p>
                             <div className="flex items-center justify-between mb-1">
-                              <span className="text-[10px] text-on-surface-variant dark:text-on-surface-variant">{t('target', 'Target')}: {kr.target_value}{kr.unit ? ` ${kr.unit}` : ''}</span>
-                              <span className="text-[10px] font-medium text-on-surface dark:text-on-surface">{kr.current_value} / {kr.target_value}</span>
+                              <span className="text-[10px] text-ink-variant dark:text-ink-variant">{t('target', 'Target')}: {kr.target_value}{kr.unit ? ` ${kr.unit}` : ''}</span>
+                              <span className="text-[10px] font-medium text-ink dark:text-ink">{kr.current_value} / {kr.target_value}</span>
                             </div>
-                            <div className="w-full bg-surface-container-high dark:bg-surface-container rounded-full h-2">
+                            <div className="w-full bg-surface-sunken rounded-full h-2">
                               <div
                                 className={cn('h-2 rounded-full transition-all duration-500', pct >= 70 ? 'bg-success' : pct >= 40 ? 'bg-warning' : 'bg-error')}
                                 style={{ width: `${pct}%` }}
@@ -120,7 +120,7 @@ export function OKRTree({ objectives, keyResults, onObjectiveClick, onKeyResultC
                               />
                             </div>
                           </div>
-                          <span className="text-xs font-semibold text-on-surface-variant dark:text-on-surface-variant w-10 text-right">{pct}%</span>
+                          <span className="text-xs font-semibold text-ink-variant dark:text-ink-variant w-10 text-right">{pct}%</span>
                         </button>
                       )
                     })}

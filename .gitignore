@@ -31,6 +31,15 @@ rg-out.txt
 rg-pattern.txt
 test-results.txt
 
+# Large test output files (cause AI context window thrashing)
+vitest-results.json
+vitest-final.json
+vitest-current.json
+e2e-results.json
+e2e-stderr.txt
+coverage_output.txt
+loadtests/results-*.json
+
 # Audit artifacts and state files (may contain credentials/references)
 Meta/states/
 audit_artifacts/

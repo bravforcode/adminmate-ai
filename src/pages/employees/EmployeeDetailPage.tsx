@@ -37,10 +37,10 @@ function InfoRow({ icon: Icon, label, value, masked }: { icon: React.ElementType
   if (!value) return null
   return (
     <div className="flex items-start gap-3 py-2">
-      <Icon size={16} className="text-on-surface-variant dark:text-on-surface-variant mt-0.5 flex-shrink-0" />
+      <Icon size={16} className="text-ink-variant dark:text-ink-variant mt-0.5 flex-shrink-0" />
       <div className="min-w-0">
-        <p className="text-xs text-on-surface-variant dark:text-on-surface-variant">{label}</p>
-        <p className="text-sm text-on-surface dark:text-on-surface font-medium">{masked ? maskEmail(value) : value}</p>
+        <p className="text-xs text-ink-variant dark:text-ink-variant">{label}</p>
+        <p className="text-sm text-ink font-medium">{masked ? maskEmail(value) : value}</p>
       </div>
     </div>
   )
@@ -111,20 +111,20 @@ export function EmployeeDetailPage() {
       </div>
 
       {/* Header Card */}
-      <div className="bg-surface dark:bg-surface rounded-xl border border-outline-variant dark:border-outline p-6">
+      <div className="bg-surface rounded-xl border border-border p-6">
         <div className="flex items-start gap-4">
-          <div className="w-16 h-16 rounded-full bg-primary-container dark:bg-primary-container text-on-primary-container dark:text-accent-dim flex items-center justify-center font-bold text-xl flex-shrink-0">
+          <div className="w-16 h-16 rounded-full bg-primary-container dark:bg-primary-container text-on-primary-container dark:text-primary-muted flex items-center justify-center font-bold text-xl flex-shrink-0">
             {initials}
           </div>
           <div className="flex-1 min-w-0">
             <div className="flex items-center gap-3 flex-wrap">
-              <h1 className="text-headline-md font-bold text-on-surface dark:text-on-surface">{displayName}</h1>
+              <h1 className="text-headline-md font-bold text-ink dark:text-ink">{displayName}</h1>
               <span className={`inline-block px-2.5 py-0.5 rounded-full text-xs font-medium ${statusStyle}`}>
                 {emp.employment_status.replace('_', ' ')}
               </span>
             </div>
-            <p className="text-body-md text-on-surface-variant dark:text-on-surface-variant mt-1">{emp.job_title}</p>
-            <div className="flex flex-wrap gap-4 mt-3 text-sm text-on-surface-variant dark:text-on-surface-variant">
+            <p className="text-body-md text-ink-variant dark:text-ink-variant mt-1">{emp.job_title}</p>
+            <div className="flex flex-wrap gap-4 mt-3 text-sm text-ink-variant dark:text-ink-variant">
               <span className="flex items-center gap-1"><Briefcase size={14} /> {emp.employment_type.replace('_', ' ')}</span>
               <span className="flex items-center gap-1"><Calendar size={14} /> Hired {emp.hire_date}</span>
               {emp.employee_number && <span className="flex items-center gap-1"><Shield size={14} /> {emp.employee_number}</span>}
@@ -134,15 +134,15 @@ export function EmployeeDetailPage() {
       </div>
 
       {/* Tabs */}
-      <div className="flex gap-1 border-b border-outline-variant dark:border-outline">
+      <div className="flex gap-1 border-b border-border dark:border-border">
         {tabs.map(tab => (
           <button
             key={tab.key}
             onClick={() => setActiveTab(tab.key)}
             className={`flex items-center gap-1.5 px-4 py-2.5 text-sm font-medium border-b-2 transition-colors ${
               activeTab === tab.key
-                ? 'border-primary text-primary dark:border-accent-dim dark:text-accent-dim'
-                : 'border-transparent text-on-surface-variant dark:text-on-surface-variant hover:text-on-surface dark:hover:text-on-surface'
+                ? 'border-primary text-primary dark:border-accent-dim dark:text-primary-muted'
+                : 'border-transparent text-ink-variant dark:text-ink-variant hover:text-ink dark:hover:text-ink'
             }`}
           >
             <tab.icon size={14} />
@@ -155,8 +155,8 @@ export function EmployeeDetailPage() {
       {activeTab === 'overview' && (
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           {/* Personal Information */}
-          <div className="bg-surface dark:bg-surface rounded-xl border border-outline-variant dark:border-outline p-5">
-            <h3 className="font-semibold text-on-surface dark:text-on-surface mb-3 flex items-center gap-2">
+          <div className="bg-surface rounded-xl border border-border p-5">
+            <h3 className="font-semibold text-ink mb-3 flex items-center gap-2">
               <Mail size={16} /> Contact Information
             </h3>
             <div className="space-y-1">
@@ -167,8 +167,8 @@ export function EmployeeDetailPage() {
           </div>
 
           {/* Employment Details */}
-          <div className="bg-surface dark:bg-surface rounded-xl border border-outline-variant dark:border-outline p-5">
-            <h3 className="font-semibold text-on-surface dark:text-on-surface mb-3 flex items-center gap-2">
+          <div className="bg-surface rounded-xl border border-border p-5">
+            <h3 className="font-semibold text-ink mb-3 flex items-center gap-2">
               <Briefcase size={16} /> Employment Details
             </h3>
             <div className="space-y-1">
@@ -182,8 +182,8 @@ export function EmployeeDetailPage() {
           </div>
 
           {/* Emergency Contact */}
-          <div className="bg-surface dark:bg-surface rounded-xl border border-outline-variant dark:border-outline p-5">
-            <h3 className="font-semibold text-on-surface dark:text-on-surface mb-3 flex items-center gap-2">
+          <div className="bg-surface rounded-xl border border-border p-5">
+            <h3 className="font-semibold text-ink mb-3 flex items-center gap-2">
               <Shield size={16} /> Emergency Contact
             </h3>
             <div className="space-y-1">
@@ -191,13 +191,13 @@ export function EmployeeDetailPage() {
               <InfoRow icon={Phone} label="Phone" value={maskPhone(emp.emergency_contact_phone)} />
             </div>
             {!emp.emergency_contact_name && !emp.emergency_contact_phone && (
-              <p className="text-sm text-on-surface-variant/60 dark:text-on-surface-variant/60">No emergency contact on file</p>
+              <p className="text-sm text-ink-variant/60 dark:text-ink-variant/60">No emergency contact on file</p>
             )}
           </div>
 
           {/* System Info */}
-          <div className="bg-surface dark:bg-surface rounded-xl border border-outline-variant dark:border-outline p-5">
-            <h3 className="font-semibold text-on-surface dark:text-on-surface mb-3 flex items-center gap-2">
+          <div className="bg-surface rounded-xl border border-border p-5">
+            <h3 className="font-semibold text-ink mb-3 flex items-center gap-2">
               <Building2 size={16} /> System Information
             </h3>
             <div className="space-y-1">
@@ -211,19 +211,19 @@ export function EmployeeDetailPage() {
       )}
 
       {activeTab === 'timeline' && (
-        <div className="bg-surface dark:bg-surface rounded-xl border border-outline-variant dark:border-outline p-6">
+        <div className="bg-surface rounded-xl border border-border p-6">
           <EmptyState icon={Clock} title="Timeline" description="Employee timeline events will be displayed here" />
         </div>
       )}
 
       {activeTab === 'documents' && (
-        <div className="bg-surface dark:bg-surface rounded-xl border border-outline-variant dark:border-outline p-6">
+        <div className="bg-surface rounded-xl border border-border p-6">
           <EmptyState icon={FileText} title="Documents" description="Employee documents and files will be displayed here" />
         </div>
       )}
 
       {activeTab === 'performance' && (
-        <div className="bg-surface dark:bg-surface rounded-xl border border-outline-variant dark:border-outline p-6">
+        <div className="bg-surface rounded-xl border border-border p-6">
           <EmptyState icon={TrendingUp} title="Performance" description="Performance reviews and metrics will be displayed here" />
         </div>
       )}

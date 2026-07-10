@@ -84,7 +84,7 @@ export function ForgotPasswordPage() {
       {sent ? (
         <div className="text-center space-y-4">
           <Mail size={48} className="mx-auto text-primary" />
-          <p className="text-body-md text-on-surface">{t('auth.check_email_reset')}</p>
+          <p className="text-body-md text-ink">{t('auth.check_email_reset')}</p>
           <Link
             to="/login"
             className="text-primary hover:underline inline-flex items-center gap-1"
@@ -95,7 +95,7 @@ export function ForgotPasswordPage() {
       ) : (
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4" noValidate>
           <div>
-            <label htmlFor="email" className="block text-label-md text-on-surface-variant mb-1">
+            <label htmlFor="email" className="block text-label-md text-ink-variant mb-1">
               {t('auth.email')}
             </label>
             <input
@@ -105,7 +105,7 @@ export function ForgotPasswordPage() {
               autoComplete="email"
               inputMode="email"
               data-testid="forgot-email-input"
-              className="w-full px-3 py-2 rounded-lg border border-outline-variant bg-surface-container-lowest focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all"
+              className="w-full px-3 py-2 rounded-lg border border-border bg-surface-sunken-lowest focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all"
               placeholder={t('auth.placeholder_email')}
             />
             {errors.email && (

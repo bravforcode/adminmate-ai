@@ -124,7 +124,7 @@ export function ChatWidget() {
         {/* Header */}
         <div className="bg-gradient-to-r from-navy-deep to-navy p-4 flex items-center justify-between border-b border-border/10">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-full bg-accent/20 border border-accent/40 flex items-center justify-center text-accent-dim">
+            <div className="w-10 h-10 rounded-full bg-accent/20 border border-accent/40 flex items-center justify-center text-primary-muted">
               <Bot size={20} className="animate-pulse" />
             </div>
             <div>
@@ -136,7 +136,7 @@ export function ChatWidget() {
                 </span>
               </div>
               <span className="text-xs text-white/60 flex items-center gap-1">
-                <Sparkles size={10} className="text-accent-dim" />
+                <Sparkles size={10} className="text-primary-muted" />
                 {t('status')}
               </span>
             </div>
@@ -155,11 +155,11 @@ export function ChatWidget() {
         <div data-testid="chat-messages" className="flex-1 chat-scroll p-4 space-y-4 bg-bg">
           {messages.length === 0 && (
             <div className="text-center py-8 px-4 flex flex-col items-center justify-center h-full">
-              <div className="w-12 h-12 rounded-full bg-accent-light flex items-center justify-center text-accent mb-3">
+              <div className="w-12 h-12 rounded-full bg-primary-subtle flex items-center justify-center text-accent mb-3">
                 <Bot size={26} />
               </div>
-              <h4 className="font-semibold text-text-primary text-sm mb-1">{t('title')}</h4>
-              <p className="text-xs text-text-secondary mb-6 text-center max-w-[280px]">
+              <h4 className="font-semibold text-ink text-sm mb-1">{t('title')}</h4>
+              <p className="text-xs text-ink-secondary mb-6 text-center max-w-[280px]">
                 {t('subtitle')}
               </p>
               <div className="flex flex-col gap-2 w-full max-w-[300px]">
@@ -168,7 +168,7 @@ export function ChatWidget() {
                     key={idx}
                     onClick={() => handleSuggestionClick(suggestion)}
                     data-testid="chat-suggestion"
-                    className="text-left px-3.5 py-2.5 bg-surface hover:bg-accent-light border border-border hover:border-accent-dim rounded-xl text-xs text-text-secondary hover:text-accent transition-all duration-200 shadow-sm cursor-pointer hover:translate-x-1"
+                    className="text-left px-3.5 py-2.5 bg-surface hover:bg-primary-subtle border border-border hover:border-accent-dim rounded-xl text-xs text-ink-secondary hover:text-accent transition-all duration-200 shadow-sm cursor-pointer hover:translate-x-1"
                   >
                     {suggestion}
                   </button>
@@ -194,7 +194,7 @@ export function ChatWidget() {
                 className={`max-w-[80%] rounded-2xl p-3 text-xs shadow-sm leading-relaxed ${
                   msg.sender === 'user'
                     ? 'bg-accent text-white rounded-tr-none'
-                    : 'bg-surface text-text-primary border border-border rounded-tl-none'
+                    : 'bg-surface text-ink border border-border rounded-tl-none'
                 }`}
               >
                 {DOMPurify.sanitize(msg.content)}
@@ -235,7 +235,7 @@ export function ChatWidget() {
             onKeyDown={(e) => e.key === 'Enter' && handleSend()}
             data-testid="chat-input"
             aria-label={t('placeholder')}
-            className="flex-1 px-4 py-2.5 rounded-full border border-border bg-bg focus:border-accent focus:ring-1 focus:ring-accent outline-none text-xs text-text-primary placeholder-text-muted transition-all"
+            className="flex-1 px-4 py-2.5 rounded-full border border-border bg-bg focus:border-accent focus:ring-1 focus:ring-accent outline-none text-xs text-ink placeholder-text-muted transition-all"
             placeholder={t('placeholder')}
             disabled={isLoading}
           />

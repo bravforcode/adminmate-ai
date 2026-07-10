@@ -102,17 +102,17 @@ export function PDPAPage() {
   return (
     <div className="space-y-6 max-w-3xl">
       <div>
-        <h1 className="text-headline-md font-bold text-on-surface">{t('pdpa.page_title') || 'Privacy & Data'}</h1>
-        <p className="text-body-md text-on-surface-variant mt-1">{t('pdpa.page_subtitle') || 'Manage your personal data, exports, and consent history under PDPA / GDPR.'}</p>
+        <h1 className="text-headline-md font-bold text-ink">{t('pdpa.page_title') || 'Privacy & Data'}</h1>
+        <p className="text-body-md text-ink-variant mt-1">{t('pdpa.page_subtitle') || 'Manage your personal data, exports, and consent history under PDPA / GDPR.'}</p>
       </div>
 
       {/* Data Export */}
-      <div className="bg-surface rounded-xl border border-outline-variant shadow-sm p-6">
+      <div className="bg-surface rounded-xl border border-border shadow-sm p-6">
         <div className="flex items-center gap-2 mb-4">
           <Download size={20} className="text-primary" />
-          <h3 className="text-title-lg font-semibold text-on-surface">{t('pdpa.export_title') || 'Export My Data'}</h3>
+          <h3 className="text-title-lg font-semibold text-ink">{t('pdpa.export_title') || 'Export My Data'}</h3>
         </div>
-        <p className="text-sm text-on-surface-variant mb-4">
+        <p className="text-sm text-ink-variant mb-4">
           {t('pdpa.export_desc') || 'Download a complete copy of your personal data in JSON format. This includes your profile, applications, documents, and consent records.'}
         </p>
         <button
@@ -129,15 +129,15 @@ export function PDPAPage() {
       <div className="bg-surface rounded-xl border border-error/30 shadow-sm p-6">
         <div className="flex items-center gap-2 mb-4">
           <Trash2 size={20} className="text-error" />
-          <h3 className="text-title-lg font-semibold text-on-surface">{t('pdpa.delete_title') || 'Delete My Account'}</h3>
+          <h3 className="text-title-lg font-semibold text-ink">{t('pdpa.delete_title') || 'Delete My Account'}</h3>
         </div>
-        <p className="text-sm text-on-surface-variant mb-4">
+        <p className="text-sm text-ink-variant mb-4">
           {t('pdpa.delete_desc') || 'Anonymize your personal data. PII fields will be replaced with anonymized values. Non-PII business records (application history, audit logs) will be retained for operational continuity.'}
         </p>
         <div className="bg-error-container/30 rounded-lg p-3 mb-4">
           <div className="flex items-start gap-2">
             <AlertTriangle size={16} className="text-error mt-0.5 flex-shrink-0" />
-            <p className="text-xs text-on-surface-variant">{t('pdpa.delete_warning') || 'This action is irreversible. Your name, email, phone, and other personal identifiers will be permanently anonymized.'}</p>
+            <p className="text-xs text-ink-variant">{t('pdpa.delete_warning') || 'This action is irreversible. Your name, email, phone, and other personal identifiers will be permanently anonymized.'}</p>
           </div>
         </div>
         <button
@@ -150,32 +150,32 @@ export function PDPAPage() {
       </div>
 
       {/* Data Categories */}
-      <div className="bg-surface rounded-xl border border-outline-variant shadow-sm p-6">
+      <div className="bg-surface rounded-xl border border-border shadow-sm p-6">
         <div className="flex items-center gap-2 mb-4">
           <Database size={20} className="text-primary" />
-          <h3 className="text-title-lg font-semibold text-on-surface">{t('pdpa.categories_title') || 'Data Categories'}</h3>
+          <h3 className="text-title-lg font-semibold text-ink">{t('pdpa.categories_title') || 'Data Categories'}</h3>
         </div>
-        <p className="text-sm text-on-surface-variant mb-4">
+        <p className="text-sm text-ink-variant mb-4">
           {t('pdpa.categories_desc') || 'Overview of data categories stored about you.'}
         </p>
         {categoriesLoading ? (
-          <div className="space-y-2 skeleton-stagger">{[1, 2, 3].map(i => <div key={i} className="h-12 bg-surface-container-high rounded-lg animate-shimmer" />)}</div>
+          <div className="space-y-2 skeleton-stagger">{[1, 2, 3].map(i => <div key={i} className="h-12 bg-surface-sunken rounded-lg animate-shimmer" />)}</div>
         ) : (
           <div className="space-y-2">
             {categories?.map(cat => (
-              <div key={cat.table_name} className="border border-outline-variant rounded-lg overflow-hidden">
+              <div key={cat.table_name} className="border border-border rounded-lg overflow-hidden">
                 <button
                   onClick={() => setExpandedCategory(expandedCategory === cat.table_name ? null : cat.table_name)}
-                  className="w-full flex items-center justify-between p-3 hover:bg-surface-container-low transition-colors"
+                  className="w-full flex items-center justify-between p-3 hover:bg-surface-sunken transition-colors"
                 >
                   <div className="flex items-center gap-3">
-                    <span className="text-sm font-medium text-on-surface">{cat.category}</span>
-                    <span className="text-xs bg-surface-container px-2 py-0.5 rounded text-on-surface-variant">{cat.record_count} records</span>
+                    <span className="text-sm font-medium text-ink">{cat.category}</span>
+                    <span className="text-xs bg-surface-sunken px-2 py-0.5 rounded text-ink-variant">{cat.record_count} records</span>
                   </div>
-                  {expandedCategory === cat.table_name ? <ChevronUp size={16} className="text-on-surface-variant" /> : <ChevronDown size={16} className="text-on-surface-variant" />}
+                  {expandedCategory === cat.table_name ? <ChevronUp size={16} className="text-ink-variant" /> : <ChevronDown size={16} className="text-ink-variant" />}
                 </button>
                 {expandedCategory === cat.table_name && (
-                  <div className="px-3 pb-3 text-xs text-on-surface-variant border-t border-outline-variant pt-2">
+                  <div className="px-3 pb-3 text-xs text-ink-variant border-t border-border pt-2">
                     {cat.description}
                   </div>
                 )}
@@ -186,27 +186,27 @@ export function PDPAPage() {
       </div>
 
       {/* Consent History */}
-      <div className="bg-surface rounded-xl border border-outline-variant shadow-sm p-6">
+      <div className="bg-surface rounded-xl border border-border shadow-sm p-6">
         <div className="flex items-center gap-2 mb-4">
           <Shield size={20} className="text-primary" />
-          <h3 className="text-title-lg font-semibold text-on-surface">{t('pdpa.consent_history_title') || 'Consent History'}</h3>
+          <h3 className="text-title-lg font-semibold text-ink">{t('pdpa.consent_history_title') || 'Consent History'}</h3>
         </div>
-        <p className="text-sm text-on-surface-variant mb-4">
+        <p className="text-sm text-ink-variant mb-4">
           {t('pdpa.consent_history_desc') || 'Timeline of your consent records. Download receipts for your records.'}
         </p>
         {consentsLoading ? (
-          <div className="space-y-2 skeleton-stagger">{[1, 2].map(i => <div key={i} className="h-16 bg-surface-container-high rounded-lg animate-shimmer" />)}</div>
+          <div className="space-y-2 skeleton-stagger">{[1, 2].map(i => <div key={i} className="h-16 bg-surface-sunken rounded-lg animate-shimmer" />)}</div>
         ) : consentHistory && consentHistory.length > 0 ? (
           <div className="space-y-3">
             {consentHistory.map(consent => (
-              <div key={consent.id} className="flex items-center justify-between p-3 bg-surface-container-low rounded-lg border border-outline-variant">
+              <div key={consent.id} className="flex items-center justify-between p-3 bg-surface-sunken rounded-lg border border-border">
                 <div className="flex items-center gap-3">
                   <div className={`w-8 h-8 rounded-full flex items-center justify-center ${consent.consent_given ? 'bg-green-100 text-green-600' : 'bg-red-100 text-red-600'}`}>
                     {consent.consent_given ? <CheckCircle size={16} /> : <XCircle size={16} />}
                   </div>
                   <div>
                     <div className="flex items-center gap-2">
-                      <p className="text-sm font-medium text-on-surface">{consent.consent_type}</p>
+                      <p className="text-sm font-medium text-ink">{consent.consent_type}</p>
                       <span className={`text-[10px] px-1.5 py-0.5 rounded-full font-medium ${
                         consent.consent_given
                           ? 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400'
@@ -215,7 +215,7 @@ export function PDPAPage() {
                         {consent.consent_given ? 'Active' : 'Revoked'}
                       </span>
                     </div>
-                    <p className="text-xs text-on-surface-variant flex items-center gap-1">
+                    <p className="text-xs text-ink-variant flex items-center gap-1">
                       <Clock size={12} />
                       {new Date(consent.created_at).toLocaleDateString()} · v{consent.consent_form_version}
                     </p>
@@ -240,7 +240,7 @@ export function PDPAPage() {
             ))}
           </div>
         ) : (
-          <p className="text-sm text-on-surface-variant">{t('pdpa.no_consents') || 'No consent records found.'}</p>
+          <p className="text-sm text-ink-variant">{t('pdpa.no_consents') || 'No consent records found.'}</p>
         )}
       </div>
 

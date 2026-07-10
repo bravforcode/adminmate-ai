@@ -45,20 +45,20 @@ ai-assistant,AI,functional_local,Platform,,free,TH,Gemini,basic,Schema+service+t
 ai-helpdesk,HR Helpdesk,functional_local,Product,,free,TH,,basic,Schema+service+tests
 billing-subscriptions,Billing,functional_local,Platform,,free,TH,Stripe,basic,Schema+service+tests
 billing-plans,Billing,functional_local,Platform,,free,TH,,basic,Schema+service+UI+tests
-attendance-leave,Attendance/Leave,schema_only,Product,,free,TH,,basic,Tables exist only
-scheduling,Scheduling,schema_only,Product,,free,TH,,basic,Tables exist only
+attendance-leave,Attendance/Leave,functional_local,Product,,free,TH,,basic,Schema+service+UI+tests
+scheduling,Scheduling,functional_local,Product,,free,TH,,basic,Schema+service+UI+tests
 payroll-th,Payroll,implemented_local,Payroll,,pro,TH,,intermediate,No specialist validation
 payroll-global,Payroll,schema_only,Payroll,,enterprise,TH,,basic,Country pack stubs only
 statutory-filing,Compliance,implemented_local,Compliance,,pro,TH,,intermediate,No filing proof
-performance,Performance,schema_only,Product,,free,TH,,basic,Tables exist only
-learning,L&D,schema_only,Product,,free,TH,,basic,Tables exist only
-compensation,Compensation,schema_only,Product,,free,TH,,basic,Tables exist only
-benefits,Benefits,schema_only,Product,,free,TH,,basic,Tables exist only
-engagement,Engagement,schema_only,Product,,free,TH,,basic,Tables exist only
-assets,Assets/Expenses,schema_only,Product,,free,TH,,basic,Tables exist only
+performance,Performance,functional_local,Product,,free,TH,,basic,Schema+service+UI+tests
+learning,L&D,functional_local,Product,,free,TH,,basic,Schema+service+UI+tests
+compensation,Compensation,functional_local,Product,,free,TH,,basic,Schema+service+UI+tests
+benefits,Benefits,functional_local,Product,,free,TH,,basic,Schema+service+UI+tests
+engagement,Engagement,functional_local,Product,,free,TH,,basic,Schema+service+UI+tests
+assets,Assets/Expenses,functional_local,Product,,free,TH,,basic,Schema+service+UI+tests
 vendor-contractor,Vendor/Contractor,schema_only,Product,,free,TH,,basic,Tables exist only
 analytics,Analytics,implemented_local,Product,,free,TH,,basic,Schema+service+UI+tests
-analytics-people,Analytics,schema_only,Product,,pro,TH,,basic,Tables exist only
+analytics-people,Analytics,functional_local,Product,,pro,TH,,basic,Schema+service+UI+tests
 api-webhooks,Platform,functional_local,Platform,,enterprise,TH,,basic,Schema+service+tests
 search-notifications,Platform,functional_local,Platform,,free,TH,,basic,Schema+service+tests
 enterprise-admin,Enterprise,implemented_local,Platform,,enterprise,TH,,basic,Schema+service+tests

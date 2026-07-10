@@ -36,30 +36,30 @@ export function DataRetention() {
   })
 
   if (isLoading) {
-    return <div className="space-y-2">{[1, 2, 3].map(i => <div key={i} className="h-12 bg-surface-container-high rounded-lg animate-shimmer" />)}</div>
+    return <div className="space-y-2">{[1, 2, 3].map(i => <div key={i} className="h-12 bg-surface-sunken rounded-lg animate-shimmer" />)}</div>
   }
 
   return (
     <div className="space-y-3">
       {policies?.map(policy => (
-        <div key={policy.id} className="flex items-center justify-between py-3 px-3 rounded-lg bg-surface-container-low border border-outline-variant">
+        <div key={policy.id} className="flex items-center justify-between py-3 px-3 rounded-lg bg-surface-sunken border border-border">
           <div className="flex items-center gap-3">
-            {ACTION_ICONS[policy.action] || <Clock size={16} className="text-on-surface-variant" />}
+            {ACTION_ICONS[policy.action] || <Clock size={16} className="text-ink-variant" />}
             <div>
-              <p className="text-sm font-medium text-on-surface">{policy.entity_type}</p>
-              <p className="text-xs text-on-surface-variant capitalize">{t('compliance.retention_action') || 'Action'}: {policy.action}</p>
+              <p className="text-sm font-medium text-ink">{policy.entity_type}</p>
+              <p className="text-xs text-ink-variant capitalize">{t('compliance.retention_action') || 'Action'}: {policy.action}</p>
             </div>
           </div>
           <div className="text-right">
             <p className="text-sm font-semibold text-primary">{policy.retention_days} {t('compliance.days') || 'days'}</p>
-            <p className={`text-[10px] ${policy.is_active ? 'text-green-600' : 'text-on-surface-variant'}`}>
+            <p className={`text-[10px] ${policy.is_active ? 'text-green-600' : 'text-ink-variant'}`}>
               {policy.is_active ? 'Active' : 'Inactive'}
             </p>
           </div>
         </div>
       ))}
       {policies?.length === 0 && (
-        <p className="text-sm text-on-surface-variant text-center py-4">{t('compliance.no_retention_policies') || 'No retention policies configured.'}</p>
+        <p className="text-sm text-ink-variant text-center py-4">{t('compliance.no_retention_policies') || 'No retention policies configured.'}</p>
       )}
     </div>
   )

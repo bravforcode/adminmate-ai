@@ -39,7 +39,7 @@ i18n
     supportedLngs: [...SUPPORTED_LANGUAGES],
     load: 'languageOnly',
     nonExplicitSupportedLngs: true,
-    ns: ['common', 'chat', 'recruitment', 'hiring', 'onboarding', 'documents', 'compliance', 'reports', 'dashboard', 'health', 'system', 'calendar', 'portal', 'messages', 'notifications', 'billing'],
+    ns: ['common', 'landing', 'chat', 'recruitment', 'hiring', 'onboarding', 'documents', 'compliance', 'reports', 'dashboard', 'health', 'system', 'calendar', 'portal', 'messages', 'notifications', 'billing'],
     defaultNS: 'common',
     backend: {
       loadPath: '/locales/{{lng}}/{{ns}}.json',

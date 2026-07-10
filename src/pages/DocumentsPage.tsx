@@ -11,13 +11,13 @@ import { Button } from '../components/ui/Button'
 import { RequestSignatureModal } from '../components/documents/RequestSignatureModal'
 
 const STATUS_COLORS: Record<string, string> = {
-  draft: 'bg-surface-container dark:bg-surface-container text-on-surface-variant dark:text-on-surface-variant',
+  draft: 'bg-surface-sunken text-ink-variant dark:text-ink-variant',
   pending_signature: 'bg-yellow-50 dark:bg-warning-container/30 text-yellow-700 dark:text-warning',
   signed: 'bg-green-50 dark:bg-success-container/30 text-green-700 dark:text-success',
-  submitted: 'bg-blue-50 dark:bg-primary-container/30 text-blue-700 dark:text-accent-dim',
+  submitted: 'bg-blue-50 dark:bg-primary-container/30 text-blue-700 dark:text-primary-muted',
   approved: 'bg-teal-50 dark:bg-success-container/30 text-teal-700 dark:text-success',
   rejected: 'bg-red-50 dark:bg-error-container/30 text-red-700 dark:text-error',
-  expired: 'bg-gray-50 dark:bg-surface text-gray-500 dark:text-outline-variant',
+  expired: 'bg-gray-50 text-gray-500 dark:text-outline-variant',
 }
 
 const DOC_TYPES = ['employment_contract', 'nda', 'tax_pnd1', 'tax_pnd50', 'social_security', 'health_insurance', 'bpjs_tk', 'bpjs_kes', 'work_permit', 'visa', 'company_policy', 'handbook', 'warning_letter', 'termination_letter']
@@ -70,39 +70,39 @@ export function DocumentsPage() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-headline-md font-bold text-on-surface dark:text-on-surface">{t('title')}</h1>
-        <p className="text-body-md text-on-surface-variant dark:text-on-surface-variant mt-1">{t('subtitle')}</p>
+        <h1 className="text-headline-md font-bold text-ink dark:text-ink">{t('title')}</h1>
+        <p className="text-body-md text-ink-variant dark:text-ink-variant mt-1">{t('subtitle')}</p>
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-        <div className="bg-surface dark:bg-surface rounded-xl border border-outline-variant dark:border-outline p-4">
-          <p className="text-sm text-on-surface-variant dark:text-on-surface-variant">{t('total_documents')}</p>
-          <p className="text-2xl font-bold text-on-surface dark:text-on-surface mt-1">{stats.total}</p>
+        <div className="bg-surface rounded-xl border border-border p-4">
+          <p className="text-sm text-ink-variant dark:text-ink-variant">{t('total_documents')}</p>
+          <p className="text-2xl font-bold text-ink mt-1">{stats.total}</p>
         </div>
-        <div className="bg-surface dark:bg-surface rounded-xl border border-outline-variant dark:border-outline p-4">
-          <p className="text-sm text-on-surface-variant dark:text-on-surface-variant">{t('pending_action')}</p>
+        <div className="bg-surface rounded-xl border border-border p-4">
+          <p className="text-sm text-ink-variant dark:text-ink-variant">{t('pending_action')}</p>
           <p className="text-2xl font-bold text-yellow-700 dark:text-warning mt-1">{stats.pending}</p>
         </div>
-        <div className="bg-surface dark:bg-surface rounded-xl border border-outline-variant dark:border-outline p-4">
-          <p className="text-sm text-on-surface-variant dark:text-on-surface-variant">{t('overdue')}</p>
+        <div className="bg-surface rounded-xl border border-border p-4">
+          <p className="text-sm text-ink-variant dark:text-ink-variant">{t('overdue')}</p>
           <p className="text-2xl font-bold text-error dark:text-error mt-1">{stats.overdue}</p>
         </div>
       </div>
 
       <div className="flex flex-col sm:flex-row gap-4">
         <div className="relative flex-1 max-w-full sm:max-w-sm">
-          <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant dark:text-on-surface-variant size-4" />
+          <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-ink-variant dark:text-ink-variant size-4" />
           <input
           value={searchInput}
           onChange={handleSearchChange}
-            className="w-full pl-10 pr-4 py-3 rounded-xl border border-outline-variant dark:border-outline bg-surface-container-lowest dark:bg-surface-container-lowest text-on-surface dark:text-on-surface focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all duration-200 outline-none text-sm"
+            className="w-full pl-10 pr-4 py-3 rounded-xl border border-border bg-surface-sunken-lowest dark:bg-surface-sunken-lowest text-ink focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all duration-200 outline-none text-sm"
             placeholder={t('search_placeholder')}
           />
         </div>
         <select
           value={typeFilter}
           onChange={handleTypeChange}
-          className="w-full sm:w-auto px-4 py-3 rounded-xl border border-outline-variant dark:border-outline bg-surface-container-lowest dark:bg-surface-container-lowest text-on-surface dark:text-on-surface focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all duration-200 outline-none text-sm"
+          className="w-full sm:w-auto px-4 py-3 rounded-xl border border-border bg-surface-sunken-lowest dark:bg-surface-sunken-lowest text-ink focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all duration-200 outline-none text-sm"
         >
           <option value="">{t('all_types')}</option>
           {DOC_TYPES.map(t => <option key={t} value={t}>{t.replace(/_/g, ' ')}</option>)}
@@ -132,45 +132,45 @@ export function DocumentsPage() {
           />
         )
       ) : (
-        <div className="bg-surface dark:bg-surface rounded-xl border border-outline-variant dark:border-outline overflow-hidden">
+        <div className="bg-surface rounded-xl border border-border overflow-hidden">
           <div className="table-scroll">
             <table role="table" className="table-card-mobile w-full text-left min-w-[600px]">
               <thead>
-                <tr className="bg-surface-container dark:bg-surface-container/50 border-b border-outline-variant/50 dark:border-outline/50">
-                  <th className="py-3 px-4 text-xs font-semibold uppercase tracking-wider text-on-surface-variant dark:text-on-surface-variant">{t('title')}</th>
-                  <th className="py-3 px-4 text-xs font-semibold uppercase tracking-wider text-on-surface-variant dark:text-on-surface-variant">{t('for')}</th>
-                  <th className="py-3 px-4 text-xs font-semibold uppercase tracking-wider text-on-surface-variant dark:text-on-surface-variant">{t('type')}</th>
-                  <th className="py-3 px-4 text-xs font-semibold uppercase tracking-wider text-on-surface-variant dark:text-on-surface-variant">{t('region')}</th>
-                  <th className="py-3 px-4 text-xs font-semibold uppercase tracking-wider text-on-surface-variant dark:text-on-surface-variant">{t('status', { ns: 'common' })}</th>
-                  <th className="py-3 px-4 text-xs font-semibold uppercase tracking-wider text-on-surface-variant dark:text-on-surface-variant">{t('signature_status')}</th>
-                  <th className="py-3 px-4 text-xs font-semibold uppercase tracking-wider text-on-surface-variant dark:text-on-surface-variant">{t('due')}</th>
-                  <th className="py-3 px-4 text-xs font-semibold uppercase tracking-wider text-on-surface-variant dark:text-on-surface-variant text-right">{t('actions')}</th>
+                <tr className="bg-surface-sunken dark:bg-surface-sunken/50 border-b border-border/50 dark:border-border/50">
+                  <th className="py-3 px-4 text-xs font-semibold uppercase tracking-wider text-ink-variant dark:text-ink-variant">{t('title')}</th>
+                  <th className="py-3 px-4 text-xs font-semibold uppercase tracking-wider text-ink-variant dark:text-ink-variant">{t('for')}</th>
+                  <th className="py-3 px-4 text-xs font-semibold uppercase tracking-wider text-ink-variant dark:text-ink-variant">{t('type')}</th>
+                  <th className="py-3 px-4 text-xs font-semibold uppercase tracking-wider text-ink-variant dark:text-ink-variant">{t('region')}</th>
+                  <th className="py-3 px-4 text-xs font-semibold uppercase tracking-wider text-ink-variant dark:text-ink-variant">{t('status', { ns: 'common' })}</th>
+                  <th className="py-3 px-4 text-xs font-semibold uppercase tracking-wider text-ink-variant dark:text-ink-variant">{t('signature_status')}</th>
+                  <th className="py-3 px-4 text-xs font-semibold uppercase tracking-wider text-ink-variant dark:text-ink-variant">{t('due')}</th>
+                  <th className="py-3 px-4 text-xs font-semibold uppercase tracking-wider text-ink-variant dark:text-ink-variant text-right">{t('actions')}</th>
                 </tr>
               </thead>
               <tbody>
                 {filtered?.map(doc => (
-                  <tr key={doc.id} className="hover:bg-surface-container-high/50 dark:hover:bg-surface-container/30 transition-colors duration-150 border-b border-outline-variant/50 dark:border-outline/50">
-                    <td className="py-3 px-4 text-sm text-on-surface dark:text-on-surface" data-label={t('title')}>
+                  <tr key={doc.id} className="hover:bg-surface-sunken/50 dark:hover:bg-surface-sunken/30 transition-colors duration-150 border-b border-border/50 dark:border-border/50">
+                    <td className="py-3 px-4 text-sm text-ink dark:text-ink" data-label={t('title')}>
                       <div className="flex items-center gap-2">
-                        <FileText size={16} className="text-on-surface-variant dark:text-on-surface-variant shrink-0" />
-                        <span className="text-sm font-medium text-on-surface dark:text-on-surface">{doc.name}</span>
+                        <FileText size={16} className="text-ink-variant dark:text-ink-variant shrink-0" />
+                        <span className="text-sm font-medium text-ink dark:text-ink">{doc.name}</span>
                       </div>
                     </td>
-                    <td className="py-3 px-4 text-sm text-on-surface dark:text-on-surface text-on-surface-variant" data-label={t('for')}>{doc.candidates?.full_name || doc.user_profiles?.full_name || '-'}</td>
-                    <td className="py-3 px-4 text-sm text-on-surface dark:text-on-surface text-on-surface-variant" data-label={t('type')}>{doc.document_type?.replace(/_/g, ' ')}</td>
-                    <td className="py-3 px-4 text-sm text-on-surface dark:text-on-surface" data-label={t('region')}><span className="px-2 py-0.5 bg-surface-container-low dark:bg-surface-container-low rounded text-xs dark:text-on-surface">{doc.region}</span></td>
-                    <td className="py-3 px-4 text-sm text-on-surface dark:text-on-surface" data-label={t('status', { ns: 'common' })}><span className={cn('px-2 py-0.5 rounded text-xs font-medium', STATUS_COLORS[doc.status ?? ''] || '')}>{getStatusLabel(doc.status)}</span></td>
-                    <td className="py-3 px-4 text-sm text-on-surface dark:text-on-surface" data-label={t('signature_status')}>
+                    <td className="py-3 px-4 text-sm text-ink text-ink-variant" data-label={t('for')}>{doc.candidates?.full_name || doc.user_profiles?.full_name || '-'}</td>
+                    <td className="py-3 px-4 text-sm text-ink text-ink-variant" data-label={t('type')}>{doc.document_type?.replace(/_/g, ' ')}</td>
+                    <td className="py-3 px-4 text-sm text-ink dark:text-ink" data-label={t('region')}><span className="px-2 py-0.5 bg-surface-sunken rounded text-xs dark:text-ink">{doc.region}</span></td>
+                    <td className="py-3 px-4 text-sm text-ink dark:text-ink" data-label={t('status', { ns: 'common' })}><span className={cn('px-2 py-0.5 rounded text-xs font-medium', STATUS_COLORS[doc.status ?? ''] || '')}>{getStatusLabel(doc.status)}</span></td>
+                    <td className="py-3 px-4 text-sm text-ink dark:text-ink" data-label={t('signature_status')}>
                       {doc.requires_signature ? (
                         <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded text-xs font-medium bg-yellow-50 dark:bg-warning-container/30 text-yellow-700 dark:text-warning">
                           <Clock size={10} /> {t('signature_pending')}
                         </span>
                       ) : (
-                        <span className="text-xs text-on-surface-variant/50 dark:text-outline-variant">-</span>
+                        <span className="text-xs text-ink-variant/50 dark:text-outline-variant">-</span>
                       )}
                     </td>
-                    <td className="py-3 px-4 text-sm text-on-surface dark:text-on-surface text-on-surface-variant" data-label={t('due')}>{doc.due_date || '-'}</td>
-                    <td className="py-3 px-4 text-sm text-on-surface dark:text-on-surface text-right" data-label={t('actions')}>
+                    <td className="py-3 px-4 text-sm text-ink text-ink-variant" data-label={t('due')}>{doc.due_date || '-'}</td>
+                    <td className="py-3 px-4 text-sm text-ink text-right" data-label={t('actions')}>
                       <div className="flex items-center justify-end gap-2">
                         {doc.reminder_enabled && (
                           <Button
@@ -191,7 +191,7 @@ export function DocumentsPage() {
                         <select
                           value={doc.status || 'draft'}
                           onChange={e => updateDoc.mutate({ id: doc.id, data: { status: e.target.value } })}
-                          className="text-xs border border-outline-variant dark:border-outline rounded px-2 py-1 bg-surface-container-lowest dark:bg-surface-container-lowest dark:text-on-surface"
+                          className="text-xs border border-border rounded px-2 py-1 bg-surface-sunken-lowest dark:bg-surface-sunken-lowest dark:text-ink"
                         >
                             <option value="draft">{t('status_draft')}</option>
                             <option value="pending_signature">{t('status_pending_signature')}</option>

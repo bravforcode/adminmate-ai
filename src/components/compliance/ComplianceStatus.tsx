@@ -78,7 +78,7 @@ export function ComplianceStatus() {
   })
 
   if (isLoading) {
-    return <div className="space-y-2">{[1, 2, 3].map(i => <div key={i} className="h-10 bg-surface-container-high rounded-lg animate-shimmer" />)}</div>
+    return <div className="space-y-2">{[1, 2, 3].map(i => <div key={i} className="h-10 bg-surface-sunken rounded-lg animate-shimmer" />)}</div>
   }
 
   const passCount = checks?.filter(c => c.status === 'pass').length ?? 0
@@ -90,7 +90,7 @@ export function ComplianceStatus() {
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
           <Scale size={20} className="text-primary" />
-          <h3 className="font-semibold text-on-surface">{t('compliance.status_title') || 'Compliance Status'}</h3>
+          <h3 className="font-semibold text-ink">{t('compliance.status_title') || 'Compliance Status'}</h3>
         </div>
         <span className={`text-lg font-bold ${score >= 80 ? 'text-green-600' : score >= 50 ? 'text-yellow-600' : 'text-red-600'}`}>
           {score}%
@@ -98,8 +98,8 @@ export function ComplianceStatus() {
       </div>
       <div className="space-y-2">
         {checks?.map(check => (
-          <div key={check.id} className="flex items-center justify-between py-2 px-3 rounded-lg bg-surface-container-low">
-            <span className="text-sm text-on-surface">{check.label}</span>
+          <div key={check.id} className="flex items-center justify-between py-2 px-3 rounded-lg bg-surface-sunken">
+            <span className="text-sm text-ink">{check.label}</span>
             {check.status === 'pass' && <CheckCircle size={16} className="text-green-600" />}
             {check.status === 'warning' && <AlertTriangle size={16} className="text-yellow-600" />}
             {check.status === 'fail' && <AlertTriangle size={16} className="text-red-600" />}

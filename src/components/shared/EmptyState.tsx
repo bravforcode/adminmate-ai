@@ -2,26 +2,30 @@ import { Button } from '../ui/Button'
 import type { LucideIcon } from 'lucide-react'
 import { cn } from '../../lib/utils'
 
-interface Props { icon?: LucideIcon; title: string; description?: string; action?: { label: string; onClick: () => void } }
+interface Props {
+  icon?: LucideIcon
+  title: string
+  description?: string
+  action?: { label: string; onClick: () => void }
+}
 
 export function EmptyState({ icon: Icon, title, description, action }: Props) {
   return (
     <div className={cn(
       'flex flex-col items-center justify-center py-16 px-4 text-center',
-      'animate-in fade-in duration-500'
+      'animate-fade-in-up'
     )}>
       {Icon && (
-        <div className="relative mb-6">
-          <div className="absolute inset-0 rounded-full bg-gradient-to-br from-primary/5 to-tertiary/5 scale-150 blur-xl" />
-          <div className="relative w-20 h-20 rounded-full border-2 border-dashed border-outline-variant/40 flex items-center justify-center bg-surface-container-low/50">
-            <Icon size={36} className="text-on-surface-variant/60 dark:text-outline-variant" />
-          </div>
+        <div className="w-12 h-12 rounded-xl bg-surface-sunken flex items-center justify-center mb-4">
+          <Icon size={24} className="text-ink-muted" />
         </div>
       )}
-      <h3 className="text-lg font-semibold text-on-surface dark:text-on-surface mb-1">{title}</h3>
-      {description && <p className="text-sm text-on-surface-variant dark:text-on-surface-variant mt-1 max-w-sm leading-relaxed">{description}</p>}
+      <h3 className="text-base font-semibold text-ink mb-1">{title}</h3>
+      {description && (
+        <p className="text-sm text-ink-muted mt-1 max-w-sm leading-relaxed">{description}</p>
+      )}
       {action && (
-        <Button variant="default" onClick={action.onClick} className="mt-5">
+        <Button variant="default" size="sm" onClick={action.onClick} className="mt-4">
           {action.label}
         </Button>
       )}

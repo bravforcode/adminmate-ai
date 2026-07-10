@@ -133,7 +133,7 @@ export function LearningPage() {
       <header className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
         <div>
           <h1 className="text-headline-md md:text-headline-lg font-bold text-on-background">{t('title', 'Learning & Development')}</h1>
-          <p className="text-body-md text-on-surface-variant mt-1">{t('subtitle', 'Track courses, enrollments, and certifications')}</p>
+          <p className="text-body-md text-ink-variant mt-1">{t('subtitle', 'Track courses, enrollments, and certifications')}</p>
         </div>
       </header>
 
@@ -144,19 +144,19 @@ export function LearningPage() {
           { label: t('stats.completed', 'Completed'), value: completedCount, icon: CheckCircle, bg: 'bg-success-container' },
           { label: t('stats.avg_progress', 'Avg Progress'), value: `${avgProgress}%`, icon: Clock, bg: 'bg-warning-container' },
         ].map(stat => (
-          <div key={stat.label} className="bg-surface rounded-xl border border-outline-variant p-4">
+          <div key={stat.label} className="bg-surface rounded-xl border border-border p-4">
             <div className="flex items-center gap-3 mb-2">
               <div className={`w-9 h-9 rounded-full ${stat.bg} flex items-center justify-center`}>
-                <stat.icon size={18} className="text-on-surface" />
+                <stat.icon size={18} className="text-ink" />
               </div>
             </div>
-            <p className="text-2xl font-bold text-on-surface">{stat.value}</p>
-            <p className="text-xs text-on-surface-variant">{stat.label}</p>
+            <p className="text-2xl font-bold text-ink">{stat.value}</p>
+            <p className="text-xs text-ink-variant">{stat.label}</p>
           </div>
         ))}
       </div>
 
-      <div className="flex gap-1 bg-surface rounded-full p-1 border border-outline-variant w-fit" role="tablist" aria-label={t('learning.tabs_label', 'Learning sections')}>
+      <div className="flex gap-1 bg-surface rounded-full p-1 border border-border w-fit" role="tablist" aria-label={t('learning.tabs_label', 'Learning sections')}>
         {(['catalog', 'enrolled', 'certificates'] as const).map(tab => (
           <button
             key={tab}
@@ -166,8 +166,8 @@ export function LearningPage() {
             onClick={() => setActiveTab(tab)}
             className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${
               activeTab === tab
-                ? 'bg-surface-container-low text-primary'
-                : 'text-on-surface-variant hover:bg-surface-container-high'
+                ? 'bg-surface-sunken text-primary'
+                : 'text-ink-variant hover:bg-surface-sunken'
             }`}
           >
             {t(`tabs.${tab}`, tab.charAt(0).toUpperCase() + tab.slice(1))}
@@ -182,20 +182,20 @@ export function LearningPage() {
               value={categoryFilter}
               onChange={e => setCategoryFilter(e.target.value)}
               aria-label={t('filter.all_categories', 'All Categories')}
-              className="px-3 py-2 rounded-xl border border-outline-variant bg-surface text-sm text-on-surface focus:border-primary"
+              className="px-3 py-2 rounded-xl border border-border bg-surface text-sm text-ink focus:border-primary"
             >
               <option value="">{t('filter.all_categories', 'All Categories')}</option>
               {categories.map(cat => (
                 <option key={cat} value={cat}>{cat}</option>
               ))}
             </select>
-            <div className="flex gap-1 bg-surface rounded-full p-1 border border-outline-variant">
+            <div className="flex gap-1 bg-surface rounded-full p-1 border border-border">
               {(['all', 'required', 'optional'] as const).map(f => (
                 <button
                   key={f}
                   onClick={() => setRequiredFilter(f)}
                   className={`px-3 py-1.5 rounded-full text-xs font-medium transition-colors ${
-                    requiredFilter === f ? 'bg-surface-container-low text-primary' : 'text-on-surface-variant hover:bg-surface-container-high'
+                    requiredFilter === f ? 'bg-surface-sunken text-primary' : 'text-ink-variant hover:bg-surface-sunken'
                   }`}
                 >
                   {t(`filter.${f}`, f.charAt(0).toUpperCase() + f.slice(1))}
@@ -228,7 +228,7 @@ export function LearningPage() {
                       <CardDescription className="line-clamp-2">{course.description}</CardDescription>
                     </CardHeader>
                     <CardContent className="mt-auto space-y-3">
-                      <div className="flex items-center justify-between text-xs text-on-surface-variant">
+                      <div className="flex items-center justify-between text-xs text-ink-variant">
                         <span className="flex items-center gap-1"><Clock size={12} /> {course.duration_hours}h</span>
                         <span>{course.instructor}</span>
                       </div>
@@ -237,7 +237,7 @@ export function LearningPage() {
                           <div className="flex items-center gap-2">
                             <ProgressRing progress={enrollment.progress} />
                             <div className="flex-1">
-                              <div className="w-full bg-surface-container-high rounded-full h-1.5">
+                              <div className="w-full bg-surface-sunken rounded-full h-1.5">
                                 <div className="bg-success h-1.5 rounded-full transition-all" style={{ width: `${enrollment.progress}%` }} />
                               </div>
                             </div>
@@ -278,8 +278,8 @@ export function LearningPage() {
                       <div className="flex items-center gap-4">
                         <ProgressRing progress={enr.progress} size={48} />
                         <div className="flex-1 min-w-0">
-                          <p className="font-medium text-on-surface truncate">{course?.title || enr.course_id}</p>
-                          <p className="text-xs text-on-surface-variant mt-0.5">
+                          <p className="font-medium text-ink truncate">{course?.title || enr.course_id}</p>
+                          <p className="text-xs text-ink-variant mt-0.5">
                             {t('enrolled_on', 'Enrolled')} {new Date(enr.enrolled_at).toLocaleDateString()}
                           </p>
                         </div>
@@ -288,17 +288,17 @@ export function LearningPage() {
                             {t(`status.${enr.status}`, enr.status)}
                           </Badge>
                           {enr.completed_at && (
-                            <p className="text-xs text-on-surface-variant mt-1">{new Date(enr.completed_at).toLocaleDateString()}</p>
+                            <p className="text-xs text-ink-variant mt-1">{new Date(enr.completed_at).toLocaleDateString()}</p>
                           )}
                         </div>
                       </div>
                       {enr.status !== 'completed' && (
                         <div className="mt-3">
-                          <div className="flex justify-between text-xs text-on-surface-variant mb-1">
+                          <div className="flex justify-between text-xs text-ink-variant mb-1">
                             <span>{t('progress', 'Progress')}</span>
                             <span>{enr.progress}%</span>
                           </div>
-                          <div className="w-full bg-surface-container-high rounded-full h-2">
+                          <div className="w-full bg-surface-sunken rounded-full h-2">
                             <div className="bg-primary h-2 rounded-full transition-all" style={{ width: `${enr.progress}%` }} />
                           </div>
                         </div>
@@ -337,11 +337,11 @@ export function LearningPage() {
                         <CardContent className="p-5">
                           <div className="flex items-center gap-4">
                             <div className="w-12 h-12 rounded-full bg-warning-container flex items-center justify-center">
-                              <Award size={24} className="text-on-surface" />
+                              <Award size={24} className="text-ink" />
                             </div>
                             <div className="flex-1 min-w-0">
-                              <p className="font-medium text-on-surface truncate">{course?.title || enr.course_id}</p>
-                              <p className="text-xs text-on-surface-variant mt-0.5">
+                              <p className="font-medium text-ink truncate">{course?.title || enr.course_id}</p>
+                              <p className="text-xs text-ink-variant mt-0.5">
                                 {t('completed_on', 'Completed')} {enr.completed_at ? new Date(enr.completed_at).toLocaleDateString() : '-'}
                               </p>
                             </div>

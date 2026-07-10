@@ -13,7 +13,7 @@ export default defineConfig({
     environment: 'jsdom',
     setupFiles: ['./tests/setup.ts'],
     globals: true,
-    exclude: ['e2e/**', 'node_modules/**'],
+    exclude: ['e2e/**', 'node_modules/**', '.opencode/**'],
     coverage: {
       provider: 'v8',
       reporter: ['text', 'lcov', 'html'],

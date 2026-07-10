@@ -47,8 +47,8 @@ export function CalendarDropdown({ interview, compact = false }: CalendarDropdow
         onClick={() => setOpen(!open)}
         className={`inline-flex items-center gap-1.5 rounded-lg text-xs font-medium transition-colors ${
           compact
-            ? 'px-2 py-1 text-on-surface-variant dark:text-on-surface-variant hover:text-primary dark:hover:text-accent-dim hover:bg-surface-container-low dark:hover:bg-surface-container-low'
-            : 'px-3 py-1.5 border border-outline-variant dark:border-outline text-on-surface dark:text-on-surface hover:border-primary dark:hover:border-primary hover:bg-surface-container-low dark:hover:bg-surface-container-low'
+            ? 'px-2 py-1 text-ink-variant dark:text-ink-variant hover:text-primary dark:hover:text-primary-muted hover:bg-surface-sunken dark:hover:bg-surface-sunken'
+            : 'px-3 py-1.5 border border-border text-ink hover:border-primary dark:hover:border-primary hover:bg-surface-sunken dark:hover:bg-surface-sunken'
         }`}
       >
         <Calendar size={compact ? 12 : 14} />
@@ -57,26 +57,26 @@ export function CalendarDropdown({ interview, compact = false }: CalendarDropdow
       </button>
 
       {open && (
-        <div className="absolute right-0 top-full mt-1 z-50 bg-surface dark:bg-surface border border-outline-variant dark:border-outline rounded-xl shadow-lg py-1 min-w-[180px]">
+        <div className="absolute right-0 top-full mt-1 z-50 bg-surface border border-border rounded-xl shadow-lg py-1 min-w-[180px]">
           <button
             onClick={handleDownloadIcs}
-            className="w-full flex items-center gap-2 px-3 py-2 text-xs text-on-surface dark:text-on-surface hover:bg-surface-container-low dark:hover:bg-surface-container-low transition-colors"
+            className="w-full flex items-center gap-2 px-3 py-2 text-xs text-ink hover:bg-surface-sunken dark:hover:bg-surface-sunken transition-colors"
           >
-            <Download size={14} className="text-on-surface-variant dark:text-on-surface-variant" />
+            <Download size={14} className="text-ink-variant dark:text-ink-variant" />
             {t('download_ics')}
           </button>
           <button
             onClick={handleGoogleCalendar}
-            className="w-full flex items-center gap-2 px-3 py-2 text-xs text-on-surface dark:text-on-surface hover:bg-surface-container-low dark:hover:bg-surface-container-low transition-colors"
+            className="w-full flex items-center gap-2 px-3 py-2 text-xs text-ink hover:bg-surface-sunken dark:hover:bg-surface-sunken transition-colors"
           >
-            <ExternalLink size={14} className="text-on-surface-variant dark:text-on-surface-variant" />
+            <ExternalLink size={14} className="text-ink-variant dark:text-ink-variant" />
             {t('google_calendar')}
           </button>
           <button
             onClick={handleOutlook}
-            className="w-full flex items-center gap-2 px-3 py-2 text-xs text-on-surface dark:text-on-surface hover:bg-surface-container-low dark:hover:bg-surface-container-low transition-colors"
+            className="w-full flex items-center gap-2 px-3 py-2 text-xs text-ink hover:bg-surface-sunken dark:hover:bg-surface-sunken transition-colors"
           >
-            <ExternalLink size={14} className="text-on-surface-variant dark:text-on-surface-variant" />
+            <ExternalLink size={14} className="text-ink-variant dark:text-ink-variant" />
             {t('outlook')}
           </button>
         </div>

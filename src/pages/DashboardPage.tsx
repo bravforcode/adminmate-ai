@@ -20,11 +20,11 @@ import { useCandidates } from '../hooks/useCandidates'
 
 const statusBadge = (status: string) => {
   const styles: Record<string, string> = {
-    Screening: 'bg-surface-dim dark:bg-surface-container text-on-surface dark:text-on-surface',
-    Interviewed: 'bg-primary-fixed dark:bg-primary-container text-on-primary-fixed dark:text-accent-dim',
-    Offered: 'bg-secondary-fixed dark:bg-surface-container-low text-on-secondary-fixed dark:text-accent-dim',
+    Screening: 'bg-surface-sunken text-ink-secondary',
+    Interviewed: 'bg-primary-subtle text-primary',
+    Offered: 'bg-success-subtle text-success',
   }
-  return styles[status] || 'bg-surface-container dark:bg-surface-container-low text-on-surface dark:text-on-surface'
+  return styles[status] || 'bg-surface-sunken text-ink-secondary'
 }
 
 export function DashboardPage() {
@@ -97,10 +97,10 @@ export function DashboardPage() {
   return (
     <div className="space-y-6">
       <div>
-        <h2 className="text-2xl font-semibold text-on-surface dark:text-on-surface">
+        <h2 className="text-xl font-semibold text-ink">
           {t('dashboard:welcome', { name: profile?.full_name?.split(' ')[0] || 'User' })}
         </h2>
-        <p className="text-base text-on-surface-variant dark:text-on-surface-variant mt-2">{t('dashboard:subtitle')}</p>
+        <p className="text-sm text-ink-muted mt-1">{t('dashboard:subtitle')}</p>
       </div>
 
       {statsHasError ? (
@@ -110,11 +110,11 @@ export function DashboardPage() {
         />
       ) : statsLoadingCombined ? (
         <>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 skeleton-stagger">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
             {[0, 1, 2, 3].map(i => (
-              <div key={i} className="bg-surface dark:bg-surface rounded-xl p-6 border border-surface-container-high dark:border-outline shadow-sm">
-                <div className="h-3 w-20 bg-surface-container-high dark:bg-slate-700/40 rounded-lg animate-shimmer mb-3" />
-                <div className="h-8 w-16 bg-surface-container-high dark:bg-slate-700/40 rounded-lg animate-shimmer" />
+              <div key={i} className="bg-surface rounded-xl p-5 border border-border">
+                <div className="h-3 w-20 bg-surface-sunken rounded animate-shimmer mb-3" />
+                <div className="h-7 w-16 bg-surface-sunken rounded animate-shimmer" />
               </div>
             ))}
           </div>
@@ -122,7 +122,7 @@ export function DashboardPage() {
         </>
       ) : (
         <>
-          <StaggeredList className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          <StaggeredList className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
             <StaggeredItem>
               <StatCard
                 title={t('dashboard:active_postings')}
@@ -130,8 +130,6 @@ export function DashboardPage() {
                 valueNode={<AnimatedCounter value={stats?.active_jobs || 0} />}
                 icon={Briefcase}
                 color="primary"
-                trend=""
-                trendUp
               />
             </StaggeredItem>
             <StaggeredItem>
@@ -141,7 +139,6 @@ export function DashboardPage() {
                 valueNode={<AnimatedCounter value={stats?.new_applicants_7d || 0} />}
                 icon={Users}
                 color="tertiary"
-                trend={t('dashboard:awaiting_review')}
               />
             </StaggeredItem>
             <StaggeredItem>
@@ -151,7 +148,7 @@ export function DashboardPage() {
                 valueNode={<AnimatedCounter value={stats?.pending_documents || 0} />}
                 icon={FileText}
                 color="error"
-                trend={(stats?.pending_documents ?? 0) > 0 ? t('dashboard:action_required') : ''}
+                trend={(stats?.pending_documents ?? 0) > 0 ? t('dashboard:action_required') : undefined}
                 trendUp={false}
               />
             </StaggeredItem>
@@ -161,88 +158,86 @@ export function DashboardPage() {
                 value={stats?.active_onboarding || 0}
                 valueNode={<AnimatedCounter value={stats?.active_onboarding || 0} />}
                 icon={UserCheck}
-                color="secondary"
-                trend={t('dashboard:across_depts')}
+                color="success"
               />
             </StaggeredItem>
           </StaggeredList>
 
           <ScrollReveal direction="up" delay={0.1}>
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
-            <div className="lg:col-span-4 flex flex-col gap-6">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-4">
+            {/* Action Required */}
+            <div className="lg:col-span-4 flex flex-col gap-4">
               <Card className="flex flex-col h-full">
-                <CardHeader className="border-b border-surface-container-high dark:border-outline flex-row items-center justify-between bg-surface-bright dark:bg-surface-container-low rounded-t-xl">
-                  <CardTitle className="text-lg">{t('dashboard:action_required')}</CardTitle>
-                  <span className="bg-error-container dark:bg-error-container/30 text-on-error-container dark:text-error text-xs font-semibold px-3 py-1 rounded-full">{t('dashboard:high_priority')}</span>
+                <CardHeader className="border-b border-border flex-row items-center justify-between">
+                  <CardTitle>{t('dashboard:action_required')}</CardTitle>
+                  <span className="bg-error-subtle text-error text-xs font-medium px-2 py-0.5 rounded-full">{t('dashboard:high_priority')}</span>
                 </CardHeader>
-                <CardContent className="flex-1 flex flex-col gap-4">
+                <CardContent className="flex-1 flex flex-col gap-3 pt-4">
                   {pendingDocs?.map((doc) => (
-                    <div key={doc.id} role="button" tabIndex={0} onClick={() => navigate('/documents')} onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); navigate('/documents') } }} className="flex items-start gap-4 p-4 rounded-lg border border-outline-variant dark:border-outline bg-surface dark:bg-surface hover:border-primary dark:hover:border-primary transition-colors cursor-pointer group card-hover">
-                      <div className="p-2 bg-primary-fixed dark:bg-primary-container rounded-full text-on-primary-fixed dark:text-accent-dim mt-1">
-                        <FileText size={20} />
+                    <div key={doc.id} role="button" tabIndex={0} onClick={() => navigate('/documents')} onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); navigate('/documents') } }} className="flex items-start gap-3 p-3 rounded-lg border border-border hover:border-primary transition-colors cursor-pointer group">
+                      <div className="p-1.5 bg-primary-subtle rounded-lg text-primary mt-0.5">
+                        <FileText size={16} />
                       </div>
-                      <div className="flex-1">
-                        <h4 className="text-sm font-semibold text-on-surface dark:text-on-surface group-hover:text-primary dark:group-hover:text-accent-dim transition-colors">{doc.document_type?.replace(/_/g, ' ') || 'Document'}</h4>
-                        <p className="text-sm text-on-surface-variant dark:text-on-surface-variant mt-1">{doc.candidates?.full_name || 'Unknown'} — {t('dashboard:needs_signature')}</p>
-                        <span className="text-xs font-semibold text-error dark:text-error mt-2 inline-block">{t('dashboard:action_required')}</span>
+                      <div className="flex-1 min-w-0">
+                        <h4 className="text-sm font-medium text-ink group-hover:text-primary transition-colors truncate">{doc.document_type?.replace(/_/g, ' ') || 'Document'}</h4>
+                        <p className="text-xs text-ink-muted mt-0.5">{doc.candidates?.full_name || 'Unknown'} — {t('dashboard:needs_signature')}</p>
                       </div>
                     </div>
                   ))}
                   {overdueChecklists?.map((cl) => (
-                    <div key={cl.id} role="button" tabIndex={0} onClick={() => navigate('/onboarding')} onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); navigate('/onboarding') } }} className="flex items-start gap-4 p-4 rounded-lg border border-outline-variant dark:border-outline bg-surface dark:bg-surface hover:border-error dark:hover:border-error transition-colors cursor-pointer group card-hover">
-                      <div className="p-2 bg-error-container dark:bg-error-container/30 rounded-full text-on-error-container dark:text-error mt-1">
-                        <AlertCircle size={20} />
+                    <div key={cl.id} role="button" tabIndex={0} onClick={() => navigate('/onboarding')} onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); navigate('/onboarding') } }} className="flex items-start gap-3 p-3 rounded-lg border border-border hover:border-error transition-colors cursor-pointer group">
+                      <div className="p-1.5 bg-error-subtle rounded-lg text-error mt-0.5">
+                        <AlertCircle size={16} />
                       </div>
-                      <div className="flex-1">
-                        <h4 className="text-sm font-semibold text-on-surface dark:text-on-surface group-hover:text-error dark:group-hover:text-error transition-colors">{t('dashboard:slow_onboarding')}</h4>
-                        <p className="text-sm text-on-surface-variant dark:text-on-surface-variant mt-1">{cl.user_profiles?.full_name || 'Employee'} — {cl.progress_percentage || 0}% complete</p>
-                        <span className="text-xs font-semibold text-error dark:text-error mt-2 inline-block">{t('dashboard:overdue')}</span>
+                      <div className="flex-1 min-w-0">
+                        <h4 className="text-sm font-medium text-ink group-hover:text-error transition-colors">{t('dashboard:slow_onboarding')}</h4>
+                        <p className="text-xs text-ink-muted mt-0.5">{cl.user_profiles?.full_name || 'Employee'} — {cl.progress_percentage || 0}%</p>
                       </div>
                     </div>
                   ))}
                   {(!pendingDocs?.length && !overdueChecklists?.length) && (
-                    <div className="flex items-center gap-3 p-4 rounded-lg border border-green-200 dark:border-success-container bg-green-50 dark:bg-success-container/30 text-green-700 dark:text-success">
-                      <CheckCircle size={20} />
-                      <p className="text-sm font-medium">{t('dashboard:all_clear') || 'All clear — no pending tasks'}</p>
+                    <div className="flex items-center gap-2 p-3 rounded-lg bg-success-subtle text-success">
+                      <CheckCircle size={16} />
+                      <p className="text-sm font-medium">{t('dashboard:all_clear') || 'All clear'}</p>
                     </div>
                   )}
                 </CardContent>
-                <CardFooter className="border-t border-surface-container-high dark:border-outline justify-center">
+                <CardFooter className="border-t border-border justify-center">
                   <Button variant="ghost" size="sm" onClick={() => navigate('/onboarding')}>{t('dashboard:view_all_tasks')}</Button>
                 </CardFooter>
               </Card>
             </div>
 
-            <div className="lg:col-span-8 flex flex-col gap-6">
+            {/* Recent Candidates */}
+            <div className="lg:col-span-8 flex flex-col gap-4">
               <Card className="overflow-hidden flex flex-col h-full">
-                <CardHeader className="border-b border-surface-container-high dark:border-outline flex-row items-center justify-between bg-surface-bright dark:bg-surface-container-low">
-                  <CardTitle className="text-lg">{t('dashboard:recent_candidates')}</CardTitle>
-                    <div className="relative">
-                      <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant dark:text-on-surface-variant size-4" />
-                      <input
-                        value={search}
-                        onChange={handleSearchChange}
-                        aria-label={t('dashboard:search_candidates')}
-                        className="pl-10 pr-4 py-3 rounded-xl border border-outline-variant dark:border-outline bg-surface-container-lowest dark:bg-surface-container-lowest text-on-surface dark:text-on-surface focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all duration-200 outline-none text-sm w-full max-w-[200px]"
-                        placeholder={t('dashboard:search_candidates')}
-                      />
-                    </div>
+                <CardHeader className="border-b border-border flex-row items-center justify-between">
+                  <CardTitle>{t('dashboard:recent_candidates')}</CardTitle>
+                  <div className="relative">
+                    <Search size={14} className="absolute left-2.5 top-1/2 -translate-y-1/2 text-ink-muted" />
+                    <input
+                      value={search}
+                      onChange={handleSearchChange}
+                      aria-label={t('dashboard:search_candidates')}
+                      className="pl-8 pr-3 py-1.5 rounded-lg border border-border bg-surface text-ink focus:border-primary focus:ring-2 focus:ring-primary/15 transition-all duration-150 outline-none text-sm w-full max-w-[200px] placeholder:text-ink-faint"
+                      placeholder={t('dashboard:search_candidates')}
+                    />
+                  </div>
                 </CardHeader>
                 <div className="table-responsive overflow-x-auto">
                   <table role="table" className="w-full text-left border-collapse min-w-[500px]">
                     <thead>
-                      <tr className="bg-surface-container dark:bg-surface-container/50 border-b border-outline-variant/50 dark:border-outline/50">
-                        <th className="py-3 px-4 text-xs font-semibold uppercase tracking-wider text-on-surface-variant dark:text-on-surface-variant">{t('dashboard:candidate_name')}</th>
-                        <th className="py-3 px-4 text-xs font-semibold uppercase tracking-wider text-on-surface-variant dark:text-on-surface-variant">{t('dashboard:position')}</th>
-                        <th className="py-3 px-4 text-xs font-semibold uppercase tracking-wider text-on-surface-variant dark:text-on-surface-variant">{t('dashboard:ai_match')}</th>
-                        <th className="py-3 px-4 text-xs font-semibold uppercase tracking-wider text-on-surface-variant dark:text-on-surface-variant">{t('dashboard:status')}</th>
-                        <th className="py-3 px-4 text-xs font-semibold uppercase tracking-wider text-on-surface-variant dark:text-on-surface-variant text-right">{t('dashboard:action')}</th>
+                      <tr className="border-b border-border">
+                        <th className="py-2.5 px-4 text-xs font-medium text-ink-muted">{t('dashboard:candidate_name')}</th>
+                        <th className="py-2.5 px-4 text-xs font-medium text-ink-muted">{t('dashboard:position')}</th>
+                        <th className="py-2.5 px-4 text-xs font-medium text-ink-muted">{t('dashboard:status')}</th>
+                        <th className="py-2.5 px-4 text-xs font-medium text-ink-muted text-right">{t('dashboard:action')}</th>
                       </tr>
                     </thead>
-                    <tbody className="text-sm text-on-surface dark:text-on-surface">
+                    <tbody className="text-sm">
                       {filtered && filtered.length === 0 ? (
                         <tr>
-                          <td colSpan={5} className="p-0">
+                          <td colSpan={4} className="p-0">
                             <EmptyState
                               icon={UserX}
                               title={t('dashboard:empty_candidates_title')}
@@ -252,31 +247,28 @@ export function DashboardPage() {
                         </tr>
                       ) : (
                         filtered?.map(c => (
-                          <tr key={c.id} className="hover:bg-surface-container-high/50 dark:hover:bg-surface-container/30 transition-colors duration-150 group">
-                            <td className="py-3 px-4 text-sm text-on-surface dark:text-on-surface flex items-center gap-3">
-                              <div className="w-8 h-8 rounded-full bg-primary-container dark:bg-primary-container text-on-primary-container dark:text-accent-dim flex items-center justify-center font-bold text-sm">
-                                {c.full_name?.split(' ').map((n: string) => n[0]).join('').slice(0, 2).toUpperCase() || '?'}
-                              </div>
-                              <span>{c.full_name}</span>
-                            </td>
-                            <td className="py-3 px-4 text-sm text-on-surface dark:text-on-surface text-on-surface-variant">{c.current_position || '-'}</td>
-                            <td className="py-3 px-4 text-sm text-on-surface dark:text-on-surface">
-                              <div className="flex items-center gap-2">
-                                <span className="font-bold text-on-surface-variant">-</span>
+                          <tr key={c.id} className="hover:bg-surface-sunken transition-colors duration-100 group border-b border-border last:border-0">
+                            <td className="py-2.5 px-4">
+                              <div className="flex items-center gap-2.5">
+                                <div className="w-7 h-7 rounded-full bg-primary-subtle text-primary flex items-center justify-center text-xs font-semibold">
+                                  {c.full_name?.split(' ').map((n: string) => n[0]).join('').slice(0, 2).toUpperCase() || '?'}
+                                </div>
+                                <span className="text-ink">{c.full_name}</span>
                               </div>
                             </td>
-                            <td className="py-3 px-4 text-sm text-on-surface dark:text-on-surface">
-                              <span className={cn('px-2 py-1 rounded text-xs font-semibold', statusBadge(c.applications?.[0]?.status || 'New'))}>
+                            <td className="py-2.5 px-4 text-ink-muted">{c.current_position || '-'}</td>
+                            <td className="py-2.5 px-4">
+                              <span className={cn('px-2 py-0.5 rounded-full text-xs font-medium', statusBadge(c.applications?.[0]?.status || 'New'))}>
                                 {c.applications?.[0]?.status || 'New'}
                               </span>
                             </td>
-                            <td className="py-3 px-4 text-sm text-on-surface dark:text-on-surface text-right">
+                            <td className="py-2.5 px-4 text-right">
                               <Button
                                 variant="ghost"
-                                size="icon_md"
+                                size="icon_sm"
                                 onClick={() => navigate(`/recruitment/candidates/${c.id}`)}
                                 className="opacity-0 group-hover:opacity-100"
-                                icon={<ArrowRight size={16} />}
+                                icon={<ArrowRight size={14} />}
                                 aria-label={`View ${c.full_name || 'candidate'}`}
                               />
                             </td>
@@ -286,7 +278,7 @@ export function DashboardPage() {
                     </tbody>
                   </table>
                 </div>
-                <CardFooter className="border-t border-surface-container-high dark:border-outline bg-surface-bright dark:bg-surface-container-low mt-auto justify-end">
+                <CardFooter className="border-t border-border mt-auto justify-end">
                   <Button variant="ghost" size="sm" onClick={() => navigate('/recruitment/pipeline')}>{t('dashboard:view_pipeline')}</Button>
                 </CardFooter>
               </Card>

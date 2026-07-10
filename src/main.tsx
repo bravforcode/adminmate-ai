@@ -15,6 +15,15 @@ import './index.css'
 initGlobalErrorHandler()
 initPageLoadMonitoring()
 
+// Register service worker for PWA
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('/sw.js').catch(() => {
+      // SW registration failed - non-critical
+    })
+  })
+}
+
 // Subscribe to Supabase auth state changes (catches OAuth SIGNED_IN events)
 useAuthStore.getState().subscribeAuth()
 

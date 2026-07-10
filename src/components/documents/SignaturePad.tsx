@@ -89,7 +89,7 @@ export function SignaturePad({ onSave, height = 200, className }: SignaturePadPr
 
   return (
     <div className={cn('space-y-3', className)}>
-      <div className="relative border-2 border-dashed border-outline-variant dark:border-outline rounded-xl overflow-hidden bg-surface-container-lowest dark:bg-surface-container-lowest">
+      <div className="relative border-2 border-dashed border-border rounded-xl overflow-hidden bg-surface-sunken-lowest dark:bg-surface-sunken-lowest">
         <canvas
           ref={canvasRef}
           className="w-full cursor-crosshair touch-none"
@@ -104,7 +104,7 @@ export function SignaturePad({ onSave, height = 200, className }: SignaturePadPr
         />
         {!hasDrawn && (
           <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-            <span className="text-on-surface-variant/50 dark:text-outline-variant text-sm">{t('documents.sign_here', 'Sign here')}</span>
+            <span className="text-ink-variant/50 dark:text-outline-variant text-sm">{t('documents.sign_here', 'Sign here')}</span>
           </div>
         )}
       </div>
@@ -112,7 +112,7 @@ export function SignaturePad({ onSave, height = 200, className }: SignaturePadPr
         <button
           onClick={clear}
           type="button"
-          className="inline-flex items-center gap-2 px-4 py-2 border border-outline-variant dark:border-outline rounded-lg text-sm font-medium hover:bg-surface-container-low dark:hover:bg-surface-container-low transition-colors dark:text-on-surface"
+          className="inline-flex items-center gap-2 px-4 py-2 border border-border rounded-lg text-sm font-medium hover:bg-surface-sunken dark:hover:bg-surface-sunken transition-colors dark:text-ink"
         >
           <RotateCcw size={14} /> Clear
         </button>

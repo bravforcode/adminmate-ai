@@ -46,16 +46,16 @@ export function CalendarSettings() {
   }
 
   return (
-    <div className="bg-surface dark:bg-surface rounded-xl border border-outline-variant dark:border-outline p-6">
+    <div className="bg-surface rounded-xl border border-border p-6">
       <div className="flex items-center gap-2 mb-4">
-        <Calendar size={20} className="text-primary dark:text-accent-dim" />
-        <h3 className="text-title-lg font-semibold text-on-surface dark:text-on-surface">{t('settings_title')}</h3>
+        <Calendar size={20} className="text-primary dark:text-primary-muted" />
+        <h3 className="text-title-lg font-semibold text-ink dark:text-ink">{t('settings_title')}</h3>
       </div>
 
       <div className="space-y-6">
         <div>
-          <label className="block text-sm font-medium text-on-surface dark:text-on-surface mb-2">{t('reminder_time')}</label>
-          <p className="text-xs text-on-surface-variant dark:text-on-surface-variant mb-3">{t('reminder_time_desc')}</p>
+          <label className="block text-sm font-medium text-ink mb-2">{t('reminder_time')}</label>
+          <p className="text-xs text-ink-variant dark:text-ink-variant mb-3">{t('reminder_time_desc')}</p>
           <div className="flex flex-wrap gap-2">
             {REMINDER_OPTIONS.map(opt => (
               <button
@@ -64,7 +64,7 @@ export function CalendarSettings() {
                 className={`px-3 py-1.5 rounded-lg text-xs font-medium border transition-colors ${
                   settings.reminderMinutes.includes(opt.value)
                     ? 'bg-primary text-on-primary border-primary'
-                    : 'bg-surface-container-low dark:bg-surface-container-low text-on-surface dark:text-on-surface border-outline-variant dark:border-outline hover:border-primary dark:hover:border-primary'
+                    : 'bg-surface-sunken text-ink border-border hover:border-primary dark:hover:border-primary'
                 }`}
               >
                 {opt.label}
@@ -74,8 +74,8 @@ export function CalendarSettings() {
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-on-surface dark:text-on-surface mb-2">{t('default_format')}</label>
-          <p className="text-xs text-on-surface-variant dark:text-on-surface-variant mb-3">{t('default_format_desc')}</p>
+          <label className="block text-sm font-medium text-ink mb-2">{t('default_format')}</label>
+          <p className="text-xs text-ink-variant dark:text-ink-variant mb-3">{t('default_format_desc')}</p>
           <div className="flex flex-wrap gap-2">
             {FORMAT_OPTIONS.map(opt => (
               <button
@@ -84,7 +84,7 @@ export function CalendarSettings() {
                 className={`px-3 py-1.5 rounded-lg text-xs font-medium border transition-colors ${
                   settings.defaultFormat === opt.value
                     ? 'bg-primary text-on-primary border-primary'
-                    : 'bg-surface-container-low dark:bg-surface-container-low text-on-surface dark:text-on-surface border-outline-variant dark:border-outline hover:border-primary dark:hover:border-primary'
+                    : 'bg-surface-sunken text-ink border-border hover:border-primary dark:hover:border-primary'
                 }`}
               >
                 {opt.label}

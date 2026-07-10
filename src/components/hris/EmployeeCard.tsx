@@ -38,20 +38,20 @@ export const EmployeeCard = memo(function EmployeeCard({ employee }: EmployeeCar
   return (
     <Link
       to={`/employees/${employee.id}`}
-      className="block bg-surface dark:bg-surface rounded-xl border border-outline-variant dark:border-outline p-4 hover:border-primary dark:hover:border-primary hover:shadow-sm transition-all group card-hover"
+      className="block bg-surface rounded-xl border border-border p-4 hover:border-primary dark:hover:border-primary hover:shadow-sm transition-all group card-hover"
     >
       <div className="flex items-start gap-4">
-        <div className="w-12 h-12 rounded-full bg-primary-container dark:bg-primary-container text-on-primary-container dark:text-accent-dim flex items-center justify-center font-bold text-lg flex-shrink-0">
+        <div className="w-12 h-12 rounded-full bg-primary-container dark:bg-primary-container text-on-primary-container dark:text-primary-muted flex items-center justify-center font-bold text-lg flex-shrink-0">
           {initials}
         </div>
         <div className="flex-1 min-w-0">
-          <h3 className="font-semibold text-on-surface dark:text-on-surface group-hover:text-primary dark:group-hover:text-accent-dim transition-colors truncate">
+          <h3 className="font-semibold text-ink group-hover:text-primary dark:group-hover:text-primary-muted transition-colors truncate">
             {displayName}
           </h3>
-          <p className="text-sm text-on-surface-variant dark:text-on-surface-variant flex items-center gap-1">
+          <p className="text-sm text-ink-variant dark:text-ink-variant flex items-center gap-1">
             <Briefcase size={12} /> {employee.job_title}
           </p>
-          <div className="flex flex-wrap gap-2 mt-2 text-xs text-on-surface-variant dark:text-on-surface-variant">
+          <div className="flex flex-wrap gap-2 mt-2 text-xs text-ink-variant dark:text-ink-variant">
             {employee.work_email && (
               <span className="flex items-center gap-1"><Mail size={12} /> {maskEmail(employee.work_email)}</span>
             )}
@@ -64,7 +64,7 @@ export const EmployeeCard = memo(function EmployeeCard({ employee }: EmployeeCar
           <span className={`inline-block px-2 py-0.5 rounded-full text-xs font-medium ${statusStyle}`}>
             {employee.employment_status.replace('_', ' ')}
           </span>
-          <span className="text-xs text-on-surface-variant dark:text-on-surface-variant">
+          <span className="text-xs text-ink-variant dark:text-ink-variant">
             {employee.employee_number}
           </span>
         </div>

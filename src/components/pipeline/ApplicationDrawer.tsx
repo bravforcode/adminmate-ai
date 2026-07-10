@@ -98,9 +98,9 @@ export function ApplicationDrawer({ application, onClose, open = true }: Applica
               <div className="w-16 h-16 rounded-full bg-primary-container text-on-primary-container flex items-center justify-center font-bold text-2xl mb-3">
                 {candidate?.full_name?.split(' ').map((n: string) => n[0]).join('').slice(0, 2).toUpperCase()}
               </div>
-              <h2 id="drawer-title" className="text-headline-md font-bold text-on-surface">{candidate?.full_name}</h2>
-              <p className="text-body-md text-on-surface-variant">{candidate?.current_position || t('pipeline.candidate_default')}</p>
-              <div className="flex gap-3 mt-2 text-xs text-on-surface-variant">
+              <h2 id="drawer-title" className="text-headline-md font-bold text-ink">{candidate?.full_name}</h2>
+              <p className="text-body-md text-ink-variant">{candidate?.current_position || t('pipeline.candidate_default')}</p>
+              <div className="flex gap-3 mt-2 text-xs text-ink-variant">
                 {candidate?.email && <span className="flex items-center gap-1"><Mail size={12} /> {candidate.email}</span>}
                 {candidate?.phone && <span className="flex items-center gap-1"><Phone size={12} /> {candidate.phone}</span>}
                 {candidate?.location && <span className="flex items-center gap-1"><MapPin size={12} /> {candidate.location}</span>}
@@ -108,20 +108,20 @@ export function ApplicationDrawer({ application, onClose, open = true }: Applica
             </div>
 
             {application.ai_match_score != null && (
-              <div className="bg-surface-container-low rounded-lg p-4 mb-4">
+              <div className="bg-surface-sunken rounded-lg p-4 mb-4">
                 <div className="flex items-center justify-between mb-2">
                   <h3 className="text-sm font-semibold flex items-center gap-2"><Sparkles size={16} className="text-primary" /> {t('pipeline.ai_match_score')}</h3>
                   <span className="text-lg font-bold text-primary">{application.ai_match_score}%</span>
                 </div>
-                {application.ai_summary && <p className="text-sm text-on-surface-variant mb-3">{application.ai_summary}</p>}
+                {application.ai_summary && <p className="text-sm text-ink-variant mb-3">{application.ai_summary}</p>}
                 {application.ai_missing_skills && application.ai_missing_skills.length > 0 && (
-                  <div className="mb-3"><h4 className="text-xs font-semibold text-on-surface-variant mb-1">{t('pipeline.missing_skills')}</h4>
+                  <div className="mb-3"><h4 className="text-xs font-semibold text-ink-variant mb-1">{t('pipeline.missing_skills')}</h4>
                     <div className="flex flex-wrap gap-1">{application.ai_missing_skills.map((s: string) => <span key={s} className="px-2 py-0.5 bg-error-container/30 text-error text-xs rounded">{s}</span>)}</div>
                   </div>
                 )}
                 {application.ai_suggested_questions && application.ai_suggested_questions.length > 0 && (
-                  <div><h4 className="text-xs font-semibold text-on-surface-variant mb-1 flex items-center gap-1"><Lightbulb size={12} /> {t('pipeline.suggested_interview_questions')}</h4>
-                    <ul className="text-xs text-on-surface-variant space-y-1 pl-3">{application.ai_suggested_questions.map((q: string, i: number) => <li key={i} className="italic">"{q}"</li>)}</ul>
+                  <div><h4 className="text-xs font-semibold text-ink-variant mb-1 flex items-center gap-1"><Lightbulb size={12} /> {t('pipeline.suggested_interview_questions')}</h4>
+                    <ul className="text-xs text-ink-variant space-y-1 pl-3">{application.ai_suggested_questions.map((q: string, i: number) => <li key={i} className="italic">"{q}"</li>)}</ul>
                   </div>
                 )}
               </div>
@@ -145,9 +145,9 @@ export function ApplicationDrawer({ application, onClose, open = true }: Applica
             </div>
 
             {latestCV?.parsed_content && (
-              <div className="p-4 bg-surface-container-low rounded-lg">
+              <div className="p-4 bg-surface-sunken rounded-lg">
                 <h3 className="text-sm font-semibold mb-3">{t('candidates.parsed_cv_data')}</h3>
-                <pre className="text-xs text-on-surface-variant whitespace-pre-wrap font-mono">{JSON.stringify(latestCV.parsed_content, null, 2)}</pre>
+                <pre className="text-xs text-ink-variant whitespace-pre-wrap font-mono">{JSON.stringify(latestCV.parsed_content, null, 2)}</pre>
               </div>
             )}
           </motion.div>

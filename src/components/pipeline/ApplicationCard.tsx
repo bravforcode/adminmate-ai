@@ -50,8 +50,8 @@ export const ApplicationCard = memo(function ApplicationCard({ application, isAc
         aria-grabbed="false"
         aria-dropeffect="move"
         className={cn(
-          'bg-surface-container-lowest dark:bg-surface p-4 rounded-xl border shadow-sm hover:shadow-md transition-all cursor-pointer relative overflow-hidden card-hover',
-          isActive ? 'border-primary shadow-md' : 'border-outline-variant'
+          'bg-surface-sunken-lowest p-4 rounded-xl border shadow-sm hover:shadow-md transition-all cursor-pointer relative overflow-hidden card-hover',
+          isActive ? 'border-primary shadow-md' : 'border-border'
         )}
         data-testid="kanban-card"
         onClick={() => { onClick?.(); setShowDrawer(true) }}
@@ -70,8 +70,8 @@ export const ApplicationCard = memo(function ApplicationCard({ application, isAc
               {initials}
             </div>
             <div>
-              <p className={cn('text-base text-on-surface leading-tight', isActive ? 'font-bold' : 'font-semibold')}>{application.candidates?.full_name}</p>
-              <p className="text-xs text-on-surface-variant mt-0.5">
+              <p className={cn('text-base text-ink leading-tight', isActive ? 'font-bold' : 'font-semibold')}>{application.candidates?.full_name}</p>
+              <p className="text-xs text-ink-variant mt-0.5">
                 {application.status === 'ai_screening' ? (
                   <span className="flex items-center gap-1 text-primary">
                     <span className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse" /> {t('pipeline.processing')}
@@ -86,7 +86,7 @@ export const ApplicationCard = memo(function ApplicationCard({ application, isAc
           {matchScore > 0 && (
             <span className={cn(
               'text-xs px-2 py-1 rounded-md font-medium flex items-center gap-1',
-              matchScore >= 80 ? 'bg-primary text-on-primary shadow-sm' : 'bg-surface-container text-on-surface-variant border border-outline-variant/50'
+              matchScore >= 80 ? 'bg-primary text-on-primary shadow-sm' : 'bg-surface-sunken text-ink-variant border border-border/50'
             )}>
               {matchScore >= 80 && <Sparkles size={12} />}
               {t('pipeline.match_percent', { score: matchScore })}
@@ -96,11 +96,11 @@ export const ApplicationCard = memo(function ApplicationCard({ application, isAc
 
         <div className="flex justify-between items-center mt-3">
           <div className="flex gap-2">
-            <span className="text-xs text-on-surface-variant bg-surface-container px-2 py-1 rounded">
+            <span className="text-xs text-ink-variant bg-surface-sunken px-2 py-1 rounded">
               {application.candidates?.years_experience ? t('pipeline.years_experience', { count: application.candidates.years_experience }) : t('pipeline.no_experience')}
             </span>
             {application.candidates?.primary_skill && (
-              <span className="text-xs text-on-surface-variant bg-surface-container px-2 py-1 rounded">
+              <span className="text-xs text-ink-variant bg-surface-sunken px-2 py-1 rounded">
                 {application.candidates.primary_skill}
               </span>
             )}
@@ -126,7 +126,7 @@ export const ApplicationCard = memo(function ApplicationCard({ application, isAc
 
         {/* Stage Move Buttons — shown on hover or actions toggle */}
         {(showActions || showDrawer) && (
-          <div className="flex gap-2 mt-3 pt-3 border-t border-outline-variant/50">
+          <div className="flex gap-2 mt-3 pt-3 border-t border-border/50">
             {stageIndex > 0 && (
               <Button
                 variant="outline"

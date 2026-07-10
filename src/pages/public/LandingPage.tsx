@@ -1,381 +1,523 @@
-import { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
-import { useTranslation } from 'react-i18next'
-import { motion } from 'motion/react'
-import { Logo } from '../../components/brand/Logo'
+import { Link } from 'react-router-dom';
+import { motion } from 'motion/react';
 import {
-  Users, FileText, MessageSquare, Shield, Clock,
-  ArrowRight, ChevronDown, ChevronUp, Sparkles,
-  Briefcase, ClipboardCheck, Building2, Globe, Lock, Zap
-} from 'lucide-react'
+  Globe,
+  Shield,
+  MessageSquare,
+  Users,
+  Clock,
+  FileText,
+  Bot,
+  Zap,
+  ChevronRight,
+  Building2,
+  Play,
+  CheckCircle2,
+  ArrowRight,
+  Eye,
+  Heart,
+  ShieldCheck,
+  Timer,
+  UserCheck,
+  Star,
+} from 'lucide-react';
+import { Button } from '../../components/ui/Button';
+import { Card, CardContent } from '../../components/ui/Card';
+import { useTranslation } from 'react-i18next';
 
-/* ============================================================
-   AdminMate AI — Public Landing Page
-   Route: / (public, unauthenticated)
-   ============================================================ */
+const fadeIn = {
+  initial: { opacity: 0, y: 16 },
+  animate: { opacity: 1, y: 0 },
+  transition: { duration: 0.4, ease: [0.25, 0.1, 0.25, 1] as const },
+};
 
-const FAQ_ITEMS = [
-  { q: 'What is AdminMate AI?', a: 'AdminMate AI is an AI-powered HR platform built for small and medium enterprises in Southeast Asia. It helps HR teams manage recruitment, onboarding, documents, compliance, and team operations in one place.' },
-  { q: 'Which countries do you support?', a: 'AdminMate AI supports operations in Thailand, Vietnam, and Indonesia, with multi-language support for English, Thai, Vietnamese, Chinese, and Indonesian.' },
-  { q: 'Is my data secure?', a: 'AdminMate AI follows PDPA compliance standards for Thailand and similar regulations across SEA. Data is stored securely, and you can export or delete your data at any time from the Privacy & Data settings.' },
-  { q: 'Can I try it for free?', a: 'Yes. AdminMate AI offers a free tier so you can explore the platform before committing to a paid plan.' },
-  { q: 'How does the AI assistant work?', a: 'The built-in Mate AI assistant helps HR teams with drafting job descriptions, answering compliance questions, generating reports, and supporting onboarding tasks — all within the platform.' },
-]
+const stagger = {
+  animate: { transition: { staggerChildren: 0.06 } },
+};
 
-function FAQAccordion() {
-  const [openIndex, setOpenIndex] = useState<number | null>(null)
+// ─── Data ───────────────────────────────────────────────────────────────────
+
+const FEATURES = [
+  { icon: Globe, key: 'global', color: 'text-blue-600 dark:text-blue-400', bg: 'bg-blue-50 dark:bg-blue-950/30' },
+  { icon: Shield, key: 'compliance', color: 'text-emerald-600 dark:text-emerald-400', bg: 'bg-emerald-50 dark:bg-emerald-950/30' },
+  { icon: MessageSquare, key: 'applicant', color: 'text-amber-600 dark:text-amber-400', bg: 'bg-amber-50 dark:bg-amber-950/30' },
+  { icon: Bot, key: 'ai', color: 'text-violet-600 dark:text-violet-400', bg: 'bg-violet-50 dark:bg-violet-950/30' },
+  { icon: FileText, key: 'payroll', color: 'text-rose-600 dark:text-rose-400', bg: 'bg-rose-50 dark:bg-rose-950/30' },
+  { icon: Users, key: 'recruitment', color: 'text-cyan-600 dark:text-cyan-400', bg: 'bg-cyan-50 dark:bg-cyan-950/30' },
+  { icon: Clock, key: 'attendance', color: 'text-orange-600 dark:text-orange-400', bg: 'bg-orange-50 dark:bg-orange-950/30' },
+  { icon: Zap, key: 'automation', color: 'text-yellow-600 dark:text-yellow-400', bg: 'bg-yellow-50 dark:bg-yellow-950/30' },
+];
+
+const UNIQUE_DIFFERENTIATORS = [
+  { icon: MessageSquare, key: 'appPortal', color: 'text-amber-500' },
+  { icon: Bot, key: 'aiAdvisor', color: 'text-violet-500' },
+  { icon: Globe, key: 'regional', color: 'text-blue-500' },
+  { icon: Zap, key: 'realTime', color: 'text-yellow-500' },
+  { icon: Timer, key: 'bgIntel', color: 'text-orange-500' },
+  { icon: Users, key: 'unifiedRecruit', color: 'text-cyan-500' },
+  { icon: ShieldCheck, key: 'aiCompliance', color: 'text-emerald-500' },
+  { icon: Building2, key: 'taxEngine', color: 'text-indigo-500' },
+  { icon: UserCheck, key: 'selfService', color: 'text-pink-500' },
+  { icon: Star, key: 'multiCountry', color: 'text-yellow-500' },
+  { icon: Eye, key: 'aiInsights', color: 'text-purple-500' },
+  { icon: Heart, key: 'engagement', color: 'text-rose-500' },
+];
+
+const TESTIMONIALS = [
+  {
+    quote: 'AdminMate AI cut our HR admin time by 60%. The AI compliance advisor alone saved us from three potential penalties.',
+    author: 'Sarah Chen',
+    role: 'HR Director, TechFlow Asia',
+  },
+  {
+    quote: 'The applicant tracking system with LINE integration is a game changer for our Thai operations. Candidates love it.',
+    author: 'Somchai Prasert',
+    role: 'COO, Bangkok Manufacturing',
+  },
+  {
+    quote: 'Managing 200+ employees across 3 countries used to be a nightmare. AdminMate AI made it seamless.',
+    author: 'Maria Santos',
+    role: 'VP People, Regional Logistics Co',
+  },
+];
+
+const TRUSTED_BY = [
+  { name: 'TechFlow Asia', employees: '500+' },
+  { name: 'Bangkok Manufacturing', employees: '200+' },
+  { name: 'Regional Logistics Co', employees: '1,000+' },
+  { name: 'Pacific Trading', employees: '300+' },
+  { name: 'Digital Commerce TH', employees: '150+' },
+];
+
+const ROI_DATA = {
+  avgTimeSaved: 60,
+  avgCostSaved: 45000,
+  avgCompliancePenalties: 3,
+  avgPayrollErrors: 95,
+};
+
+const INTERACTIVE_DEMO_STEPS = [
+  { step: 1, title: 'Onboard Employee', description: 'AI fills forms from ID scan, auto-generates contracts in local language' },
+  { step: 2, title: 'Process Payroll', description: 'One-click multi-country payroll with auto tax calculations' },
+  { step: 3, title: 'Track Compliance', description: 'Real-time alerts for expiring documents and regulatory changes' },
+  { step: 4, title: 'Generate Reports', description: 'AI-powered analytics with benchmark comparisons' },
+];
+
+// ─── Sub-components ─────────────────────────────────────────────────────────
+
+function SocialProofBar() {
+  const { t } = useTranslation('landing');
+
   return (
-    <div className="space-y-3">
-      {FAQ_ITEMS.map((item, i) => (
-        <div key={i} className="border border-[var(--color-border)] rounded-xl overflow-hidden">
-          <button
-            onClick={() => setOpenIndex(openIndex === i ? null : i)}
-            className="w-full flex items-center justify-between p-5 text-left bg-[var(--color-surface)] hover:bg-[var(--color-surface-alt)] transition-colors"
-          >
-            <span className="font-medium text-[var(--color-text-primary)]">{item.q}</span>
-            {openIndex === i ? <ChevronUp size={18} className="text-[var(--color-text-muted)]" /> : <ChevronDown size={18} className="text-[var(--color-text-muted)]" />}
-          </button>
-          {openIndex === i && (
-            <div className="px-5 pb-5 text-secondary leading-relaxed">
-              {item.a}
+    <section className="py-10 border-b border-border">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <p className="text-center text-xs text-ink-muted mb-6">
+          {t('trustedBy')}
+        </p>
+        <div className="flex flex-wrap justify-center items-center gap-6 md:gap-12">
+          {TRUSTED_BY.map((company) => (
+            <div key={company.name} className="flex items-center gap-2 opacity-50 hover:opacity-80 transition-opacity">
+              <Building2 className="w-4 h-4 text-ink-faint" />
+              <div>
+                <p className="font-medium text-ink-secondary text-sm">{company.name}</p>
+                <p className="text-[11px] text-ink-faint">{company.employees} employees</p>
+              </div>
             </div>
-          )}
+          ))}
         </div>
-      ))}
-    </div>
-  )
+      </div>
+    </section>
+  );
 }
 
-export default function LandingPage() {
-  const { t } = useTranslation()
-  const navigate = useNavigate()
-
-  const handleCTA = (path: string) => navigate(path)
+function TestimonialsSection() {
+  const { t } = useTranslation('landing');
 
   return (
-    <div className="min-h-screen bg-[var(--color-bg)] text-[var(--color-text-primary)]">
-      {/* ── Navigation Bar ──────────────────────────────────── */}
-      <nav className="sticky top-0 z-50 backdrop-blur-xl bg-[var(--color-surface)]/80 border-b border-[var(--color-border)]">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <Logo size={28} showText={false} />
-            <span className="text-lg font-semibold tracking-tight">AdminMate AI</span>
+    <section className="py-16 bg-surface-sunken">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="text-center mb-12">
+          <h2 className="text-2xl md:text-3xl font-semibold text-ink mb-3">
+            {t('testimonials.title')}
+          </h2>
+          <p className="text-base text-ink-muted">
+            {t('testimonials.subtitle')}
+          </p>
+        </div>
+
+        <div className="grid md:grid-cols-3 gap-6">
+          {TESTIMONIALS.map((testimonial, i) => (
+            <motion.div
+              key={i}
+              initial={{ opacity: 0, y: 12 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.1 * i, duration: 0.3 }}
+            >
+              <Card className="h-full">
+                <CardContent className="p-5">
+                  <p className="text-ink-secondary mb-5 text-sm leading-relaxed">"{testimonial.quote}"</p>
+                  <div className="flex items-center gap-3">
+                    <div className="w-8 h-8 rounded-full bg-primary-subtle text-primary flex items-center justify-center text-xs font-semibold">
+                      {testimonial.author.split(' ').map(n => n[0]).join('')}
+                    </div>
+                    <div>
+                      <p className="font-medium text-ink text-sm">{testimonial.author}</p>
+                      <p className="text-xs text-ink-muted">{testimonial.role}</p>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            </motion.div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function ROICalculatorSection() {
+  const { t } = useTranslation('landing');
+
+  return (
+    <section className="py-16">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="grid md:grid-cols-2 gap-10 items-center">
+          <div>
+            <h2 className="text-2xl md:text-3xl font-semibold text-ink mb-3">
+              {t('roi.title')}
+            </h2>
+            <p className="text-base text-ink-muted mb-8">
+              {t('roi.subtitle')}
+            </p>
+
+            <div className="grid grid-cols-2 gap-4">
+              <div className="bg-primary-subtle rounded-lg p-4">
+                <p className="text-2xl font-bold text-primary">{ROI_DATA.avgTimeSaved}%</p>
+                <p className="text-sm text-ink-muted">{t('roi.timeSaved')}</p>
+              </div>
+              <div className="bg-success-subtle rounded-lg p-4">
+                <p className="text-2xl font-bold text-success">${ROI_DATA.avgCostSaved.toLocaleString()}</p>
+                <p className="text-sm text-ink-muted">{t('roi.costSaved')}</p>
+              </div>
+              <div className="bg-warning-subtle rounded-lg p-4">
+                <p className="text-2xl font-bold text-warning">{ROI_DATA.avgCompliancePenalties}</p>
+                <p className="text-sm text-ink-muted">{t('roi.penaltiesAvoided')}</p>
+              </div>
+              <div className="bg-info-subtle rounded-lg p-4">
+                <p className="text-2xl font-bold text-info">{ROI_DATA.avgPayrollErrors}%</p>
+                <p className="text-sm text-ink-muted">{t('roi.payrollAccuracy')}</p>
+              </div>
+            </div>
           </div>
+
+          <motion.div
+            initial={{ opacity: 0, scale: 0.97 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ delay: 0.2 }}
+          >
+            <Card className="overflow-hidden">
+              <div className="bg-primary p-5 text-white">
+                <h3 className="text-lg font-semibold mb-1">{t('roi.calculatorTitle')}</h3>
+                <p className="text-white/70 text-sm">{t('roi.calculatorSubtitle')}</p>
+              </div>
+              <CardContent className="p-5 space-y-3">
+                <div>
+                  <label className="block text-sm font-medium text-ink mb-1">
+                    {t('roi.employeeCount')}
+                  </label>
+                  <input
+                    type="number"
+                    defaultValue={50}
+                    className="w-full px-3 py-2 rounded-lg border border-border bg-surface text-ink focus:border-primary focus:ring-2 focus:ring-primary/15 outline-none transition-all duration-150"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-ink mb-1">
+                    {t('roi.countries')}
+                  </label>
+                  <input
+                    type="number"
+                    defaultValue={3}
+                    className="w-full px-3 py-2 rounded-lg border border-border bg-surface text-ink focus:border-primary focus:ring-2 focus:ring-primary/15 outline-none transition-all duration-150"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-ink mb-1">
+                    {t('roi.avgSalary')}
+                  </label>
+                  <input
+                    type="number"
+                    defaultValue={3000}
+                    className="w-full px-3 py-2 rounded-lg border border-border bg-surface text-ink focus:border-primary focus:ring-2 focus:ring-primary/15 outline-none transition-all duration-150"
+                  />
+                </div>
+                <div className="bg-success-subtle rounded-lg p-4 border border-success/20">
+                  <p className="text-sm text-success">{t('roi.estimatedSavings')}</p>
+                  <p className="text-2xl font-bold text-success">$54,000/year</p>
+                  <p className="text-xs text-success/70 mt-1">{t('roi.basedOn')}</p>
+                </div>
+                <Button variant="default" className="w-full" size="lg">
+                  {t('roi.cta')}
+                  <ArrowRight className="ml-2 w-4 h-4" />
+                </Button>
+              </CardContent>
+            </Card>
+          </motion.div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function InteractiveDemoSection() {
+  const { t } = useTranslation('landing');
+
+  return (
+    <section className="py-16 bg-surface-sunken">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="text-center mb-12">
+          <h2 className="text-2xl md:text-3xl font-semibold text-ink mb-3">
+            {t('demo.title')}
+          </h2>
+          <p className="text-base text-ink-muted">
+            {t('demo.subtitle')}
+          </p>
+        </div>
+
+        <div className="grid md:grid-cols-2 gap-10 items-center">
+          <div className="space-y-3">
+            {INTERACTIVE_DEMO_STEPS.map((step) => (
+              <div
+                key={step.step}
+                className="flex gap-3 p-3 rounded-lg hover:bg-surface transition-colors cursor-pointer group"
+              >
+                <div className="flex-shrink-0 w-8 h-8 bg-primary-subtle rounded-lg flex items-center justify-center text-primary font-semibold text-sm">
+                  {step.step}
+                </div>
+                <div>
+                  <h3 className="font-medium text-ink text-sm group-hover:text-primary transition-colors">
+                    {step.title}
+                  </h3>
+                  <p className="text-ink-muted text-xs">{step.description}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          <motion.div
+            initial={{ opacity: 0, x: 16 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ delay: 0.2 }}
+          >
+            <Card className="overflow-hidden">
+              <div className="bg-surface-raised p-3 border-b border-border">
+                <div className="flex gap-1.5">
+                  <div className="w-2.5 h-2.5 rounded-full bg-error/60" />
+                  <div className="w-2.5 h-2.5 rounded-full bg-warning/60" />
+                  <div className="w-2.5 h-2.5 rounded-full bg-success/60" />
+                </div>
+              </div>
+              <div className="bg-surface p-8 min-h-[250px] flex items-center justify-center">
+                <div className="text-center">
+                  <div className="w-14 h-14 bg-primary-subtle rounded-xl flex items-center justify-center mx-auto mb-3">
+                    <Play className="w-6 h-6 text-primary ml-0.5" />
+                  </div>
+                  <p className="text-sm text-ink-muted">{t('demo.clickToTry')}</p>
+                </div>
+              </div>
+            </Card>
+          </motion.div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+// ─── Main Landing Page ──────────────────────────────────────────────────────
+
+export default function LandingPage() {
+  const { t } = useTranslation('landing');
+
+  return (
+    <div className="min-h-screen">
+      {/* Nav */}
+      <nav className="sticky top-0 z-50 bg-surface/80 backdrop-blur-md border-b border-border">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-14 flex items-center justify-between">
+          <Link to="/" className="flex items-center gap-2 no-underline">
+            <div className="w-7 h-7 rounded-md bg-primary flex items-center justify-center">
+              <span className="text-white font-semibold text-sm">A</span>
+            </div>
+            <span className="font-semibold text-ink text-sm">AdminMate AI</span>
+          </Link>
           <div className="flex items-center gap-3">
-            <button
-              onClick={() => handleCTA('/login')}
-              className="px-4 py-2 text-sm font-medium text-secondary hover:text-primary transition-colors"
-            >
-              {t('landing.nav_sign_in', 'Sign In')}
-            </button>
-            <button
-              onClick={() => handleCTA('/login')}
-              className="px-5 py-2.5 text-sm font-medium bg-[var(--color-primary)] text-white rounded-xl hover:opacity-90 transition-opacity"
-            >
-              {t('landing.nav_start_free', 'Start Free')}
-            </button>
+            <Link to="/pricing">
+              <Button variant="ghost" size="sm">{t('nav.pricing')}</Button>
+            </Link>
+            <Link to="/login">
+              <Button variant="ghost" size="sm">{t('nav.signIn')}</Button>
+            </Link>
+            <Link to="/register">
+              <Button variant="default" size="sm">{t('hero.cta')}</Button>
+            </Link>
           </div>
         </div>
       </nav>
 
-      {/* ── Hero ────────────────────────────────────────────── */}
-      <section className="relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-b from-[var(--color-primary)]/5 to-transparent pointer-events-none" />
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-20 pb-24 sm:pt-28 sm:pb-32 text-center relative">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-          >
-            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[var(--color-primary)]/10 text-[var(--color-primary)] text-sm font-medium mb-6">
-              <Sparkles size={14} />
-              {t('landing.hero_badge', 'AI-Powered HR for Southeast Asia')}
-            </div>
-            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight leading-tight max-w-4xl mx-auto">
-              {t('landing.hero_title', 'HR work that used to take all day now takes minutes')}
+      {/* Hero */}
+      <section className="pt-20 pb-16">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <motion.div className="text-center max-w-3xl mx-auto" {...fadeIn}>
+            <h1 className="text-3xl md:text-5xl font-bold text-ink mb-5 leading-tight tracking-tight">
+              {t('hero.title')}
             </h1>
-            <p className="mt-6 text-lg sm:text-xl text-secondary max-w-2xl mx-auto leading-relaxed">
-              {t('landing.hero_subtitle', 'AdminMate AI helps SEA SMEs hire faster, onboard smarter, and stay compliant — with an AI assistant built for HR teams.')}
+            <p className="text-lg text-ink-muted mb-8 max-w-xl mx-auto">
+              {t('hero.subtitle')}
             </p>
-            <div className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4">
-              <button
-                onClick={() => handleCTA('/login')}
-                className="w-full sm:w-auto px-8 py-4 text-base font-semibold bg-[var(--color-primary)] text-white rounded-2xl hover:opacity-90 transition-opacity flex items-center justify-center gap-2"
+            <div className="flex flex-col sm:flex-row gap-3 justify-center">
+              <Link to="/register">
+                <Button variant="default" size="lg" className="w-full sm:w-auto">
+                  {t('hero.cta')}
+                  <ChevronRight className="ml-1 w-4 h-4" />
+                </Button>
+              </Link>
+              <Button variant="outline" size="lg" className="w-full sm:w-auto">
+                {t('hero.watchDemo')}
+                <Play className="ml-1 w-4 h-4" />
+              </Button>
+            </div>
+            <p className="text-xs text-ink-faint mt-4">
+              {t('hero.noCreditCard')}
+            </p>
+          </motion.div>
+        </div>
+      </section>
+
+      <SocialProofBar />
+
+      {/* Features */}
+      <section className="py-16">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-12">
+            <h2 className="text-2xl md:text-3xl font-semibold text-ink mb-3">
+              {t('features.title')}
+            </h2>
+            <p className="text-base text-ink-muted max-w-xl mx-auto">
+              {t('features.subtitle')}
+            </p>
+          </div>
+
+          <motion.div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4" {...stagger} animate="animate">
+            {FEATURES.map((feature) => (
+              <motion.div key={feature.key} variants={fadeIn}>
+                <Card className="h-full hover:shadow-md transition-shadow cursor-pointer group">
+                  <CardContent className="p-5">
+                    <div className={`w-10 h-10 ${feature.bg} rounded-lg flex items-center justify-center mb-3`}>
+                      <feature.icon className={`w-5 h-5 ${feature.color}`} />
+                    </div>
+                    <h3 className="font-medium text-ink text-sm mb-1">
+                      {t(`landing.features.${feature.key}.title`)}
+                    </h3>
+                    <p className="text-ink-muted text-xs">
+                      {t(`landing.features.${feature.key}.description`)}
+                    </p>
+                  </CardContent>
+                </Card>
+              </motion.div>
+            ))}
+          </motion.div>
+        </div>
+      </section>
+
+      {/* Differentiators */}
+      <section className="py-16 bg-surface-sunken">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-12">
+            <h2 className="text-2xl md:text-3xl font-semibold text-ink mb-3">
+              {t('differentiators.title')}
+            </h2>
+            <p className="text-base text-ink-muted">
+              {t('differentiators.subtitle')}
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+            {UNIQUE_DIFFERENTIATORS.map((diff, i) => (
+              <motion.div
+                key={diff.key}
+                initial={{ opacity: 0, y: 12 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.04 * i, duration: 0.3 }}
+                className="flex items-start gap-3 p-3 rounded-lg hover:bg-surface transition-colors"
               >
-                {t('landing.hero_cta', 'Start Free — No Credit Card')}
-                <ArrowRight size={18} />
-              </button>
-              <button
-                onClick={() => handleCTA('/login')}
-                className="w-full sm:w-auto px-8 py-4 text-base font-medium border border-[var(--color-border)] rounded-2xl hover:bg-[var(--color-surface-alt)] transition-colors"
-              >
-                {t('landing.hero_cta_secondary', 'See How It Works')}
-              </button>
+                <diff.icon className={`w-4 h-4 mt-0.5 flex-shrink-0 ${diff.color}`} />
+                <div>
+                  <h3 className="font-medium text-ink text-sm">
+                    {t(`landing.differentiators.${diff.key}.title`)}
+                  </h3>
+                  <p className="text-ink-muted text-xs mt-0.5">
+                    {t(`landing.differentiators.${diff.key}.description`)}
+                  </p>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <TestimonialsSection />
+      <ROICalculatorSection />
+      <InteractiveDemoSection />
+
+      {/* Final CTA */}
+      <section className="py-16">
+        <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <motion.div {...fadeIn}>
+            <h2 className="text-2xl md:text-3xl font-semibold text-ink mb-3">
+              {t('cta.title')}
+            </h2>
+            <p className="text-base text-ink-muted mb-8">
+              {t('cta.subtitle')}
+            </p>
+            <div className="flex flex-col sm:flex-row gap-3 justify-center">
+              <Link to="/register">
+                <Button variant="default" size="lg" className="w-full sm:w-auto">
+                  {t('cta.primary')}
+                  <ChevronRight className="ml-1 w-4 h-4" />
+                </Button>
+              </Link>
+              <Link to="/login">
+                <Button variant="outline" size="lg" className="w-full sm:w-auto">
+                  {t('cta.secondary')}
+                </Button>
+              </Link>
+            </div>
+            <div className="flex flex-wrap justify-center gap-5 mt-6 text-xs text-ink-muted">
+              <span className="flex items-center gap-1"><CheckCircle2 className="w-3.5 h-3.5 text-success" /> {t('cta.freeTrial')}</span>
+              <span className="flex items-center gap-1"><CheckCircle2 className="w-3.5 h-3.5 text-success" /> {t('cta.noContract')}</span>
+              <span className="flex items-center gap-1"><CheckCircle2 className="w-3.5 h-3.5 text-success" /> {t('cta.support247')}</span>
             </div>
           </motion.div>
         </div>
       </section>
 
-      {/* ── Pain Points ─────────────────────────────────────── */}
-      <section className="py-20 sm:py-24 bg-[var(--color-surface)]">
+      {/* Footer */}
+      <footer className="border-t border-border py-8">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center max-w-3xl mx-auto mb-16">
-            <h2 className="text-3xl sm:text-4xl font-bold tracking-tight">
-              {t('landing.pain_title', 'HR in SEA shouldn\'t feel this hard')}
-            </h2>
-            <p className="mt-4 text-lg text-secondary">
-              {t('landing.pain_subtitle', 'Small HR teams juggle spreadsheets, chat apps, paper forms, and guesswork. AdminMate AI replaces the chaos with one focused platform.')}
-            </p>
-          </div>
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
-            {[
-              { icon: Clock, titleKey: 'landing.pain1_title', descKey: 'landing.pain1_desc', title: 'Too many manual tasks', desc: 'Posting jobs, screening CVs, scheduling interviews, chasing documents — all by hand.' },
-              { icon: FileText, titleKey: 'landing.pain2_title', descKey: 'landing.pain2_desc', title: 'Scattered paperwork', desc: 'Offers, contracts, and onboarding forms spread across email, LINE, and Google Drive.' },
-              { icon: Shield, titleKey: 'landing.pain3_title', descKey: 'landing.pain3_desc', title: 'Compliance uncertainty', desc: 'PDPA, labor law, data residency — hard to track when you\'re a 5-person HR team.' },
-            ].map((item, i) => (
-              <motion.div
-                key={i}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: i * 0.1, duration: 0.4 }}
-                className="p-6 rounded-2xl border border-[var(--color-border)] bg-[var(--color-bg)]"
-              >
-                <div className="w-12 h-12 rounded-xl bg-[var(--color-error-container)] flex items-center justify-center mb-4">
-                  <item.icon size={22} className="text-[var(--color-error)]" />
-                </div>
-                <h3 className="text-lg font-semibold mb-2">{t(item.titleKey, item.title)}</h3>
-                <p className="text-secondary leading-relaxed">{t(item.descKey, item.desc)}</p>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ── Product Value ───────────────────────────────────── */}
-      <section className="py-20 sm:py-24">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center max-w-3xl mx-auto mb-16">
-            <h2 className="text-3xl sm:text-4xl font-bold tracking-tight">
-              {t('landing.value_title', 'One platform for the full HR lifecycle')}
-            </h2>
-            <p className="mt-4 text-lg text-secondary">
-              {t('landing.value_subtitle', 'From the first job post to the last compliance check — AdminMate AI covers every step.')}
-            </p>
-          </div>
-          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {[
-              { icon: Briefcase, color: 'var(--color-primary)', titleKey: 'landing.mod_recruitment', descKey: 'landing.mod_recruitment_desc', title: 'Recruitment', desc: 'Post jobs, screen CVs with AI, manage your pipeline.' },
-              { icon: ClipboardCheck, color: 'var(--color-success)', titleKey: 'landing.mod_onboarding', descKey: 'landing.mod_onboarding_desc', title: 'Onboarding', desc: 'Track tasks, send documents, guide new hires.' },
-              { icon: FileText, color: 'var(--color-warning)', titleKey: 'landing.mod_documents', descKey: 'landing.mod_documents_desc', title: 'Documents', desc: 'Upload, send for e-signature, track status.' },
-              { icon: MessageSquare, color: 'var(--color-primary)', titleKey: 'landing.mod_chat', descKey: 'landing.mod_chat_desc', title: 'AI Assistant', desc: 'Ask Mate AI for job drafts, compliance answers, reports.' },
-            ].map((item, i) => (
-              <motion.div
-                key={i}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: i * 0.1, duration: 0.4 }}
-                className="p-6 rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface)] hover:shadow-lg transition-shadow"
-              >
-                <div className="w-12 h-12 rounded-xl flex items-center justify-center mb-4" style={{ backgroundColor: `color-mix(in srgb, ${item.color} 12%, transparent)` }}>
-                  <item.icon size={22} style={{ color: item.color }} />
-                </div>
-                <h3 className="text-lg font-semibold mb-2">{t(item.titleKey, item.title)}</h3>
-                <p className="text-sm text-secondary leading-relaxed">{t(item.descKey, item.desc)}</p>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ── Key Workflows ───────────────────────────────────── */}
-      <section className="py-20 sm:py-24 bg-[var(--color-surface)]">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center max-w-3xl mx-auto mb-16">
-            <h2 className="text-3xl sm:text-4xl font-bold tracking-tight">
-              {t('landing.workflows_title', 'Built for how HR actually works')}
-            </h2>
-          </div>
-          <div className="grid md:grid-cols-2 gap-12 items-center">
-            <div className="space-y-8">
-              {[
-                { step: '01', titleKey: 'landing.flow1_title', descKey: 'landing.flow1_desc', title: 'Post a job in minutes', desc: 'AI generates job descriptions from your requirements. Publish to your career page instantly.' },
-                { step: '02', titleKey: 'landing.flow2_title', descKey: 'landing.flow2_desc', title: 'Screen and pipeline candidates', desc: 'AI scores resumes against your criteria. Drag candidates through your custom pipeline stages.' },
-                { step: '03', titleKey: 'landing.flow3_title', descKey: 'landing.flow3_desc', title: 'Schedule and collect feedback', desc: 'Book interviews, collect structured feedback, and make offers — all in one flow.' },
-                { step: '04', titleKey: 'landing.flow4_title', descKey: 'landing.flow4_desc', title: 'Onboard and stay compliant', desc: 'Track onboarding tasks, send documents for e-signature, and maintain PDPA consent records.' },
-              ].map((item, i) => (
-                <motion.div
-                  key={i}
-                  initial={{ opacity: 0, x: -20 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: i * 0.1, duration: 0.4 }}
-                  className="flex gap-4"
-                >
-                  <div className="flex-shrink-0 w-12 h-12 rounded-xl bg-[var(--color-primary)]/10 text-[var(--color-primary)] font-bold text-lg flex items-center justify-center">
-                    {item.step}
-                  </div>
-                  <div>
-                    <h3 className="text-lg font-semibold mb-1">{t(item.titleKey, item.title)}</h3>
-                    <p className="text-secondary leading-relaxed">{t(item.descKey, item.desc)}</p>
-                  </div>
-                </motion.div>
-              ))}
-            </div>
-            <div className="relative">
-              <div className="aspect-[4/3] rounded-2xl bg-gradient-to-br from-[var(--color-primary)]/10 to-[var(--color-accent)]/10 border border-[var(--color-border)] flex items-center justify-center">
-                <div className="w-full max-w-md p-6 space-y-3">
-                  {[
-                    { title: t('landing.mod_recruitment', 'Recruitment'), desc: t('landing.mod_recruitment_desc', 'Post jobs, screen CVs with AI, manage your pipeline.') },
-                    { title: t('landing.mod_onboarding', 'Onboarding'), desc: t('landing.mod_onboarding_desc', 'Track tasks, send documents, guide new hires.') },
-                    { title: t('landing.mod_documents', 'Documents'), desc: t('landing.mod_documents_desc', 'Upload, send for e-signature, track status.') },
-                  ].map((item, index) => (
-                    <div
-                      key={item.title}
-                      className="rounded-2xl border border-[var(--color-border)] bg-white/70 dark:bg-black/20 backdrop-blur px-4 py-3 shadow-sm"
-                      style={{ transform: `translateX(${index * 8}px)` }}
-                    >
-                      <div className="flex items-center justify-between gap-3">
-                        <p className="font-semibold text-sm text-[var(--color-text-primary)]">{item.title}</p>
-                        <span className="inline-flex items-center rounded-full bg-[var(--color-primary)]/10 px-2 py-1 text-[11px] font-medium text-[var(--color-primary)]">Live</span>
-                      </div>
-                      <p className="mt-2 text-xs leading-relaxed text-secondary">{item.desc}</p>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* ── Security / PDPA Trust ───────────────────────────── */}
-      <section className="py-20 sm:py-24">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center max-w-3xl mx-auto mb-16">
-            <h2 className="text-3xl sm:text-4xl font-bold tracking-tight">
-              {t('landing.security_title', 'Your data stays yours')}
-            </h2>
-            <p className="mt-4 text-lg text-secondary">
-              {t('landing.security_subtitle', 'AdminMate AI is built with privacy and compliance at its core.')}
-            </p>
-          </div>
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
-            {[
-              { icon: Shield, titleKey: 'landing.trust1_title', descKey: 'landing.trust1_desc', title: 'PDPA-ready consent', desc: 'Built-in consent banners, purpose tracking, and consent history for Thai PDPA compliance.' },
-              { icon: Lock, titleKey: 'landing.trust2_title', descKey: 'landing.trust2_desc', title: 'Data export & deletion', desc: 'Export your data or request account deletion at any time from Privacy & Data settings.' },
-              { icon: Building2, titleKey: 'landing.trust3_title', descKey: 'landing.trust3_desc', title: 'Your infrastructure', desc: 'Supabase-hosted with regional data residency options. You control access with role-based permissions.' },
-            ].map((item, i) => (
-              <motion.div
-                key={i}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: i * 0.1, duration: 0.4 }}
-                className="p-6 rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface)]"
-              >
-                <div className="w-12 h-12 rounded-xl bg-[var(--color-success-container)] flex items-center justify-center mb-4">
-                  <item.icon size={22} className="text-[var(--color-success)]" />
-                </div>
-                <h3 className="text-lg font-semibold mb-2">{t(item.titleKey, item.title)}</h3>
-                <p className="text-secondary leading-relaxed">{t(item.descKey, item.desc)}</p>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ── Who It Is For ───────────────────────────────────── */}
-      <section className="py-20 sm:py-24 bg-[var(--color-surface)]">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center max-w-3xl mx-auto mb-16">
-            <h2 className="text-3xl sm:text-4xl font-bold tracking-tight">
-              {t('landing.audience_title', 'Built for growing HR teams in Southeast Asia')}
-            </h2>
-          </div>
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
-            {[
-              { icon: Users, titleKey: 'landing.aud1_title', descKey: 'landing.aud1_desc', title: 'SME HR teams (2–20 people)', desc: 'Lean teams that need one platform instead of five tools.' },
-              { icon: Globe, titleKey: 'landing.aud2_title', descKey: 'landing.aud2_desc', title: 'Multi-country operations', desc: 'Companies operating across Thailand, Vietnam, and Indonesia.' },
-              { icon: Zap, titleKey: 'landing.aud3_title', descKey: 'landing.aud3_desc', title: 'First-time HR system adopters', desc: 'Teams moving from spreadsheets and chat apps to their first HR platform.' },
-            ].map((item, i) => (
-              <motion.div
-                key={i}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: i * 0.1, duration: 0.4 }}
-                className="p-6 rounded-2xl border border-[var(--color-border)] bg-[var(--color-bg)]"
-              >
-                <div className="w-12 h-12 rounded-xl bg-[var(--color-primary)]/10 flex items-center justify-center mb-4">
-                  <item.icon size={22} className="text-[var(--color-primary)]" />
-                </div>
-                <h3 className="text-lg font-semibold mb-2">{t(item.titleKey, item.title)}</h3>
-                <p className="text-secondary leading-relaxed">{t(item.descKey, item.desc)}</p>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ── FAQ ─────────────────────────────────────────────── */}
-      <section className="py-20 sm:py-24">
-        <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl sm:text-4xl font-bold tracking-tight">
-              {t('landing.faq_title', 'Frequently asked questions')}
-            </h2>
-          </div>
-          <FAQAccordion />
-        </div>
-      </section>
-
-      {/* ── Final CTA ───────────────────────────────────────── */}
-      <section className="py-20 sm:py-24 bg-[var(--color-primary)]">
-        <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="text-3xl sm:text-4xl font-bold text-white tracking-tight">
-            {t('landing.cta_title', 'Ready to simplify your HR?')}
-          </h2>
-          <p className="mt-4 text-lg text-white/80">
-            {t('landing.cta_subtitle', 'Start free. No credit card required. Set up in minutes.')}
-          </p>
-          <div className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4">
-            <button
-              onClick={() => handleCTA('/login')}
-              className="w-full sm:w-auto px-8 py-4 text-base font-semibold bg-white text-[var(--color-primary)] rounded-2xl hover:opacity-90 transition-opacity flex items-center justify-center gap-2"
-            >
-              {t('landing.cta_button', 'Create Free Account')}
-              <ArrowRight size={18} />
-            </button>
-          </div>
-        </div>
-      </section>
-
-      {/* ── Footer ──────────────────────────────────────────── */}
-      <footer className="py-12 border-t border-[var(--color-border)]">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex flex-col sm:flex-row items-center justify-between gap-6">
+          <div className="flex flex-col md:flex-row justify-between items-center gap-4">
             <div className="flex items-center gap-2">
-              <Logo size={24} showText={false} />
-              <span className="font-semibold">AdminMate AI</span>
+              <div className="w-6 h-6 rounded-md bg-primary flex items-center justify-center">
+                <span className="text-white font-semibold text-xs">A</span>
+              </div>
+              <span className="text-sm text-ink-muted">&copy; {new Date().getFullYear()} AdminMate AI</span>
             </div>
-            <div className="flex flex-wrap items-center gap-4 sm:gap-6 text-sm text-[var(--color-text-muted)]">
-              <button onClick={() => handleCTA('/pricing')} className="hover:text-primary transition-colors">{t('landing.footer_pricing', 'Pricing')}</button>
-              <button onClick={() => handleCTA('/login')} className="hover:text-primary transition-colors">{t('landing.footer_sign_in', 'Sign In')}</button>
-              <button onClick={() => handleCTA('/login')} className="hover:text-primary transition-colors">{t('landing.footer_get_started', 'Get Started')}</button>
-              <button onClick={() => handleCTA('/terms')} className="hover:text-primary transition-colors">{t('landing.footer_terms', 'Terms')}</button>
-              <button onClick={() => handleCTA('/privacy')} className="hover:text-primary transition-colors">{t('landing.footer_privacy', 'Privacy')}</button>
+            <div className="flex gap-5 text-sm text-ink-muted">
+              <Link to="/terms" className="hover:text-ink transition-colors no-underline">Terms</Link>
+              <Link to="/privacy" className="hover:text-ink transition-colors no-underline">Privacy</Link>
+              <Link to="/cookies" className="hover:text-ink transition-colors no-underline">Cookies</Link>
             </div>
           </div>
-          <p className="mt-6 text-xs text-center text-[var(--color-text-muted)]">
-            {t('landing.footer_disclaimer', 'AdminMate AI is a product for HR workflow management. It does not provide legal, tax, or compliance advice. Consult qualified professionals for regulatory guidance.')}
-          </p>
-          <p className="mt-2 text-xs text-center text-[var(--color-text-muted)]">
-            {t('landing.footer_contact', 'Questions?')} <a href="mailto:support@adminmate-ai.com" className="underline hover:text-primary">support@adminmate-ai.com</a>
-          </p>
         </div>
       </footer>
     </div>
-  )
+  );
 }

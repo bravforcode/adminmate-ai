@@ -12,15 +12,15 @@ export const CandidateCard = memo(function CandidateCard({ candidate }: Candidat
 
   return (
     <Link to={`/recruitment/candidates/${candidate.id}`}
-      className="block bg-surface dark:bg-surface rounded-xl border border-outline-variant dark:border-outline p-4 hover:border-primary dark:hover:border-primary hover:shadow-sm transition-all group card-hover">
+      className="block bg-surface rounded-xl border border-border p-4 hover:border-primary dark:hover:border-primary hover:shadow-sm transition-all group card-hover">
       <div className="flex items-start gap-4">
-        <div className="w-12 h-12 rounded-full bg-primary-container dark:bg-primary-container text-on-primary-container dark:text-accent-dim flex items-center justify-center font-bold text-lg flex-shrink-0">
+        <div className="w-12 h-12 rounded-full bg-primary-container dark:bg-primary-container text-on-primary-container dark:text-primary-muted flex items-center justify-center font-bold text-lg flex-shrink-0">
           {initials}
         </div>
         <div className="flex-1 min-w-0">
-          <h3 className="font-semibold text-on-surface dark:text-on-surface group-hover:text-primary dark:group-hover:text-accent-dim transition-colors">{candidate.full_name}</h3>
-          <p className="text-sm text-on-surface-variant dark:text-on-surface-variant">{candidate.current_position || 'Candidate'}</p>
-          <div className="flex flex-wrap gap-2 mt-2 text-xs text-on-surface-variant dark:text-on-surface-variant">
+          <h3 className="font-semibold text-ink group-hover:text-primary dark:group-hover:text-primary-muted transition-colors">{candidate.full_name}</h3>
+          <p className="text-sm text-ink-variant dark:text-ink-variant">{candidate.current_position || 'Candidate'}</p>
+          <div className="flex flex-wrap gap-2 mt-2 text-xs text-ink-variant dark:text-ink-variant">
             {candidate.location && <span className="flex items-center gap-1"><MapPin size={12} /> {candidate.location}</span>}
             {candidate.email && <span className="flex items-center gap-1"><Mail size={12} /> {candidate.email}</span>}
             {candidate.phone && <span className="flex items-center gap-1"><Phone size={12} /> {candidate.phone}</span>}
@@ -32,7 +32,7 @@ export const CandidateCard = memo(function CandidateCard({ candidate }: Candidat
               <Sparkles size={14} /> {matchScore}%
             </div>
           )}
-          {latestCV && <span className="inline-block mt-1 px-2 py-0.5 bg-surface-container-low dark:bg-surface-container-low rounded text-xs">CV attached</span>}
+          {latestCV && <span className="inline-block mt-1 px-2 py-0.5 bg-surface-sunken rounded text-xs">CV attached</span>}
         </div>
       </div>
     </Link>

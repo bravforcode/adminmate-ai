@@ -123,7 +123,7 @@ export function PayrollRunPage() {
   // ── Run Detail View ──
   if (runId) {
     if (runLoading) return <LoadingState variant="cards" rows={3} message="Loading payroll run..." />
-    if (!runData) return <div className="p-6 text-center text-on-surface-variant">Run not found.</div>
+    if (!runData) return <div className="p-6 text-center text-ink-variant">Run not found.</div>
 
     const { run, items } = runData
     const warnings = (run as unknown as Record<string, unknown>).employees_needing_review as Array<{ employeeId: string; name: string; reason: string }> | undefined
@@ -135,8 +135,8 @@ export function PayrollRunPage() {
             Back
           </Button>
           <div>
-            <h1 className="text-headline-md font-bold text-on-surface">Payroll Run</h1>
-            <p className="text-sm text-on-surface-variant">Run ID: {run.id}</p>
+            <h1 className="text-headline-md font-bold text-ink">Payroll Run</h1>
+            <p className="text-sm text-ink-variant">Run ID: {run.id}</p>
           </div>
           <span className={`ml-auto px-3 py-1 rounded-full text-sm font-medium ${statusColor(run.status)}`}>
             {run.status}
@@ -169,19 +169,19 @@ export function PayrollRunPage() {
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
           <Card>
             <CardContent className="pt-4">
-              <p className="text-xs text-on-surface-variant">Total Gross</p>
+              <p className="text-xs text-ink-variant">Total Gross</p>
               <p className="text-xl font-bold">{fmt(run.total_gross)} THB</p>
             </CardContent>
           </Card>
           <Card>
             <CardContent className="pt-4">
-              <p className="text-xs text-on-surface-variant">Total Deductions</p>
+              <p className="text-xs text-ink-variant">Total Deductions</p>
               <p className="text-xl font-bold text-red-600">{fmt(run.total_deductions)} THB</p>
             </CardContent>
           </Card>
           <Card>
             <CardContent className="pt-4">
-              <p className="text-xs text-on-surface-variant">Total Net</p>
+              <p className="text-xs text-ink-variant">Total Net</p>
               <p className="text-xl font-bold text-primary">{fmt(run.total_net)} THB</p>
             </CardContent>
           </Card>
@@ -265,8 +265,8 @@ export function PayrollRunPage() {
     <div className="space-y-6 max-w-4xl">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-headline-md font-bold text-on-surface">Run Payroll</h1>
-          <p className="text-body-md text-on-surface-variant mt-1">Select a cycle or create a new one</p>
+          <h1 className="text-headline-md font-bold text-ink">Run Payroll</h1>
+          <p className="text-body-md text-ink-variant mt-1">Select a cycle or create a new one</p>
         </div>
         <Button variant="outline" onClick={() => setShowNewCycle(!showNewCycle)}>
           {showNewCycle ? 'Cancel' : 'New Cycle'}
@@ -282,31 +282,31 @@ export function PayrollRunPage() {
           <CardContent>
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
               <div>
-                <label className="block text-sm font-medium mb-1 text-on-surface-variant">Cycle Name</label>
+                <label className="block text-sm font-medium mb-1 text-ink-variant">Cycle Name</label>
                 <input
                   type="text"
                   value={newCycle.name}
                   onChange={e => setNewCycle(c => ({ ...c, name: e.target.value }))}
                   placeholder="e.g. June 2024"
-                  className="w-full px-3 py-2 rounded-lg border border-outline-variant bg-surface-container-lowest focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none text-sm"
+                  className="w-full px-3 py-2 rounded-lg border border-border bg-surface-sunken-lowest focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none text-sm"
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium mb-1 text-on-surface-variant">Period Start</label>
+                <label className="block text-sm font-medium mb-1 text-ink-variant">Period Start</label>
                 <input
                   type="date"
                   value={newCycle.period_start}
                   onChange={e => setNewCycle(c => ({ ...c, period_start: e.target.value }))}
-                  className="w-full px-3 py-2 rounded-lg border border-outline-variant bg-surface-container-lowest focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none text-sm"
+                  className="w-full px-3 py-2 rounded-lg border border-border bg-surface-sunken-lowest focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none text-sm"
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium mb-1 text-on-surface-variant">Period End</label>
+                <label className="block text-sm font-medium mb-1 text-ink-variant">Period End</label>
                 <input
                   type="date"
                   value={newCycle.period_end}
                   onChange={e => setNewCycle(c => ({ ...c, period_end: e.target.value }))}
-                  className="w-full px-3 py-2 rounded-lg border border-outline-variant bg-surface-container-lowest focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none text-sm"
+                  className="w-full px-3 py-2 rounded-lg border border-border bg-surface-sunken-lowest focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none text-sm"
                 />
               </div>
             </div>
@@ -331,7 +331,7 @@ export function PayrollRunPage() {
               <CardContent className="pt-4 flex items-center justify-between">
                 <div>
                   <p className="font-medium">{cycle.name}</p>
-                  <p className="text-xs text-on-surface-variant">
+                  <p className="text-xs text-ink-variant">
                     {cycle.period_start} — {cycle.period_end}
                   </p>
                 </div>
@@ -372,7 +372,7 @@ export function PayrollRunPage() {
       ) : (
         <Card>
           <CardContent className="pt-6 text-center">
-            <p className="text-on-surface-variant">No payroll cycles yet. Create one to start.</p>
+            <p className="text-ink-variant">No payroll cycles yet. Create one to start.</p>
           </CardContent>
         </Card>
       )}

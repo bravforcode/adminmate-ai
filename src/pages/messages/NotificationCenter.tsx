@@ -141,7 +141,7 @@ export default function NotificationCenter() {
               </Badge>
             )}
           </h1>
-          <p className="text-sm text-on-surface-variant mt-1">
+          <p className="text-sm text-ink-variant mt-1">
             {t('notification_center.subtitle', 'Stay updated with important events and messages')}
           </p>
         </div>
@@ -168,7 +168,7 @@ export default function NotificationCenter() {
       {/* Filters */}
       <div className="flex items-center gap-3">
         <div className="relative flex-1 max-w-md">
-          <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant" />
+          <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-ink-variant" />
           <Input
             placeholder={t('common:search')}
             value={searchQuery}
@@ -241,16 +241,16 @@ export default function NotificationCenter() {
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center justify-between gap-2 mb-1">
                         <span className={cn(
-                          'text-sm font-medium text-on-surface',
+                          'text-sm font-medium text-ink',
                           !notification.is_read && 'font-semibold',
                         )}>
                           {notification.title || t('notification_center.default_title', 'Notification')}
                         </span>
-                        <span className="text-xs text-on-surface-variant whitespace-nowrap">
+                        <span className="text-xs text-ink-variant whitespace-nowrap">
                           {new Date(notification.created_at).toLocaleString()}
                         </span>
                       </div>
-                      <p className="text-sm text-on-surface-variant line-clamp-2">{notification.body}</p>
+                      <p className="text-sm text-ink-variant line-clamp-2">{notification.body}</p>
                       <div className="flex items-center gap-2 mt-2">
                         <Badge variant="outline" className="text-xs">
                           {notification.notification_type.replace(/_/g, ' ')}
@@ -283,17 +283,17 @@ export default function NotificationCenter() {
 
         <TabsContent value="preferences" className="space-y-4">
           <Card className="p-6">
-            <h3 className="text-lg font-semibold text-on-surface mb-4">
+            <h3 className="text-lg font-semibold text-ink mb-4">
               {t('notification_center.manage_preferences', 'Manage Notification Preferences')}
             </h3>
-            <p className="text-sm text-on-surface-variant mb-6">
+            <p className="text-sm text-ink-variant mb-6">
               {t('notification_center.preferences_desc', 'Choose how you want to be notified for different types of events')}
             </p>
             <div className="space-y-4">
               {preferences.map((pref) => (
-                <div key={pref.id} className="flex items-center justify-between p-3 rounded-lg border border-outline-variant">
+                <div key={pref.id} className="flex items-center justify-between p-3 rounded-lg border border-border">
                   <div>
-                    <p className="text-sm font-medium text-on-surface">
+                    <p className="text-sm font-medium text-ink">
                       {pref.preference_type.replace(/_/g, ' ')}
                     </p>
                   </div>

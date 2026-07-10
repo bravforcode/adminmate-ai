@@ -32,8 +32,8 @@ export interface EmployeeFormData {
 const EMPLOYMENT_TYPES: EmploymentType[] = ['full_time', 'part_time', 'contractor', 'intern', 'remote', 'seasonal', 'gig']
 const EMPLOYMENT_STATUSES: EmploymentStatus[] = ['draft', 'active']
 
-const INPUT_CLASS = 'w-full px-4 py-3 rounded-xl border border-outline-variant dark:border-outline bg-surface-container-lowest dark:bg-surface-container-lowest text-on-surface dark:text-on-surface focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all duration-200 outline-none text-sm'
-const LABEL_CLASS = 'block text-sm font-medium mb-1 dark:text-on-surface'
+const INPUT_CLASS = 'w-full px-4 py-3 rounded-xl border border-border bg-surface-sunken-lowest dark:bg-surface-sunken-lowest text-ink focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all duration-200 outline-none text-sm'
+const LABEL_CLASS = 'block text-sm font-medium mb-1 dark:text-ink'
 
 export function EmployeeForm({ onClose, onSubmit, initialData, departments = [], teams = [], isLoading }: EmployeeFormProps) {
   const [form, setForm] = useState<EmployeeFormData>({
@@ -81,8 +81,8 @@ export function EmployeeForm({ onClose, onSubmit, initialData, departments = [],
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
       <div className="flex items-center gap-2 mb-4">
-        <UserPlus size={20} className="text-primary dark:text-accent-dim" />
-        <h3 className="font-semibold dark:text-on-surface">{initialData ? 'Edit Employee' : 'New Employee'}</h3>
+        <UserPlus size={20} className="text-primary dark:text-primary-muted" />
+        <h3 className="font-semibold dark:text-ink">{initialData ? 'Edit Employee' : 'New Employee'}</h3>
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">

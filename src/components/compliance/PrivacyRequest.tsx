@@ -89,12 +89,12 @@ export function PrivacyRequest() {
         <button
           onClick={() => exportData.mutate()}
           disabled={exportData.isPending}
-          className="flex items-center gap-2 p-4 bg-surface rounded-xl border border-outline-variant hover:bg-surface-container-low transition-colors disabled:opacity-50"
+          className="flex items-center gap-2 p-4 bg-surface rounded-xl border border-border hover:bg-surface-sunken transition-colors disabled:opacity-50"
         >
           <Download size={20} className="text-primary" />
           <div className="text-left">
-            <p className="text-sm font-medium text-on-surface">{t('pdpa.export_title') || 'Export My Data'}</p>
-            <p className="text-xs text-on-surface-variant">{t('pdpa.export_desc_short') || 'Download your data as JSON'}</p>
+            <p className="text-sm font-medium text-ink">{t('pdpa.export_title') || 'Export My Data'}</p>
+            <p className="text-xs text-ink-variant">{t('pdpa.export_desc_short') || 'Download your data as JSON'}</p>
           </div>
           {exportData.isPending && <Loader2 size={16} className="animate-spin ml-auto" />}
         </button>
@@ -105,8 +105,8 @@ export function PrivacyRequest() {
         >
           <Trash2 size={20} className="text-error" />
           <div className="text-left">
-            <p className="text-sm font-medium text-on-surface">{t('pdpa.delete_title') || 'Request Data Deletion'}</p>
-            <p className="text-xs text-on-surface-variant">{t('pdpa.delete_desc_short') || 'Anonymize your personal data'}</p>
+            <p className="text-sm font-medium text-ink">{t('pdpa.delete_title') || 'Request Data Deletion'}</p>
+            <p className="text-xs text-ink-variant">{t('pdpa.delete_desc_short') || 'Anonymize your personal data'}</p>
           </div>
           {createRequest.isPending && <Loader2 size={16} className="animate-spin ml-auto" />}
         </button>
@@ -114,18 +114,18 @@ export function PrivacyRequest() {
 
       {/* Request History */}
       <div>
-        <h4 className="text-sm font-semibold text-on-surface mb-3">{t('pdpa.request_history') || 'Request History'}</h4>
+        <h4 className="text-sm font-semibold text-ink mb-3">{t('pdpa.request_history') || 'Request History'}</h4>
         {isLoading ? (
-          <div className="space-y-2">{[1, 2].map(i => <div key={i} className="h-12 bg-surface-container-high rounded-lg animate-shimmer" />)}</div>
+          <div className="space-y-2">{[1, 2].map(i => <div key={i} className="h-12 bg-surface-sunken rounded-lg animate-shimmer" />)}</div>
         ) : requests && requests.length > 0 ? (
           <div className="space-y-2">
             {requests.map(req => (
-              <div key={req.id} className="flex items-center justify-between py-2 px-3 rounded-lg bg-surface-container-low border border-outline-variant">
+              <div key={req.id} className="flex items-center justify-between py-2 px-3 rounded-lg bg-surface-sunken border border-border">
                 <div className="flex items-center gap-3">
                   {STATUS_ICONS[req.status] || <Clock size={16} />}
                   <div>
-                    <p className="text-sm font-medium text-on-surface capitalize">{req.request_type}</p>
-                    <p className="text-xs text-on-surface-variant">{new Date(req.requested_at).toLocaleDateString()}</p>
+                    <p className="text-sm font-medium text-ink capitalize">{req.request_type}</p>
+                    <p className="text-xs text-ink-variant">{new Date(req.requested_at).toLocaleDateString()}</p>
                   </div>
                 </div>
                 <span className={`text-xs px-2 py-0.5 rounded-full font-medium ${
@@ -137,7 +137,7 @@ export function PrivacyRequest() {
             ))}
           </div>
         ) : (
-          <p className="text-sm text-on-surface-variant text-center py-4">{t('pdpa.no_requests') || 'No privacy requests yet.'}</p>
+          <p className="text-sm text-ink-variant text-center py-4">{t('pdpa.no_requests') || 'No privacy requests yet.'}</p>
         )}
       </div>
     </div>

@@ -3,8 +3,8 @@
 AI-powered HR platform covering recruitment, hiring, onboarding, compliance, payroll, and workforce management for Thailand, Vietnam, and Indonesia.
 
 **Version:** 1.0.0  
-**Status:** Production hardened — All gates A–L closed (1,777/1,777 pgTAP tests PASS)  
-**Last updated:** 2026-06-23
+**Status:** Release 0 complete — Core HRIS + Recruitment + Payroll functional for Thailand. Release 1 (multi-country, advanced features) in progress.  
+**Last updated:** 2026-07-09
 
 ---
 
@@ -147,7 +147,7 @@ src/
 │   └── shared/                # DataTable, EmptyState, ErrorBoundary, ConfirmDialog
 ├── pages/                     # Route-level page components (lazy-loaded)
 ├── hooks/                     # Custom React hooks (17 files)
-├── services/                  # Supabase API service layer (23 services)
+├── services/                  # Supabase API service layer (65+ services)
 ├── stores/                    # Zustand stores (authStore, uiStore)
 ├── lib/                       # Core utilities (supabase client, i18n, sentry, session API)
 ├── router/                    # React Router v7 config + AuthGuard
@@ -165,21 +165,64 @@ See [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) for full architecture reference
 | `/login` | LoginPage | Public |
 | `/register` | RegisterPage | Public |
 | `/forgot-password` | ForgotPasswordPage | Public |
+| `/reset-password` | ResetPasswordPage | Public |
 | `/setup-company` | CompanySetupPage | Authenticated (no company) |
-| `/dashboard` | DashboardPage | Authenticated |
-| `/recruitment/jobs` | JobsPage | Authenticated |
-| `/recruitment/jobs/:id` | JobDetailPage | Authenticated |
-| `/recruitment/candidates` | CandidatesPage | Authenticated |
-| `/recruitment/candidates/:id` | CandidateDetailPage | Authenticated |
-| `/recruitment/pipeline` | PipelinePage | Authenticated |
-| `/recruitment/interviews` | InterviewsPage | Authenticated |
-| `/hiring` | HiringPage | Authenticated |
-| `/documents` | DocumentsPage | Authenticated |
-| `/onboarding` | OnboardingMgmtPage | Authenticated |
-| `/chat` | ChatPage | Authenticated |
-| `/reports` | ReportsPage | Authenticated |
-| `/settings` | SettingsPage | Authenticated |
-| `/settings/compliance` | CompliancePage | Authenticated |
+| `/pricing` | PricingPage | Public |
+| `/terms` | TermsPage | Public |
+| `/privacy` | PrivacyPage | Public |
+| `/cookies` | CookiesPage | Public |
+| `/auth/callback` | OAuthCallbackPage | Public |
+| `/apply/:jobToken` | ApplyPage | Public |
+| `/portal/track/:trackingToken` | TrackApplicationPage | Public |
+| `/dashboard` | DashboardPage | HR/Admin/Manager |
+| `/employees` | EmployeeListPage | HR/Admin/Manager |
+| `/employees/:id` | EmployeeDetailPage | HR/Admin/Manager |
+| `/recruitment/jobs` | JobsPage | HR/Admin/Manager |
+| `/recruitment/jobs/:id` | JobDetailPage | HR/Admin/Manager |
+| `/recruitment/candidates` | CandidatesPage | HR/Admin/Manager |
+| `/recruitment/candidates/:id` | CandidateDetailPage | HR/Admin/Manager |
+| `/recruitment/pipeline` | PipelinePage | HR/Admin/Manager |
+| `/recruitment/interviews` | InterviewsPage | HR/Admin/Manager |
+| `/hiring` | HiringPage | HR/Admin/Manager |
+| `/onboarding` | OnboardingMgmtPage | HR/Admin/Manager |
+| `/documents` | DocumentsPage | HR/Admin/Manager |
+| `/documents/sign/:id` | DocumentSigningPage | HR/Admin/Manager |
+| `/performance` | PerformancePage | HR/Admin/Manager |
+| `/okrs` | OKRPage | HR/Admin/Manager |
+| `/attendance` | AttendancePage | HR/Admin/Manager |
+| `/leave` | LeavePage | HR/Admin/Manager |
+| `/benefits` | BenefitsPage | HR/Admin/Manager |
+| `/learning` | LearningPage | HR/Admin/Manager |
+| `/engagement` | EngagementPage | HR/Admin/Manager |
+| `/reports` | ReportsPage | HR/Admin/Manager |
+| `/people-analytics` | PeopleAnalyticsPage | HR/Admin/Manager |
+| `/analytics` | AnalyticsDashboardPage | HR/Admin/Manager |
+| `/messages` | MessagesPage | HR/Admin/Manager |
+| `/notifications` | NotificationCenterPage | HR/Admin/Manager |
+| `/health` | HealthPage | HR/Admin/Manager |
+| `/monitoring` | GeminiMonitoringPage | HR/Admin/Manager |
+| `/automation` | WorkflowAutomationPage | HR/Admin/Manager |
+| `/portal` | EmployeePortalDashboard | HR/Admin/Manager |
+| `/portal/profile` | EmployeeProfilePage | HR/Admin/Manager |
+| `/portal/time-off` | EmployeeTimeOffPage | HR/Admin/Manager |
+| `/portal/payslips` | EmployeePayslipsPage | HR/Admin/Manager |
+| `/payroll` | PayrollDashboardPage | HR/Admin/Manager |
+| `/payroll/run` | PayrollRunPage | HR/Admin/Manager |
+| `/payroll/run/:runId` | PayrollRunPage | HR/Admin/Manager |
+| `/payroll/payslip/:employeeId` | PayslipPage | HR/Admin/Manager |
+| `/settings` | SettingsPage | HR/Admin/Manager |
+| `/settings/security` | SecurityPage | HR/Admin/Manager |
+| `/settings/compliance` | CompliancePage | Admin only |
+| `/settings/notifications` | NotificationPreferencesPage | HR/Admin/Manager |
+| `/settings/audit-log` | AuditLogPage | Admin/HR |
+| `/settings/import` | BulkImportPage | HR/Admin/Manager |
+| `/settings/import-data` | ImportPage | HR/Admin/Manager |
+| `/settings/export-data` | ExportPage | HR/Admin/Manager |
+| `/settings/pdpa` | PDPAPage | HR/Admin/Manager |
+| `/settings/billing` | BillingPage | HR/Admin/Manager |
+| `/settings/thailand-payroll` | ThailandPayrollPage | HR/Admin/Manager |
+| `/settings/compliance-advisor` | ComplianceAdvisorPage | HR/Admin/Manager |
+| `/settings/line` | LINESettingsPage | HR/Admin/Manager |
 | `*` | NotFoundPage | — |
 
 ---
@@ -244,9 +287,9 @@ See [docs/launch-checklist.md](docs/launch-checklist.md) for pre-launch checklis
 
 ## Release History
 
-**Total:** 33 feature series + 11 corrective releases (33B)  
-**Latest:** 33B.10 — Release readiness review (14/14 pgTAP PASS)  
-**All gates A–L closed** — Production hardened
+**Current:** Release 0 — Core HRIS + Recruitment + Payroll (Thailand)  
+**Next:** Release 1 — Multi-country payroll (VN/ID), LINE Bot v2, AI Policy Assistant  
+**Tests:** 1,777 pgTAP PASS (DB layer), 429+ Vitest unit tests, 172 Playwright E2E
 
 See [CHANGELOG.md](CHANGELOG.md) for full release history.
 

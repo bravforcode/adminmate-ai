@@ -79,6 +79,16 @@ const PayrollDashboardPage = lazy(() => import('../pages/payroll/PayrollDashboar
 const PayrollRunPage = lazy(() => import('../pages/payroll/PayrollRunPage'))
 const PayslipPage = lazy(() => import('../pages/payroll/PayslipPage'))
 
+// New feature pages (WS1-WS7)
+const AnalyticsDashboardPage = lazy(() => import('../pages/analytics/AnalyticsDashboardPage'))
+const ComplianceAdvisorPage = lazy(() => import('../pages/settings/ComplianceAdvisorPage'))
+const LINESettingsPage = lazy(() => import('../pages/settings/LINESettingsPage'))
+const EmployeePortalDashboard = lazy(() => import('../pages/portal/EmployeePortalDashboard'))
+const EmployeeProfilePage = lazy(() => import('../pages/portal/EmployeeProfilePage'))
+const EmployeeTimeOffPage = lazy(() => import('../pages/portal/EmployeeTimeOffPage'))
+const EmployeePayslipsPage = lazy(() => import('../pages/portal/EmployeePayslipsPage'))
+const WorkflowAutomationPage = lazy(() => import('../pages/automation/WorkflowAutomationPage'))
+
 const HR_ROLES = ['admin', 'hr', 'manager']
 
 function PublicRoot() {
@@ -448,6 +458,71 @@ export const router = createBrowserRouter([
         element: (
           <AuthGuard callInitSession={false} requiredRoles={HR_ROLES}>
             <AnimatedPage><RouteWrapper><ThailandPayrollPage /></RouteWrapper></AnimatedPage>
+          </AuthGuard>
+        ),
+      },
+      // ── New feature routes (WS1-WS7) ───────────────────────────
+      {
+        path: '/analytics',
+        element: (
+          <AuthGuard callInitSession={false} requiredRoles={HR_ROLES}>
+            <AnimatedPage><RouteWrapper><AnalyticsDashboardPage /></RouteWrapper></AnimatedPage>
+          </AuthGuard>
+        ),
+      },
+      {
+        path: '/settings/compliance-advisor',
+        element: (
+          <AuthGuard callInitSession={false} requiredRoles={HR_ROLES}>
+            <AnimatedPage><RouteWrapper><ComplianceAdvisorPage /></RouteWrapper></AnimatedPage>
+          </AuthGuard>
+        ),
+      },
+      {
+        path: '/settings/line',
+        element: (
+          <AuthGuard callInitSession={false} requiredRoles={HR_ROLES}>
+            <AnimatedPage><RouteWrapper><LINESettingsPage /></RouteWrapper></AnimatedPage>
+          </AuthGuard>
+        ),
+      },
+      {
+        path: '/portal',
+        element: (
+          <AuthGuard callInitSession={false} requiredRoles={HR_ROLES}>
+            <AnimatedPage><RouteWrapper><EmployeePortalDashboard /></RouteWrapper></AnimatedPage>
+          </AuthGuard>
+        ),
+      },
+      {
+        path: '/portal/profile',
+        element: (
+          <AuthGuard callInitSession={false} requiredRoles={HR_ROLES}>
+            <AnimatedPage><RouteWrapper><EmployeeProfilePage /></RouteWrapper></AnimatedPage>
+          </AuthGuard>
+        ),
+      },
+      {
+        path: '/portal/time-off',
+        element: (
+          <AuthGuard callInitSession={false} requiredRoles={HR_ROLES}>
+            <AnimatedPage><RouteWrapper><EmployeeTimeOffPage /></RouteWrapper></AnimatedPage>
+          </AuthGuard>
+        ),
+      },
+      {
+        path: '/portal/payslips',
+        element: (
+          <AuthGuard callInitSession={false} requiredRoles={HR_ROLES}>
+            <AnimatedPage><RouteWrapper><EmployeePayslipsPage /></RouteWrapper></AnimatedPage>
+          </AuthGuard>
+        ),
+      },
+      {
+        path: '/automation',
+        element: (
+          <AuthGuard callInitSession={false} requiredRoles={HR_ROLES}>
+            <AnimatedPage><RouteWrapper><WorkflowAutomationPage /></RouteWrapper></AnimatedPage>
           </AuthGuard>
         ),
       },
