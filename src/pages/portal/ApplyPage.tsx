@@ -178,7 +178,7 @@ export default function ApplyPage() {
     return (
       <div className="min-h-screen bg-[var(--color-bg)] flex items-center justify-center px-4">
         <div className="max-w-md w-full text-center">
-          <CheckCircle className="w-16 h-16 mx-auto text-green-500 mb-4" />
+          <CheckCircle className="w-16 h-16 mx-auto text-success mb-4" />
           <h1 className="text-2xl font-bold text-[var(--color-text-primary)] mb-2">
             {alreadyApplied
               ? (isThai ? 'คุณสมัครแล้ว' : 'Already Applied')
@@ -281,7 +281,7 @@ export default function ApplyPage() {
               className="w-full px-4 py-2.5 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text-primary)] focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)]"
               placeholder={isThai ? 'เช่น สมชาย ใจดี' : 'e.g. John Smith'}
             />
-            {formErrors.full_name && <p className="text-red-500 text-xs mt-1">{formErrors.full_name}</p>}
+            {formErrors.full_name && <p className="text-destructive text-xs mt-1">{formErrors.full_name}</p>}
           </div>
 
           {/* Email */}
@@ -296,7 +296,7 @@ export default function ApplyPage() {
               className="w-full px-4 py-2.5 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text-primary)] focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)]"
               placeholder={isThai ? 'example@email.com' : 'you@example.com'}
             />
-            {formErrors.email && <p className="text-red-500 text-xs mt-1">{formErrors.email}</p>}
+            {formErrors.email && <p className="text-destructive text-xs mt-1">{formErrors.email}</p>}
           </div>
 
           {/* Phone */}
@@ -397,9 +397,9 @@ export default function ApplyPage() {
                 : 'I consent to the collection and use of my personal data for recruitment purposes, in accordance with the PDPA policy. *'}
             </label>
           </div>
-          {formErrors.consent_given && <p className="text-red-500 text-xs">{formErrors.consent_given}</p>}
+          {formErrors.consent_given && <p className="text-destructive text-xs">{formErrors.consent_given}</p>}
           {formErrors.submit && (
-            <div className="bg-red-50 border border-red-200 rounded-xl p-3 text-sm text-red-600">
+            <div className="bg-red-50 border border-red-200 rounded-xl p-3 text-sm text-destructive">
               {formErrors.submit}
             </div>
           )}

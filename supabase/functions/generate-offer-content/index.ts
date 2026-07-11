@@ -81,7 +81,7 @@ serve(async (req) => {
     if (companyId) {
       const monthlyLimit = await checkAIMonthlyLimit(supabase, companyId)
       if (!monthlyLimit.allowed) {
-        return limitExceededResponse(monthlyLimit)
+        return limitExceededResponse(monthlyLimit, h)
       }
     }
 

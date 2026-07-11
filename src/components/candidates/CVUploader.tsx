@@ -49,22 +49,22 @@ export function CVUploader({ candidateId, companyId }: CVUploaderProps) {
 
   return (
     <div>
-      <div {...getRootProps()} className={`border-2 border-dashed rounded-xl p-8 text-center cursor-pointer transition-colors ${isDragActive ? 'border-primary bg-primary-container/10' : 'border-outline-variant hover:border-primary/50'}`}>
+      <div {...getRootProps()} className={`border-2 border-dashed rounded-xl p-8 text-center cursor-pointer transition-colors ${isDragActive ? 'border-primary bg-primary-container/10' : 'border-border hover:border-primary/50'}`}>
         <input {...getInputProps()} data-testid="cv-upload-input" />
         {uploading || parsing ? (
           <div className="space-y-2">
             <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto" />
-            <p className="text-sm text-on-surface-variant">{uploading ? t('candidates.uploading') : t('candidates.parsing')}</p>
+            <p className="text-sm text-ink-muted">{uploading ? t('candidates.uploading') : t('candidates.parsing')}</p>
           </div>
         ) : (
           <div className="space-y-2">
-            <Upload size={32} className="mx-auto text-on-surface-variant" />
+            <Upload size={32} className="mx-auto text-ink-muted" />
             <p className="text-sm font-medium">{t('candidates.upload_prompt')}</p>
-            <p className="text-xs text-on-surface-variant">{t('candidates.upload_hint')}</p>
+            <p className="text-xs text-ink-muted">{t('candidates.upload_hint')}</p>
           </div>
         )}
       </div>
-      {error && <p className="text-error text-sm mt-2">{error}</p>}
+      {error && <p className="text-destructive text-sm mt-2">{error}</p>}
     </div>
   )
 }

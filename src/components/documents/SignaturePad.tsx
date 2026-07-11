@@ -30,7 +30,7 @@ export function SignaturePad({ onSave, height = 200, className }: SignaturePadPr
     ctx.lineCap = 'round'
     ctx.lineJoin = 'round'
     ctx.lineWidth = 2
-    ctx.strokeStyle = '#1e293b'
+    ctx.strokeStyle = '#2d3a4d'
   }, [])
 
   const getPos = useCallback((e: React.MouseEvent | React.TouchEvent) => {
@@ -89,7 +89,7 @@ export function SignaturePad({ onSave, height = 200, className }: SignaturePadPr
 
   return (
     <div className={cn('space-y-3', className)}>
-      <div className="relative border-2 border-dashed border-outline-variant dark:border-outline rounded-xl overflow-hidden bg-surface-container-lowest dark:bg-surface-container-lowest">
+      <div className="relative border-2 border-dashed border-border rounded-xl overflow-hidden bg-surface-sunken-lowest bg-surface-sunken-lowest">
         <canvas
           ref={canvasRef}
           className="w-full cursor-crosshair touch-none"
@@ -104,7 +104,7 @@ export function SignaturePad({ onSave, height = 200, className }: SignaturePadPr
         />
         {!hasDrawn && (
           <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-            <span className="text-on-surface-variant/50 dark:text-outline-variant text-sm">{t('documents.sign_here', 'Sign here')}</span>
+            <span className="text-ink-muted/50 dark:text-outline-variant text-sm">{t('documents.sign_here', 'Sign here')}</span>
           </div>
         )}
       </div>
@@ -112,7 +112,7 @@ export function SignaturePad({ onSave, height = 200, className }: SignaturePadPr
         <button
           onClick={clear}
           type="button"
-          className="inline-flex items-center gap-2 px-4 py-2 border border-outline-variant dark:border-outline rounded-lg text-sm font-medium hover:bg-surface-container-low dark:hover:bg-surface-container-low transition-colors dark:text-on-surface"
+          className="inline-flex items-center gap-2 px-4 py-2 border border-border rounded-lg text-sm font-medium hover:bg-surface-sunken dark:hover:bg-surface-sunken transition-colors text-ink"
         >
           <RotateCcw size={14} /> Clear
         </button>
@@ -120,7 +120,7 @@ export function SignaturePad({ onSave, height = 200, className }: SignaturePadPr
           onClick={handleSave}
           type="button"
           disabled={!hasDrawn}
-          className="px-4 py-2 bg-primary text-on-primary rounded-lg text-sm font-medium hover:opacity-90 disabled:opacity-50 disabled:cursor-not-allowed transition-opacity"
+          className="px-4 py-2 bg-primary text-white rounded-lg text-sm font-medium hover:opacity-90 disabled:opacity-50 disabled:cursor-not-allowed transition-opacity"
         >
           Apply Signature
         </button>

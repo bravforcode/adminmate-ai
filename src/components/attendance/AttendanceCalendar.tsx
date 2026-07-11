@@ -52,11 +52,11 @@ export function AttendanceCalendar({ records, onDateClick }: AttendanceCalendarP
   const today = new Date().toISOString().slice(0, 10)
 
   return (
-    <div className="bg-surface dark:bg-surface rounded-xl border border-outline-variant dark:border-outline overflow-hidden">
-      <div className="flex items-center justify-between p-4 border-b border-outline-variant dark:border-outline bg-surface-bright dark:bg-surface-container-low">
+    <div className="bg-surface rounded-xl border border-border overflow-hidden">
+      <div className="flex items-center justify-between p-4 border-b border-border bg-surface-raised bg-surface-sunken">
         <div className="flex items-center gap-3">
           <Button variant="ghost" size="icon_md" onClick={prevMonth} icon={<ChevronLeft size={18} />} aria-label={t('calendar.prev_month', 'Previous month')} />
-          <h3 className="text-lg font-semibold text-on-surface dark:text-on-surface min-w-[160px] text-center">
+          <h3 className="text-lg font-semibold text-ink min-w-[160px] text-center">
             {currentDate.toLocaleString('en', { month: 'long', year: 'numeric' })}
           </h3>
           <Button variant="ghost" size="icon_md" onClick={nextMonth} icon={<ChevronRight size={18} />} aria-label={t('calendar.next_month', 'Next month')} />
@@ -72,12 +72,12 @@ export function AttendanceCalendar({ records, onDateClick }: AttendanceCalendarP
 
       <div className="grid grid-cols-7">
         {WEEKDAYS.map(day => (
-          <div key={day} className="py-2 px-1 text-center text-[10px] sm:text-xs font-semibold text-on-surface-variant dark:text-on-surface-variant border-r border-b border-outline-variant/50 dark:border-outline/50 last:border-r-0">
+          <div key={day} className="py-2 px-1 text-center text-[10px] sm:text-xs font-semibold text-ink-muted text-ink-muted border-r border-b border-border/50 border-border/50 last:border-r-0">
             {t(`weekday.${day.toLowerCase()}`)}
           </div>
         ))}
         {Array.from({ length: startPadding }).map((_, i) => (
-          <div key={`pad-${i}`} className="min-h-[60px] sm:min-h-[80px] border-r border-b border-outline-variant/50 dark:border-outline/50 last:border-r-0 bg-surface-container-lowest/50 dark:bg-surface-container/20" />
+          <div key={`pad-${i}`} className="min-h-[60px] sm:min-h-[80px] border-r border-b border-border/50 border-border/50 last:border-r-0 bg-surface-sunken-lowest/50 bg-surface-sunken/20" />
         ))}
         {calendarDays.map(({ day, date }) => {
           const dayRecords = recordsByDate[date] ?? []
@@ -87,11 +87,11 @@ export function AttendanceCalendar({ records, onDateClick }: AttendanceCalendarP
               key={day}
               onClick={() => onDateClick?.(date)}
               className={cn(
-                'min-h-[60px] sm:min-h-[80px] p-1 sm:p-1.5 border-r border-b border-outline-variant/50 dark:border-outline/50 last:border-r-0 transition-colors hover:bg-surface-container-high/30 dark:hover:bg-surface-container/20 text-left w-full',
+                'min-h-[60px] sm:min-h-[80px] p-1 sm:p-1.5 border-r border-b border-border/50 border-border/50 last:border-r-0 transition-colors hover:bg-surface-sunken/30 dark:hover:bg-surface-sunken/20 text-left w-full',
                 isToday && 'bg-primary-fixed/20 dark:bg-primary/10'
               )}
             >
-              <span className={cn('text-[10px] sm:text-xs font-medium', isToday ? 'text-primary dark:text-accent-dim font-bold' : 'text-on-surface-variant dark:text-on-surface-variant')}>
+              <span className={cn('text-[10px] sm:text-xs font-medium', isToday ? 'text-primary dark:text-primary-muted font-bold' : 'text-ink-muted text-ink-muted')}>
                 {day}
               </span>
               <div className="mt-0.5 sm:mt-1 space-y-0.5">
@@ -101,7 +101,7 @@ export function AttendanceCalendar({ records, onDateClick }: AttendanceCalendarP
                   </div>
                 ))}
                 {dayRecords.length > 2 && (
-                  <span className="text-[8px] sm:text-[10px] text-on-surface-variant">+{dayRecords.length - 2}</span>
+                  <span className="text-[8px] sm:text-[10px] text-ink-muted">+{dayRecords.length - 2}</span>
                 )}
               </div>
             </button>

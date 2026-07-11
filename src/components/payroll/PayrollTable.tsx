@@ -47,19 +47,19 @@ export function PayrollTable({ items, onViewPayslip }: PayrollTableProps) {
   return (
     <div className="space-y-3">
       <div className="relative">
-        <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant" />
+        <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-ink-muted" />
         <input
           type="text"
           placeholder="Search by employee ID..."
           value={search}
           onChange={e => setSearch(e.target.value)}
-          className="w-full pl-9 pr-3 py-2 rounded-lg border border-outline-variant bg-surface-container-lowest focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none text-sm"
+          className="w-full pl-9 pr-3 py-2 rounded-lg border border-border bg-surface-sunken-lowest focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none text-sm"
         />
       </div>
-      <div className="overflow-x-auto rounded-xl border border-outline-variant">
+      <div className="overflow-x-auto rounded-xl border border-border">
         <table className="w-full text-sm">
           <thead>
-            <tr className="bg-surface-container-low border-b border-outline-variant">
+            <tr className="bg-surface-sunken border-b border-border">
               {([
                 ['employee_id', 'Employee'],
                 ['base_salary', 'Base Salary'],
@@ -71,7 +71,7 @@ export function PayrollTable({ items, onViewPayslip }: PayrollTableProps) {
               ] as [SortKey, string][]).map(([key, label]) => (
                 <th
                   key={key}
-                  className="text-left py-2.5 px-3 font-medium text-on-surface-variant cursor-pointer select-none hover:text-on-surface"
+                  className="text-left py-2.5 px-3 font-medium text-ink-muted cursor-pointer select-none hover:text-ink"
                   onClick={() => toggleSort(key)}
                 >
                   <span className="inline-flex items-center gap-1">
@@ -84,7 +84,7 @@ export function PayrollTable({ items, onViewPayslip }: PayrollTableProps) {
           </thead>
           <tbody>
             {sorted.map(item => (
-              <tr key={item.id} className="border-b border-outline-variant last:border-0 hover:bg-surface-container-low transition-colors">
+              <tr key={item.id} className="border-b border-border last:border-0 hover:bg-surface-sunken transition-colors">
                 <td className="py-2 px-3 font-mono text-xs">{item.employee_id}</td>
                 <td className="py-2 px-3 text-right">{fmt(item.base_salary)}</td>
                 <td className="py-2 px-3 text-right">{fmt(item.overtime_pay)}</td>
@@ -106,7 +106,7 @@ export function PayrollTable({ items, onViewPayslip }: PayrollTableProps) {
             ))}
             {sorted.length === 0 && (
               <tr>
-                <td colSpan={onViewPayslip ? 8 : 7} className="py-8 text-center text-on-surface-variant">
+                <td colSpan={onViewPayslip ? 8 : 7} className="py-8 text-center text-ink-muted">
                   No payroll items found.
                 </td>
               </tr>

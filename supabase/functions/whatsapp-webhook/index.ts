@@ -1,6 +1,5 @@
 import { serve } from 'https://deno.land/std@0.168.0/http/server.ts'
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2'
-import { createHmac } from 'node:crypto'
 import { handleIncomingMessage } from '../_shared/messageHandler.ts'
 import { getCorsHeaders, getJsonHeaders, logRequest, timingSafeEqual } from '../_shared/utils.ts'
 import { errorResponse } from '../_shared/errorHandler.ts'
@@ -57,11 +56,19 @@ serve(async (req) => {
       logRequest({ function: FN, durationMs: Date.now() - start, status: 403, error: 'missing signature' })
       return new Response('Forbidden', { status: 403 })
     }
-    const hmac = createHmac('sha256', secret)
-    hmac.update(bodyText)
-    const expectedSignature = `sha256=${hmac.digest('hex')}`
+    // SECURITY: Use Web Crypto API (cross-runtime compatible) instead of node:crypto
+    const encoder = new TextEncoder()
+    const key = await crypto.subtle.importKey(
+      'raw',
+      encoder.encode(secret),
+      { name: 'HMAC', hash: 'SHA-256' },
+      false,
+      ['sign']
+    )
+    const signatureBuffer = await crypto.subtle.sign('HMAC', key, encoder.encode(bodyText))
+    const computedSignature = `sha256=${Array.from(new Uint8Array(signatureBuffer)).map(b => b.toString(16).padStart(2, '0')).join('')}`
     // SECURITY: Constant-time comparison to prevent timing attacks on HMAC verification
-    if (!timingSafeEqual(signature, expectedSignature)) {
+    if (!timingSafeEqual(signature, computedSignature)) {
       logRequest({ function: FN, durationMs: Date.now() - start, status: 403, error: 'invalid signature' })
       return new Response('Forbidden', { status: 403 })
     }

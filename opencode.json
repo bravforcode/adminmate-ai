@@ -1,0 +1,39 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+
+  "plugin": [".opencode/plugins/context-guard.ts"],
+
+  "instructions": ["AGENTS.md", "LEAN-CTX.md"],
+
+
+  "watcher": {
+    "ignore": [
+      "vitest-results.json",
+      "vitest-final.json",
+      "vitest-current.json",
+      "e2e-results.json",
+      "e2e-stderr.txt",
+      "coverage_output.txt",
+      "package-lock.json",
+      "yarn.lock",
+      "pnpm-lock.yaml",
+      "node_modules",
+      "dist",
+      "coverage",
+      "playwright-report",
+      "test-results",
+      "backups",
+      "lancedb",
+      ".playwright-mcp",
+      "rg-keys.txt",
+      "rg-out.txt",
+      "rg-pattern.txt",
+      "debug.log",
+      "vite-dev.log",
+      "vite-dev-err.log",
+      "loadtests/results-*.json",
+      "Meta/states",
+      "audit_artifacts"
+    ]
+  }
+}

@@ -49,7 +49,7 @@ CREATE POLICY "chat_insert" ON chat_messages FOR INSERT WITH CHECK (user_id = au
 
 ALTER TABLE notifications ENABLE ROW LEVEL SECURITY;
 CREATE POLICY "notif_read" ON notifications FOR SELECT USING (user_id = auth.uid());
-CREATE POLICY "notif_insert" ON notifications FOR INSERT WITH CHECK (true);
+CREATE POLICY "notif_insert" ON notifications FOR INSERT WITH CHECK (user_id = auth.uid() AND company_id = get_user_company_id());
 CREATE POLICY "notif_update" ON notifications FOR UPDATE USING (user_id = auth.uid());
 
 ALTER TABLE audit_logs ENABLE ROW LEVEL SECURITY;

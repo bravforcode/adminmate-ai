@@ -1,5 +1,8 @@
 import { supabase } from '../../lib/supabase'
 import { hasPermission } from '../permissionService'
+import { calculatePayroll, getPayrollStrategy, type PayrollContext } from './countryPayrollStrategy'
+// Ensure TH strategy is registered (side-effect import)
+import './thailandPayrollStrategy'
 
 export interface PayrollRun {
   id: string
@@ -180,11 +183,28 @@ export async function calculateRun(runId: string): Promise<PayrollRun> {
     return run as PayrollRun
   }
 
+  // ── Look up company country for strategy selection ──
+  const { data: companySettings } = await supabase
+    .from('company_settings')
+    .select('country')
+    .eq('company_id', run.company_id)
+    .single()
+
+  const country = (companySettings?.country as string) || 'TH'
+  const strategy = getPayrollStrategy(country)
+  if (!strategy) {
+    throw new Error(`No payroll strategy registered for country: ${country}. Available strategies must be imported.`)
+  }
+
+  const currentYear = new Date().getFullYear()
+  const payrollContext: PayrollContext = {
+    companyId: run.company_id,
+    country,
+    year: currentYear,
+    config: {},
+  }
+
   // ── Allowance gap warning: flag employees with dependents/marital data ──
-  // Spouse/child/parent allowances are not yet implemented in tax calculation.
-  // If an employee has this data, their withholding will be based on personal
-  // allowance only — potentially over-withholding by ~฿20K/year for married
-  // employees with children. Surface these for manual review before approval.
   const employeeIds = [...new Set(items.map(i => i.employee_id).filter(Boolean))]
   const { data: employeeProfiles } = await supabase
     .from('user_profiles')
@@ -193,7 +213,6 @@ export async function calculateRun(runId: string): Promise<PayrollRun> {
 
   const employeesNeedingReview: Array<{ employeeId: string; name: string; reason: string }> = []
 
-  // Check employee_tax_profiles for dependents/marital data
   if (employeeIds.length > 0) {
     const { data: taxProfiles } = await supabase
       .from('employee_tax_profiles')
@@ -228,54 +247,32 @@ export async function calculateRun(runId: string): Promise<PayrollRun> {
     }
   }
 
-  // Fetch TH tax brackets for current year
-  const currentYear = new Date().getFullYear()
-  const { data: taxBrackets } = await supabase
-    .from('th_tax_brackets')
-    .select('*')
-    .eq('year', currentYear)
-    .order('min_income', { ascending: true })
-
-  // Fetch TH social security rules
-  const { data: ssRules } = await supabase
-    .from('th_social_security_rules')
-    .select('*')
-    .eq('year', currentYear)
-    .limit(1)
-    .single()
-
   let totalGross = 0
   let totalDeductions = 0
 
   for (const item of items) {
     const grossIncome = item.base_salary + item.overtime_pay + item.bonus + item.other_earnings
 
-    // Social Security (employee portion): 5% of salary, capped at 15,000 THB/month
-    let ssEmployee = 0
-    if (ssRules) {
-      const cappedSalary = Math.min(Math.max(item.base_salary, ssRules.min_salary), ssRules.max_salary)
-      ssEmployee = Math.round(cappedSalary * (ssRules.employee_rate / 100) * 100) / 100
-    }
-
-    // Withholding Tax (simplified progressive calculation)
-    let withholdingTax = 0
-    if (taxBrackets && taxBrackets.length > 0) {
-      withholdingTax = calculateTHProgressiveTax(grossIncome, taxBrackets)
-    }
-
-    const totalDeductionsItem = ssEmployee + withholdingTax + item.other_deductions
-    const netPay = grossIncome - totalDeductionsItem
+    // Use country strategy for calculation
+    const result = calculatePayroll({
+      employee_id: item.employee_id,
+      base_salary: item.base_salary,
+      overtime_pay: item.overtime_pay,
+      bonus: item.bonus,
+      other_earnings: item.other_earnings,
+      other_deductions: item.other_deductions,
+    }, payrollContext)
 
     totalGross += grossIncome
-    totalDeductions += totalDeductionsItem
+    totalDeductions += result.total_deductions
 
     await supabase
       .from('payroll_run_items')
       .update({
-        social_security_employee: ssEmployee,
-        social_security_employer: ssEmployee, // Employer matches employee
-        Withholding_Tax: withholdingTax,
-        net_pay: netPay,
+        social_security_employee: result.social_security_employee,
+        social_security_employer: result.social_security_employer,
+        Withholding_Tax: result.withholding_tax,
+        net_pay: result.net_pay,
         status: 'calculated',
       })
       .eq('id', item.id)
@@ -315,56 +312,6 @@ export async function calculateRun(runId: string): Promise<PayrollRun> {
     // Surface warnings so callers (UI, approval flow) can act on them
     ...(employeesNeedingReview.length > 0 && { employees_needing_review: employeesNeedingReview }),
   } as PayrollRun
-}
-
-/**
- * Calculate TH progressive income tax for 2024.
- * Uses Revenue Department of Thailand 8-bracket progressive rates.
- *
- * Brackets (Revenue Code §40(1)):
- *   0-150,000: 0%
- *   150,001-300,000: 5%
- *   300,001-500,000: 10%
- *   500,001-750,000: 15%
- *   750,001-1,000,000: 20%
- *   1,000,001-2,000,000: 25%
- *   2,000,001-5,000,000: 30%
- *   Above 5,000,000: 35%
- *
- * SAFETY: NULL tax_rate is treated as a fatal data-integrity error,
- * not a fallback. Correct seed data (migration 20240627000001) should
- * ensure all brackets have non-null rates.
- */
-function calculateTHProgressiveTax(annualIncome: number, brackets: Array<{ min_income: number; max_income: number | null; tax_rate: number | null }>): number {
-  let tax = 0
-  let remaining = annualIncome
-
-  for (const bracket of brackets) {
-    if (remaining <= 0) break
-
-    const bracketMin = bracket.min_income
-    const bracketMax = bracket.max_income ?? Infinity
-
-    if (annualIncome <= bracketMin) continue
-
-    const taxableInBracket = Math.min(remaining, bracketMax - bracketMin)
-
-    if (bracket.tax_rate === null) {
-      // FATAL: NULL tax_rate indicates corrupted seed data.
-      // Do NOT use a fallback rate — throw to prevent silent financial errors.
-      throw new Error(
-        `Tax rate is NULL for bracket [${bracketMin}-${bracketMax}]. ` +
-        `Check th_tax_brackets seed data — migration 20240627000001 should fix this.`
-      )
-    }
-
-    // Integer arithmetic to avoid IEEE 754 floating-point rounding errors
-    tax += Math.round(taxableInBracket * bracket.tax_rate) / 100
-
-    remaining -= taxableInBracket
-  }
-
-  return Math.round(tax * 100) / 100
 }
 
 /**

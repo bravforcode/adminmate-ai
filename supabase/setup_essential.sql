@@ -491,7 +491,7 @@ DROP POLICY IF EXISTS "notif_insert_any" ON notifications;
 CREATE POLICY "notif_read" ON notifications FOR SELECT TO authenticated
   USING (user_id = auth.uid() OR safe_user_role() = 'admin');
 CREATE POLICY "notif_insert_any" ON notifications FOR INSERT TO authenticated
-  WITH CHECK (true);
+  WITH CHECK (user_id = auth.uid() AND company_id = get_user_company_id());
 
 -- =====================================================
 -- PERFORMANCE INDEXES

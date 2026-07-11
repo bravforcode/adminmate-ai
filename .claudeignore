@@ -1,0 +1,60 @@
+# =============================================================
+# .claudeignore — Context Window Bloat Prevention
+# Files listed here are EXCLUDED from Claude Code's context
+# to prevent Autocompact thrashing.
+# =============================================================
+
+# ── Large test/coverage output (cause context thrashing) ──────
+vitest-results.json
+vitest-final.json
+vitest-current.json
+vitest-current.json
+e2e-results.json
+e2e-stderr.txt
+e2e-results.json
+coverage_output.txt
+test-results.txt
+
+# ── Build artifacts ───────────────────────────────────────────
+dist/
+coverage/
+playwright-report/
+test-results/
+stats.html
+
+# ── Lock files (large, rarely useful to read) ─────────────────
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+
+# ── Database backups ──────────────────────────────────────────
+backups/
+
+# ── Node deps ─────────────────────────────────────────────────
+node_modules/
+
+# ── Temporary agent/recon output ─────────────────────────────
+rg-keys.txt
+rg-out.txt
+rg-pattern.txt
+*.log
+debug.log
+vite-dev.log
+vite-dev-err.log
+
+# ── Load test results ─────────────────────────────────────────
+loadtests/results-*.json
+
+# ── Large phase report docs (read on-demand only) ─────────────
+# PHASE-*.md  ← uncomment this if you still hit limits
+
+# ── LanceDB vector store (binary) ────────────────────────────
+lancedb/
+
+# ── Playwright auth ───────────────────────────────────────────
+playwright/.auth/
+.playwright-mcp/
+
+# ── Agent state/audit (may be huge) ──────────────────────────
+Meta/states/
+audit_artifacts/

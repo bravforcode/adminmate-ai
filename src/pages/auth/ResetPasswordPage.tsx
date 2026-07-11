@@ -76,7 +76,7 @@ export function ResetPasswordPage() {
     return (
       <AuthLayout title={t('auth.reset_password')} subtitle={t('auth.invalid_reset_link')}>
         <div className="text-center space-y-4">
-          <p className="text-body-md text-on-surface-variant">{t('auth.invalid_reset_link_desc')}</p>
+          <p className="text-body-md text-ink-muted">{t('auth.invalid_reset_link_desc')}</p>
           <Link
             to="/forgot-password"
             className="text-primary hover:underline inline-flex items-center gap-1"
@@ -93,13 +93,13 @@ export function ResetPasswordPage() {
       {success ? (
         <div className="text-center space-y-4">
           <CheckCircle2 size={48} className="mx-auto text-primary" />
-          <p className="text-body-md text-on-surface">{t('auth.password_updated')}</p>
-          <p className="text-sm text-on-surface-variant">{t('auth.redirecting')}</p>
+          <p className="text-body-md text-ink">{t('auth.password_updated')}</p>
+          <p className="text-sm text-ink-muted">{t('auth.redirecting')}</p>
         </div>
       ) : (
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4" noValidate>
           <div>
-            <label htmlFor="password" className="block text-label-md text-on-surface-variant mb-1">
+            <label htmlFor="password" className="block text-label-md text-ink-muted mb-1">
               <span className="inline-flex items-center gap-1">
                 <KeyRound size={14} /> {t('auth.new_password')}
               </span>
@@ -113,13 +113,13 @@ export function ResetPasswordPage() {
                 type={showPassword ? 'text' : 'password'}
                 autoComplete="new-password"
                 data-testid="reset-password-input"
-                className="w-full px-3 py-2 rounded-lg border border-outline-variant bg-surface-container-lowest focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all pr-10"
+                className="w-full px-3 py-2 rounded-lg border border-border bg-surface-sunken-lowest focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all pr-10"
                 placeholder="••••••••"
               />
               <button
                 type="button"
                 onClick={() => setShowPassword(!showPassword)}
-                className="absolute right-2 top-1/2 -translate-y-1/2 text-on-surface-variant hover:text-primary"
+                className="absolute right-2 top-1/2 -translate-y-1/2 text-ink-muted hover:text-primary"
                 tabIndex={-1}
                 aria-label={showPassword ? t('auth.hide_password') : t('auth.show_password')}
               >
@@ -135,24 +135,24 @@ export function ResetPasswordPage() {
                   />
                 </div>
                 <div className="flex items-center justify-between mt-1">
-                  <span className="text-xs text-on-surface-variant">
+                  <span className="text-xs text-ink-muted">
                     {t(`auth.password_${strength.label}`)}
                   </span>
                   {strength.hints.length > 0 && (
-                    <span className="text-xs text-on-surface-variant">{strength.hints[0]}</span>
+                    <span className="text-xs text-ink-muted">{strength.hints[0]}</span>
                   )}
                 </div>
               </div>
             )}
             {errors.password && (
-              <p className="text-error text-sm mt-1">{errors.password.message}</p>
+              <p className="text-destructive text-sm mt-1">{errors.password.message}</p>
             )}
           </div>
 
           <div>
             <label
               htmlFor="confirmPassword"
-              className="block text-label-md text-on-surface-variant mb-1"
+              className="block text-label-md text-ink-muted mb-1"
             >
               {t('auth.confirm_password')}
             </label>
@@ -162,18 +162,18 @@ export function ResetPasswordPage() {
               type={showPassword ? 'text' : 'password'}
               autoComplete="new-password"
               data-testid="reset-confirm-input"
-              className="w-full px-3 py-2 rounded-lg border border-outline-variant bg-surface-container-lowest focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all"
+              className="w-full px-3 py-2 rounded-lg border border-border bg-surface-sunken-lowest focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all"
               placeholder="••••••••"
             />
             {errors.confirmPassword && (
-              <p className="text-error text-sm mt-1">{errors.confirmPassword.message}</p>
+              <p className="text-destructive text-sm mt-1">{errors.confirmPassword.message}</p>
             )}
           </div>
 
           {submitError && (
             <div
               role="alert"
-              className="rounded-lg border border-error/40 bg-error-container/40 text-error px-3 py-2 text-sm"
+              className="rounded-lg border border-error/40 bg-destructive-subtle/40 text-destructive px-3 py-2 text-sm"
             >
               {submitError}
             </div>
@@ -183,7 +183,7 @@ export function ResetPasswordPage() {
             type="submit"
             disabled={isSubmitting}
             data-testid="reset-submit"
-            className="w-full bg-primary text-on-primary py-2.5 rounded-lg font-label-md hover:opacity-90 transition-opacity disabled:opacity-50"
+            className="w-full bg-primary text-white py-2.5 rounded-lg font-label-md hover:opacity-90 transition-opacity disabled:opacity-50"
           >
             {isSubmitting ? t('auth.saving') : t('auth.update_password')}
           </button>

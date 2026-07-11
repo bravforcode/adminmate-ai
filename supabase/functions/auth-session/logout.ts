@@ -1,7 +1,7 @@
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2'
 import { getJsonHeaders, logRequest } from '../_shared/utils.ts'
 import { errorResponse } from '../_shared/errorHandler.ts'
-import { parseCookies, clearRefreshCookie } from './cookies.ts'
+import { parseCookies, clearRefreshCookie, COOKIE_NAME } from './cookies.ts'
 
 export async function handleLogout(req: Request): Promise<Response> {
   const fn = 'auth-session/logout'
@@ -13,7 +13,8 @@ export async function handleLogout(req: Request): Promise<Response> {
       Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!
     )
 
-    const refreshToken = parseCookies(req.headers.get('Cookie') || '')['sb-auth-refresh']
+    const cookies = parseCookies(req.headers.get('Cookie') || '')
+    const refreshToken = cookies[`__Host-${COOKIE_NAME}`] ?? cookies[COOKIE_NAME]
     if (refreshToken) {
       try {
         const { data } = await supabase.auth.refreshSession({ refresh_token: refreshToken })

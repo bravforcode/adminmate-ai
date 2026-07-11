@@ -123,12 +123,12 @@ export function BulkImportPage() {
     <div className="space-y-6 max-w-4xl mx-auto">
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
-          <h1 className="text-headline-md font-bold text-on-surface dark:text-on-surface">{t('bulk_import.title')}</h1>
-          <p className="text-body-md text-on-surface-variant dark:text-on-surface-variant mt-1">{t('bulk_import.subtitle')}</p>
+          <h1 className="text-headline-md font-bold text-ink text-ink">{t('bulk_import.title')}</h1>
+          <p className="text-body-md text-ink-muted text-ink-muted mt-1">{t('bulk_import.subtitle')}</p>
         </div>
         <button
           onClick={handleDownloadTemplate}
-          className="inline-flex items-center gap-2 px-4 py-2 border border-outline-variant dark:border-outline text-on-surface dark:text-on-surface rounded-lg text-sm font-medium hover:bg-surface-container-low dark:hover:bg-surface-container-low transition-colors"
+          className="inline-flex items-center gap-2 px-4 py-2 border border-border text-ink rounded-lg text-sm font-medium hover:bg-surface-sunken dark:hover:bg-surface-sunken transition-colors"
         >
           <Download size={16} /> {t('bulk_import.download_template')}
         </button>
@@ -136,8 +136,8 @@ export function BulkImportPage() {
 
       {step === 'upload' && (
         <div className="space-y-6">
-          <div className="bg-surface dark:bg-surface rounded-xl border border-outline-variant dark:border-outline p-6">
-            <label className="block text-sm font-medium mb-3 text-on-surface dark:text-on-surface">{t('bulk_import.import_type')}</label>
+          <div className="bg-surface rounded-xl border border-border p-6">
+            <label className="block text-sm font-medium mb-3 text-ink text-ink">{t('bulk_import.import_type')}</label>
             <div className="flex gap-3">
               {(['candidates', 'jobs'] as ImportType[]).map(type => (
                 <button
@@ -145,8 +145,8 @@ export function BulkImportPage() {
                   onClick={() => setImportType(type)}
                   className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
                     importType === type
-                      ? 'bg-primary text-on-primary'
-                      : 'bg-surface-container dark:bg-surface-container-lowest text-on-surface-variant dark:text-on-surface-variant hover:bg-surface-container-high dark:hover:bg-surface-container-low'
+                      ? 'bg-primary text-white'
+                      : 'bg-surface-sunken bg-surface-sunken-lowest text-ink-muted text-ink-muted hover:bg-surface-sunken dark:hover:bg-surface-sunken'
                   }`}
                 >
                   {t(`bulk_import.type_${type}`)}
@@ -158,12 +158,12 @@ export function BulkImportPage() {
           <div
             onDrop={handleDrop}
             onDragOver={(e) => e.preventDefault()}
-            className="bg-surface dark:bg-surface rounded-xl border-2 border-dashed border-outline-variant dark:border-outline p-12 text-center hover:border-primary dark:hover:border-primary transition-colors cursor-pointer"
+            className="bg-surface rounded-xl border-2 border-dashed border-border p-12 text-center hover:border-primary dark:hover:border-primary transition-colors cursor-pointer"
             onClick={() => fileRef.current?.click()}
           >
-            <Upload size={48} className="mx-auto mb-4 text-on-surface-variant dark:text-on-surface-variant" />
-            <p className="text-on-surface dark:text-on-surface font-medium mb-1">{t('bulk_import.drag_drop')}</p>
-            <p className="text-sm text-on-surface-variant dark:text-on-surface-variant">{t('bulk_import.or_click')}</p>
+            <Upload size={48} className="mx-auto mb-4 text-ink-muted text-ink-muted" />
+            <p className="text-ink font-medium mb-1">{t('bulk_import.drag_drop')}</p>
+            <p className="text-sm text-ink-muted text-ink-muted">{t('bulk_import.or_click')}</p>
             <input
               ref={fileRef}
               type="file"
@@ -178,20 +178,20 @@ export function BulkImportPage() {
       {step === 'preview' && (
         <div className="space-y-4">
           <div className="flex items-center justify-between">
-            <h2 className="text-title-lg font-semibold text-on-surface dark:text-on-surface">
+            <h2 className="text-title-lg font-semibold text-ink text-ink">
               {t('bulk_import.preview')} ({parsedData.length} {t('bulk_import.rows')})
             </h2>
             <div className="flex gap-2">
               <button
                 onClick={reset}
-                className="inline-flex items-center gap-1 px-3 py-1.5 border border-outline-variant dark:border-outline rounded-lg text-sm hover:bg-surface-container dark:hover:bg-surface-container-low"
+                className="inline-flex items-center gap-1 px-3 py-1.5 border border-border rounded-lg text-sm hover:bg-surface-sunken dark:hover:bg-surface-sunken"
               >
                 <X size={14} /> {t('common:cancel')}
               </button>
               {parsedData.length > 0 && (
                 <button
                   onClick={handleExportData}
-                  className="inline-flex items-center gap-1 px-3 py-1.5 border border-outline-variant dark:border-outline rounded-lg text-sm hover:bg-surface-container dark:hover:bg-surface-container-low"
+                  className="inline-flex items-center gap-1 px-3 py-1.5 border border-border rounded-lg text-sm hover:bg-surface-sunken dark:hover:bg-surface-sunken"
                 >
                   <Download size={14} /> {t('common:export_csv')}
                 </button>
@@ -199,22 +199,22 @@ export function BulkImportPage() {
             </div>
           </div>
 
-          <div className="bg-surface dark:bg-surface rounded-xl border border-outline-variant dark:border-outline overflow-x-auto">
+          <div className="bg-surface rounded-xl border border-border overflow-x-auto">
             <table className="w-full text-sm">
               <thead>
-                <tr className="border-b border-outline-variant dark:border-outline">
-                  <th className="px-4 py-3 text-left font-medium text-on-surface-variant dark:text-on-surface-variant">#</th>
+                <tr className="border-b border-border border-border">
+                  <th className="px-4 py-3 text-left font-medium text-ink-muted text-ink-muted">#</th>
                   {headers.map(h => (
-                    <th key={h} className="px-4 py-3 text-left font-medium text-on-surface-variant dark:text-on-surface-variant">{h}</th>
+                    <th key={h} className="px-4 py-3 text-left font-medium text-ink-muted text-ink-muted">{h}</th>
                   ))}
                 </tr>
               </thead>
               <tbody>
                 {previewRows.map((row, i) => (
-                  <tr key={i} className="border-b border-outline-variant/50 dark:border-outline/50">
-                    <td className="px-4 py-2 text-on-surface-variant dark:text-on-surface-variant">{i + 1}</td>
+                  <tr key={i} className="border-b border-border/50 border-border/50">
+                    <td className="px-4 py-2 text-ink-muted text-ink-muted">{i + 1}</td>
                     {headers.map(h => (
-                      <td key={h} className="px-4 py-2 text-on-surface dark:text-on-surface">{row[h]}</td>
+                      <td key={h} className="px-4 py-2 text-ink text-ink">{row[h]}</td>
                     ))}
                   </tr>
                 ))}
@@ -223,25 +223,25 @@ export function BulkImportPage() {
           </div>
 
           {parsedData.length > 10 && (
-            <p className="text-sm text-on-surface-variant dark:text-on-surface-variant text-center">
+            <p className="text-sm text-ink-muted text-ink-muted text-center">
               {t('bulk_import.showing_first', { count: 10, total: parsedData.length })}
             </p>
           )}
 
           {validationErrors.length > 0 && (
-            <div className="bg-error-container/15 dark:bg-error-container/20 rounded-xl border border-error/30 dark:border-error/30 p-4">
+            <div className="bg-destructive-subtle/15 dark:bg-destructive-subtle/20 rounded-xl border border-error/30 dark:border-error/30 p-4">
               <div className="flex items-center gap-2 mb-2">
-                <AlertCircle size={16} className="text-error dark:text-error" />
-                <h3 className="font-medium text-error dark:text-error">{t('bulk_import.validation_errors')}</h3>
+                <AlertCircle size={16} className="text-destructive dark:text-destructive" />
+                <h3 className="font-medium text-destructive dark:text-destructive">{t('bulk_import.validation_errors')}</h3>
               </div>
               <div className="max-h-40 overflow-y-auto space-y-1">
                 {validationErrors.slice(0, 20).map((err, i) => (
-                  <p key={i} className="text-sm text-on-surface dark:text-on-surface">
-                    Row {err.row}: <span className="text-error dark:text-error">{err.field}</span> — {err.message}
+                  <p key={i} className="text-sm text-ink text-ink">
+                    Row {err.row}: <span className="text-destructive dark:text-destructive">{err.field}</span> — {err.message}
                   </p>
                 ))}
                 {validationErrors.length > 20 && (
-                  <p className="text-sm text-on-surface-variant dark:text-on-surface-variant">
+                  <p className="text-sm text-ink-muted text-ink-muted">
                     ...and {validationErrors.length - 20} more errors
                   </p>
                 )}
@@ -252,14 +252,14 @@ export function BulkImportPage() {
           <div className="flex gap-3">
             <button
               onClick={handleValidate}
-              className="px-4 py-2 border border-outline-variant dark:border-outline text-on-surface dark:text-on-surface rounded-lg text-sm font-medium hover:bg-surface-container dark:hover:bg-surface-container-low"
+              className="px-4 py-2 border border-border text-ink rounded-lg text-sm font-medium hover:bg-surface-sunken dark:hover:bg-surface-sunken"
             >
               {t('bulk_import.validate')}
             </button>
             <button
               onClick={handleImport}
               disabled={isImporting || (validationErrors.length > 0)}
-              className="px-4 py-2 bg-primary text-on-primary rounded-lg text-sm font-medium hover:opacity-90 disabled:opacity-50 disabled:cursor-not-allowed inline-flex items-center gap-2"
+              className="px-4 py-2 bg-primary text-white rounded-lg text-sm font-medium hover:opacity-90 disabled:opacity-50 disabled:cursor-not-allowed inline-flex items-center gap-2"
             >
               {isImporting ? <Loader2 size={16} className="animate-spin" /> : <Upload size={16} />}
               {isImporting ? t('bulk_import.importing') : t('bulk_import.import')}
@@ -270,7 +270,7 @@ export function BulkImportPage() {
 
       {step === 'result' && importResult && (
         <div className="space-y-4">
-          <div className="bg-surface dark:bg-surface rounded-xl border border-outline-variant dark:border-outline p-6">
+          <div className="bg-surface rounded-xl border border-border p-6">
             <div className="flex items-center gap-3 mb-4">
               {importResult.errors.length === 0 ? (
                 <CheckCircle2 size={32} className="text-success dark:text-success" />
@@ -278,8 +278,8 @@ export function BulkImportPage() {
                 <AlertCircle size={32} className="text-warning dark:text-warning" />
               )}
               <div>
-                <h2 className="text-title-lg font-semibold text-on-surface dark:text-on-surface">{t('bulk_import.results')}</h2>
-                <p className="text-sm text-on-surface-variant dark:text-on-surface-variant">
+                <h2 className="text-title-lg font-semibold text-ink text-ink">{t('bulk_import.results')}</h2>
+                <p className="text-sm text-ink-muted text-ink-muted">
                   {t('bulk_import.results_summary', { success: importResult.success, total: parsedData.length })}
                 </p>
               </div>
@@ -287,11 +287,11 @@ export function BulkImportPage() {
 
             {importResult.errors.length > 0 && (
               <div className="mt-4">
-                <h3 className="font-medium text-on-surface dark:text-on-surface mb-2">{t('bulk_import.failed_rows')}</h3>
-                <div className="max-h-48 overflow-y-auto space-y-1 bg-surface-container dark:bg-surface-container-lowest rounded-lg p-3">
+                <h3 className="font-medium text-ink mb-2">{t('bulk_import.failed_rows')}</h3>
+                <div className="max-h-48 overflow-y-auto space-y-1 bg-surface-sunken bg-surface-sunken-lowest rounded-lg p-3">
                   {importResult.errors.map((err, i) => (
-                    <p key={i} className="text-sm text-on-surface dark:text-on-surface">
-                      Row {err.row}: <span className="text-error dark:text-error">{err.field}</span> — {err.message}
+                    <p key={i} className="text-sm text-ink text-ink">
+                      Row {err.row}: <span className="text-destructive dark:text-destructive">{err.field}</span> — {err.message}
                     </p>
                   ))}
                 </div>
@@ -301,7 +301,7 @@ export function BulkImportPage() {
 
           <button
             onClick={reset}
-            className="px-4 py-2 bg-primary text-on-primary rounded-lg text-sm font-medium hover:opacity-90"
+            className="px-4 py-2 bg-primary text-white rounded-lg text-sm font-medium hover:opacity-90"
           >
             {t('bulk_import.import_another')}
           </button>

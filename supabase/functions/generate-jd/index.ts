@@ -59,7 +59,7 @@ serve(async (req) => {
     // Check subscription-based monthly AI limit
     const monthlyLimit = await checkAIMonthlyLimit(supabase, profile.company_id)
     if (!monthlyLimit.allowed) {
-      return limitExceededResponse(monthlyLimit)
+      return limitExceededResponse(monthlyLimit, h)
     }
 
     const langInstr: Record<string, string> = {

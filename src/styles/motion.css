@@ -1,0 +1,280 @@
+/* ============================================================
+   MOTION SYSTEM — AdminMate AI Foundation
+   
+   Semantic duration tokens, easing curves, and animation classes.
+   All animations respect prefers-reduced-motion.
+   
+   Duration tiers:
+     instant  100ms  — hover feedback, focus rings
+     fast     150ms  — micro-interactions, toggles
+     normal   200ms  — page transitions, panel slides
+     slow     300ms  — modals, overlays, complex entrances
+     slower   500ms  — skeleton loading, ambient motion
+   
+   Easing:
+     standard    — default for most UI transitions
+     decelerate  — entering elements (ease-out feel)
+     accelerate  — exiting elements (ease-in feel)
+     spring      — playful bouncy entrances
+   ============================================================ */
+
+/* --- Duration Tokens --- */
+@theme {
+  --duration-instant:   100ms;
+  --duration-fast:      150ms;
+  --duration-normal:    200ms;
+  --duration-slow:      300ms;
+  --duration-slower:    500ms;
+  
+  --ease-standard:      cubic-bezier(0.2, 0, 0, 1);
+  --ease-decelerate:    cubic-bezier(0, 0, 0, 1);
+  --ease-accelerate:    cubic-bezier(0.3, 0, 1, 1);
+  --ease-spring:        cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* ============================================================
+   KEYFRAMES
+   ============================================================ */
+
+/* --- Skeleton loading shimmer --- */
+@keyframes skeleton-shimmer {
+  0% { background-position: -200px 0; }
+  100% { background-position: calc(200px + 100%) 0; }
+}
+
+/* --- Page enter: subtle fade + lift --- */
+@keyframes page-enter {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* --- Fade in up: staggered list items --- */
+@keyframes fade-in-up {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* --- Slide in from right: panels, drawers --- */
+@keyframes slide-in-right {
+  from {
+    opacity: 0;
+    transform: translateX(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* --- Slide in from left --- */
+@keyframes slide-in-left {
+  from {
+    opacity: 0;
+    transform: translateX(-16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* --- Slide out to left --- */
+@keyframes slide-out-left {
+  from {
+    opacity: 1;
+    transform: translateX(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateX(-16px);
+  }
+}
+
+/* --- Scale in: modals, popovers --- */
+@keyframes scale-in {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* --- Scale out: modals, popovers --- */
+@keyframes scale-out {
+  from {
+    opacity: 1;
+    transform: scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+}
+
+/* --- Backdrop fade --- */
+@keyframes backdrop-enter {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes backdrop-exit {
+  from { opacity: 1; }
+  to { opacity: 0; }
+}
+
+/* --- Ripple effect --- */
+@keyframes ripple-expand {
+  from {
+    transform: scale(0);
+    opacity: 0.4;
+  }
+  to {
+    transform: scale(4);
+    opacity: 0;
+  }
+}
+
+/* --- Spinner --- */
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* --- Pulse: attention, notification --- */
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.6; }
+}
+
+/* --- Bounce subtle: badge notification --- */
+@keyframes bounce-subtle {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-2px); }
+}
+
+/* ============================================================
+   ANIMATION CLASSES — Semantic, utility-friendly
+   
+   Usage:
+     <div className="animate-page-enter">
+     <div className="animate-fade-in-up" style={{ animationDelay: '50ms' }}>
+     <div className="animate-modal-enter">
+   ============================================================ */
+
+.animate-page-enter {
+  animation: page-enter 200ms var(--ease-decelerate) forwards;
+}
+
+.animate-fade-in-up {
+  animation: fade-in-up 300ms var(--ease-decelerate) forwards;
+}
+
+.animate-slide-in-right {
+  animation: slide-in-right 200ms var(--ease-standard) forwards;
+}
+
+.animate-slide-in-left {
+  animation: slide-in-left 200ms var(--ease-standard) forwards;
+}
+
+.animate-slide-out-left {
+  animation: slide-out-left 150ms var(--ease-accelerate) forwards;
+}
+
+.animate-scale-in {
+  animation: scale-in 200ms var(--ease-decelerate) forwards;
+}
+
+.animate-scale-out {
+  animation: scale-out 150ms var(--ease-accelerate) forwards;
+}
+
+.animate-backdrop {
+  animation: backdrop-enter 150ms var(--ease-standard) forwards;
+}
+
+.animate-backdrop-exit {
+  animation: backdrop-exit 100ms var(--ease-accelerate) forwards;
+}
+
+.animate-skeleton {
+  background: linear-gradient(
+    90deg,
+    var(--color-surface-sunken) 0px,
+    var(--color-surface-raised) 40px,
+    var(--color-surface-sunken) 80px
+  );
+  background-size: 200px 100%;
+  animation: skeleton-shimmer 1.5s ease-in-out infinite;
+}
+
+.animate-spinner {
+  animation: spin 0.8s linear infinite;
+}
+
+.animate-pulse {
+  animation: pulse 2s var(--ease-standard) infinite;
+}
+
+.animate-bounce-subtle {
+  animation: bounce-subtle 0.5s var(--ease-spring);
+}
+
+/* ============================================================
+   TRANSITION UTILITIES — For Tailwind className usage
+   
+   Usage:
+     <button className="transition-colors duration-fast">
+     <div className="transition-transform duration-normal ease-standard">
+   ============================================================ */
+
+/* No custom transition classes needed — use Tailwind:
+   transition-all duration-fast ease-standard
+   transition-colors duration-fast
+   transition-transform duration-normal
+   etc. */
+
+/* ============================================================
+   REDUCED MOTION — Accessibility first
+   ============================================================ */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  .animate-page-enter,
+  .animate-fade-in-up,
+  .animate-slide-in-right,
+  .animate-slide-in-left,
+  .animate-slide-out-left,
+  .animate-scale-in,
+  .animate-scale-out,
+  .animate-backdrop,
+  .animate-backdrop-exit,
+  .animate-skeleton,
+  .animate-spinner,
+  .animate-pulse,
+  .animate-bounce-subtle {
+    animation: none !important;
+  }
+}

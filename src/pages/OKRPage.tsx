@@ -12,10 +12,10 @@ import type { OkrObjective, OkrKeyResult } from '../services/performance/perform
 type OkrStatus = 'on_track' | 'at_risk' | 'behind' | 'completed'
 
 const STATUS_CONFIG: Record<OkrStatus, { color: string; icon: typeof Target; label: string }> = {
-  on_track: { color: 'bg-green-50 dark:bg-success-container/30 text-green-700 dark:text-success', icon: CheckCircle2, label: 'On Track' },
-  at_risk: { color: 'bg-yellow-50 dark:bg-warning-container/30 text-yellow-700 dark:text-warning', icon: AlertTriangle, label: 'At Risk' },
-  behind: { color: 'bg-red-50 dark:bg-error-container/30 text-red-700 dark:text-error', icon: AlertTriangle, label: 'Behind' },
-  completed: { color: 'bg-blue-50 dark:bg-primary-container/30 text-blue-700 dark:text-accent-dim', icon: CheckCircle2, label: 'Completed' },
+  on_track: { color: 'bg-green-50 dark:bg-success-subtle/30 text-green-700 dark:text-success', icon: CheckCircle2, label: 'On Track' },
+  at_risk: { color: 'bg-yellow-50 dark:bg-warning-subtle/30 text-yellow-700 dark:text-warning', icon: AlertTriangle, label: 'At Risk' },
+  behind: { color: 'bg-red-50 dark:bg-destructive-subtle/30 text-red-700 dark:text-destructive', icon: AlertTriangle, label: 'Behind' },
+  completed: { color: 'bg-blue-50 dark:bg-primary-container/30 text-blue-700 dark:text-primary-muted', icon: CheckCircle2, label: 'Completed' },
 }
 
 function ProgressRing({ progress, size = 40 }: { progress: number; size?: number }) {
@@ -40,30 +40,30 @@ function OKRCard({ objective, keyResults }: { objective: OkrObjective & { user_p
   const StatusIcon = statusCfg.icon
 
   return (
-    <div className="bg-surface dark:bg-surface rounded-xl border border-outline-variant dark:border-outline overflow-hidden">
+    <div className="bg-surface rounded-xl border border-border overflow-hidden">
       <button
         onClick={() => setExpanded(!expanded)}
         aria-expanded={expanded}
-        className="w-full flex items-center gap-4 p-4 text-left hover:bg-surface-container-high/50 dark:hover:bg-surface-container/30 transition-colors"
+        className="w-full flex items-center gap-4 p-4 text-left hover:bg-surface-sunken/50 dark:hover:bg-surface-sunken/30 transition-colors"
       >
         <ProgressRing progress={objective.progress} />
         <div className="flex-1 min-w-0">
-          <p className="text-sm font-semibold text-on-surface dark:text-on-surface truncate">{objective.cycle_id ? `Cycle ${objective.cycle_id.slice(0, 8)}` : t('objective', 'Objective')}</p>
+          <p className="text-sm font-semibold text-ink truncate">{objective.cycle_id ? `Cycle ${objective.cycle_id.slice(0, 8)}` : t('objective', 'Objective')}</p>
           {objective.user_profiles?.full_name && (
-            <p className="text-xs text-on-surface-variant dark:text-on-surface-variant mt-0.5">{objective.user_profiles.full_name}</p>
+            <p className="text-xs text-ink-muted text-ink-muted mt-0.5">{objective.user_profiles.full_name}</p>
           )}
         </div>
         <span className={`px-2 py-0.5 rounded text-xs font-medium ${statusCfg.color}`}>
           <StatusIcon size={12} className="inline mr-1" />
           {t(`okr_status_${objective.status}`, statusCfg.label)}
         </span>
-        {expanded ? <ChevronDown size={16} className="text-on-surface-variant" /> : <ChevronRight size={16} className="text-on-surface-variant" />}
+        {expanded ? <ChevronDown size={16} className="text-ink-muted" /> : <ChevronRight size={16} className="text-ink-muted" />}
       </button>
 
       {expanded && (
-        <div className="border-t border-outline-variant/50 dark:border-outline/50 px-4 pb-4">
+        <div className="border-t border-border/50 border-border/50 px-4 pb-4">
           {keyResults.length === 0 ? (
-            <p className="text-sm text-on-surface-variant/60 dark:text-outline-variant py-3 italic">{t('no_key_results', 'No key results defined')}</p>
+            <p className="text-sm text-ink-muted/60 dark:text-outline-variant py-3 italic">{t('no_key_results', 'No key results defined')}</p>
           ) : (
             <div className="space-y-3 pt-3">
               {keyResults.map(kr => {
@@ -72,10 +72,10 @@ function OKRCard({ objective, keyResults }: { objective: OkrObjective & { user_p
                   <div key={kr.id} className="flex items-center gap-3">
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center justify-between mb-1">
-                        <span className="text-xs text-on-surface-variant dark:text-on-surface-variant">{t('target', 'Target')}: {kr.target_value}</span>
-                        <span className="text-xs font-medium text-on-surface dark:text-on-surface">{kr.current_value} / {kr.target_value}</span>
+                        <span className="text-xs text-ink-muted text-ink-muted">{t('target', 'Target')}: {kr.target_value}</span>
+                        <span className="text-xs font-medium text-ink text-ink">{kr.current_value} / {kr.target_value}</span>
                       </div>
-                      <div className="w-full bg-surface-container-high dark:bg-surface-container rounded-full h-2">
+                      <div className="w-full bg-surface-sunken rounded-full h-2">
                         <div
                           className={`h-2 rounded-full transition-all duration-500 ${pct >= 70 ? 'bg-success' : pct >= 40 ? 'bg-warning' : 'bg-error'}`}
                           style={{ width: `${pct}%` }}
@@ -87,7 +87,7 @@ function OKRCard({ objective, keyResults }: { objective: OkrObjective & { user_p
                         />
                       </div>
                     </div>
-                    <span className="text-xs font-semibold text-on-surface-variant dark:text-on-surface-variant w-10 text-right">{pct}%</span>
+                    <span className="text-xs font-semibold text-ink-muted text-ink-muted w-10 text-right">{pct}%</span>
                   </div>
                 )
               })}
@@ -165,10 +165,10 @@ export function OKRPage() {
     <div className="space-y-6">
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <h1 className="text-headline-md font-bold text-on-surface dark:text-on-surface">{t('okr_title', 'OKRs & Goals')}</h1>
-          <p className="text-body-md text-on-surface-variant dark:text-on-surface-variant mt-1">{t('okr_subtitle', 'Track objectives, key results, and alignment across the organization')}</p>
+          <h1 className="text-headline-md font-bold text-ink text-ink">{t('okr_title', 'OKRs & Goals')}</h1>
+          <p className="text-body-md text-ink-muted text-ink-muted mt-1">{t('okr_subtitle', 'Track objectives, key results, and alignment across the organization')}</p>
         </div>
-        <div className="flex items-center gap-2 px-4 py-2 rounded-lg bg-surface-container-high dark:bg-surface-container text-on-surface-variant dark:text-on-surface-variant text-sm">
+        <div className="flex items-center gap-2 px-4 py-2 rounded-lg bg-surface-sunken text-ink-muted text-ink-muted text-sm">
           <Construction size={16} />
           <span>{t('coming_soon', 'Coming Soon')}</span>
         </div>
@@ -184,29 +184,29 @@ export function OKRPage() {
               onClick={() => setViewMode(status)}
               className={`p-3 rounded-xl border text-left transition-all duration-200 ${
                 viewMode === status
-                  ? 'border-primary dark:border-accent-dim bg-primary-container/10 dark:bg-accent-dim/10'
-                  : 'border-outline-variant dark:border-outline hover:border-primary/50 dark:hover:border-accent-dim/50'
+                  ? 'border-primary dark:border-accent-dim bg-primary-container/10 dark:bg-primary-muted/10'
+                  : 'border-border hover:border-primary/50 dark:hover:border-accent-dim/50'
               }`}
             >
-              <p className="text-xs text-on-surface-variant dark:text-on-surface-variant">{status === 'all' ? t('all_okrs', 'All') : t(`okr_status_${status}`, cfg!.label)}</p>
-              <p className="text-lg font-bold text-on-surface dark:text-on-surface mt-1">{count}</p>
+              <p className="text-xs text-ink-muted text-ink-muted">{status === 'all' ? t('all_okrs', 'All') : t(`okr_status_${status}`, cfg!.label)}</p>
+              <p className="text-lg font-bold text-ink mt-1">{count}</p>
             </button>
           )
         })}
       </div>
 
-      <div className="bg-surface dark:bg-surface rounded-xl border border-outline-variant dark:border-outline p-5">
+      <div className="bg-surface rounded-xl border border-border p-5">
         <div className="flex items-center gap-3 mb-2">
-          <TrendingUp size={18} className="text-primary dark:text-accent-dim" />
-          <span className="text-sm font-medium text-on-surface dark:text-on-surface">{t('overall_progress', 'Overall OKR Progress')}</span>
+          <TrendingUp size={18} className="text-primary dark:text-primary-muted" />
+          <span className="text-sm font-medium text-ink text-ink">{t('overall_progress', 'Overall OKR Progress')}</span>
         </div>
-        <div className="w-full bg-surface-container-high dark:bg-surface-container rounded-full h-3 mb-1">
+        <div className="w-full bg-surface-sunken rounded-full h-3 mb-1">
           <div
-            className="bg-primary dark:bg-accent-dim h-3 rounded-full transition-all duration-500"
+            className="bg-primary dark:bg-primary-muted h-3 rounded-full transition-all duration-500"
             style={{ width: `${avgProgress}%` }}
           />
         </div>
-        <p className="text-xs text-on-surface-variant dark:text-on-surface-variant">{avgProgress}% {t('average', 'average')} · {statusCounts.total} {t('objectives', 'objectives')}</p>
+        <p className="text-xs text-ink-muted text-ink-muted">{avgProgress}% {t('average', 'average')} · {statusCounts.total} {t('objectives', 'objectives')}</p>
       </div>
 
       {isLoading ? (

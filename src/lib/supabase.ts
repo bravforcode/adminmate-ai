@@ -12,7 +12,11 @@ if (!supabaseUrl || !supabaseAnonKey) {
 
 export const supabase = createClient(supabaseUrl, supabaseAnonKey, {
   auth: {
-    autoRefreshToken: true,
+    // Proactive refresh is handled by our own scheduler (see
+    // src/hooks/useSessionRestore.ts), which hits the app's httpOnly-cookie
+    // /refresh proxy endpoint instead of the SDK's built-in refresh flow
+    // (the SDK never has access to the real, httpOnly refresh_token).
+    autoRefreshToken: false,
     persistSession: true,
     detectSessionInUrl: true,
     storageKey: 'adminmate-auth-token',

@@ -121,8 +121,8 @@ export function PDPAConsentBanner({ candidateId, employeeId }: Props) {
       <div className="flex items-start gap-3">
         <Shield size={20} className={`flex-shrink-0 mt-0.5 ${accepted ? 'text-green-600 dark:text-green-400' : 'text-primary'}`} />
         <div className="flex-1 min-w-0">
-          <h4 className="text-sm font-semibold text-on-surface">{t('pdpa.title')}</h4>
-          <p className="text-xs text-on-surface-variant mt-1">{t('pdpa.description')}</p>
+          <h4 className="text-sm font-semibold text-ink">{t('pdpa.title')}</h4>
+          <p className="text-xs text-ink-muted mt-1">{t('pdpa.description')}</p>
 
           {!accepted && (
             <div className="mt-3 space-y-2">
@@ -132,9 +132,9 @@ export function PDPAConsentBanner({ candidateId, employeeId }: Props) {
                     type="checkbox"
                     checked={selectedPurposes.has(p.id)}
                     onChange={() => togglePurpose(p.id)}
-                    className="rounded border-outline-variant text-primary focus:ring-primary/30"
+                    className="rounded border-border text-primary focus:ring-primary/30"
                   />
-                  <span className="text-xs text-on-surface-variant group-hover:text-on-surface transition-colors">
+                  <span className="text-xs text-ink-muted group-hover:text-ink transition-colors">
                     {t(p.key)}
                   </span>
                 </label>
@@ -156,7 +156,7 @@ export function PDPAConsentBanner({ candidateId, employeeId }: Props) {
               <button
                 onClick={handleAccept}
                 disabled={loading || selectedPurposes.size === 0 || !email}
-                className="flex items-center gap-1 px-3 py-1.5 bg-primary text-on-primary rounded-lg text-xs font-medium hover:opacity-90 disabled:opacity-50 disabled:cursor-not-allowed"
+                className="flex items-center gap-1 px-3 py-1.5 bg-primary text-white rounded-lg text-xs font-medium hover:opacity-90 disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 {loading ? <Loader2 size={12} className="animate-spin" /> : <Check size={12} />}
                 {t('pdpa.consent_button')}
@@ -165,7 +165,7 @@ export function PDPAConsentBanner({ candidateId, employeeId }: Props) {
               <button
                 onClick={handleWithdraw}
                 disabled={loading}
-                className="flex items-center gap-1 px-3 py-1.5 bg-error/10 text-error rounded-lg text-xs font-medium hover:bg-error/20 disabled:opacity-50"
+                className="flex items-center gap-1 px-3 py-1.5 bg-error/10 text-destructive rounded-lg text-xs font-medium hover:bg-error/20 disabled:opacity-50"
               >
                 {loading ? <Loader2 size={12} className="animate-spin" /> : <X size={12} />}
                 {t('pdpa.withdraw_button') || 'Withdraw Consent'}

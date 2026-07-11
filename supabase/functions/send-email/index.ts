@@ -62,7 +62,7 @@ serve(async (req) => {
     const templates: Record<string, any> = {
       welcome: {
         subject: { th: 'ยินดีต้อนรับสู่ AdminMate AI!', en: 'Welcome to AdminMate AI!', vi: 'Chào mừng đến AdminMate AI!', zh: '欢迎使用 AdminMate AI!', id: 'Selamat Datang di AdminMate AI!' },
-        html: (d: any) => `<div style="font-family:sans-serif;max-width:600px;margin:auto;padding:20px"><div style="background:#003d9a;color:white;padding:20px;border-radius:12px 12px 0 0"><h1>AdminMate AI</h1></div><div style="padding:20px;background:#f8f9fa;border-radius:0 0 12px 12px"><h2>Welcome, ${escapeHtml(d.name)}!</h2><p>${escapeHtml(d.message || '')}</p><a href="${escapeAttr(d.appUrl)}" style="display:inline-block;background:#003d9a;color:white;padding:12px 24px;border-radius:8px;text-decoration:none;margin-top:16px">Get Started</a></div></div>`,
+        html: (d: any) => `<div style="font-family:sans-serif;max-width:600px;margin:auto;padding:20px"><div style="background:#003d9a;color:white;padding:20px;border-radius:12px 12px 0 0"><h1>AdminMate AI</h1></div><div style="padding:20px;background:#f8f9fa;border-radius:0 0 12px 12px"><h2>Welcome, ${escapeHtml(d.name)}!</h2><p>${escapeHtml(d.message || '')}</p><a href="${sanitizeUrl(d.appUrl)}" style="display:inline-block;background:#003d9a;color:white;padding:12px 24px;border-radius:8px;text-decoration:none;margin-top:16px">Get Started</a></div></div>`,
       },
       document_reminder: {
         subject: { th: 'แจ้งเตือน: เอกสารรอดำเนินการ', en: 'Reminder: Pending Document', vi: 'Nhắc nhở: Tài liệu đang chờ', zh: '提醒：待处理文档', id: 'Pengingat: Dokumen Tertunda' },
@@ -119,4 +119,12 @@ function escapeHtml(s: unknown): string {
 function escapeAttr(s: unknown): string {
   if (s === undefined || s === null) return ''
   return escapeHtml(s)
+}
+
+function sanitizeUrl(s: unknown): string {
+  if (s === undefined || s === null) return ''
+  const str = String(s).trim()
+  // Only allow https:// URLs — block javascript:, data:, and other schemes
+  if (!/^https:\/\/[a-zA-Z0-9]/.test(str)) return '#'
+  return escapeHtml(str)
 }

@@ -90,20 +90,20 @@ export function BankExport({ items, companyName = 'Company', periodLabel = '' }:
       </CardHeader>
       <CardContent className="space-y-4">
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-          <div className="p-3 bg-surface-container-low rounded-lg">
-            <p className="text-xs text-on-surface-variant">Employees</p>
+          <div className="p-3 bg-surface-sunken rounded-lg">
+            <p className="text-xs text-ink-muted">Employees</p>
             <p className="text-lg font-semibold">{items.length}</p>
           </div>
-          <div className="p-3 bg-surface-container-low rounded-lg">
-            <p className="text-xs text-on-surface-variant">Total Net Pay</p>
+          <div className="p-3 bg-surface-sunken rounded-lg">
+            <p className="text-xs text-ink-muted">Total Net Pay</p>
             <p className="text-lg font-semibold">{fmt(totalNet)} THB</p>
           </div>
-          <div className="p-3 bg-surface-container-low rounded-lg">
-            <p className="text-xs text-on-surface-variant">Format</p>
+          <div className="p-3 bg-surface-sunken rounded-lg">
+            <p className="text-xs text-ink-muted">Format</p>
             <select
               value={format}
               onChange={e => setFormat(e.target.value as BankFormat)}
-              className="w-full mt-1 px-2 py-1 rounded border border-outline-variant bg-surface-container-lowest text-sm"
+              className="w-full mt-1 px-2 py-1 rounded border border-border bg-surface-sunken-lowest text-sm"
             >
               {BANK_OPTIONS.map(o => (
                 <option key={o.value} value={o.value}>{o.label}</option>
@@ -129,7 +129,7 @@ export function BankExport({ items, companyName = 'Company', periodLabel = '' }:
           )}
         </div>
 
-        <p className="text-xs text-on-surface-variant">
+        <p className="text-xs text-ink-muted">
           Exports salary transfer file for {BANK_OPTIONS.find(b => b.value === format)?.label}.
           Verify format with your bank before submitting.
         </p>

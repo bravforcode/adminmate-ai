@@ -22,7 +22,7 @@ export function LanguageSwitcher() {
     <div role="group" aria-label="Language selector" style={{
       display: 'flex',
       gap: '2px',
-      backgroundColor: 'var(--color-surface-alt, #f1f5f9)',
+      backgroundColor: 'var(--color-surface-alt, #eef1f6)',
       borderRadius: '8px',
       padding: '3px',
     }}>
@@ -42,11 +42,11 @@ export function LanguageSwitcher() {
             cursor: 'pointer',
             transition: 'all 0.25s ease-out',
             backgroundColor: currentLang === lang.code
-              ? 'var(--color-navy, #2563eb)'
+              ? 'var(--color-primary)'
               : 'transparent',
             color: currentLang === lang.code
               ? '#ffffff'
-              : 'var(--color-text-muted, #94a3b8)',
+              : 'var(--color-text-muted, #5c6b82)',
             fontFamily: 'var(--font-sans, Inter, sans-serif)',
           }}
         >

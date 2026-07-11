@@ -17,8 +17,8 @@ export function ComingSoon({ feature, description, isUnderDevelopment }: ComingS
     <div className="flex flex-col items-center justify-center min-h-[40vh] gap-4 px-4">
       <Card className="max-w-md w-full">
         <CardHeader className="items-center text-center">
-          <div className="flex items-center justify-center w-16 h-16 rounded-full bg-surface-container-low mb-2">
-            <Clock className="w-8 h-8 text-text-muted opacity-60" />
+          <div className="flex items-center justify-center w-16 h-16 rounded-full bg-surface-sunken mb-2">
+            <Clock className="w-8 h-8 text-ink-muted opacity-60" />
           </div>
           <Badge variant={isUnderDevelopment ? 'secondary' : 'default'}>
             {isUnderDevelopment
@@ -36,8 +36,8 @@ export function ComingSoon({ feature, description, isUnderDevelopment }: ComingS
           </CardDescription>
         </CardHeader>
         <CardContent className="flex justify-center">
-          <div className="w-full h-24 rounded-lg bg-surface-container-low border border-outline-variant flex items-center justify-center">
-            <span className="text-xs text-text-muted opacity-50">
+          <div className="w-full h-24 rounded-lg bg-surface-sunken border border-border flex items-center justify-center">
+            <span className="text-xs text-ink-muted opacity-50">
               {t('preview_placeholder', 'Preview')}
             </span>
           </div>

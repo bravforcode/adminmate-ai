@@ -75,18 +75,18 @@ export function MobileNav() {
           role="dialog"
           aria-modal="true"
           aria-label="More navigation"
-          className="fixed bottom-16 left-2 right-2 z-50 md:hidden bg-surface dark:bg-surface border border-outline-variant dark:border-outline rounded-xl shadow-lg max-h-[60vh] overflow-y-auto"
+          className="fixed bottom-16 left-2 right-2 z-50 md:hidden bg-surface border border-border rounded-xl shadow-lg max-h-[60vh] overflow-y-auto"
         >
-          <div className="flex items-center justify-between px-4 py-3 border-b border-outline-variant dark:border-outline">
-            <span className="text-sm font-semibold text-on-surface dark:text-on-surface">
+          <div className="flex items-center justify-between px-4 py-3 border-b border-border border-border">
+            <span className="text-sm font-semibold text-ink text-ink">
               {t('nav.more')}
             </span>
             <button
               onClick={() => setMoreOpen(false)}
-              className="p-2 rounded-lg hover:bg-surface-container-low dark:hover:bg-surface-container-low transition-colors min-w-[44px] min-h-[44px] flex items-center justify-center"
+              className="p-2 rounded-lg hover:bg-surface-sunken dark:hover:bg-surface-sunken transition-colors min-w-[44px] min-h-[44px] flex items-center justify-center"
               aria-label={t('nav.close_menu')}
             >
-              <X size={18} className="text-on-surface-variant dark:text-on-surface-variant" />
+              <X size={18} className="text-ink-muted text-ink-muted" />
             </button>
           </div>
           <div className="p-2">
@@ -98,8 +98,8 @@ export function MobileNav() {
                 className={({ isActive }) =>
                   `flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm transition-colors ${
                     isActive
-                      ? 'text-primary dark:text-accent-dim bg-surface-container-low dark:bg-surface-container-low'
-                      : 'text-on-surface dark:text-on-surface hover:bg-surface-container-low dark:hover:bg-surface-container-low'
+                      ? 'text-primary dark:text-primary-muted bg-surface-sunken bg-surface-sunken'
+                      : 'text-ink hover:bg-surface-sunken dark:hover:bg-surface-sunken'
                   }`
                 }
               >
@@ -112,10 +112,10 @@ export function MobileNav() {
       )}
 
       {/* Bottom nav bar */}
-      <nav aria-label="Mobile navigation" className="md:hidden fixed bottom-0 left-0 right-0 bg-surface dark:bg-surface border-t border-outline-variant dark:border-outline z-50 flex justify-around py-2" style={{ paddingBottom: 'max(8px, env(safe-area-inset-bottom))' }}>
+      <nav aria-label="Mobile navigation" className="md:hidden fixed bottom-0 left-0 right-0 bg-surface border-t border-border z-50 flex justify-around py-2" style={{ paddingBottom: 'max(8px, env(safe-area-inset-bottom))' }}>
         {primaryItems.map(item => (
           <NavLink key={item.path} to={item.path!} className={({ isActive }) =>
-            `flex flex-col items-center gap-0.5 px-3 py-1.5 rounded-lg text-xs transition-all duration-200 ease-out ${isActive ? 'text-primary dark:text-accent-dim bg-surface-container-low dark:bg-surface-container-low scale-105 shadow-sm' : 'text-on-surface-variant dark:text-on-surface-variant hover:text-on-surface dark:hover:text-on-surface active:scale-95'}`
+            `flex flex-col items-center gap-0.5 px-3 py-1.5 rounded-lg text-xs transition-all duration-200 ease-out ${isActive ? 'text-primary dark:text-primary-muted bg-surface-sunken scale-105 shadow-sm' : 'text-ink-muted text-ink-muted hover:text-ink dark:hover:text-ink active:scale-95'}`
           }>
             <item.icon size={22} strokeWidth={2.2} />
             <span className="font-medium">{t(item.labelKey)}</span>
@@ -131,8 +131,8 @@ export function MobileNav() {
             aria-label={t('nav.more')}
             className={`flex flex-col items-center gap-0.5 px-3 py-1.5 rounded-lg text-xs transition-all duration-200 ease-out ${
               moreOpen
-                ? 'text-primary dark:text-accent-dim bg-surface-container-low dark:bg-surface-container-low scale-105 shadow-sm'
-                : 'text-on-surface-variant dark:text-on-surface-variant hover:text-on-surface dark:hover:text-on-surface active:scale-95'
+                ? 'text-primary dark:text-primary-muted bg-surface-sunken scale-105 shadow-sm'
+                : 'text-ink-muted text-ink-muted hover:text-ink dark:hover:text-ink active:scale-95'
             }`}
           >
             <MoreHorizontal size={22} strokeWidth={2.2} />

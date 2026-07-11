@@ -137,7 +137,7 @@ export function TourOverlay({
             width: targetRect.width + 20,
             height: targetRect.height + 20,
             borderRadius: '14px',
-            border: '2px solid var(--color-accent, #60a5fa)',
+            border: '2px solid var(--color-accent, #7aa2f7)',
             pointerEvents: 'none',
           }}
         />
@@ -155,10 +155,10 @@ export function TourOverlay({
             width: tooltipWidth,
             pointerEvents: 'auto',
           }}
-          className="bg-surface dark:bg-surface rounded-2xl shadow-2xl border border-outline-variant dark:border-outline overflow-hidden"
+          className="bg-surface rounded-2xl shadow-2xl border border-border overflow-hidden"
         >
           {/* Progress bar */}
-          <div className="h-1 bg-surface-container dark:bg-surface-container w-full">
+          <div className="h-1 bg-surface-sunken w-full">
             <motion.div
               className="h-full bg-primary"
               initial={{ width: 0 }}
@@ -175,15 +175,15 @@ export function TourOverlay({
                   <Sparkles size={16} className="text-primary" />
                 </div>
                 <div>
-                  <h3 className="text-sm font-semibold text-on-surface leading-tight">{title}</h3>
-                  <p className="text-[11px] text-on-surface-variant mt-0.5">
+                  <h3 className="text-sm font-semibold text-ink leading-tight">{title}</h3>
+                  <p className="text-[11px] text-ink-muted mt-0.5">
                     {t('tour.stepOf', { current: stepNumber, total: totalSteps })}
                   </p>
                 </div>
               </div>
               <button
                 onClick={onSkip}
-                className="p-2 rounded-lg hover:bg-surface-container dark:hover:bg-surface-container transition-colors text-on-surface-variant dark:text-on-surface-variant hover:text-on-surface dark:hover:text-on-surface min-w-[44px] min-h-[44px] flex items-center justify-center"
+                className="p-2 rounded-lg hover:bg-surface-sunken dark:hover:bg-surface-sunken transition-colors text-ink-muted text-ink-muted hover:text-ink dark:hover:text-ink min-w-[44px] min-h-[44px] flex items-center justify-center"
                 aria-label={t('tour.skip')}
               >
                 <X size={16} />
@@ -191,7 +191,7 @@ export function TourOverlay({
             </div>
 
             {/* Content */}
-            <p className="text-xs text-on-surface-variant leading-relaxed mb-4">
+            <p className="text-xs text-ink-muted leading-relaxed mb-4">
               {content}
             </p>
 
@@ -199,7 +199,7 @@ export function TourOverlay({
             <div className="flex items-center justify-between">
               <button
                 onClick={onSkip}
-                className="text-xs text-on-surface-variant hover:text-on-surface transition-colors px-3 py-2 min-h-[44px] flex items-center"
+                className="text-xs text-ink-muted hover:text-ink transition-colors px-3 py-2 min-h-[44px] flex items-center"
               >
                 {t('tour.skip')}
               </button>
@@ -208,7 +208,7 @@ export function TourOverlay({
                 {!isFirstStep && (
                   <button
                     onClick={onPrev}
-                    className="flex items-center gap-1 text-xs text-on-surface-variant dark:text-on-surface-variant hover:text-on-surface dark:hover:text-on-surface transition-colors px-3 py-1.5 rounded-lg hover:bg-surface-container dark:hover:bg-surface-container"
+                    className="flex items-center gap-1 text-xs text-ink-muted text-ink-muted hover:text-ink dark:hover:text-ink transition-colors px-3 py-1.5 rounded-lg hover:bg-surface-sunken dark:hover:bg-surface-sunken"
                   >
                     <ChevronLeft size={14} />
                     {t('tour.prev')}
@@ -216,7 +216,7 @@ export function TourOverlay({
                 )}
                 <button
                   onClick={isLastStep ? onFinish : onNext}
-                  className="flex items-center gap-1 text-xs font-medium text-on-primary bg-primary hover:bg-primary/90 transition-colors px-4 py-1.5 rounded-lg"
+                  className="flex items-center gap-1 text-xs font-medium text-white bg-primary hover:bg-primary/90 transition-colors px-4 py-1.5 rounded-lg"
                 >
                   {isLastStep ? t('tour.finish') : t('tour.next')}
                   {!isLastStep && <ChevronRight size={14} />}

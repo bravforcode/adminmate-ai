@@ -116,7 +116,7 @@ export function RegisterForm() {
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-4" noValidate>
       <div>
-        <label htmlFor="fullName" className="block text-label-md text-on-surface-variant mb-1">
+        <label htmlFor="fullName" className="block text-label-md text-ink-muted mb-1">
           {t('auth.full_name')}
         </label>
         <input
@@ -128,14 +128,14 @@ export function RegisterForm() {
           aria-required="true"
           aria-invalid={!!errors.fullName}
           aria-describedby={errors.fullName ? 'fullName-error' : undefined}
-          className="w-full px-3 py-2 rounded-lg border border-outline-variant bg-surface-container-lowest focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all"
+          className="w-full px-3 py-2 rounded-lg border border-border bg-surface-sunken-lowest focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all"
           placeholder={t('auth.placeholder_name')}
         />
-        {errors.fullName && <p id="fullName-error" role="alert" className="text-error text-sm mt-1">{t('auth.error_name_required')}</p>}
+        {errors.fullName && <p id="fullName-error" role="alert" className="text-destructive text-sm mt-1">{t('auth.error_name_required')}</p>}
       </div>
 
       <div>
-        <label htmlFor="companyName" className="block text-label-md text-on-surface-variant mb-1">
+        <label htmlFor="companyName" className="block text-label-md text-ink-muted mb-1">
           <span className="inline-flex items-center gap-1">
             <Building2 size={14} /> {t('auth.company_name')}
           </span>
@@ -148,23 +148,23 @@ export function RegisterForm() {
           aria-required="true"
           aria-invalid={!!errors.companyName}
           aria-describedby={errors.companyName ? 'companyName-error' : undefined}
-          className="w-full px-3 py-2 rounded-lg border border-outline-variant bg-surface-container-lowest focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all"
+          className="w-full px-3 py-2 rounded-lg border border-border bg-surface-sunken-lowest focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all"
           placeholder={t('auth.placeholder_company')}
         />
         {errors.companyName && (
-          <p id="companyName-error" role="alert" className="text-error text-sm mt-1">{t('auth.error_company_required')}</p>
+          <p id="companyName-error" role="alert" className="text-destructive text-sm mt-1">{t('auth.error_company_required')}</p>
         )}
       </div>
 
       <div className="grid grid-cols-2 gap-3">
         <div>
-          <label htmlFor="country" className="block text-label-md text-on-surface-variant mb-1">
+          <label htmlFor="country" className="block text-label-md text-ink-muted mb-1">
             {t('company.country')}
           </label>
           <select
             id="country"
             {...register('country')}
-            className="w-full px-3 py-2 rounded-lg border border-outline-variant bg-surface-container-lowest focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none"
+            className="w-full px-3 py-2 rounded-lg border border-border bg-surface-sunken-lowest focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none"
           >
             {COUNTRIES.map((c) => (
               <option key={c.value} value={c.value}>
@@ -174,7 +174,7 @@ export function RegisterForm() {
           </select>
         </div>
         <div>
-          <label htmlFor="industry" className="block text-label-md text-on-surface-variant mb-1">
+          <label htmlFor="industry" className="block text-label-md text-ink-muted mb-1">
             {t('company.industry')}
           </label>
           <select
@@ -184,7 +184,7 @@ export function RegisterForm() {
             aria-required="true"
             aria-invalid={!!errors.industry}
             aria-describedby={errors.industry ? 'industry-error' : undefined}
-            className="w-full px-3 py-2 rounded-lg border border-outline-variant bg-surface-container-lowest focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none"
+            className="w-full px-3 py-2 rounded-lg border border-border bg-surface-sunken-lowest focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none"
           >
             <option value="">{t('auth.reg_select_industry')}...</option>
             {INDUSTRIES.map((i) => (
@@ -194,13 +194,13 @@ export function RegisterForm() {
             ))}
           </select>
           {errors.industry && (
-            <p id="industry-error" role="alert" className="text-error text-sm mt-1">{t('auth.error_industry_required')}</p>
+            <p id="industry-error" role="alert" className="text-destructive text-sm mt-1">{t('auth.error_industry_required')}</p>
           )}
         </div>
       </div>
 
       <div>
-        <label htmlFor="email" className="block text-label-md text-on-surface-variant mb-1">
+        <label htmlFor="email" className="block text-label-md text-ink-muted mb-1">
           {t('auth.email')}
         </label>
         <input
@@ -212,14 +212,14 @@ export function RegisterForm() {
           aria-required="true"
           aria-invalid={!!errors.email}
           aria-describedby={errors.email ? 'reg-email-error' : undefined}
-          className="w-full px-3 py-2 rounded-lg border border-outline-variant bg-surface-container-lowest focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all"
+          className="w-full px-3 py-2 rounded-lg border border-border bg-surface-sunken-lowest focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all"
           placeholder={t('auth.placeholder_email')}
         />
-        {errors.email && <p id="reg-email-error" role="alert" className="text-error text-sm mt-1">{t('auth.error_invalid_email')}</p>}
+        {errors.email && <p id="reg-email-error" role="alert" className="text-destructive text-sm mt-1">{t('auth.error_invalid_email')}</p>}
       </div>
 
       <div>
-        <label htmlFor="password" className="block text-label-md text-on-surface-variant mb-1">
+        <label htmlFor="password" className="block text-label-md text-ink-muted mb-1">
           {t('auth.password')}
         </label>
         <div className="relative">
@@ -232,13 +232,13 @@ export function RegisterForm() {
             aria-required="true"
             aria-invalid={!!errors.password}
             aria-describedby={errors.password ? 'password-error' : undefined}
-            className="w-full px-3 py-2 rounded-lg border border-outline-variant bg-surface-container-lowest focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all pr-10"
+            className="w-full px-3 py-2 rounded-lg border border-border bg-surface-sunken-lowest focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all pr-10"
             placeholder="••••••••"
           />
           <button
             type="button"
             onClick={() => setShowPassword(!showPassword)}
-            className="absolute right-2 top-1/2 -translate-y-1/2 text-on-surface-variant hover:text-primary"
+            className="absolute right-2 top-1/2 -translate-y-1/2 text-ink-muted hover:text-primary"
             tabIndex={-1}
             aria-label={showPassword ? t('auth.hide_password') : t('auth.show_password')}
           >
@@ -254,11 +254,11 @@ export function RegisterForm() {
               />
             </div>
             <div className="flex items-center justify-between mt-1">
-              <span className="text-xs text-on-surface-variant">
+              <span className="text-xs text-ink-muted">
                 {t(`auth.password_${strength.label}`)}
               </span>
               {strength.hints.length > 0 && (
-                <span className="text-xs text-on-surface-variant">
+                <span className="text-xs text-ink-muted">
                   {strength.hints[0]}
                 </span>
               )}
@@ -266,7 +266,7 @@ export function RegisterForm() {
           </div>
         )}
         {errors.password && (
-          <p id="password-error" role="alert" className="text-error text-sm mt-1">
+          <p id="password-error" role="alert" className="text-destructive text-sm mt-1">
             {errors.password.message && PASSWORD_ERROR_MAP[errors.password.message]
               ? t(PASSWORD_ERROR_MAP[errors.password.message])
               : errors.password.message ?? ''}
@@ -275,7 +275,7 @@ export function RegisterForm() {
       </div>
 
       <div>
-        <label htmlFor="confirmPassword" className="block text-label-md text-on-surface-variant mb-1">
+        <label htmlFor="confirmPassword" className="block text-label-md text-ink-muted mb-1">
           {t('auth.confirm_password')}
         </label>
         <input
@@ -286,11 +286,11 @@ export function RegisterForm() {
           aria-required="true"
           aria-invalid={!!errors.confirmPassword}
           aria-describedby={errors.confirmPassword ? 'confirmPassword-error' : undefined}
-          className="w-full px-3 py-2 rounded-lg border border-outline-variant bg-surface-container-lowest focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all"
+          className="w-full px-3 py-2 rounded-lg border border-border bg-surface-sunken-lowest focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all"
           placeholder="••••••••"
         />
         {errors.confirmPassword && (
-          <p id="confirmPassword-error" role="alert" className="text-error text-sm mt-1">
+          <p id="confirmPassword-error" role="alert" className="text-destructive text-sm mt-1">
             {errors.confirmPassword.message && PASSWORD_ERROR_MAP[errors.confirmPassword.message]
               ? t(PASSWORD_ERROR_MAP[errors.confirmPassword.message])
               : errors.confirmPassword.message ?? ''}
@@ -301,7 +301,7 @@ export function RegisterForm() {
       {submitError && (
         <div
           role="alert"
-          className="rounded-lg border border-error/40 bg-error-container/40 text-error px-3 py-2 text-sm"
+          className="rounded-lg border border-error/40 bg-destructive-subtle/40 text-destructive px-3 py-2 text-sm"
         >
           {submitError}
         </div>
@@ -319,14 +319,14 @@ export function RegisterForm() {
         {isSubmitting ? t('auth.registering') : t('auth.create_account')}
       </Button>
 
-      <p className="text-center text-sm text-on-surface-variant mt-4">
+      <p className="text-center text-sm text-ink-muted mt-4">
         {t('auth.already_have_account')}{' '}
         <Link to="/login" className="text-primary underline hover:text-primary/80">
           {t('auth.sign_in')}
         </Link>
       </p>
 
-      <p className="text-center text-xs text-on-surface-variant flex items-center justify-center gap-1">
+      <p className="text-center text-xs text-ink-muted flex items-center justify-center gap-1">
         <Check size={12} /> {t('auth.admin_role_note')}
       </p>
     </form>

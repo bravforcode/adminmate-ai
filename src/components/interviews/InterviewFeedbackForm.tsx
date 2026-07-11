@@ -18,9 +18,9 @@ export function InterviewFeedbackForm({ interview, onClose }: Props) {
   const recommendations = [
     { value: 'strong_hire', label: t('interviews.feedback.strong_hire'), icon: ThumbsUp, color: 'text-green-600 dark:text-success' },
     { value: 'hire', label: t('interviews.feedback.hire'), icon: ThumbsUp, color: 'text-teal-600 dark:text-success' },
-    { value: 'neutral', label: t('interviews.feedback.neutral'), icon: Minus, color: 'text-gray-500 dark:text-on-surface-variant' },
+    { value: 'neutral', label: t('interviews.feedback.neutral'), icon: Minus, color: 'text-gray-500 text-ink-muted' },
     { value: 'no_hire', label: t('interviews.feedback.no_hire'), icon: ThumbsDown, color: 'text-orange-600 dark:text-warning' },
-    { value: 'strong_no_hire', label: t('interviews.feedback.strong_no_hire'), icon: ThumbsDown, color: 'text-red-600 dark:text-error' },
+    { value: 'strong_no_hire', label: t('interviews.feedback.strong_no_hire'), icon: ThumbsDown, color: 'text-red-600 dark:text-destructive' },
   ]
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -31,9 +31,9 @@ export function InterviewFeedbackForm({ interview, onClose }: Props) {
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
-      <h3 className="font-semibold dark:text-on-surface">{t('interviews.feedback.title')}</h3>
+      <h3 className="font-semibold text-ink">{t('interviews.feedback.title')}</h3>
       <div>
-        <label className="block text-sm font-medium mb-2 dark:text-on-surface">{t('interviews.feedback.rating')}</label>
+        <label className="block text-sm font-medium mb-2 text-ink">{t('interviews.feedback.rating')}</label>
         <div className="flex gap-1">
           {[1, 2, 3, 4, 5].map(n => (
             <button type="button" key={n} onClick={() => setRating(n)}
@@ -44,19 +44,19 @@ export function InterviewFeedbackForm({ interview, onClose }: Props) {
         </div>
       </div>
       <div>
-        <label className="block text-sm font-medium mb-2 dark:text-on-surface">{t('interviews.feedback.recommendation')}</label>
+        <label className="block text-sm font-medium mb-2 text-ink">{t('interviews.feedback.recommendation')}</label>
         <div className="grid grid-cols-1 gap-2">
           {recommendations.map(r => (
             <button type="button" key={r.value} onClick={() => setRecommendation(r.value)}
-              className={cn('flex items-center gap-3 p-3 rounded-lg border text-sm transition-colors', recommendation === r.value ? 'border-primary dark:border-primary bg-primary-container/10 dark:bg-primary-container/20' : 'border-outline-variant dark:border-outline hover:border-primary/50 dark:hover:border-primary/50')}>
+              className={cn('flex items-center gap-3 p-3 rounded-lg border text-sm transition-colors', recommendation === r.value ? 'border-primary dark:border-primary bg-primary-container/10 dark:bg-primary-container/20' : 'border-border hover:border-primary/50 dark:hover:border-primary/50')}>
               <r.icon size={18} className={r.color} /> {r.label}
             </button>
           ))}
         </div>
       </div>
       <div>
-        <label htmlFor="interview-feedback" className="block text-sm font-medium mb-1 dark:text-on-surface">{t('interviews.feedback.detailed_feedback')}</label>
-        <textarea id="interview-feedback" value={feedback} onChange={e => setFeedback(e.target.value)} rows={4} className="w-full px-4 py-3 rounded-xl border border-outline-variant dark:border-outline bg-surface-container-lowest dark:bg-surface-container-lowest text-on-surface dark:text-on-surface focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all duration-200 outline-none" placeholder={t('interviews.feedback.placeholder')} />
+        <label htmlFor="interview-feedback" className="block text-sm font-medium mb-1 text-ink">{t('interviews.feedback.detailed_feedback')}</label>
+        <textarea id="interview-feedback" value={feedback} onChange={e => setFeedback(e.target.value)} rows={4} className="w-full px-4 py-3 rounded-xl border border-border bg-surface-sunken-lowest bg-surface-sunken-lowest text-ink focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all duration-200 outline-none" placeholder={t('interviews.feedback.placeholder')} />
       </div>
       <div className="flex justify-end gap-3">
         <Button variant="outline" type="button" onClick={onClose}>{t('interviews.feedback.cancel')}</Button>

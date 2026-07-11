@@ -329,6 +329,10 @@ CREATE TABLE audit_logs (
 
 
 -- Migration: 20240101000015_chat_platform_connections.sql
+-- SECURITY WARNING: access_token column stores API tokens in plaintext.
+-- TODO: Migrate to Supabase Vault (access_token_vault_id column exists).
+-- See: supabase/migrations/20240105000007_vault_migrate_tokens.sql
+-- HR admins with SELECT access can read these tokens via RLS.
 CREATE TABLE chat_platform_connections (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     company_id UUID NOT NULL REFERENCES companies(id) ON DELETE CASCADE,
@@ -498,7 +502,7 @@ CREATE POLICY "chat_insert" ON chat_messages FOR INSERT WITH CHECK (user_id = au
 
 ALTER TABLE notifications ENABLE ROW LEVEL SECURITY;
 CREATE POLICY "notif_read" ON notifications FOR SELECT USING (user_id = auth.uid());
-CREATE POLICY "notif_insert" ON notifications FOR INSERT WITH CHECK (true);
+CREATE POLICY "notif_insert" ON notifications FOR INSERT WITH CHECK (user_id = auth.uid() AND company_id = get_user_company_id());
 CREATE POLICY "notif_update" ON notifications FOR UPDATE USING (user_id = auth.uid());
 
 ALTER TABLE audit_logs ENABLE ROW LEVEL SECURITY;
@@ -903,7 +907,7 @@ ALTER TABLE notifications ENABLE ROW LEVEL SECURITY;
 DROP POLICY IF EXISTS "notif_read" ON notifications;
 CREATE POLICY "notif_read" ON notifications FOR SELECT TO authenticated USING (true);
 DROP POLICY IF EXISTS "notif_insert_any" ON notifications;
-CREATE POLICY "notif_insert_any" ON notifications FOR INSERT TO authenticated WITH CHECK (true);
+CREATE POLICY "notif_insert_any" ON notifications FOR INSERT TO authenticated WITH CHECK (user_id = auth.uid() AND company_id = get_user_company_id());
 
 
 -- Migration: 20240102000004_hardened_rls.sql
@@ -1056,7 +1060,7 @@ DROP POLICY IF EXISTS "notif_insert_any" ON notifications;
 CREATE POLICY "notif_read" ON notifications FOR SELECT TO authenticated
   USING (user_id = auth.uid() OR safe_user_role() = 'admin');
 CREATE POLICY "notif_insert_any" ON notifications FOR INSERT TO authenticated
-  WITH CHECK (true);
+  WITH CHECK (user_id = auth.uid() AND company_id = get_user_company_id());
 
 -- ============== PERFORMANCE INDEXES ==============
 CREATE INDEX IF NOT EXISTS idx_user_profiles_company_id ON user_profiles(company_id);
@@ -2129,10 +2133,10 @@ CREATE POLICY "cv_read" ON cv_documents FOR SELECT TO authenticated
     candidate_id IN (SELECT id FROM candidates WHERE company_id = safe_user_company_id())
   );
 
--- FIX P0: Notifications INSERT policy — users may only insert notifications for themselves.
+-- FIX P0: Notifications INSERT policy — users may only insert notifications for themselves in their company.
 DROP POLICY IF EXISTS "notif_insert_any" ON notifications;
 CREATE POLICY "notif_insert_any" ON notifications FOR INSERT TO authenticated
-  WITH CHECK (user_id = auth.uid());
+  WITH CHECK (user_id = auth.uid() AND company_id = get_user_company_id());
 
 
 -- Migration: 20240104000002_webhook_idempotency.sql

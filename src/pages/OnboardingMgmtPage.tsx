@@ -73,22 +73,22 @@ export function OnboardingMgmtPage() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-headline-md font-bold text-on-surface dark:text-on-surface">{t('hub')}</h1>
-        <p className="text-body-md text-on-surface-variant dark:text-on-surface-variant mt-1">{t('subtitle')}</p>
+        <h1 className="text-headline-md font-bold text-ink text-ink">{t('hub')}</h1>
+        <p className="text-body-md text-ink-muted text-ink-muted mt-1">{t('subtitle')}</p>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
         <div className="lg:col-span-8 space-y-6 w-full min-w-0">
-          <div className="bg-surface dark:bg-surface rounded-xl border border-outline-variant dark:border-outline p-6 shadow-sm">
-            <h3 className="text-title-lg font-semibold text-on-surface dark:text-on-surface mb-4">{t('my_checklist')}</h3>
+          <div className="bg-surface rounded-xl border border-border p-6 shadow-sm">
+            <h3 className="text-title-lg font-semibold text-ink mb-4">{t('my_checklist')}</h3>
             {myChecklist ? (
               <>
                 <div className="mb-4">
-                  <div className="flex justify-between text-sm text-on-surface-variant dark:text-on-surface-variant mb-1">
+                  <div className="flex justify-between text-sm text-ink-muted text-ink-muted mb-1">
                     <span>{t('progress')}</span>
                     <span>{myChecklist.progress_percentage || 0}%</span>
                   </div>
-                  <div className="w-full bg-surface-container-high dark:bg-surface-container h-2 rounded-full overflow-hidden">
+                  <div className="w-full bg-surface-sunken h-2 rounded-full overflow-hidden">
                     <div className="bg-primary h-full rounded-full transition-all" style={{ width: `${myChecklist.progress_percentage || 0}%` }} />
                   </div>
                 </div>
@@ -105,28 +105,28 @@ export function OnboardingMgmtPage() {
                         disabled={isUpcoming}
                         className={cn(
                           'w-full flex items-center gap-3 p-3 rounded-lg border text-left transition-colors',
-                          isCompleted && 'bg-surface-container-low dark:bg-surface-container-low border-outline-variant dark:border-outline',
-                          isCurrent && 'bg-surface dark:bg-surface border-primary dark:border-primary ring-1 ring-primary dark:ring-primary',
-                          isUpcoming && 'bg-surface dark:bg-surface border-outline-variant dark:border-outline opacity-60 cursor-not-allowed'
+                          isCompleted && 'bg-surface-sunken border-border border-border',
+                          isCurrent && 'bg-surface border-primary dark:border-primary ring-1 ring-primary dark:ring-primary',
+                          isUpcoming && 'bg-surface border-border opacity-60 cursor-not-allowed'
                         )}
                       >
                         <div className={cn(
                           'w-6 h-6 rounded-full flex items-center justify-center shrink-0',
-                          isCompleted && 'bg-primary text-on-primary',
+                          isCompleted && 'bg-primary text-white',
                           isCurrent && 'border-2 border-primary text-primary',
-                          isUpcoming && 'border-2 border-outline-variant'
+                          isUpcoming && 'border-2 border-border'
                         )}>
                           {isCompleted ? <Check size={14} /> : isCurrent ? <div className="w-2 h-2 bg-primary rounded-full" /> : null}
                         </div>
                         <div className="flex-1">
-                          <p className={cn('text-sm font-semibold dark:text-on-surface', isCompleted && 'line-through text-on-surface-variant dark:text-on-surface-variant')}>{task.task_name}</p>
-                          {isCurrent && <p className="text-xs text-error mt-0.5">{t('due_today')}</p>}
+                          <p className={cn('text-sm font-semibold text-ink', isCompleted && 'line-through text-ink-muted text-ink-muted')}>{task.task_name}</p>
+                          {isCurrent && <p className="text-xs text-destructive mt-0.5">{t('due_today')}</p>}
                           {isUpcoming && task.assigned_to && (
-                            <p className="text-xs text-on-surface-variant mt-0.5">{t('requires')} {task.assigned_to}</p>
+                            <p className="text-xs text-ink-muted mt-0.5">{t('requires')} {task.assigned_to}</p>
                           )}
                         </div>
                         {isCurrent && (
-                          <span className="px-3 py-1 bg-primary text-on-primary text-xs font-medium rounded">
+                          <span className="px-3 py-1 bg-primary text-white text-xs font-medium rounded">
                             {t('start')}
                           </span>
                         )}
@@ -136,13 +136,13 @@ export function OnboardingMgmtPage() {
                 </div>
               </>
             ) : (
-              <p className="text-sm text-on-surface-variant dark:text-on-surface-variant py-4">{t('no_checklist')}</p>
+              <p className="text-sm text-ink-muted text-ink-muted py-4">{t('no_checklist')}</p>
             )}
           </div>
 
-          <div className="bg-surface dark:bg-surface rounded-xl border border-outline-variant dark:border-outline p-6 shadow-sm">
+          <div className="bg-surface rounded-xl border border-border p-6 shadow-sm">
             <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2 mb-4">
-              <h3 className="text-title-lg font-semibold text-on-surface dark:text-on-surface">{t('team_status')}</h3>
+              <h3 className="text-title-lg font-semibold text-ink text-ink">{t('team_status')}</h3>
               <Button variant="link" size="sm" onClick={() => navigate('/recruitment/candidates')}>{t('view_all')}</Button>
             </div>
             {isError ? (
@@ -158,30 +158,30 @@ export function OnboardingMgmtPage() {
                 {checklists && checklists.length > 0 ? (
                   <table role="table" className="table-card-mobile w-full text-left border-collapse min-w-[500px]">
                     <thead>
-                      <tr className="bg-surface-container dark:bg-surface-container/50 border-b border-outline-variant/50 dark:border-outline/50">
-                        <th className="py-3 px-4 text-xs font-semibold uppercase tracking-wider text-on-surface-variant dark:text-on-surface-variant">{t('employee')}</th>
-                        <th className="py-3 px-4 text-xs font-semibold uppercase tracking-wider text-on-surface-variant dark:text-on-surface-variant">{t('role')}</th>
-                        <th className="py-3 px-4 text-xs font-semibold uppercase tracking-wider text-on-surface-variant dark:text-on-surface-variant">{t('progress')}</th>
-                        <th className="py-3 px-4 text-xs font-semibold uppercase tracking-wider text-on-surface-variant dark:text-on-surface-variant">{t('status')}</th>
+                      <tr className="bg-surface-sunken bg-surface-sunken/50 border-b border-border/50 border-border/50">
+                        <th className="py-3 px-4 text-xs font-semibold uppercase tracking-wider text-ink-muted text-ink-muted">{t('employee')}</th>
+                        <th className="py-3 px-4 text-xs font-semibold uppercase tracking-wider text-ink-muted text-ink-muted">{t('role')}</th>
+                        <th className="py-3 px-4 text-xs font-semibold uppercase tracking-wider text-ink-muted text-ink-muted">{t('progress')}</th>
+                        <th className="py-3 px-4 text-xs font-semibold uppercase tracking-wider text-ink-muted text-ink-muted">{t('status')}</th>
                       </tr>
                     </thead>
                     <tbody>
                       {checklists?.map((cl: { id: string; template_name?: string; progress_percentage?: number; status?: string; user_profiles?: { full_name?: string } }) => (
-                        <tr key={cl.id} className="border-b border-outline-variant/50 dark:border-outline/50 hover:bg-surface-container-high/50 dark:hover:bg-surface-container/30 transition-colors duration-150 last:border-0">
-                          <td className="py-3 px-4 text-sm text-on-surface dark:text-on-surface" data-label={t('employee')}>{cl.user_profiles?.full_name}</td>
-                          <td className="py-3 px-4 text-sm text-on-surface dark:text-on-surface text-on-surface-variant" data-label={t('role')}>{cl.template_name}</td>
-                          <td className="py-3 px-4 text-sm text-on-surface dark:text-on-surface" data-label={t('progress')}>
+                        <tr key={cl.id} className="border-b border-border/50 border-border/50 hover:bg-surface-sunken/50 dark:hover:bg-surface-sunken/30 transition-colors duration-150 last:border-0">
+                          <td className="py-3 px-4 text-sm text-ink text-ink" data-label={t('employee')}>{cl.user_profiles?.full_name}</td>
+                          <td className="py-3 px-4 text-sm text-ink text-ink-muted" data-label={t('role')}>{cl.template_name}</td>
+                          <td className="py-3 px-4 text-sm text-ink text-ink" data-label={t('progress')}>
                             <div className="flex items-center gap-2 w-24 sm:w-32">
-                              <div className="flex-1 bg-surface-container dark:bg-surface-container h-1.5 rounded-full overflow-hidden">
+                              <div className="flex-1 bg-surface-sunken h-1.5 rounded-full overflow-hidden">
                                 <div className={cn('h-full rounded-full', (cl.progress_percentage ?? 0) >= 80 ? 'bg-green-500' : (cl.progress_percentage ?? 0) >= 40 ? 'bg-primary' : 'bg-yellow-500')} style={{ width: `${cl.progress_percentage || 0}%` }} />
                               </div>
-                              <span className="text-xs text-on-surface-variant dark:text-on-surface-variant">{cl.progress_percentage || 0}%</span>
+                              <span className="text-xs text-ink-muted text-ink-muted">{cl.progress_percentage || 0}%</span>
                             </div>
                           </td>
-                          <td className="py-3 px-4 text-sm text-on-surface dark:text-on-surface" data-label={t('status')}>
+                          <td className="py-3 px-4 text-sm text-ink text-ink" data-label={t('status')}>
                             <span className={cn(
                               'inline-block px-2 py-0.5 rounded text-xs font-medium',
-                              cl.status === 'completed' ? 'bg-green-100 dark:bg-success-container/30 text-green-700 dark:text-success' : (cl.progress_percentage ?? 0) < 20 ? 'bg-error-container dark:bg-error-container/30 text-on-error-container dark:text-error' : 'bg-surface-container-high dark:bg-surface-container text-on-surface dark:text-on-surface'
+                              cl.status === 'completed' ? 'bg-green-100 dark:bg-success-subtle/30 text-green-700 dark:text-success' : (cl.progress_percentage ?? 0) < 20 ? 'bg-destructive-subtle dark:bg-destructive-subtle/30 text-destructive dark:text-destructive' : 'bg-surface-sunken text-ink text-ink'
                             )}>
                               {cl.status === 'completed' ? t('completed') : (cl.progress_percentage ?? 0) < 20 ? t('at_risk') : t('on_track')}
                             </span>
@@ -203,40 +203,40 @@ export function OnboardingMgmtPage() {
         </div>
 
         <div className="lg:col-span-4 space-y-6">
-          <div className="bg-surface dark:bg-surface rounded-xl border border-outline-variant dark:border-outline shadow-sm flex flex-col h-[400px] overflow-hidden">
+          <div className="bg-surface rounded-xl border border-border shadow-sm flex flex-col h-[400px] overflow-hidden">
             <div className="bg-primary-container dark:bg-primary-container p-4 flex items-center gap-3">
-              <div className="w-8 h-8 rounded bg-surface dark:bg-surface flex items-center justify-center text-primary dark:text-accent-dim">
+              <div className="w-8 h-8 rounded bg-surface flex items-center justify-center text-primary dark:text-primary-muted">
                 <Bot size={20} />
               </div>
               <div>
-                <h3 className="text-sm font-bold text-on-primary-container dark:text-on-surface">Mate AI</h3>
-                <p className="text-xs text-inverse-primary dark:text-on-surface-variant">{t('ai.hr_assistant')}</p>
+                <h3 className="text-sm font-bold text-white-container text-ink">Mate AI</h3>
+                <p className="text-xs text-inverse-primary text-ink-muted">{t('ai.hr_assistant')}</p>
               </div>
             </div>
-            <div className="flex-1 p-4 overflow-y-auto bg-surface dark:bg-surface flex flex-col gap-3">
+            <div className="flex-1 p-4 overflow-y-auto bg-surface flex flex-col gap-3">
               {messages.map((msg, i) => (
                 <div key={i} className={cn('flex gap-2', msg.role === 'user' && 'justify-end')}>
                   {msg.role === 'bot' && (
-                    <div className="w-6 h-6 rounded bg-primary-container dark:bg-primary-container text-on-primary dark:text-accent-dim flex items-center justify-center shrink-0 mt-1">
+                    <div className="w-6 h-6 rounded bg-primary-container dark:bg-primary-container text-white dark:text-primary-muted flex items-center justify-center shrink-0 mt-1">
                       <Bot size={14} />
                     </div>
                   )}
                   <div className={cn(
                     'p-2 rounded-lg text-sm max-w-[85%]',
-                    msg.role === 'bot' ? 'bg-surface-container-low dark:bg-surface-container-low rounded-tl-none text-on-surface dark:text-on-surface' : 'bg-primary dark:bg-primary text-on-primary dark:text-on-primary rounded-tr-none'
+                    msg.role === 'bot' ? 'bg-surface-sunken rounded-tl-none text-ink text-ink' : 'bg-primary dark:bg-primary text-white dark:text-white rounded-tr-none'
                   )}>
                     {msg.text}
                   </div>
                 </div>
               ))}
             </div>
-            <div className="p-2 bg-surface dark:bg-surface border-t border-outline-variant dark:border-outline flex gap-2 items-center">
+            <div className="p-2 bg-surface border-t border-border flex gap-2 items-center">
               <input
                 value={input}
                 onChange={e => setInput(e.target.value)}
                 onKeyDown={e => e.key === 'Enter' && handleSendMessage()}
                 placeholder={t('ai.ask_question')}
-                className="flex-1 bg-surface-container dark:bg-surface-container-lowest border-none rounded-full px-4 py-2 text-sm text-on-surface dark:text-on-surface focus:ring-1 focus:ring-primary outline-none"
+                className="flex-1 bg-surface-sunken bg-surface-sunken-lowest border-none rounded-full px-4 py-2 text-sm text-ink focus:ring-1 focus:ring-primary outline-none"
               />
               <Button
                 variant="default"
@@ -248,31 +248,31 @@ export function OnboardingMgmtPage() {
             </div>
           </div>
 
-          <div className="bg-surface dark:bg-surface rounded-xl border border-outline-variant dark:border-outline p-6 shadow-sm">
-            <h3 className="text-title-lg font-semibold text-on-surface dark:text-on-surface mb-4">{t('quick_resources')}</h3>
+          <div className="bg-surface rounded-xl border border-border p-6 shadow-sm">
+            <h3 className="text-title-lg font-semibold text-ink mb-4">{t('quick_resources')}</h3>
             <ul className="space-y-2">
               <li>
-                <button onClick={() => navigate('/documents?type=handbook')} className="w-full flex items-center justify-between p-2 rounded hover:bg-surface-container-high dark:hover:bg-surface-container transition-colors text-on-surface dark:text-on-surface group">
+                <button onClick={() => navigate('/documents?type=handbook')} className="w-full flex items-center justify-between p-2 rounded hover:bg-surface-sunken dark:hover:bg-surface-sunken transition-colors text-ink group">
                   <div className="flex items-center gap-2">
-                    <BookOpen size={18} className="text-outline-variant dark:text-outline-variant group-hover:text-primary dark:group-hover:text-accent-dim" />
+                    <BookOpen size={18} className="text-outline-variant dark:text-outline-variant group-hover:text-primary dark:group-hover:text-primary-muted" />
                     <span className="text-sm">{t('resources.handbook')}</span>
                   </div>
                   <ExternalLink size={14} className="text-outline-variant dark:text-outline-variant" />
                 </button>
               </li>
               <li>
-                <button onClick={() => navigate('/documents?type=health_insurance')} className="w-full flex items-center justify-between p-2 rounded hover:bg-surface-container-high dark:hover:bg-surface-container transition-colors text-on-surface dark:text-on-surface group">
+                <button onClick={() => navigate('/documents?type=health_insurance')} className="w-full flex items-center justify-between p-2 rounded hover:bg-surface-sunken dark:hover:bg-surface-sunken transition-colors text-ink group">
                   <div className="flex items-center gap-2">
-                    <Heart size={18} className="text-outline-variant dark:text-outline-variant group-hover:text-primary dark:group-hover:text-accent-dim" />
+                    <Heart size={18} className="text-outline-variant dark:text-outline-variant group-hover:text-primary dark:group-hover:text-primary-muted" />
                     <span className="text-sm">{t('resources.health_benefits')}</span>
                   </div>
                   <ExternalLink size={14} className="text-outline-variant dark:text-outline-variant" />
                 </button>
               </li>
               <li>
-                <button onClick={() => navigate('/documents?type=company_policy')} className="w-full flex items-center justify-between p-2 rounded hover:bg-surface-container-high dark:hover:bg-surface-container transition-colors text-on-surface dark:text-on-surface group">
+                <button onClick={() => navigate('/documents?type=company_policy')} className="w-full flex items-center justify-between p-2 rounded hover:bg-surface-sunken dark:hover:bg-surface-sunken transition-colors text-ink group">
                   <div className="flex items-center gap-2">
-                    <Scale size={18} className="text-outline-variant dark:text-outline-variant group-hover:text-primary dark:group-hover:text-accent-dim" />
+                    <Scale size={18} className="text-outline-variant dark:text-outline-variant group-hover:text-primary dark:group-hover:text-primary-muted" />
                     <span className="text-sm">{t('resources.labor_law')}</span>
                   </div>
                   <ExternalLink size={14} className="text-outline-variant dark:text-outline-variant" />
@@ -281,14 +281,14 @@ export function OnboardingMgmtPage() {
             </ul>
           </div>
 
-          <div className="bg-surface dark:bg-surface rounded-xl border border-outline-variant dark:border-outline p-6 shadow-sm">
-            <h3 className="text-title-lg font-semibold text-on-surface dark:text-on-surface mb-3">{t('accepted_offers')}</h3>
+          <div className="bg-surface rounded-xl border border-border p-6 shadow-sm">
+            <h3 className="text-title-lg font-semibold text-ink mb-3">{t('accepted_offers')}</h3>
             {acceptedOffers && acceptedOffers.length > 0 ? (
               acceptedOffers.map((offer: Offer) => (
-                <div key={offer.id} className="flex items-center justify-between py-2 border-b border-outline-variant dark:border-outline last:border-0">
+                <div key={offer.id} className="flex items-center justify-between py-2 border-b border-border last:border-0">
                   <div>
-                    <p className="text-sm font-medium dark:text-on-surface">{offer.candidates?.full_name}</p>
-                    <p className="text-xs text-on-surface-variant dark:text-on-surface-variant">{offer.position_title}</p>
+                    <p className="text-sm font-medium text-ink">{offer.candidates?.full_name}</p>
+                    <p className="text-xs text-ink-muted text-ink-muted">{offer.position_title}</p>
                   </div>
                   <Button
                     variant="default"

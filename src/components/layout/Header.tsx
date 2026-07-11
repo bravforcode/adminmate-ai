@@ -18,51 +18,44 @@ export function Header() {
       role="banner"
       aria-label="Header"
       className={cn(
-        'h-[60px] fixed top-0 right-0 left-0 z-40',
-        'bg-surface border-b border-border-subtle',
+        'h-12 fixed top-0 right-0 left-0 z-40',
+        'bg-surface/80 backdrop-blur-lg border-b border-border',
         'flex items-center justify-between',
-        'px-7 font-sans',
-        'max-md:ml-0 md:ml-[260px]',
+        'px-4 md:px-6',
+        'md:sidebar-offset',
       )}
     >
       {/* Left: hamburger + search */}
-      <div className="flex items-center gap-4 flex-1">
+      <div className="flex items-center gap-3 flex-1">
         <button
           onClick={toggleSidebar}
-          className="md:hidden text-navy min-w-[44px] min-h-[44px] flex items-center justify-center rounded-lg bg-transparent border-none cursor-pointer hover:bg-gray-100 transition-colors"
+          className="md:hidden text-ink min-w-[40px] min-h-[40px] flex items-center justify-center rounded-lg bg-transparent border-none cursor-pointer hover:bg-surface-sunken transition-colors"
           aria-label={sidebarOpen ? 'Close navigation menu' : 'Open navigation menu'}
         >
-          <Menu size={22} />
+          <Menu size={20} />
         </button>
 
-          {/* Global search - desktop */}
-          {isHR && (
-            <div data-tour="search" className="hidden sm:flex flex-1 max-w-[380px]">
-              <GlobalSearch />
-            </div>
-          )}
-
-          {/* Global search - mobile */}
-          {isHR && (
-            <div className="sm:hidden flex-1">
-              <GlobalSearch />
-            </div>
-          )}
+        {/* Global search */}
+        {isHR && (
+          <div data-tour="search" className="flex-1 max-w-[360px]">
+            <GlobalSearch />
+          </div>
+        )}
       </div>
 
       {/* Right: controls */}
-      <div className="flex items-center gap-2">
+      <div className="flex items-center gap-1.5">
         <ThemeToggle />
         <div data-tour="language"><LanguageSwitcher /></div>
-        <div className="hidden sm:block w-px h-5 bg-border-subtle" />
+        <div className="hidden sm:block w-px h-4 bg-border mx-1" />
         <div data-tour="notifications"><NotificationBell /></div>
         <button
           onClick={resetAllTours}
-          className="min-w-[36px] min-h-[36px] flex items-center justify-center rounded-lg hover:bg-gray-100 transition-colors"
+          className="min-w-[32px] min-h-[32px] flex items-center justify-center rounded-lg hover:bg-surface-sunken transition-colors"
           title="Show onboarding tour again"
           aria-label="Show help tour"
         >
-          <HelpCircle size={20} className="text-gray-500" />
+          <HelpCircle size={18} className="text-ink-muted" />
         </button>
         <UserMenu />
       </div>

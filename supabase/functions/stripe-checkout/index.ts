@@ -83,7 +83,8 @@ serve(async (req: Request) => {
 
       const customer = await customerRes.json()
       if (customer.error) {
-        console.error('Stripe customer creation failed:', customer.error.message)
+        // SECURITY: Sanitize Stripe error before logging — never log full error details
+        console.error('Stripe customer creation failed:', customer.error.type || 'unknown')
         return errorResponse('Failed to create customer. Please try again.', 500, cors)
       }
 
@@ -120,7 +121,8 @@ serve(async (req: Request) => {
 
     const session = await sessionRes.json()
     if (session.error) {
-      console.error('Stripe checkout session failed:', session.error.message)
+      // SECURITY: Sanitize Stripe error before logging — never log full error details
+      console.error('Stripe checkout session failed:', session.error.type || 'unknown')
       return errorResponse('Failed to create checkout session. Please try again.', 500, cors)
     }
 

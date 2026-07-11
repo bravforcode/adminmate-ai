@@ -1,0 +1,130 @@
+{
+  "nav": {
+    "pricing": "Pricing",
+    "signIn": "Sign In",
+    "startFree": "Start Free"
+  },
+  "hero": {
+    "badge": "⚡ AI-Powered HR for Southeast Asia",
+    "title": "HR work that used to take all day now takes minutes",
+    "subtitle": "AdminMate AI helps SEA SMEs hire faster, onboard smarter, and stay compliant — with an AI assistant built for HR teams.",
+    "cta": "Start Free — No Credit Card →",
+    "ctaSecondary": "See How It Works",
+    "watchDemo": "▶ Watch Demo",
+    "noCreditCard": "Free for up to 10 employees • No credit card required"
+  },
+  "pain": {
+    "title": "HR in SEA shouldn't feel this hard",
+    "subtitle": "Small HR teams juggle spreadsheets, chat apps, paper forms, and guesswork. AdminMate AI replaces the chaos with one focused platform.",
+    "items": [
+      { "icon": "⏱", "title": "Too many manual tasks", "desc": "Posting jobs, screening CVs, scheduling interviews, chasing documents — all by hand." },
+      { "icon": "📋", "title": "Scattered paperwork", "desc": "Offers, contracts, and onboarding forms spread across email, LINE, and Google Drive." },
+      { "icon": "🛡", "title": "Compliance uncertainty", "desc": "PDPA, labor law, data residency — hard to track when you're a 5-person HR team." }
+    ]
+  },
+  "value": {
+    "title": "One platform for the full HR lifecycle",
+    "subtitle": "From the first job post to the last compliance check — AdminMate AI covers every step.",
+    "modules": [
+      { "icon": "Recruitment", "title": "Recruitment", "desc": "Post jobs, screen CVs with AI, manage your pipeline." },
+      { "icon": "Onboarding", "title": "Onboarding", "desc": "Track tasks, send documents, guide new hires." },
+      { "icon": "Documents", "title": "Documents", "desc": "Upload, send for e-signature, track status." },
+      { "icon": "AI Assistant", "title": "AI Assistant", "desc": "Ask Mate AI for job drafts, compliance answers, reports." }
+    ]
+  },
+  "features": {
+    "title": "Everything your HR team needs",
+    "subtitle": "One platform replacing five tools",
+    "global": {
+      "title": "Multi-Country Support",
+      "description": "Thailand, Vietnam, Indonesia — one platform, local compliance built in."
+    },
+    "compliance": {
+      "title": "Compliance Engine",
+      "description": "PDPA, labor law, statutory filing — automated and auditable."
+    },
+    "applicant": {
+      "title": "Applicant Portal",
+      "description": "Public career page with tracking. Candidates apply without accounts."
+    },
+    "ai": {
+      "title": "AI Assistant",
+      "description": "Mate AI drafts JDs, screens resumes, answers policy questions."
+    },
+    "payroll": {
+      "title": "Payroll",
+      "description": "Thai SSF, VN PIT, ID BPJS — calculated correctly every time."
+    },
+    "recruitment": {
+      "title": "Recruitment",
+      "description": "Kanban pipeline, interview scheduling, offer letters."
+    },
+    "attendance": {
+      "title": "Attendance & Leave",
+      "description": "Shift scheduling, leave management, approval workflows."
+    },
+    "automation": {
+      "title": "Automation",
+      "description": "LINE integration, workflow triggers, automated notifications."
+    }
+  },
+  "differentiators": {
+    "title": "Why AdminMate AI is Different",
+    "subtitle": "12 unique capabilities you won't find in other HR platforms",
+    "appPortal": { "title": "Public Applicant Portal", "desc": "Candidates apply and track without accounts" },
+    "aiAdvisor": { "title": "Built-in AI Advisor", "desc": "Embedded compliance advice, no external tools" },
+    "regional": { "title": "Southeast Asia Focus", "desc": "Purpose-built for TH/VN/ID" },
+    "realTime": { "title": "Real-Time Data Sync", "desc": "Instant updates across all modules" },
+    "bgIntel": { "title": "Background Intelligence", "desc": "Always-on compliance monitoring" },
+    "unifiedRecruit": { "title": "Unified Recruitment", "desc": "ATS + pipeline + LINE + public portal" },
+    "aiCompliance": { "title": "AI-Powered Compliance", "desc": "Learns your company's requirements" },
+    "taxEngine": { "title": "Regional Tax Engine", "desc": "Thai SSF, Vietnamese PIT, Indonesian BPJS" },
+    "selfService": { "title": "Employee Self-Service", "desc": "Profiles, time-off, payslips" },
+    "multiCountry": { "title": "Multi-Country from Day 1", "desc": "Single platform, multiple countries" },
+    "aiInsights": { "title": "AI Analytics Insights", "desc": "Natural language queries" },
+    "engagement": { "title": "Employee Engagement", "desc": "Surveys, recognition, health monitoring" }
+  },
+  "roi": {
+    "badge": "ROI Calculator",
+    "title": "Calculate Your Return on Investment",
+    "subtitle": "See how much time and money AdminMate AI can save your organization",
+    "timeSaved": "HR Admin Time Saved",
+    "costSaved": "Annual Cost Savings",
+    "penaltiesAvoided": "Compliance Penalties Avoided",
+    "payrollAccuracy": "Payroll Error Reduction",
+    "calculatorTitle": "Your Estimated Savings",
+    "calculatorSubtitle": "Input your company details for a personalized ROI estimate",
+    "employeeCount": "Number of Employees",
+    "countries": "Number of Countries",
+    "avgSalary": "Average Monthly Salary (USD)",
+    "estimatedSavings": "Estimated Annual Savings",
+    "basedOn": "Based on industry averages and customer data",
+    "cta": "Get Detailed ROI Report"
+  },
+  "demo": {
+    "badge": "Interactive Demo",
+    "title": "See AdminMate AI in Action",
+    "subtitle": "Walk through the key features with our guided demo",
+    "clickToTry": "Click a step on the left to see it in action"
+  },
+  "testimonials": {
+    "title": "Loved by HR Teams Across Asia",
+    "subtitle": "See what our customers have to say"
+  },
+  "trustedBy": "Trusted by forward-thinking companies across Southeast Asia",
+  "cta": {
+    "title": "Ready to simplify your HR?",
+    "subtitle": "Start free. No credit card required. Set up in minutes.",
+    "primary": "Create Free Account",
+    "secondary": "Talk to Sales",
+    "freeTrial": "14-day free trial",
+    "noContract": "No contract required",
+    "support247": "24/7 support"
+  },
+  "footer": {
+    "signIn": "Sign In",
+    "getStarted": "Get Started",
+    "rights": "All rights reserved.",
+    "disclaimer": "AdminMate AI is a product for HR workflow management. It does not provide legal, tax, or compliance advice."
+  }
+}

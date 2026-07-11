@@ -57,6 +57,11 @@ serve(async (req: Request) => {
     const supabaseServiceKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!
     const stripeWebhookSecret = Deno.env.get("STRIPE_WEBHOOK_SECRET")!
 
+    // SECURITY: Pin Stripe API version in Stripe Dashboard → Developers → Webhooks
+    // Current code expects: subscription_details (checkout.session.completed)
+    // API version must be >= 2024-11-20.acacia for this field to exist.
+    // If webhook breaks after Stripe upgrade, check: https://stripe.com/docs/upgrades
+
     // Get raw body for signature verification
     const body = await req.text()
     const signature = req.headers.get("stripe-signature") || ""
@@ -92,6 +97,11 @@ serve(async (req: Request) => {
     const companyId = event.data?.object?.metadata?.company_id
     if (!companyId) {
       return new Response("No company_id in metadata", { status: 200 })
+    }
+
+    // Type guard: ensure event.data.object exists
+    if (!event.data?.object) {
+      return new Response("Invalid event data", { status: 200 })
     }
 
     switch (event.type) {

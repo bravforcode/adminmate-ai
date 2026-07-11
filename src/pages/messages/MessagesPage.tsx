@@ -154,11 +154,11 @@ export default function MessagesPage() {
       <header className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
         <div>
           <h1 className="text-2xl font-bold text-on-background">{t('messages.title', 'Messages')}</h1>
-          <p className="text-sm text-on-surface-variant mt-1">{t('messages.subtitle', 'Manage message templates, drafts, and approvals')}</p>
+          <p className="text-sm text-ink-muted mt-1">{t('messages.subtitle', 'Manage message templates, drafts, and approvals')}</p>
         </div>
         <div className="flex items-center gap-2">
           <div className="relative">
-            <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant" />
+            <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-ink-muted" />
             <Input
               placeholder={t('common:search')}
               value={searchQuery}
@@ -219,7 +219,7 @@ export default function MessagesPage() {
                         </div>
                         <div className="flex-1 min-w-0">
                           <div className="flex items-center gap-2 mb-1">
-                            <span className="text-sm font-medium text-on-surface">{draft.channel.toUpperCase()}</span>
+                            <span className="text-sm font-medium text-ink">{draft.channel.toUpperCase()}</span>
                             <Badge className={cn('text-xs', STATUS_COLORS[draft.status])}>
                               {draft.status.replace(/_/g, ' ')}
                             </Badge>
@@ -228,10 +228,10 @@ export default function MessagesPage() {
                             )}
                           </div>
                           {draft.subject && (
-                            <p className="text-sm font-medium text-on-surface mb-1">{draft.subject}</p>
+                            <p className="text-sm font-medium text-ink mb-1">{draft.subject}</p>
                           )}
-                          <p className="text-sm text-on-surface-variant line-clamp-2">{draft.body}</p>
-                          <p className="text-xs text-on-surface-variant mt-2">
+                          <p className="text-sm text-ink-muted line-clamp-2">{draft.body}</p>
+                          <p className="text-xs text-ink-muted mt-2">
                             {t('messages.to', 'To')}: {draft.recipient_type} • {new Date(draft.created_at).toLocaleString()}
                           </p>
                         </div>
@@ -302,14 +302,14 @@ export default function MessagesPage() {
                     <div className="flex-1">
                       <div className="flex items-center gap-2 mb-2">
                         <Clock size={16} className="text-yellow-600" />
-                        <span className="text-sm font-medium text-on-surface">
+                        <span className="text-sm font-medium text-ink">
                           {t('messages.pending_approval', 'Pending Approval')}
                         </span>
-                        <span className="text-xs text-on-surface-variant">
+                        <span className="text-xs text-ink-muted">
                           {new Date(approval.created_at).toLocaleString()}
                         </span>
                       </div>
-                      <p className="text-sm text-on-surface-variant">
+                      <p className="text-sm text-ink-muted">
                         {t('messages.draft_id', 'Draft')}: {approval.message_draft_id}
                       </p>
                     </div>
@@ -362,13 +362,13 @@ export default function MessagesPage() {
                     <div className="flex items-start justify-between mb-3">
                       <div className="flex items-center gap-2">
                         <ChannelIcon size={16} className="text-primary" />
-                        <span className="text-sm font-medium text-on-surface">{template.name}</span>
+                        <span className="text-sm font-medium text-ink">{template.name}</span>
                       </div>
                       <Badge variant={template.is_active ? 'default' : 'secondary'} className="text-xs">
                         {template.is_active ? t('messages.active', 'Active') : t('messages.inactive', 'Inactive')}
                       </Badge>
                     </div>
-                    <p className="text-xs text-on-surface-variant mb-3 line-clamp-2">
+                    <p className="text-xs text-ink-muted mb-3 line-clamp-2">
                       {template.description ?? template.body_template.slice(0, 100)}
                     </p>
                     <div className="flex items-center justify-between">

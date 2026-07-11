@@ -84,17 +84,17 @@ function ChangePasswordCard({ t }: { t: ReturnType<typeof useTranslation>['t'] }
   }
 
   return (
-    <div className="bg-surface rounded-xl border border-outline-variant shadow-sm p-6">
+    <div className="bg-surface rounded-xl border border-border shadow-sm p-6">
       <div className="flex items-center gap-2 mb-6 border-b border-surface-container pb-3">
         <KeyRound size={20} className="text-primary" />
-        <h3 className="text-title-lg font-semibold text-on-surface">
+        <h3 className="text-title-lg font-semibold text-ink">
           {t('auth.change_password') || 'Change Password'}
         </h3>
       </div>
 
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-4" noValidate>
         <div>
-          <label htmlFor="new-password" className="block text-label-md text-on-surface-variant mb-1">
+          <label htmlFor="new-password" className="block text-label-md text-ink-muted mb-1">
             {t('auth.new_password')}
           </label>
           <div className="relative">
@@ -106,13 +106,13 @@ function ChangePasswordCard({ t }: { t: ReturnType<typeof useTranslation>['t'] }
               type={showPassword ? 'text' : 'password'}
               autoComplete="new-password"
               data-testid="change-password-input"
-              className="w-full px-3 py-2 rounded-lg border border-outline-variant bg-surface-container-lowest focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all pr-10"
+              className="w-full px-3 py-2 rounded-lg border border-border bg-surface-sunken-lowest focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all pr-10"
               placeholder="••••••••"
             />
             <button
               type="button"
               onClick={() => setShowPassword(!showPassword)}
-              className="absolute right-2 top-1/2 -translate-y-1/2 text-on-surface-variant hover:text-primary"
+              className="absolute right-2 top-1/2 -translate-y-1/2 text-ink-muted hover:text-primary"
               tabIndex={-1}
               aria-label={showPassword ? t('auth.hide_password') : t('auth.show_password')}
             >
@@ -128,22 +128,22 @@ function ChangePasswordCard({ t }: { t: ReturnType<typeof useTranslation>['t'] }
                 />
               </div>
               <div className="flex items-center justify-between mt-1">
-                <span className="text-xs text-on-surface-variant">
+                <span className="text-xs text-ink-muted">
                   {t(`auth.password_${strength.label}`)}
                 </span>
                 {strength.hints.length > 0 && (
-                  <span className="text-xs text-on-surface-variant">{strength.hints[0]}</span>
+                  <span className="text-xs text-ink-muted">{strength.hints[0]}</span>
                 )}
               </div>
             </div>
           )}
           {errors.password && (
-            <p className="text-error text-sm mt-1">{errors.password.message}</p>
+            <p className="text-destructive text-sm mt-1">{errors.password.message}</p>
           )}
         </div>
 
         <div>
-          <label htmlFor="confirm-password" className="block text-label-md text-on-surface-variant mb-1">
+          <label htmlFor="confirm-password" className="block text-label-md text-ink-muted mb-1">
             {t('auth.confirm_password')}
           </label>
           <input
@@ -152,18 +152,18 @@ function ChangePasswordCard({ t }: { t: ReturnType<typeof useTranslation>['t'] }
             type={showPassword ? 'text' : 'password'}
             autoComplete="new-password"
             data-testid="change-confirm-input"
-            className="w-full px-3 py-2 rounded-lg border border-outline-variant bg-surface-container-lowest focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all"
+            className="w-full px-3 py-2 rounded-lg border border-border bg-surface-sunken-lowest focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all"
             placeholder="••••••••"
           />
           {errors.confirmPassword && (
-            <p className="text-error text-sm mt-1">{errors.confirmPassword.message}</p>
+            <p className="text-destructive text-sm mt-1">{errors.confirmPassword.message}</p>
           )}
         </div>
 
         {submitError && (
           <div
             role="alert"
-            className="rounded-lg border border-error/40 bg-error-container/40 text-error px-3 py-2 text-sm"
+            className="rounded-lg border border-error/40 bg-destructive-subtle/40 text-destructive px-3 py-2 text-sm"
           >
             {submitError}
           </div>
@@ -182,7 +182,7 @@ function ChangePasswordCard({ t }: { t: ReturnType<typeof useTranslation>['t'] }
           type="submit"
           disabled={isSubmitting}
           data-testid="change-password-button"
-          className="flex items-center gap-2 px-4 py-2 bg-primary text-on-primary rounded-lg font-medium hover:opacity-90 disabled:opacity-50 transition-opacity"
+          className="flex items-center gap-2 px-4 py-2 bg-primary text-white rounded-lg font-medium hover:opacity-90 disabled:opacity-50 transition-opacity"
         >
           {isSubmitting ? (
             <Loader2 size={16} className="animate-spin" />
@@ -382,8 +382,8 @@ export function SecurityPage() {
     return (
       <div className="space-y-6">
         <div className="space-y-2">
-          <div className="h-8 w-48 bg-surface-container-high rounded-lg animate-shimmer" />
-          <div className="h-4 w-64 bg-surface-container-high rounded-lg animate-shimmer" />
+          <div className="h-8 w-48 bg-surface-sunken rounded-lg animate-shimmer" />
+          <div className="h-4 w-64 bg-surface-sunken rounded-lg animate-shimmer" />
         </div>
         <LoadingState variant="cards" rows={2} />
       </div>
@@ -393,10 +393,10 @@ export function SecurityPage() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-headline-md font-bold text-on-surface">
+        <h1 className="text-headline-md font-bold text-ink">
           {t('mfa.title') || 'Security'}
         </h1>
-        <p className="text-body-md text-on-surface-variant mt-1">
+        <p className="text-body-md text-ink-muted mt-1">
           {t('mfa.subtitle') || 'Manage two-factor authentication and account security'}
         </p>
       </div>
@@ -405,14 +405,14 @@ export function SecurityPage() {
       <ChangePasswordCard t={t} />
 
       {/* MFA Status Card */}
-      <div className="bg-surface rounded-xl border border-outline-variant shadow-sm p-6">
+      <div className="bg-surface rounded-xl border border-border shadow-sm p-6">
         <div className="flex items-center gap-2 mb-6 border-b border-surface-container pb-3">
           {mfaStatus?.active ? (
             <ShieldCheck size={20} className="text-green-600" />
           ) : (
             <Shield size={20} className="text-primary" />
           )}
-          <h3 className="text-title-lg font-semibold text-on-surface">
+          <h3 className="text-title-lg font-semibold text-ink">
             {t('mfa.two_factor_auth') || 'Two-Factor Authentication'}
           </h3>
         </div>
@@ -425,13 +425,13 @@ export function SecurityPage() {
               mfaStatus?.active ? 'bg-green-500' : 'bg-on-surface-variant/30'
             )}
           />
-          <span className="text-sm font-medium text-on-surface">
+          <span className="text-sm font-medium text-ink">
             {mfaStatus?.active
               ? t('mfa.status_enabled')
               : t('mfa.status_disabled')}
           </span>
           {mfaStatus?.verifiedAt && (
-            <span className="text-xs text-on-surface-variant">
+            <span className="text-xs text-ink-muted">
               {t('mfa.enabled_on', {
                 date: new Date(mfaStatus.verifiedAt).toLocaleDateString(),
               })}
@@ -442,12 +442,12 @@ export function SecurityPage() {
         {/* Enable MFA Flow */}
         {!mfaStatus?.active && !setupState && (
           <div>
-            <p className="text-sm text-on-surface-variant mb-4">
+            <p className="text-sm text-ink-muted mb-4">
               {t('mfa.enable_description')}
             </p>
             <button
               onClick={handleEnableMFA}
-              className="flex items-center gap-2 px-4 py-2 bg-primary text-on-primary rounded-lg font-medium hover:opacity-90 transition-opacity"
+              className="flex items-center gap-2 px-4 py-2 bg-primary text-white rounded-lg font-medium hover:opacity-90 transition-opacity"
             >
               <KeyRound size={16} />
               {t('mfa.enable_button')}
@@ -458,8 +458,8 @@ export function SecurityPage() {
         {/* Setup: Show QR Code */}
         {setupState && (
           <div className="space-y-4">
-            <div className="bg-surface-container-lowest border border-outline-variant rounded-lg p-4">
-              <h4 className="text-sm font-semibold text-on-surface mb-3">
+            <div className="bg-surface-sunken-lowest border border-border rounded-lg p-4">
+              <h4 className="text-sm font-semibold text-ink mb-3">
                 {t('mfa.scan_qr')}
               </h4>
               <div className="flex flex-col sm:flex-row gap-6">
@@ -471,22 +471,22 @@ export function SecurityPage() {
                       className="w-48 h-48"
                     />
                   ) : (
-                    <div className="w-48 h-48 flex items-center justify-center text-on-surface-variant text-sm">
+                    <div className="w-48 h-48 flex items-center justify-center text-ink-muted text-sm">
                       <Loader2 size={24} className="animate-spin" />
                     </div>
                   )}
                 </div>
                 <div className="flex-1 space-y-3">
-                  <p className="text-sm text-on-surface-variant">
+                  <p className="text-sm text-ink-muted">
                     {t('mfa.scan_instructions')}
                   </p>
-                  <ol className="text-sm text-on-surface-variant space-y-1 list-decimal list-inside">
+                  <ol className="text-sm text-ink-muted space-y-1 list-decimal list-inside">
                     <li>{t('mfa.step_1')}</li>
                     <li>{t('mfa.step_2')}</li>
                     <li>{t('mfa.step_3')}</li>
                   </ol>
                   <div>
-                    <label className="block text-sm font-medium text-on-surface mb-2">
+                    <label className="block text-sm font-medium text-ink mb-2">
                       {t('mfa.enter_code')}
                     </label>
                     <div className="flex gap-2">
@@ -498,12 +498,12 @@ export function SecurityPage() {
                         }
                         placeholder="000000"
                         maxLength={6}
-                        className="w-32 px-3 py-2 rounded-lg border border-outline-variant bg-surface-container-lowest focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all text-center text-lg tracking-widest font-mono"
+                        className="w-32 px-3 py-2 rounded-lg border border-border bg-surface-sunken-lowest focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all text-center text-lg tracking-widest font-mono"
                       />
                       <button
                         onClick={handleVerifyCode}
                         disabled={verifying || verifyCode.length < 6}
-                        className="flex items-center gap-2 px-4 py-2 bg-primary text-on-primary rounded-lg font-medium hover:opacity-90 disabled:opacity-50 transition-opacity"
+                        className="flex items-center gap-2 px-4 py-2 bg-primary text-white rounded-lg font-medium hover:opacity-90 disabled:opacity-50 transition-opacity"
                       >
                         {verifying ? (
                           <Loader2 size={16} className="animate-spin" />
@@ -523,7 +523,7 @@ export function SecurityPage() {
                 setVerifyCode('')
                 setQrDataUrl(null)
               }}
-              className="text-sm text-on-surface-variant hover:text-on-surface"
+              className="text-sm text-ink-muted hover:text-ink"
             >
               {t('common.cancel')}
             </button>
@@ -566,10 +566,10 @@ export function SecurityPage() {
 
         {/* Disable MFA */}
         {mfaStatus?.active && !showDisableConfirm && (
-          <div className="mt-4 pt-4 border-t border-outline-variant">
+          <div className="mt-4 pt-4 border-t border-border">
             <button
               onClick={() => setShowDisableConfirm(true)}
-              className="flex items-center gap-2 px-4 py-2 border border-error text-error rounded-lg font-medium hover:bg-error/5 transition-colors"
+              className="flex items-center gap-2 px-4 py-2 border border-error text-destructive rounded-lg font-medium hover:bg-error/5 transition-colors"
             >
               <ShieldOff size={16} />
               {t('mfa.disable_button')}
@@ -579,8 +579,8 @@ export function SecurityPage() {
 
         {/* Disable Confirmation */}
         {showDisableConfirm && (
-          <div className="mt-4 pt-4 border-t border-outline-variant space-y-3">
-            <p className="text-sm text-on-surface-variant">
+          <div className="mt-4 pt-4 border-t border-border space-y-3">
+            <p className="text-sm text-ink-muted">
               {t('mfa.disable_confirm_message')}
             </p>
             <div className="flex gap-2">
@@ -601,7 +601,7 @@ export function SecurityPage() {
                   setShowDisableConfirm(false)
                   setDisableCode('')
                 }}
-                className="px-4 py-2 border border-outline-variant rounded-lg font-medium hover:bg-surface-container-low transition-colors"
+                className="px-4 py-2 border border-border rounded-lg font-medium hover:bg-surface-sunken transition-colors"
               >
                 {t('common.cancel')}
               </button>
