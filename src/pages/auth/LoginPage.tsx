@@ -28,11 +28,8 @@ export function LoginPage() {
       {/* Left: Brand panel — hidden on mobile */}
       <div className="hidden lg:flex lg:w-[440px] xl:w-[520px] bg-primary flex-col justify-between p-8 xl:p-12 shrink-0">
         <div>
-          <div className="flex items-center gap-2.5 mb-16">
-            <div className="w-8 h-8 rounded-md bg-white/20 flex items-center justify-center">
-              <span className="text-white font-semibold text-sm">A</span>
-            </div>
-            <span className="text-white font-semibold text-base">AdminMate AI</span>
+          <div className="mb-16">
+            <Logo size={32} variant="light" />
           </div>
 
           <h1 className="text-white text-3xl xl:text-[2.5rem] font-semibold leading-tight tracking-tight mb-4">

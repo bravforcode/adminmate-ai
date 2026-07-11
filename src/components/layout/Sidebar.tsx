@@ -6,6 +6,7 @@ import { useTranslation } from 'react-i18next'
 import { navItems, type NavItem } from '../../lib/navigation'
 import { cn } from '../../lib/utils'
 import { Plus, X, ChevronDown } from 'lucide-react'
+import { Logo } from '../brand/Logo'
 import { Button } from '../ui/Button'
 
 function SidebarGroup({ item, onClose }: { item: NavItem; onClose?: () => void }) {
@@ -127,20 +128,19 @@ export function Sidebar() {
         role="navigation"
         aria-label="Main navigation"
         className={cn(
-          'fixed left-0 top-0 h-full w-[240px] z-50 flex flex-col',
+          'fixed left-0 top-0 h-full z-50 flex flex-col',
           'bg-surface-raised border-r border-border',
           'transition-transform duration-200 ease-out',
           sidebarOpen ? 'max-md:translate-x-0' : 'max-md:-translate-x-full',
           'md:translate-x-0',
         )}
+        style={{ width: 'var(--sidebar-width)' }}
       >
         {/* Logo */}
-        <div className="flex items-center justify-between px-4 h-14 border-b border-border shrink-0">
-          <div className="flex items-center gap-2.5">
-            <div className="w-7 h-7 rounded-md bg-primary flex items-center justify-center shrink-0">
-              <span className="text-white font-semibold text-sm">A</span>
-            </div>
-            <div className="sidebar-logo-text">
+        <div className="flex items-center justify-between px-4 h-12 border-b border-border shrink-0">
+          <div className="sidebar-logo-text">
+            <Logo size={28} showText={false} />
+            <div>
               <p className="text-ink font-semibold text-sm leading-tight m-0">
                 AdminMate
               </p>
