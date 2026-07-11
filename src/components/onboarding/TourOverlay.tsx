@@ -137,7 +137,7 @@ export function TourOverlay({
             width: targetRect.width + 20,
             height: targetRect.height + 20,
             borderRadius: '14px',
-            border: '2px solid var(--color-accent, #60a5fa)',
+            border: '2px solid var(--color-accent, #7aa2f7)',
             pointerEvents: 'none',
           }}
         />

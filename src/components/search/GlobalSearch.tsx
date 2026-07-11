@@ -25,7 +25,7 @@ function addRecentSearch(q: string) {
 }
 
 const TYPE_META: Record<SearchResult['type'], { icon: typeof Users; color: string; labelKey: string }> = {
-  candidate: { icon: Users, color: '#2563eb', labelKey: 'search.candidates' },
+  candidate: { icon: Users, color: '#1a56db', labelKey: 'search.candidates' },
   job: { icon: Briefcase, color: '#7c3aed', labelKey: 'search.jobs' },
   application: { icon: FileText, color: '#059669', labelKey: 'search.applications' },
   interview: { icon: Calendar, color: '#d97706', labelKey: 'search.interviews' },

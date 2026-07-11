@@ -7,7 +7,7 @@ import { AlertTriangle, Zap, Calendar, AlertCircle, RefreshCw } from 'lucide-rea
 import { LoadingState } from '../components/shared/LoadingState'
 
 const DAILY_LIMIT = 1500
-const LIMIT_COLORS: Record<string, string> = { jd_generation: '#3b82f6', resume_parse: '#8b5cf6', screening: '#f97316', chat: '#14b8a6', offer_letter: '#eab308' }
+const LIMIT_COLORS: Record<string, string> = { jd_generation: '#1a56db', resume_parse: '#8b5cf6', screening: '#f97316', chat: '#14b8a6', offer_letter: '#eab308' }
 
 export default function GeminiMonitoringPage() {
   const { t } = useTranslation(['system', 'common'])
@@ -102,7 +102,7 @@ export default function GeminiMonitoringPage() {
                     <div key={u.feature}>
                       <div className="flex justify-between text-sm mb-1"><span>{u.feature.replace(/_/g, ' ')}</span><span className="font-medium">{u.count}</span></div>
                       <div className="w-full bg-surface-sunken rounded-full h-2">
-                        <div className="h-2 rounded-full" style={{ width: `${Math.min((u.count / DAILY_LIMIT) * 100 * 5, 100)}%`, backgroundColor: LIMIT_COLORS[u.feature] || '#94a3b8' }} />
+                        <div className="h-2 rounded-full" style={{ width: `${Math.min((u.count / DAILY_LIMIT) * 100 * 5, 100)}%`, backgroundColor: LIMIT_COLORS[u.feature] || '#8696b0' }} />
                       </div>
                     </div>
                   ))}
@@ -117,7 +117,7 @@ export default function GeminiMonitoringPage() {
                     <XAxis dataKey="date" tick={{ fontSize: 10 }} tickFormatter={v => v.slice(5)} />
                     <YAxis tick={{ fontSize: 10 }} />
                     <Tooltip />
-                    <Bar dataKey="jd_generation" stackId="a" fill="#3b82f6" />
+                    <Bar dataKey="jd_generation" stackId="a" fill="#1a56db" />
                     <Bar dataKey="resume_parse" stackId="a" fill="#8b5cf6" />
                     <Bar dataKey="screening" stackId="a" fill="#f97316" />
                     <Bar dataKey="chat" stackId="a" fill="#14b8a6" />

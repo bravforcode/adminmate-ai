@@ -1,7 +1,11 @@
 import { useCallback, useEffect, useRef } from 'react'
 import { useAuthStore } from '../stores/authStore'
 import { supabase } from '../lib/supabase'
-import { fetchSessionStatus, refreshAccessToken } from '../lib/sessionApi'
+import {
+  fetchSessionStatus,
+  refreshAccessToken,
+  SETSESSION_REFRESH_TOKEN_PLACEHOLDER,
+} from '../lib/sessionApi'
 
 /**
  * Session restore hook.
@@ -22,19 +26,6 @@ import { fetchSessionStatus, refreshAccessToken } from '../lib/sessionApi'
  * through our own /refresh endpoint so the real refresh_token (never
  * available to client JS) is never needed directly by the SDK.
  */
-
-// Placeholder passed as the `refresh_token` argument to supabase.auth.setSession().
-// setSession() requires a non-empty string for both arguments, but the real
-// refresh_token is httpOnly-cookie-only and never available to client JS.
-// This is safe: per @supabase/auth-js's GoTrueClient._setSession, the passed
-// refresh_token is only ever used to call the SDK's internal token-refresh
-// endpoint if the *access_token* it's given has already expired. We only call
-// setSession() immediately after a successful /refresh, so the access_token
-// is always freshly minted and unexpired — the safe (non-refreshing) code
-// path is taken and this placeholder is stored locally but never sent over
-// the wire. autoRefreshToken is also disabled, so nothing else in the SDK
-// will ever attempt to use it either.
-const SETSESSION_REFRESH_TOKEN_PLACEHOLDER = 'httponly-cookie-managed'
 
 // Proactively refresh this many ms before the access_token's JWT `exp`.
 const REFRESH_SKEW_MS = 60_000

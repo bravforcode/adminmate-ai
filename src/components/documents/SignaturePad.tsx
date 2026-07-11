@@ -30,7 +30,7 @@ export function SignaturePad({ onSave, height = 200, className }: SignaturePadPr
     ctx.lineCap = 'round'
     ctx.lineJoin = 'round'
     ctx.lineWidth = 2
-    ctx.strokeStyle = '#1e293b'
+    ctx.strokeStyle = '#2d3a4d'
   }, [])
 
   const getPos = useCallback((e: React.MouseEvent | React.TouchEvent) => {

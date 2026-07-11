@@ -29,7 +29,7 @@ export function AuthGuard({ children, requiredRoles, requireCompany = true, call
 
   useEffect(() => {
     if (hydrated && callInitSession) initSession()
-  }, [hydrated, callInitSession])
+  }, [hydrated, callInitSession, initSession])
 
   if (!hydrated || isLoading) {
     return (

@@ -15,8 +15,8 @@ export function ConfirmDialog({ title, message, confirmLabel, onConfirm, onCance
           <div className={cn(
             'w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0',
             variant === 'danger'
-              ? 'bg-red-100 dark:bg-destructive-subtle/30 text-red-600 dark:text-destructive'
-              : 'bg-yellow-50 dark:bg-warning-subtle/30 text-yellow-600 dark:text-warning'
+              ? 'bg-error-subtle dark:bg-destructive-subtle/30 text-error dark:text-destructive'
+              : 'bg-warning-subtle dark:bg-warning-subtle/30 text-warning dark:text-warning'
           )}>
             <AlertTriangle size={20} />
           </div>

@@ -2,27 +2,20 @@
 
 ## Current State
 - **PR #17** on GitHub: `feat/design-token-migration` → `main` (https://github.com/bravforcode/adminmate-ai/pull/17)
-- **4 commits** on PR branch (3 original + 1 fix commit `6182398`)
-- **Manual review posted** as PR comment (id: 4937630869)
-- **Security scan:** PASS (6/6 files clean)
-- **Code quality:** Minor issues found and fixed (duplicate class, no-op filter)
-- **Remaining:** `text-ink-variant` undefined token in ~6 files (cosmetic, can be follow-up)
+- **5 commits** on PR branch (3 original + 2 fix commits)
+- **Manual review posted** as PR comments (security scan + code quality)
+- **All old tokens eliminated:**
+  - `text-ink-variant` → `text-ink-muted` (85 files, commit `965ce33`)
+  - Duplicate classes removed, no-op filter cleaned
+- **Status:** ✅ Build passes | ✅ TypeScript clean | ✅ 0 old tokens remaining
 
-## What Was Done
-1. Token migration (3 rounds, 100+ files)
-2. 8 Supabase migrations applied
-3. Vite config chunk size fix
-4. PR created on GitHub
-5. Manual code review completed and posted
-6. Minor fixes committed (`6182398`)
+## Commits on PR
+1. `dac3418` — Bulk token migration (round 1)
+2. `90f4a59` — New pages migration (round 2)
+3. `d133c00` — Remaining files migration (round 3)
+4. `6182398` — Fix duplicate text-ink-variant in JobStatusBadge, remove no-op filter in Sidebar
+5. `965ce33` — Replace text-ink-variant → text-ink-muted across 85 files
 
 ## What's Left
-- `text-ink-variant` → `text-ink-muted` fix in ~6 files (cosmetic follow-up)
-- Optionally: install CodeRabbit for future automated reviews
-- Optionally: merge PR #17
-
-## Key Files
-- `src/components/jobs/JobStatusBadge.tsx`: Fixed duplicate `text-ink-variant`
-- `src/components/layout/Sidebar.tsx`: Removed no-op filter
-- `src/index.css`: Token definitions (navy vars still defined but low priority)
-- `vite.config.ts`: vendor-pdf chunk, chunkSizeWarningLimit=1500
+- Merge PR #17 (when ready)
+- Legacy CSS vars (`--color-navy*`) — cosmetic, no functional impact

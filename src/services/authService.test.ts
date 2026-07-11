@@ -1,26 +1,35 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
 
-const mockSignInWithPassword = vi.fn()
 const mockSignUp = vi.fn()
 const mockSignOut = vi.fn()
 const mockSignInWithOAuth = vi.fn()
 const mockResetPasswordForEmail = vi.fn()
 const mockUpdateUser = vi.fn()
 const mockGetSession = vi.fn()
+const mockSetSession = vi.fn()
 
 vi.mock('../lib/supabase', () => ({
   supabase: {
     auth: {
-      signInWithPassword: (...args: unknown[]) => mockSignInWithPassword(...args),
       signUp: (...args: unknown[]) => mockSignUp(...args),
       signOut: (...args: unknown[]) => mockSignOut(...args),
       signInWithOAuth: (...args: unknown[]) => mockSignInWithOAuth(...args),
       resetPasswordForEmail: (...args: unknown[]) => mockResetPasswordForEmail(...args),
       updateUser: (...args: unknown[]) => mockUpdateUser(...args),
       getSession: (...args: unknown[]) => mockGetSession(...args),
+      setSession: (...args: unknown[]) => mockSetSession(...args),
     },
   },
   getSiteUrl: () => 'https://example.com',
+}))
+
+const mockLoginViaEdge = vi.fn()
+const mockLogoutViaEdge = vi.fn()
+
+vi.mock('../lib/sessionApi', () => ({
+  loginViaEdge: (...args: unknown[]) => mockLoginViaEdge(...args),
+  logoutViaEdge: (...args: unknown[]) => mockLogoutViaEdge(...args),
+  SETSESSION_REFRESH_TOKEN_PLACEHOLDER: 'httponly-cookie-managed',
 }))
 
 import { authService } from './authService'
@@ -46,25 +55,39 @@ describe('authService', () => {
 
   // ─── signIn ─────────────────────────────────────────────
   describe('signIn', () => {
-    it('should call supabase.auth.signInWithPassword with credentials', async () => {
-      mockSignInWithPassword.mockResolvedValue({ data: { user: { id: '1' }, session: {} }, error: null })
+    it('should call loginViaEdge then setSession with the returned access_token', async () => {
+      mockLoginViaEdge.mockResolvedValue({ success: true, data: { user: { id: '1' }, access_token: 'tok' } })
+      mockSetSession.mockResolvedValue({ data: { user: { id: '1' }, session: {} }, error: null })
 
       const result = await authService.signIn('test@example.com', 'password123')
 
-      expect(mockSignInWithPassword).toHaveBeenCalledWith({ email: 'test@example.com', password: 'password123' })
+      expect(mockLoginViaEdge).toHaveBeenCalledWith('test@example.com', 'password123')
+      expect(mockSetSession).toHaveBeenCalledWith({
+        access_token: 'tok',
+        refresh_token: 'httponly-cookie-managed',
+      })
       expect(result.data.user).toEqual({ id: '1' })
     })
 
-    it('should throw on auth error and record login attempt', async () => {
-      const authError = new Error('Invalid login credentials')
-      mockSignInWithPassword.mockResolvedValue({ data: { user: null, session: null }, error: authError })
+    it('should throw on loginViaEdge failure and record login attempt', async () => {
+      mockLoginViaEdge.mockResolvedValue({ success: false, error: 'Invalid login credentials' })
 
       await expect(authService.signIn('test@example.com', 'wrong')).rejects.toThrow('Invalid login credentials')
+      expect(mockSetSession).not.toHaveBeenCalled()
       // Rate limit state should have been recorded
       const stored = window.localStorage.getItem(RATE_LIMIT_KEY + 'test@example.com')
       expect(stored).not.toBeNull()
       const parsed = JSON.parse(stored!)
       expect(parsed.attempts).toBe(1)
+    })
+
+    it('should throw on setSession error and record login attempt', async () => {
+      mockLoginViaEdge.mockResolvedValue({ success: true, data: { user: { id: '1' }, access_token: 'tok' } })
+      mockSetSession.mockResolvedValue({ data: { user: null, session: null }, error: new Error('Bad session') })
+
+      await expect(authService.signIn('test@example.com', 'password123')).rejects.toThrow('Bad session')
+      const stored = window.localStorage.getItem(RATE_LIMIT_KEY + 'test@example.com')
+      expect(stored).not.toBeNull()
     })
 
     it('should clear rate limit on successful sign-in', async () => {
@@ -74,7 +97,8 @@ describe('authService', () => {
         JSON.stringify({ attempts: 3, lockedUntil: null, firstAttemptAt: Date.now() })
       )
 
-      mockSignInWithPassword.mockResolvedValue({ data: { user: { id: '1' }, session: {} }, error: null })
+      mockLoginViaEdge.mockResolvedValue({ success: true, data: { user: { id: '1' }, access_token: 'tok' } })
+      mockSetSession.mockResolvedValue({ data: { user: { id: '1' }, session: {} }, error: null })
 
       await authService.signIn('test@example.com', 'password123')
 
@@ -89,7 +113,7 @@ describe('authService', () => {
       )
 
       await expect(authService.signIn('test@example.com', 'password123')).rejects.toThrow(/Too many login attempts/)
-      expect(mockSignInWithPassword).not.toHaveBeenCalled()
+      expect(mockLoginViaEdge).not.toHaveBeenCalled()
     })
 
     it('should allow sign-in if lockout has expired', async () => {
@@ -99,14 +123,15 @@ describe('authService', () => {
         JSON.stringify({ attempts: 0, lockedUntil: Date.now() - 1000, firstAttemptAt: 0 })
       )
 
-      mockSignInWithPassword.mockResolvedValue({ data: { user: { id: '1' }, session: {} }, error: null })
+      mockLoginViaEdge.mockResolvedValue({ success: true, data: { user: { id: '1' }, access_token: 'tok' } })
+      mockSetSession.mockResolvedValue({ data: { user: { id: '1' }, session: {} }, error: null })
 
       await authService.signIn('test@example.com', 'password123')
-      expect(mockSignInWithPassword).toHaveBeenCalled()
+      expect(mockLoginViaEdge).toHaveBeenCalled()
     })
 
     it('should lockout after max attempts (5)', async () => {
-      mockSignInWithPassword.mockResolvedValue({ data: { user: null }, error: new Error('Bad credentials') })
+      mockLoginViaEdge.mockResolvedValue({ success: false, error: 'Bad credentials' })
 
       // Make 5 failed attempts
       for (let i = 0; i < 5; i++) {
@@ -152,13 +177,16 @@ describe('authService', () => {
 
   // ─── signOut ────────────────────────────────────────────
   describe('signOut', () => {
-    it('should call supabase.auth.signOut', async () => {
+    it('should call logoutViaEdge then supabase.auth.signOut with local scope', async () => {
+      mockLogoutViaEdge.mockResolvedValue(undefined)
       mockSignOut.mockResolvedValue({ error: null })
       await authService.signOut()
-      expect(mockSignOut).toHaveBeenCalled()
+      expect(mockLogoutViaEdge).toHaveBeenCalled()
+      expect(mockSignOut).toHaveBeenCalledWith({ scope: 'local' })
     })
 
     it('should throw on signOut error', async () => {
+      mockLogoutViaEdge.mockResolvedValue(undefined)
       mockSignOut.mockResolvedValue({ error: new Error('Sign out failed') })
       await expect(authService.signOut()).rejects.toThrow('Sign out failed')
     })

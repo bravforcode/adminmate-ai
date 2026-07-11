@@ -28,7 +28,7 @@ export function AuthLayout({ children, title, subtitle }: AuthLayoutProps) {
         </div>
 
         {/* Card */}
-        <div className="bg-surface border border-border-subtle rounded-[14px] p-9 shadow-[0_4px_24px_rgba(37,99,235,0.06)] dark:shadow-[0_4px_24px_rgba(0,0,0,0.3)]">
+        <div className="bg-surface border border-border-subtle rounded-[14px] p-9 shadow-[0_4px_24px_rgba(26,86,219,0.06)] dark:shadow-[0_4px_24px_rgba(0,0,0,0.3)]">
           <h2 className="font-serif text-2xl font-normal text-ink tracking-[-0.02em] m-0 mb-1">
             {title}
           </h2>

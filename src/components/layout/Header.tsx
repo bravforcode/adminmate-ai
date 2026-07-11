@@ -18,11 +18,11 @@ export function Header() {
       role="banner"
       aria-label="Header"
       className={cn(
-        'h-14 fixed top-0 right-0 left-0 z-40',
-        'bg-surface border-b border-border',
+        'h-12 fixed top-0 right-0 left-0 z-40',
+        'bg-surface/80 backdrop-blur-lg border-b border-border',
         'flex items-center justify-between',
         'px-4 md:px-6',
-        'max-md:ml-0 md:ml-[240px]',
+        'md:sidebar-offset',
       )}
     >
       {/* Left: hamburger + search */}

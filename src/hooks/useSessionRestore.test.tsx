@@ -21,6 +21,7 @@ vi.mock('../lib/supabase', () => ({
 vi.mock('../lib/sessionApi', () => ({
   fetchSessionStatus: vi.fn(),
   refreshAccessToken: vi.fn(),
+  SETSESSION_REFRESH_TOKEN_PLACEHOLDER: 'httponly-cookie-managed',
 }))
 
 const mockSetUser = vi.fn()

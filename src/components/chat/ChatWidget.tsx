@@ -92,7 +92,7 @@ export function ChatWidget() {
       <button
         onClick={() => setIsOpen(!isOpen)}
         data-testid="chat-fab"
-        className="chat-fab fixed bottom-20 md:bottom-6 right-4 md:right-6 z-[60] w-14 h-14 rounded-full bg-gradient-to-tr from-navy-mid to-accent text-white flex items-center justify-center shadow-[0_4px_20px_rgba(37,99,235,0.4)] hover:shadow-[0_6px_24px_rgba(37,99,235,0.6)] hover:scale-105 active:scale-95 transition-all duration-300 border border-white/20 cursor-pointer"
+        className="chat-fab fixed bottom-20 md:bottom-6 right-4 md:right-6 z-[60] w-14 h-14 rounded-full bg-gradient-to-tr from-navy-mid to-accent text-white flex items-center justify-center shadow-[0_4px_20px_rgba(26,86,219,0.4)] hover:shadow-[0_6px_24px_rgba(26,86,219,0.6)] hover:scale-105 active:scale-95 transition-all duration-300 border border-white/20 cursor-pointer"
         style={{ paddingBottom: 'max(0px, env(safe-area-inset-bottom))' }}
         aria-label="Toggle AI Assistant"
       >

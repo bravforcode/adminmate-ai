@@ -10,8 +10,8 @@ const buttonVariants = {
   ghost: 'text-ink-secondary hover:bg-surface-raised active:bg-surface-sunken',
   destructive: 'bg-error text-white hover:opacity-90 active:opacity-100',
   link: 'text-primary underline-offset-4 hover:underline',
-  gradient: 'bg-gradient-to-r from-primary to-blue-600 text-white hover:from-primary-hover hover:to-blue-700 active:from-primary-active active:to-blue-800',
-  glow: 'bg-primary text-white hover:bg-primary-hover active:bg-primary-active shadow-[0_0_16px_rgba(37,99,235,0.25)] hover:shadow-[0_0_24px_rgba(37,99,235,0.35)]',
+  gradient: 'bg-gradient-to-r from-primary to-primary-hover text-white hover:from-primary-hover hover:to-primary-active active:from-primary-active active:to-primary-active',
+  glow: 'bg-primary text-white hover:bg-primary-hover active:bg-primary-active shadow-[0_0_16px_rgba(26,86,219,0.25)] hover:shadow-[0_0_24px_rgba(26,86,219,0.35)]',
 }
 
 const buttonSizes = {
@@ -79,7 +79,7 @@ export function Button({
     <Comp
       className={cn(
         'relative inline-flex items-center justify-center font-medium select-none',
-        'transition-all duration-150 ease-out',
+        'transition-all duration-fast ease-standard',
         'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 dark:focus-visible:ring-offset-surface',
         'disabled:pointer-events-none disabled:opacity-50',
         'cursor-pointer',

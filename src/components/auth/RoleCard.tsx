@@ -41,10 +41,10 @@ export function RoleCard({
         'group relative w-full text-left rounded-[20px] p-10 overflow-hidden',
         'bg-surface border-[1.5px] border-border',
         'transition-all duration-400 ease-luxury',
-        'hover:scale-[1.02] hover:shadow-[0_24px_56px_rgba(37,99,235,0.14)]',
+        'hover:scale-[1.02] hover:shadow-[0_24px_56px_rgba(26,86,219,0.14)]',
         'hover:border-primary focus-visible:outline-2 focus-visible:outline-primary focus-visible:outline-offset-4',
         'active:scale-[0.99]',
-        'bg-surface dark:hover:border-primary dark:hover:shadow-[0_24px_56px_rgba(37,99,235,0.2)]',
+        'bg-surface dark:hover:border-primary dark:hover:shadow-[0_24px_56px_rgba(26,86,219,0.2)]',
         staggerClass,
         'animate-fade-in-up',
       )}
@@ -54,7 +54,7 @@ export function RoleCard({
         className={cn(
           'w-11 h-11 rounded-xl flex items-center justify-center mb-5',
           isPrimary
-            ? 'bg-primary shadow-[0_8px_20px_rgba(37,99,235,0.2)]'
+            ? 'bg-primary shadow-[0_8px_20px_rgba(26,86,219,0.2)]'
             : 'bg-primary-subtle border-[1.5px] border-accent-dim dark:border-primary',
         )}
       >

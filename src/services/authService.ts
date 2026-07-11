@@ -1,4 +1,5 @@
 import { supabase, getSiteUrl } from '../lib/supabase'
+import { loginViaEdge, logoutViaEdge, SETSESSION_REFRESH_TOKEN_PLACEHOLDER } from '../lib/sessionApi'
 import type { AuthResponse, SignUpWithPasswordCredentials } from '@supabase/supabase-js'
 
 const LOGIN_RATE_LIMIT = {
@@ -78,13 +79,21 @@ export const authService = {
   signIn: async (email: string, password: string): Promise<AuthResponse> => {
     const normalizedEmail = email.trim()
     checkLoginRateLimit(normalizedEmail)
-    const result = await supabase.auth.signInWithPassword({ email: normalizedEmail, password })
-    if (result.error) {
+    const result = await loginViaEdge(normalizedEmail, password)
+    if (!result.success || !result.data?.access_token) {
       recordLoginAttempt(normalizedEmail)
-      throw result.error
+      throw new Error(result.error || 'Invalid login credentials')
+    }
+    const sessionResult = await supabase.auth.setSession({
+      access_token: result.data.access_token,
+      refresh_token: SETSESSION_REFRESH_TOKEN_PLACEHOLDER,
+    })
+    if (sessionResult.error) {
+      recordLoginAttempt(normalizedEmail)
+      throw sessionResult.error
     }
     clearRateLimit(normalizedEmail)
-    return result
+    return sessionResult
   },
 
   signUp: async (credentials: SignUpWithPasswordCredentials): Promise<AuthResponse> => {
@@ -102,7 +111,8 @@ export const authService = {
   },
 
   signOut: async (): Promise<void> => {
-    const { error } = await supabase.auth.signOut()
+    await logoutViaEdge()
+    const { error } = await supabase.auth.signOut({ scope: 'local' })
     if (error) throw error
   },
 

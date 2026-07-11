@@ -194,7 +194,7 @@ export function checkFeatureAccess(
 /**
  * Build a 403 response for limit exceeded.
  */
-export function limitExceededResponse(result: LimitResult): Response {
+export function limitExceededResponse(result: LimitResult, corsHeaders: Record<string, string> = {}): Response {
   return new Response(
     JSON.stringify({
       error: "Subscription limit exceeded",
@@ -208,7 +208,7 @@ export function limitExceededResponse(result: LimitResult): Response {
     {
       status: 403,
       headers: {
-        "Access-Control-Allow-Origin": "*",
+        ...corsHeaders,
         "Content-Type": "application/json",
       },
     }

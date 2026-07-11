@@ -23,6 +23,8 @@ stats.html
 # Agent and temporary files
 .lean-ctx-init
 .playwright-mcp/
+.claude/
+.entroly/
 AGENTS.md
 LEAN-CTX.md
 CLAUDE.md

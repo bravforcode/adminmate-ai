@@ -66,7 +66,7 @@ serve(async (req) => {
     // Check subscription-based monthly AI limit
     const monthlyLimit = await checkAIMonthlyLimit(supabase, companyId)
     if (!monthlyLimit.allowed) {
-      return limitExceededResponse(monthlyLimit)
+      return limitExceededResponse(monthlyLimit, h)
     }
 
     const [{ data: company }, { data: policies }, { data: hrContacts }] = await Promise.all([

@@ -15,8 +15,8 @@ export function ButtonGroup({
   variant = 'outline',
 }: ButtonGroupProps) {
   const variantStyles = {
-    outline: 'border border-gray-300 border-border rounded-xl overflow-hidden',
-    ghost: 'bg-gray-100 bg-surface-raised rounded-xl overflow-hidden',
+    outline: 'border border-border rounded-xl overflow-hidden',
+    ghost: 'bg-surface-sunken rounded-xl overflow-hidden',
   }
 
   return (

@@ -14,11 +14,15 @@ on:
   pull_request:
     paths:
       - 'supabase/migrations/**'
+      - 'supabase/*.sql'
+      - 'supabase/setup_essential.sql'
   push:
     branches:
       - main
     paths:
       - 'supabase/migrations/**'
+      - 'supabase/*.sql'
+      - 'supabase/setup_essential.sql'
 
 jobs:
   rls-pattern-check:
