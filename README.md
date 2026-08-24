@@ -22,13 +22,9 @@
 
 ### Demo
 
-> **Add `docs/demo.gif` — 30s of recruitment flow (job post → candidate → offer → payroll)**
+> 🎬 **Demo coming soon** — 30s recruitment flow (job post → candidate → offer → payroll) will be added at `docs/demo.gif`
 
-<p align="center">
-  <img src="https://via.placeholder.com/1280x720/0f172a/38bdf8?text=AdminMate+AI+—+HR+Flow+Demo+—+Add+docs/demo.gif" width="100%" alt="AdminMate AI Demo" />
-  <br/>
-  <em>React 19 + Supabase + Gemini AI — from job posting to payslip</em>
-</p>
+**React 19 + Supabase + Gemini AI — from job posting to payslip**
 
 ---
 
@@ -139,3 +135,4 @@ supabase test db  # runs 1,777 pgTAP
 `nxme176@gmail.com` · `092-551-0427` · [LinkedIn](https://www.linkedin.com/in/%E0%B8%9E%E0%B8%B5%E0%B8%A3%E0%B8%A7%E0%B8%B4%E0%B8%8A%E0%B8%8D%E0%B9%8C-%E0%B8%88%E0%B8%B4%E0%B8%95%E0%B8%93%E0%B8%A3%E0%B8%87%E0%B8%84%E0%B9%8C-0000393a4) · [Fastwork](https://fastwork.co/user/bravforcode?source=search)
 
 > Hiring for HR Tech / Compliance AI? Let's talk — production hardened, compliance-aware.
+
