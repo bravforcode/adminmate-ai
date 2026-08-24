@@ -1,275 +1,141 @@
-# AdminMate AI — HR Management Platform for SEA SMEs
+# AdminMate AI — HR Platform for SEA SMEs
 
-AI-powered HR platform covering recruitment, hiring, onboarding, compliance, payroll, and workforce management for Thailand, Vietnam, and Indonesia.
+<p align="center">
+  <img src="https://img.shields.io/badge/React_19-61DAFB?style=for-the-badge&logo=react&logoColor=black" />
+  <img src="https://img.shields.io/badge/TypeScript_5.8-3178C6?style=for-the-badge&logo=typescript&logoColor=white" />
+  <img src="https://img.shields.io/badge/Supabase-3ECF8E?style=for-the-badge&logo=supabase&logoColor=white" />
+  <img src="https://img.shields.io/badge/Gemini_AI-4285F4?style=for-the-badge&logo=google&logoColor=white" />
+  <img src="https://img.shields.io/badge/Tailwind_v4-06B6D4?style=for-the-badge&logo=tailwindcss&logoColor=white" />
+  <img src="https://img.shields.io/badge/Stripe-635BFF?style=for-the-badge&logo=stripe&logoColor=white" />
+  <img src="https://img.shields.io/badge/Tests-1777_pgTAP_PASS-10b981?style=for-the-badge" />
+</p>
 
-**Version:** 1.0.0  
-**Status:** Production hardened — All gates A–L closed (1,777/1,777 pgTAP tests PASS)  
-**Last updated:** 2026-06-23
+> **Recruitment → Hiring → Onboarding → Payroll → Compliance** for Thailand, Vietnam, Indonesia — AI-powered, compliance-aware, production hardened.
+
+<p align="center">
+  <img src="https://img.shields.io/badge/Status-Prod_Hardened-10b981?style=for-the-badge" />
+  <img src="https://img.shields.io/badge/Gates_A–L-1777/1777_PASS-0ea5e9?style=for-the-badge" />
+  <img src="https://img.shields.io/badge/Version-1.0.0-0f172a?style=for-the-badge" />
+</p>
 
 ---
 
-## Tech Stack
+### Demo
 
-| Layer | Technology | Version |
-|-------|-----------|---------|
-| Frontend | React 19 + TypeScript 5.8 | 19.0.1 |
-| Build | Vite | 6.4.3 |
-| Styling | Tailwind CSS v4 | 4.1.14 |
-| State | Zustand (auth/UI) + TanStack React Query (server state) | 5.0 / 5.60 |
-| Router | React Router v7 (lazy-loaded routes) | 7.1.0 |
-| UI | Radix UI + shadcn-style components | — |
-| Backend | Supabase (PostgreSQL, Auth, Storage, Edge Functions, Realtime) | 2.46 |
-| AI | Google Gemini 2.5 Flash | — |
-| Email | Resend | — |
-| Chat | LINE Messaging API, WhatsApp Cloud API | — |
-| Monitoring | Sentry | 10.56 |
-| i18n | i18next (EN, TH, ID, VI, ZH) | 24 |
-| Testing | Vitest (unit) + Playwright (E2E) + pgTAP (DB) | 2.1 / 1.49 |
-| Deployment | Vercel (frontend) + Supabase (backend) | — |
+> **Add `docs/demo.gif` — 30s of recruitment flow (job post → candidate → offer → payroll)**
 
-## Quick Start
+<p align="center">
+  <img src="https://via.placeholder.com/1280x720/0f172a/38bdf8?text=AdminMate+AI+—+HR+Flow+Demo+—+Add+docs/demo.gif" width="100%" alt="AdminMate AI Demo" />
+  <br/>
+  <em>React 19 + Supabase + Gemini AI — from job posting to payslip</em>
+</p>
 
-### Prerequisites
+---
 
-- Node.js 20+
-- npm 10+
-- Git
-- Supabase CLI (optional, for local dev)
-- Docker Desktop (optional, for local Supabase)
+### Why AdminMate AI
 
-### Setup
+SEA SMEs juggle spreadsheets, LINE chats, and local labor law PDFs. AdminMate AI centralizes HR into one compliance-aware platform with AI assistance — not just CRUD, but **workflow + law + AI**.
+
+**1,777/1,777 pgTAP tests PASS · Gates A–L closed · Prod hardened (2026-06-23)**
+
+---
+
+### Architecture
+
+```mermaid
+graph TD
+  A[React 19 + TypeScript + Vite + Tailwind v4] --> B[Supabase: Auth + PostgreSQL + Storage + Edge Functions + Realtime]
+  B --> C[Row Level Security + pgTAP 1,777 tests]
+  A --> D[Gemini AI: Resume parse / JD match / Compliance check]
+  A --> E[Stripe: Billing + Subscription]
+  B --> F[Zustand + TanStack Query: State]
+  B --> G[Radix UI + shadcn]
+```
+
+**Stack:** React 19 · TypeScript 5.8 · Vite 6 · Tailwind v4 · Zustand + TanStack Query · React Router v7 (lazy) · Radix UI · Supabase (PostgreSQL, Auth, Storage, Edge Functions) · Gemini AI · Stripe
+
+---
+
+### Quickstart (3 commands)
 
 ```bash
-# 1. Clone
-git clone <repo-url>
+git clone https://github.com/bravforcode/adminmate-ai.git
 cd adminmate-ai
-
-# 2. Install
-npm install
-
-# 3. Configure environment
-cp .env.example .env.local
-# Edit .env.local with your Supabase URL + anon key
-
-# 4. Run dev server
-npm run dev
-# → http://localhost:5173
+cp .env.example .env  # set SUPABASE_URL, SUPABASE_ANON_KEY, GEMINI_API_KEY, STRIPE_KEY
 ```
-
-### Environment Variables
-
-| Variable | Required | Description |
-|----------|----------|-------------|
-| `VITE_SUPABASE_URL` | Yes | Supabase project URL |
-| `VITE_SUPABASE_ANON_KEY` | Yes | Supabase anonymous key |
-| `VITE_APP_URL` | Yes | App URL (default: `http://localhost:5173`) |
-| `VITE_APP_NAME` | Yes | App name (`AdminMate AI`) |
-| `VITE_ENABLE_LINE` | No | Enable LINE integration |
-| `VITE_ENABLE_WHATSAPP` | No | Enable WhatsApp integration |
-| `VITE_ENABLE_ZALO` | No | Enable Zalo integration |
-| `VITE_SENTRY_DSN` | No | Sentry error monitoring DSN |
-| `GEMINI_API_KEY` | Yes | Google Gemini API key *(Edge Function secret only)* |
-| `LINE_CHANNEL_ACCESS_TOKEN` | No | LINE OA channel token *(secret)* |
-| `LINE_CHANNEL_SECRET` | No | LINE OA channel secret *(secret)* |
-| `WHATSAPP_API_TOKEN` | No | WhatsApp Cloud API token *(secret)* |
-| `WHATSAPP_PHONE_NUMBER_ID` | No | WhatsApp phone number ID *(secret)* |
-| `WHATSAPP_VERIFY_TOKEN` | No | WhatsApp webhook verify token *(secret)* |
-| `RESEND_API_KEY` | Yes | Resend email API key *(secret)* |
-| `CRON_SECRET_KEY` | Yes | Shared secret for cron-triggered functions *(secret)* |
-
-### Database Migration
 
 ```bash
-# Link to Supabase project
-supabase link --project-ref <your-project-ref>
-
-# Push all 65+ migrations
-supabase db push
-
-# Generate TypeScript types
-supabase gen types typescript --project-id <your-project-ref> > src/types/database.ts
+bun install
+bun run dev        # http://localhost:5173
+# or with Supabase local:
+supabase start
 ```
 
-### Edge Functions
+**Production:**
+```bash
+bun run build
+bun run preview
+```
+
+---
+
+### Features
+
+| Module | What it does |
+|---|---|
+| **Recruitment** | Job posts → Applicants → AI resume parsing + JD match scoring |
+| **Hiring** | Offer letters → E-sign → Onboarding checklist |
+| **Onboarding** | Tasks, docs, equipment, compliance training |
+| **Payroll** | Salary, OT, deductions, payslips — TH/VN/ID tax aware |
+| **Compliance** | Labor law checks, contract templates, audit trail |
+| **Workforce** | Org chart, attendance, leave, performance |
+
+---
+
+### Results & Quality Gates
+
+| Metric | Value |
+|---|---|
+| **pgTAP database tests** | **1,777 / 1,777 PASS** |
+| **Gates** | **A–L closed** |
+| **Frontend** | React 19 + TS 5.8 + Vite 6 + Tailwind v4 · lazy routes · RLS |
+| **Security** | Supabase RLS · Auth · Storage policies · Audit log |
 
 ```bash
-# Set secrets
-supabase secrets set GEMINI_API_KEY=<your-key>
-supabase secrets set RESEND_API_KEY=<your-key>
-supabase secrets set CRON_SECRET_KEY=<random-secret>
-# ... set other secrets as needed
-
-# Deploy all functions
-supabase functions deploy
+# Verify
+bun run lint
+bun run test
+bun run build
+# DB
+supabase test db  # runs 1,777 pgTAP
 ```
 
-### Commands
+---
 
-| Command | Description |
-|---------|-------------|
-| `npm run dev` | Start dev server (port 5173) |
-| `npm run build` | Production build |
-| `npm run preview` | Preview production build |
-| `npm run lint` | ESLint check |
-| `npm run type-check` | TypeScript type check |
-| `npm run test` | Run unit tests (watch mode) |
-| `npm run test:ui` | Vitest UI runner |
-| `npm run test:coverage` | Test coverage report |
-| `npm run test:e2e` | Playwright E2E tests |
-| `npm run test:e2e:ui` | Playwright with debug UI |
-| `npm run clean` | Remove dist directory |
+### Tech Stack (Badges)
+
+| Layer | Tech |
+|---|---|
+| **Frontend** | React 19 · TypeScript 5.8 · Vite 6 · Tailwind v4 · Radix UI |
+| **State** | Zustand (auth/UI) + TanStack Query (server) · React Router v7 |
+| **Backend** | Supabase (PostgreSQL + Auth + Storage + Edge Functions + Realtime) |
+| **AI** | Gemini AI (resume/JD/compliance) |
+| **Payments** | Stripe |
 
 ---
 
-## Architecture
+### Roadmap
 
-```
-src/
-├── App.tsx                    # Root component
-├── main.tsx                   # Entry point (Vite + Sentry + QueryClient + i18n)
-├── index.css                  # Tailwind v4 + global styles
-├── types.ts                   # Shared TypeScript types
-├── components/                # UI components (19 subdirectories)
-│   ├── layout/                # AppLayout, Sidebar, Header, MobileNav, UserMenu
-│   ├── auth/                  # Login, Register, ForgotPassword, MFA
-│   ├── dashboard/             # KPI cards, recent activity widgets
-│   ├── jobs/                  # Job creation, listing, detail cards
-│   ├── candidates/            # Candidate list, detail, CV upload
-│   ├── pipeline/              # Kanban board with drag-and-drop
-│   ├── interviews/            # Interview scheduler, calendar
-│   ├── offers/                # Offer letter builder, PDF generation
-│   ├── documents/             # Document tracking, status badges
-│   ├── onboarding/            # Checklist, task verifier, AI assistant
-│   ├── reports/               # Recharts analytics
-│   ├── settings/              # Company profile, account, compliance, security
-│   ├── chat/                  # Mate AI chat widget (floating)
-│   ├── pdf/                   # @react-pdf/renderer templates
-│   └── shared/                # DataTable, EmptyState, ErrorBoundary, ConfirmDialog
-├── pages/                     # Route-level page components (lazy-loaded)
-├── hooks/                     # Custom React hooks (17 files)
-├── services/                  # Supabase API service layer (23 services)
-├── stores/                    # Zustand stores (authStore, uiStore)
-├── lib/                       # Core utilities (supabase client, i18n, sentry, session API)
-├── router/                    # React Router v7 config + AuthGuard
-├── types/                     # TypeScript models & database types
-├── utils/                     # Pure utility functions
-└── test-utils/                # Test factories and mocks
-```
-
-See [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) for full architecture reference.
-
-### Route Map
-
-| Route | Page | Auth |
-|-------|------|------|
-| `/login` | LoginPage | Public |
-| `/register` | RegisterPage | Public |
-| `/forgot-password` | ForgotPasswordPage | Public |
-| `/setup-company` | CompanySetupPage | Authenticated (no company) |
-| `/dashboard` | DashboardPage | Authenticated |
-| `/recruitment/jobs` | JobsPage | Authenticated |
-| `/recruitment/jobs/:id` | JobDetailPage | Authenticated |
-| `/recruitment/candidates` | CandidatesPage | Authenticated |
-| `/recruitment/candidates/:id` | CandidateDetailPage | Authenticated |
-| `/recruitment/pipeline` | PipelinePage | Authenticated |
-| `/recruitment/interviews` | InterviewsPage | Authenticated |
-| `/hiring` | HiringPage | Authenticated |
-| `/documents` | DocumentsPage | Authenticated |
-| `/onboarding` | OnboardingMgmtPage | Authenticated |
-| `/chat` | ChatPage | Authenticated |
-| `/reports` | ReportsPage | Authenticated |
-| `/settings` | SettingsPage | Authenticated |
-| `/settings/compliance` | CompliancePage | Authenticated |
-| `*` | NotFoundPage | — |
+- [x] Recruitment → Payroll core + 1,777 pgTAP
+- [ ] Multi-country payroll edge cases (VN/ID specifics)
+- [ ] Gemini cost optimization + offline fallback
+- [ ] Mobile PWA for field attendance
 
 ---
 
-## Modules
+### Contact
 
-| Module | Description |
-|--------|-------------|
-| **Recruitment** | Jobs, candidates, pipeline (Kanban), interviews, offers |
-| **Onboarding** | Checklists, task verification, AI assistant |
-| **HRIS** | Employee directory, org chart, departments |
-| **Documents** | Document tracking, e-signature, contract templates |
-| **Messaging** | Chat widget, approval workflows, multi-platform (LINE/WhatsApp) |
-| **Payroll** | Payroll cycles, calculations, statutory filing |
-| **Attendance** | Shift scheduling, leave management |
-| **Performance** | OKR tracking, reviews |
-| **Benefits** | Benefits management, compensation |
-| **Assets** | Asset tracking, expense management |
-| **Compliance** | PDPA, data retention, audit logging |
-| **Reports** | Analytics dashboards, Recharts visualizations |
-| **Settings** | Company profile, security (MFA), compliance |
-| **AI Assistant** | Mate AI chat, resume screening, JD generation |
+**Phirawit Jitnarong — Founder @AdminMate AI**
+`nxme176@gmail.com` · `092-551-0427` · [LinkedIn](https://www.linkedin.com/in/%E0%B8%9E%E0%B8%B5%E0%B8%A3%E0%B8%A7%E0%B8%B4%E0%B8%8A%E0%B8%8D%E0%B9%8C-%E0%B8%88%E0%B8%B4%E0%B8%95%E0%B8%93%E0%B8%A3%E0%B8%87%E0%B8%84%E0%B9%8C-0000393a4) · [Fastwork](https://fastwork.co/user/bravforcode?source=search)
 
----
-
-## Security
-
-- **Auth proxy:** httpOnly cookie + in-memory token (JWT never in localStorage)
-- **MFA:** TOTP via Supabase Auth with backup codes
-- **RLS:** Row-level security on all tenant tables (1,777 pgTAP tests)
-- **RBAC:** 10 roles, 40+ permissions, dual-mode with legacy fallback
-- **CSP:** Content Security Policy headers via Vercel
-- **Sensitive fields:** Registry of 15 PII fields with AI masking
-- **Audit logging:** All permission-sensitive actions logged
-
-See [docs/security.md](docs/security.md) for detailed security documentation.
-
----
-
-## Testing
-
-| Type | Tool | Coverage |
-|------|------|----------|
-| Unit | Vitest | 429+ tests |
-| Integration | Vitest | Service layer |
-| E2E | Playwright | 24 spec files, 172/172 pass |
-| Database | pgTAP | 1,777/1,777 PASS |
-| Accessibility | axe-core | Automated scanning |
-| Chaos | Custom | Resilience testing |
-
-See [docs/testing.md](docs/testing.md) for testing strategy.
-
----
-
-## Deployment
-
-See [docs/DEPLOYMENT.md](docs/DEPLOYMENT.md) for deployment guide.  
-See [docs/runbook.md](docs/runbook.md) for operational runbook.  
-See [docs/launch-checklist.md](docs/launch-checklist.md) for pre-launch checklist.
-
----
-
-## Release History
-
-**Total:** 33 feature series + 11 corrective releases (33B)  
-**Latest:** 33B.10 — Release readiness review (14/14 pgTAP PASS)  
-**All gates A–L closed** — Production hardened
-
-See [CHANGELOG.md](CHANGELOG.md) for full release history.
-
----
-
-## Documentation
-
-| Document | Description |
-|----------|-------------|
-| [CHANGELOG.md](CHANGELOG.md) | Full release history |
-| [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) | System architecture reference |
-| [docs/DEPLOYMENT.md](docs/DEPLOYMENT.md) | Deployment procedures |
-| [docs/security.md](docs/security.md) | Security documentation |
-| [docs/testing.md](docs/testing.md) | Testing strategy |
-| [docs/runbook.md](docs/runbook.md) | Operational runbook |
-| [docs/launch-checklist.md](docs/launch-checklist.md) | Pre-launch checklist |
-| [docs/PRODUCTION_ARCHITECTURE.md](docs/PRODUCTION_ARCHITECTURE.md) | Visual architecture diagram |
-| [docs/adminmate-roadmap.md](docs/adminmate-roadmap.md) | Product roadmap |
-| [docs/phase-ledger.md](docs/phase-ledger.md) | Release execution ledger |
-| [docs/RELEASE_33B_SERIES_COMPLETE.md](docs/RELEASE_33B_SERIES_COMPLETE.md) | Latest series summary |
-
----
-
-## License
-
-Proprietary. All rights reserved.
+> Hiring for HR Tech / Compliance AI? Let's talk — production hardened, compliance-aware.
